@@ -1,4 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
-@import "primeicons/primeicons.css";
+
+
+body {
+    font-family: var(--font-family);
+    background-color: #F8F8F8;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+::ng-deep .p-carousel-content,
+::ng-deep .p-carousel-items-content {
+    overflow: visible !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+    /* Ẩn thanh cuộn trên Chrome, Safari, Edge */
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    /* Ẩn thanh cuộn trên IE và Edge */
+    scrollbar-width: none;
+    /* Ẩn thanh cuộn trên Firefox */
+}

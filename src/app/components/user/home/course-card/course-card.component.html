@@ -1,0 +1,241 @@
+<div class="my-10 max-w-7xl mx-auto">
+  <h3 class="text-2xl font-bold my-2">Lĩnh vực sẽ học tiếp theo</h3>
+  <h5 class="text-xl font-bold mb-2">Được đề xuất cho bạn</h5>
+  <div>
+    <p-carousel
+      #carousel
+      [value]="lists"
+      [numVisible]="5"
+      [numScroll]="5"
+      [circular]="true"
+      [showIndicators]="false"
+      contentClass=" pt-16"
+      [responsiveOptions]="responsiveOptions"
+      (onPage)="onCarouselPageChange($event)"
+    >
+      <ng-template let-list #item>
+        <div
+          class="m-2 relative group"
+          (mouseenter)="showCardHover($event, list)"
+          (mouseleave)="hideCardHover()"
+        >
+          <div class="flex flex-col">
+            <img
+              alt="Card"
+              class="w-full"
+              src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
+            />
+            <b class="py-2">Khoá học lập trình cơ bản {{ list.value }}</b>
+            <span class="text-gray-400 text-sm"
+              >Tên tác giả {{ list.index }}</span
+            >
+            <span class="text-gray-400 text-sm"
+              >Vị trí hiện tại: {{ getCurrentPosition(list) }}</span
+            >
+
+            <b class="py-1"><u>đ</u>399,000</b>
+            <p-tag
+              severity="success"
+              value="Best seller"
+              class="w-fit opacity-60"
+            />
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
+
+    <div
+      (mouseenter)="keepCardHover()"
+      (mouseleave)="hideCardHover()"
+      *ngIf="activeCard"
+      class="hover-popup absolute p-6 rounded-lg shadow-2xl bg-white w-96 opacity-0 transition-opacity duration-200 lg:visible invisible"
+      [ngClass]="{
+        'opacity-100 pointer-events-auto': activeCard,
+        'right-full mr-4 left-auto ml-0':
+          getCurrentPosition(activeCard) === getItemsInCurrentPage() - 1 ||
+          getCurrentPosition(activeCard) === getItemsInCurrentPage() - 2,
+        'left-full ml-4':
+          getCurrentPosition(activeCard) !== getItemsInCurrentPage() - 1 &&
+          getCurrentPosition(activeCard) !== getItemsInCurrentPage() - 2
+      }"
+      [ngStyle]="cardHoverPosition"
+    >
+      <div class="py-2 font-semibold">
+        <h4 class="text-lg font-bold pb-2">
+          Khoá học lập trình cơ bản {{ activeCard.value }}
+        </h4>
+        <div class="flex gap-5">
+          <p-tag severity="success" value="Bán chạy" class="w-fit opacity-60" />
+          <span class="text-green-400"
+            >Cập nhật
+            <span class="font-semibold text-green-600">12/2024</span></span
+          >
+        </div>
+        <p class="text-sm font-thin py-2">Tổng 2.5 giờ học</p>
+        <div>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto minus
+          possimus illum voluptatem quod amet, dignissimos nulla autem velit
+          ratione quaerat, in nemo, veritatis at! Quibusdam labore id iure
+          sapiente.
+        </div>
+        <ul class="list-disc ml-4 text-sm py-2">
+          <li>Lorem 1</li>
+          <li>Lorem 2</li>
+          <li>Lorem 3</li>
+        </ul>
+        <div class="flex justify-between items-center gap-5 pt-5">
+          <button
+            class="px-6 py-3 bg-violet-600 text-white rounded-md font-semibold w-full"
+          >
+            Thêm vào giỏ hàng
+          </button>
+          <div class="">
+            <i
+              class="pi pi-heart text-violet-500 font-bold border-violet-500 p-2 border-2 rounded-full"
+              style="font-size: 1.5rem"
+            ></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="min-h-96 bg-black"></div>
+
+  <!-- <h5 class="text-xl font-bold mb-2">Được đề xuất cho bạn</h5>
+  <div>
+    <p-tabs value="0">
+      <p-tablist class="!px-12">
+        <p-tab value="0" class="flex items-center !gap-2">
+          <span class="font-bold whitespace-nowrap">Mới nhất</span>
+        </p-tab>
+        <p-tab value="1" class="flex items-center !gap-2">
+          <span class="font-bold whitespace-nowrap">Nổi bật</span>
+        </p-tab>
+        <p-tab value="2" class="flex items-center !gap-2">
+          <span class="font-bold whitespace-nowrap">Trung cấp & Nâng cao</span>
+        </p-tab>
+      </p-tablist>
+      <p-tabpanels class="!bg-transparent !p-0">
+        <p-tabpanel value="0">
+          <div class="m-0">
+            <div class="!isolate z-0">
+              <p-carousel
+                [value]="lists"
+                [numVisible]="5"
+                [numScroll]="5"
+                [circular]="true"
+                [showIndicators]="false"
+                contentClass=" pt-2"
+                [responsiveOptions]="responsiveOptions"
+                (onPage)="onCarouselPageChange($event)"
+              >
+                <ng-template let-list #item>
+                  <div
+                    class="m-2 relative group"
+                    (mouseenter)="showCardHover($event, list)"
+                    (mouseleave)="hideCardHover()"
+                  >
+                    <div class="flex flex-col">
+                      <img
+                        alt="Card"
+                        class="w-full"
+                        src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
+                      />
+                      <b class="py-2"
+                        >Khoá học lập trình cơ bản {{ list.value }}</b
+                      >
+                      <span class="text-gray-400 text-sm"
+                        >Tên tác giả {{ list.index }}</span
+                      >
+                      <span class="text-gray-400 text-sm"
+                        >Vị trí hiện tại: {{ getCurrentPosition(list) }}</span
+                      >
+
+                      <b class="py-1"><u>đ</u>399,000</b>
+                      <p-tag
+                        severity="success"
+                        value="Best seller"
+                        class="w-fit opacity-60"
+                      />
+                    </div>
+                  </div>
+                </ng-template>
+              </p-carousel>
+
+              <div
+                (mouseenter)="keepCardHover()"
+                (mouseleave)="hideCardHover()"
+                *ngIf="activeCard"
+                class="hover-popup absolute p-6 rounded-lg shadow-lg border bg-white w-96 opacity-0 pointer-events-none transition-opacity duration-200 lg:visible invisible"
+                [ngClass]="{
+                  'opacity-100 pointer-events-auto': activeCard,
+                  'right-full mr-4 left-auto ml-0':
+                    getCurrentPosition(activeCard) ===
+                      getItemsInCurrentPage() - 1 ||
+                    getCurrentPosition(activeCard) ===
+                      getItemsInCurrentPage() - 2,
+                  'left-full ml-4':
+                    getCurrentPosition(activeCard) !==
+                      getItemsInCurrentPage() - 1 &&
+                    getCurrentPosition(activeCard) !==
+                      getItemsInCurrentPage() - 2
+                }"
+                [ngStyle]="cardHoverPosition"
+              >
+                <div class="py-2 font-semibold">
+                  <h4 class="text-lg font-bold pb-2">
+                    Khoá học lập trình cơ bản {{ activeCard.value }}
+                  </h4>
+                  <div class="flex gap-5">
+                    <p-tag
+                      severity="success"
+                      value="Bán chạy"
+                      class="w-fit opacity-60"
+                    />
+                    <span class="text-green-400"
+                      >Cập nhật
+                      <span class="font-semibold text-green-600"
+                        >12/2024</span
+                      ></span
+                    >
+                  </div>
+                  <p class="text-sm font-thin py-2">Tổng 2.5 giờ học</p>
+                  <div>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Iusto minus possimus illum voluptatem quod amet, dignissimos
+                    nulla autem velit ratione quaerat, in nemo, veritatis at!
+                    Quibusdam labore id iure sapiente.
+                  </div>
+                  <ul class="list-disc ml-4 text-sm py-2">
+                    <li>Lorem 1</li>
+                    <li>Lorem 2</li>
+                    <li>Lorem 3</li>
+                  </ul>
+                  <div class="flex justify-between items-center gap-5 pt-5">
+                    <button
+                      class="px-6 py-3 bg-violet-600 text-white rounded-md font-semibold w-full"
+                    >
+                      Thêm vào giỏ hàng
+                    </button>
+                    <div class="">
+                      <i
+                        class="pi pi-heart text-violet-500 font-bold border-violet-500 p-2 border-2 rounded-full"
+                        style="font-size: 1.5rem"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </p-tabpanel>
+        <p-tabpanel value="1">
+          <div class="m-0">Hehe Mới</div>
+        </p-tabpanel>
+        <p-tabpanel value="2">
+          <div class="m-0">Haha Trung cấp & Nâng cao</div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
+  </div> -->
+</div>

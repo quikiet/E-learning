@@ -3,7 +3,6 @@ import { AvatarModule } from 'primeng/avatar'; import { ButtonModule } from 'pri
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms'; import { Select } from 'primeng/select';
 import { DividerModule } from 'primeng/divider';
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
 import { Skeleton } from 'primeng/skeleton';
 interface City {
@@ -12,7 +11,7 @@ interface City {
 }
 @Component({
   selector: 'app-profile-info',
-  imports: [RippleModule, Select, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule, RouterOutlet, RouterLink, Skeleton],
+  imports: [RippleModule, Select, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule, Skeleton],
   templateUrl: './profile-info.component.html',
   styleUrl: './profile-info.component.css'
 })

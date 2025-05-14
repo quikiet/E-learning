@@ -4,9 +4,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { trigger, state, style, animate, transition, keyframes } from '@angular/animations';
 import { CommonModule } from '@angular/common';
+import { CategoryCarouselComponent } from "../../../components/user/category-carousel/category-carousel.component";
+import { CourseCardComponent } from "../../../components/user/home/course-card/course-card.component";
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, CategoryCarouselComponent, CourseCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

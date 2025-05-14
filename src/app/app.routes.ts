@@ -5,6 +5,8 @@ import { LoginComponent } from './pages/both/login/login.component';
 import { CourseDetailComponent } from './pages/User/course-detail/course-detail.component';
 import { ProfileComponent } from './pages/both/profile/profile.component';
 import { ProfileInfoComponent } from './components/both/profile-info/profile-info.component';
+import { ShoppingCartComponent } from './pages/User/shoping-cart/shoping-cart.component';
+import { CourseCardComponent } from './components/user/home/course-card/course-card.component';
 
 export const routes: Routes = [
     {
@@ -12,7 +14,9 @@ export const routes: Routes = [
         children: [
             { path: '', component: HomeComponent },
             { path: 'login', component: LoginComponent },
+            { path: 'product', component: CourseCardComponent },
             { path: 'course-learning', component: CourseDetailComponent },
+            { path: 'cart', component: ShoppingCartComponent },
         ]
     },
 

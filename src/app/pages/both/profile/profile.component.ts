@@ -4,14 +4,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { DividerModule } from 'primeng/divider';
 import { RippleModule } from 'primeng/ripple';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 interface City {
   name: string;
   code: string;
 }
 @Component({
   selector: 'app-profile',
-  imports: [RouterLink, RouterOutlet, RippleModule, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule],
+  imports: [RouterOutlet, RippleModule, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
