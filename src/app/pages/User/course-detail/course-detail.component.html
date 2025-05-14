@@ -1,0 +1,167 @@
+<div class="max-w-7xl mx-auto my-10 grid grid-cols-12 gap-5 h-full">
+  <div class="col-span-8 mb-6">
+    <video
+      class="rounded-3xl w-full"
+      controls
+      poster="https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=facearea&w=600&h=350"
+    >
+      <source
+        src="https://www.w3schools.com/html/mov_bbb.mp4"
+        type="video/mp4"
+      />
+      Your browser does not support the video tag.
+    </video>
+    <!-- Top: Studio Info & Stats -->
+    <div class="my-6">
+      <h5 class="text-black font-bold text-2xl leading-tight mb-4">
+        VUE JAVASCRIPT COURSE
+      </h5>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <img
+            src="https://randomuser.me/api/portraits/men/32.jpg"
+            alt="logo"
+            class="w-8 h-8 rounded-full bg-white border border-[#32d296] p-1"
+          />
+          <span class="text-[#32d296] text-sm font-bold">Kitani Studio</span>
+        </div>
+        <span class="ml-auto flex items-center gap-4">
+          <span class="flex items-center gap-1 text-[#32d296] text-sm">
+            <span class="pi pi-users"></span>2.3k</span
+          >
+          <span class="flex items-center gap-1 text-[#32d296] text-sm">
+            <span class="pi pi-comments"></span>1.4k</span
+          >
+        </span>
+      </div>
+      <p-divider />
+    </div>
+    <!-- Course Description -->
+    <div class="course-description mb-4">
+      <p class="text-black font-bold text-lg mb-2">Chi tiết khoá học</p>
+      <p class="text-[#3a3f44] text-sm">
+        Unlike other monolithic frameworks, Vue is designed from the ground up
+        to be incrementally adoptable. The core library is focused on the view
+        layer only, and is easy to pick up and integrate with other libraries or
+        existing projects. On the other hand, Vue is also perfectly capable of
+        powering sophisticated Single-Page Applications when used in combination
+        with modern tooling and supporting libraries.
+      </p>
+      <p-divider />
+    </div>
+    <!-- Review List -->
+    <div class="space-y-5">
+      <p class="text-black font-bold text-lg mb-2">Bình luận</p>
+      <div class="flex items-start gap-3">
+        <p-avatar
+          image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
+          size="normal"
+          class="mt-1"
+          shape="circle"
+        />
+        <div>
+          <span class="font-bold">Leonardo</span>
+          <div class="text-gray-400 text-sm">Today</div>
+          <div class="text-sm">
+            Loved the course. I’ve learned some very subtle techniques,
+            especially on leaves.
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-start gap-3">
+          <p-avatar
+            image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
+            size="normal"
+            shape="circle"
+            class="mt-1"
+          />
+          <div>
+            <span class="font-bold">Titania</span>
+            <div class="text-gray-400 text-sm">Today</div>
+            <div class="text-sm">
+              I loved the course, it had been a long time since I had
+              experimented with watercolors and now I will do it more often
+              thanks to Kitani Studio.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-start gap-3">
+          <p-avatar
+            image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
+            size="normal"
+            class="mt-1"
+            shape="circle"
+          />
+          <div>
+            <span class="font-bold">Zhrikov</span>
+            <div class="text-gray-400 text-sm">Today</div>
+            <div class="text-sm">
+              Yes. I just emphasize that the use of Photoshop, for non-users,
+              becomes difficult to follow. What requires a course to master it.
+              Safe and very didactic teacher.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-start gap-3">
+          <p-avatar
+            image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
+            size="normal"
+            class="mt-1"
+            shape="circle"
+          />
+          <div>
+            <span class="font-bold">Miphoska</span>
+            <div class="text-gray-400 text-sm">Today</div>
+            <div class="text-sm">
+              I haven’t finished the course yet, as I would like to have some
+              feedback from the teacher, about the comments I shared on the
+              forum a 3 months ago,...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-8 flex justify-center">
+      <button
+        class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
+      >
+        Load more review
+      </button>
+    </div>
+  </div>
+  <div class="col-span-4 h-full">
+    <div
+      class="sticky top-20 bg-white px-0 py-0 flex-col shadow border-l border-gray-100 h-fit"
+    >
+      <p-accordion [value]="0" [multiple]="true">
+        @for (tab of tabs; track tab.title) {
+        <p-accordion-panel [value]="tab.value">
+          <p-accordion-header
+            >{{ tab.title }}
+            <span class="text-xs font-normal ml-2">1/12 Videos • 8m</span>
+          </p-accordion-header>
+          <p-accordion-content>
+            <div class="m-0" *ngFor="let item of tab.content | keyvalue">
+              <div class="flex items-center justify-between">
+                <div lass="flex items-center gap-2">
+                  <span class="text-sm">{{ item.value }}</span>
+                  <p class="text-green-400">10m</p>
+                </div>
+                <p-tag
+                  value="Hoàn thành"
+                  class="!text-xs !text-white !bg-[#00DDC0] !font-semibold"
+                />
+              </div>
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+        }
+      </p-accordion>
+    </div>
+  </div>
+</div>

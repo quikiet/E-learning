@@ -1,1 +1,44 @@
-<p>profile works!</p>
+<div class="grid grid-cols-12 gap-5 items-start">
+  <div class="col-span-2 bg-white min-h-screen h-full">
+    <div class="card flex justify-center">
+      <div class="flex flex-col h-full">
+        <div class="flex items-center justify-between px-6 pt-4 shrink-0">
+          <a class="flex items-center space-x-2" href="#">
+            <img
+              alt="Edunity logo, green hexagonal shape with stacked layers"
+              class="w-8 h-8"
+              height="32"
+              src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
+              width="32"
+            />
+            <span class="font-semibold text-2xl text-[#1a2a3a] select-none">
+              edunity
+            </span>
+          </a>
+        </div>
+        <div class="overflow-y-auto text-black">
+          <ul class="list-none p-4 m-0">
+            <li>
+              <ul class="list-none p-0 m-0 overflow-hidden">
+                <li>
+                  <a
+                    pRipple
+                    class="flex items-center cursor-pointer p-4 rounded-border text-surface-700 hover:bg-surface-100 duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-user mr-2"></i>
+                    <span class="font-medium text-black"
+                      >Thông tin cá nhân</span
+                    >
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-span-10 min-h-screen p-6">
+    <router-outlet></router-outlet>
+  </div>
+</div>
