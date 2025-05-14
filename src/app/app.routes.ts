@@ -7,6 +7,7 @@ import { ProfileComponent } from './pages/both/profile/profile.component';
 import { ProfileInfoComponent } from './components/both/profile-info/profile-info.component';
 import { ShoppingCartComponent } from './pages/User/shoping-cart/shoping-cart.component';
 import { CourseCardComponent } from './components/user/home/course-card/course-card.component';
+import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 
 export const routes: Routes = [
     {
@@ -19,7 +20,16 @@ export const routes: Routes = [
             { path: 'cart', component: ShoppingCartComponent },
         ]
     },
-
+    {
+        path: 'admin', component: DashboardComponent,
+        children: [
+            { path: '', component: HomeComponent },
+            { path: 'login', component: LoginComponent },
+            { path: 'product', component: CourseCardComponent },
+            { path: 'course-learning', component: CourseDetailComponent },
+            { path: 'cart', component: ShoppingCartComponent },
+        ]
+    },
     {
         path: 'profile',
         component: ProfileComponent,

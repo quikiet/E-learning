@@ -6,9 +6,10 @@ import { trigger, state, style, animate, transition, keyframes } from '@angular/
 import { CommonModule } from '@angular/common';
 import { CategoryCarouselComponent } from "../../../components/user/category-carousel/category-carousel.component";
 import { CourseCardComponent } from "../../../components/user/home/course-card/course-card.component";
+import { IntructorComponent } from "../../../components/user/instructor/instructor.component";
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, CategoryCarouselComponent, CourseCardComponent],
+  imports: [CommonModule, CategoryCarouselComponent, CourseCardComponent, IntructorComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

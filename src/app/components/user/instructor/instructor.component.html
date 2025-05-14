@@ -1,0 +1,90 @@
+<div class="intructor bg-[#FFF8F0]">
+  <div class="w-full">
+    <div class="z-1">
+      <div class="max-w-7xl mx-auto relative z-10 p-10">
+        <div class="flex items-center justify-between w-full m-3">
+          <div class="flex items-start gap-2 flex-col pt-4">
+            <p class="text-orange-600">Teacher</p>
+            <h3 class="font-bold text-3xl text-black">
+              Meet our expert Instructor
+            </h3>
+          </div>
+          <div class="mr-10">
+            <div class="flex gap-4 z-30">
+              <button
+                type="button"
+                pButton
+                icon="pi pi-chevron-left"
+                class="p-button-rounded p-button-outlined"
+                (click)="prevSlide($event)"
+              ></button>
+              <button
+                type="button"
+                pButton
+                icon="pi pi-chevron-right"
+                class="p-button-rounded p-button-outlined"
+                (click)="nextSlide($event)"
+              ></button>
+            </div>
+          </div>
+        </div>
+        <p-carousel
+          #carousel
+          [value]="lists"
+          [numVisible]="4"
+          [numScroll]="4"
+          [circular]="true"
+          [showIndicators]="false"
+          contentClass=" pt-6"
+          [responsiveOptions]="responsiveOptions"
+          (onPage)="onCarouselPageChange($event)"
+          [showNavigators]="false"
+        >
+          <ng-template let-list #item>
+            <div
+              class="m-5 relative group rounded-md overflow-hidden bg-white teacher_card"
+            >
+              <div class="flex flex-col">
+                <div class="relative">
+                  <img
+                    alt="Card"
+                    class="w-full max-h-[300px] p-2"
+                    src="teacher_avatar2.png"
+                  />
+                  <div class="absolute -bottom-3 right-10">
+                    <svg
+                      width="41"
+                      height="41"
+                      viewBox="0 0 41 41"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        width="40"
+                        height="40"
+                        transform="translate(0.5 0.350098)"
+                        fill="#00BEAE"
+                      />
+                      <path
+                        d="M24.8501 23.1001C25.7355 23.1001 26.4881 23.41 27.1079 24.0298C27.7277 24.6496 28.0376 25.4022 28.0376 26.2876C28.0376 27.173 27.7277 27.9256 27.1079 28.5454C26.4881 29.1652 25.7355 29.4751 24.8501 29.4751C23.9646 29.4751 23.212 29.1652 22.5922 28.5454C21.9725 27.9256 21.6626 27.173 21.6626 26.2876C21.6626 26.0441 21.6847 25.8117 21.729 25.5903L18.3422 23.4653C17.7667 23.9302 17.1027 24.1626 16.3501 24.1626C15.4646 24.1626 14.712 23.8527 14.0922 23.2329C13.4725 22.6131 13.1626 21.8605 13.1626 20.9751C13.1626 20.0897 13.4725 19.3371 14.0922 18.7173C14.712 18.0975 15.4646 17.7876 16.3501 17.7876C17.1027 17.7876 17.7667 18.02 18.3422 18.4849L21.729 16.3599C21.6847 16.1385 21.6626 15.9061 21.6626 15.6626C21.6626 14.7772 21.9725 14.0246 22.5922 13.4048C23.212 12.785 23.9646 12.4751 24.8501 12.4751C25.7355 12.4751 26.4881 12.785 27.1079 13.4048C27.7277 14.0246 28.0376 14.7772 28.0376 15.6626C28.0376 16.548 27.7277 17.3006 27.1079 17.9204C26.4881 18.5402 25.7355 18.8501 24.8501 18.8501C24.0975 18.8501 23.4334 18.6177 22.8579 18.1528L19.4712 20.2778C19.5154 20.4992 19.5376 20.7316 19.5376 20.9751C19.5376 21.2186 19.5154 21.451 19.4712 21.6724L22.8579 23.7974C23.4334 23.3325 24.0975 23.1001 24.8501 23.1001Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="p-6 pt-3">
+                  <p class="text-black font-semibold">Nathan Allen</p>
+                  <p class="text-orange-600">Teacher</p>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </p-carousel>
+        <div class="absolute top-0 -right-10 -z-10 shape_intructor">
+          <img src="shape_intructor.png" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

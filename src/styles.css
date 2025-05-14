@@ -3,6 +3,13 @@
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
 
+@theme {
+    --color-primary: #FE543D !important;
+    --color-secondary: #2FC7A1 !important;
+    --color-secondary-content: #35D7AE !important;
+    --color-dark: #17254E !important;
+}
+
 
 body {
     font-family: var(--font-family);
