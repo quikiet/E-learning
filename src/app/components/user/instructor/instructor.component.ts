@@ -41,9 +41,9 @@ export class IntructorComponent implements OnInit, AfterViewInit {
       x: 100,
       scrollTrigger: {
         trigger: ".teacher_card",
-        start: "top center",
+        start: "top bottom",
         scrub: 1,
-        end: "+=100",
+        end: "+=250",
       }
     });
 

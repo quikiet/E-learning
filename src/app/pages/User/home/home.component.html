@@ -1,37 +1,39 @@
 <!-- Main content -->
-<div class="bg-gradient-to-r from-[#f3e7e1] to-[#d9f0f0] h-full">
+<div
+  class="min-h-[95vh] bg-gradient-to-r from-primary-light to-secondary-light h-full"
+>
   <main
     class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20 p-10"
   >
     <!-- Left text block -->
     <section class="max-w-xl flex flex-col space-y-3 md:space-y-5">
       <span
-        class="left-section text-xs md:text-sm text-[#6fcf97] font-semibold bg-[#d9f0f0] px-3 py-1 rounded select-none w-max"
+        class="left-section text-xs md:text-sm text-secondary font-semibold bg-secondary-light px-3 py-1 rounded select-none w-max"
       >
-        Learn &amp; Get Certificates
+        Học &amp; Nhận Chứng Chỉ
       </span>
       <h1
         class="left-section text-[#1a2a3a] font-extrabold text-3xl sm:text-4xl md:text-5xl leading-tight"
       >
-        Free Online Courses With Certificates &amp; Diplomas
+        Học thông minh hơn &amp; Tiến xa hơn mỗi ngày
       </h1>
       <p class="left-section text-xs md:text-sm text-[#4a4a4a] font-normal">
-        25 Million Learners. 15 Years.100%
+        100.000+ Học viên - Học nhanh, nhớ lâu
       </p>
       <form class="mt-4 w-full max-w-md">
         <label class="left-section sr-only" for="search">
-          Search courses
+          Tìm kiếm khoá học
         </label>
         <div class="left-section relative">
           <input
             class="w-full rounded-full border border-gray-200 bg-white py-4 pl-4 pr-12 text-xs md:text-sm text-[#4a4a4a] focus:outline-none focus:ring-2 focus:ring-[#6fcf97] focus:border-transparent"
             id="search"
-            placeholder="What do you want to learn today?"
+            placeholder="Bạn muốn học gì hôm nay?"
             type="text"
           />
           <button
             aria-label="Search"
-            class="absolute right-0 top-1/2 -translate-y-1/2 bg-[#6fcf97] hover:bg-[#5ecb87] text-white rounded-full p-4 text-sm flex items-center justify-center"
+            class="absolute right-0 top-1/2 -translate-y-1/2 bg-secondary hover:bg-secondary-content text-white rounded-full p-4 text-sm flex items-center justify-center"
             type="submit"
           >
             <i class="pi pi-search"></i>
@@ -56,7 +58,7 @@
           alt="Border"
         />
         <div
-          class="absolute dot bottom-2 -right-2 w-3 h-3 rounded-full bg-[#6fcf97]"
+          class="absolute dot bottom-2 -right-2 w-3 h-3 rounded-full bg-secondary"
           [@dotAnimate]="dotAnimate"
         ></div>
       </div>
@@ -71,17 +73,17 @@
           alt="Border"
         />
         <div
-          class="absolute dot top-16 -right-5 w-5 h-5 rounded-full bg-[#f15a40]"
+          class="absolute dot top-16 -right-5 w-5 h-5 rounded-full bg-primary"
           [@dotAnimate]="dotAnimate"
         ></div>
       </div>
 
       <div
-        class="absolute dot top-5 -left-2 w-3 h-3 rounded-full bg-[#f15a40]"
+        class="absolute dot top-5 -left-2 w-3 h-3 rounded-full bg-primary"
         [@dotAnimate]="dotAnimate"
       ></div>
       <div
-        class="absolute dot bottom-16 right-[calc(100%+70px)] w-3 h-3 rounded-full bg-[#6fcf97]"
+        class="absolute dot bottom-16 right-[calc(100%+70px)] w-3 h-3 rounded-full bg-secondary"
         [@dotAnimate]="dotAnimate"
       ></div>
     </section>
@@ -96,7 +98,7 @@
 <button
   *ngIf="showScrollTop"
   (click)="scrollToTop()"
-  class="animate-bounce fixed bottom-4 right-4 bg-opacity-30 hover:bg-opacity-100 z-[100] bg-[#6fcf97] hover:bg-[#5ecb87] text-white p-3 rounded-full shadow-lg transition-all duration-300"
+  class="animate-bounce fixed bottom-4 right-4 bg-opacity-30 hover:bg-opacity-100 z-[100] bg-secondary hover:bg-[#5ecb87] text-white p-3 rounded-full shadow-lg transition-all duration-300"
   title="Scroll to top"
 >
   <svg

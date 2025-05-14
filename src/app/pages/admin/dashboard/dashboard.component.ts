@@ -17,6 +17,7 @@ export class DashboardComponent {
     this.sidebarToggle = !this.sidebarToggle;
   }
 
+
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
   }

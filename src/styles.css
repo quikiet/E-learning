@@ -5,8 +5,10 @@
 
 @theme {
     --color-primary: #FE543D !important;
+    --color-primary-light: #f3e7e1 !important;
     --color-secondary: #2FC7A1 !important;
     --color-secondary-content: #35D7AE !important;
+    --color-secondary-light: #d9f0f0 !important;
     --color-dark: #17254E !important;
 }
 

@@ -117,7 +117,7 @@ export class CourseCardComponent implements OnInit {
     this.cardHoverPosition = {
       top: `${rect.top + window.scrollY + rect.height}px`,
       left: isLastTwo
-        ? `${rect.left + window.scrollX + 16 - 384}px` // 384px là chiều rộng w-96 của card-hover
+        ? `${rect.left + window.scrollX - 384}px` // 384px là chiều rộng w-96 của card-hover
         : `${rect.right + window.scrollX - 16}px`,
       transform: 'translateY(-80%)',
     };
