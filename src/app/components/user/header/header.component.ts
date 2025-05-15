@@ -13,10 +13,10 @@ import { CommonModule } from '@angular/common';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  sidebarToggle: boolean = false;
+  navBarToggle: boolean = false;
   dropdownOpen: boolean = false;
-  toggleSidebar() {
-    this.sidebarToggle = !this.sidebarToggle;
+  toggleNavbar() {
+    this.navBarToggle = !this.navBarToggle;
   }
 
   toggleDropdown() {
