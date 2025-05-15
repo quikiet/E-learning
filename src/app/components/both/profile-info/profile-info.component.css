@@ -1,0 +1,9 @@
+::ng-deep .p-password {
+    width: 100% !important;
+    /* Thẻ bao ngoài span */
+}
+
+::ng-deep .p-password .p-inputtext {
+    /* rounded-full */
+    width: 100% !important;
+}

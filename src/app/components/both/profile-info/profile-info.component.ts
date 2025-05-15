@@ -5,13 +5,15 @@ import { FormsModule } from '@angular/forms'; import { Select } from 'primeng/se
 import { DividerModule } from 'primeng/divider';
 import { RippleModule } from 'primeng/ripple';
 import { Skeleton } from 'primeng/skeleton';
+import { FormElementComponent } from "../form-element/form-element.component";
+import { PasswordModule } from 'primeng/password';
 interface City {
   name: string;
   code: string;
 }
 @Component({
   selector: 'app-profile-info',
-  imports: [RippleModule, Select, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule, Skeleton],
+  imports: [PasswordModule, RippleModule, Select, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule, Skeleton, FormElementComponent],
   templateUrl: './profile-info.component.html',
   styleUrl: './profile-info.component.css'
 })

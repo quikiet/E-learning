@@ -49,21 +49,10 @@
             "Học đúng thứ bạn cần, theo cách bạn muốn."
           </p>
           <form *ngIf="tab === 'signup'" class="space-y-4 lg:p-6">
-            <div class="relative">
-              <p class="pb-2 text-sm">Tên người dùng</p>
-              <p-iconfield>
-                <p-inputicon styleClass="pi pi-user" />
-                <input
-                  type="text"
-                  pInputText
-                  placeholder="Nhập tên người dùng"
-                  class="!rounded-full w-full"
-                />
-              </p-iconfield>
-            </div>
-
-            <div class="relative">
-              <p class="pb-2 text-sm">Địa chỉ Email</p>
+            <app-form-element
+              [label]="'Địa chỉ Email'"
+              [control]="loginForm.get('name')!"
+            >
               <p-iconfield>
                 <p-inputicon styleClass="pi pi-envelope" />
                 <input
@@ -71,34 +60,51 @@
                   pInputText
                   placeholder="Nhập tên người dùng"
                   class="!rounded-full w-full"
+                  formControlName="name"
                 />
               </p-iconfield>
-            </div>
+            </app-form-element>
 
-            <div class="relative w-full">
-              <p class="pb-2 text-sm">Mật khẩu</p>
-              <div class="w-full">
-                <p-password
-                  [toggleMask]="true"
-                  placeholder="Nhập mật khẩu"
-                  promptLabel="Điền mật khẩu"
-                  weakLabel="Bảo mật yếu"
-                  mediumLabel="Trung bình"
-                  strongLabel="Mật khẩu tốt"
+            <app-form-element
+              [label]="'Địa chỉ Email'"
+              [control]="loginForm.get('name')!"
+            >
+              <p-iconfield>
+                <p-inputicon styleClass="pi pi-envelope" />
+                <input
+                  type="text"
+                  pInputText
+                  placeholder="Nhập tên người dùng"
+                  class="!rounded-full w-full"
+                  formControlName="name"
                 />
-              </div>
-            </div>
+              </p-iconfield>
+            </app-form-element>
+            <app-form-element
+              [label]="'Mật khẩu'"
+              [control]="loginForm.get('password')!"
+            >
+              <p-password
+                [toggleMask]="true"
+                placeholder="Nhập mật khẩu"
+                promptLabel="Điền mật khẩu"
+                weakLabel="Bảo mật yếu"
+                mediumLabel="Trung bình"
+                strongLabel="Mật khẩu tốt"
+              />
+            </app-form-element>
 
-            <div class="relative w-full">
-              <p class="pb-2 text-sm">Nhập lại mật khẩu</p>
-              <div class="w-full">
-                <p-password
-                  [toggleMask]="true"
-                  [feedback]="false"
-                  placeholder="Nhập lại mật khẩu"
-                />
-              </div>
-            </div>
+            <app-form-element
+              [label]="'Nhập lại mật khẩuu'"
+              [control]="loginForm.get('password')!"
+            >
+              <p-password
+                [toggleMask]="true"
+                [feedback]="false"
+                formControlName="password"
+                placeholder="Nhập lại mật khẩu"
+              />
+            </app-form-element>
             <div class="w-full flex justify-end">
               <button
                 class="w-1/2 text-sm bg-secondary text-white py-2 rounded-full hover:bg-secondary-content transition-opacity duration-300 transform"
@@ -107,9 +113,16 @@
               </button>
             </div>
           </form>
-          <form *ngIf="tab === 'login'" class="space-y-4 p-6">
-            <div class="relative">
-              <p class="pb-2 text-sm">Địa chỉ Email</p>
+          <form
+            *ngIf="tab === 'login'"
+            [formGroup]="loginForm"
+            (ngSubmit)="onSubmit()"
+            class="space-y-4 p-6"
+          >
+            <app-form-element
+              [label]="'Địa chỉ Email'"
+              [control]="loginForm.get('name')!"
+            >
               <p-iconfield>
                 <p-inputicon styleClass="pi pi-envelope" />
                 <input
@@ -117,20 +130,22 @@
                   pInputText
                   placeholder="Nhập tên người dùng"
                   class="!rounded-full w-full"
+                  formControlName="name"
                 />
               </p-iconfield>
-            </div>
+            </app-form-element>
+            <app-form-element
+              [label]="'Mật khẩu'"
+              [control]="loginForm.get('password')!"
+            >
+              <p-password
+                [toggleMask]="true"
+                [feedback]="false"
+                formControlName="password"
+                placeholder="Nhập lại mật khẩu"
+              />
+            </app-form-element>
 
-            <div class="relative w-full">
-              <p class="pb-2 text-sm">Mật khẩu</p>
-              <div class="w-full">
-                <p-password
-                  [toggleMask]="true"
-                  [feedback]="false"
-                  placeholder="Nhập lại mật khẩu"
-                />
-              </div>
-            </div>
             <div class="w-full flex justify-end">
               <button
                 class="w-1/2 text-sm bg-secondary text-white py-2 rounded-full hover:bg-secondary-content transition-opacity duration-300 transform"

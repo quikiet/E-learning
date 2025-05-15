@@ -21,66 +21,73 @@
     <div class="pt-6">
       <div class="flex justify-between w-full gap-10">
         <div class="flex flex-col gap-2 w-full py-2">
-          <label for="username">Họ và tên</label>
-          <input
-            class="text-sm custom-input w-full px-4 py-3 border rounded-md shadow-sm focus:outline-gray-200"
-            placeholder="Enter text here"
-            type="text"
-            id="unique-input"
-          />
+          <app-form-element [label]="'Họ và tên'">
+            <input
+              class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
+              placeholder="Enter text here"
+              type="text"
+              id="unique-input"
+            />
+          </app-form-element>
         </div>
+
         <div class="flex flex-col gap-2 w-full py-2">
-          <label for="username">Tên người dùng</label>
-          <input
-            class="text-sm custom-input w-full px-4 py-3 border rounded-md shadow-sm focus:outline-gray-200"
-            placeholder="Enter text here"
-            type="text"
-            id="unique-input"
-          />
-        </div>
-      </div>
-      <div class="flex justify-between w-full gap-10">
-        <div class="flex flex-col gap-2 w-full py-2">
-          <label for="username">Địa chỉ email</label>
-          <input
-            class="text-sm custom-input w-full px-4 py-3 border rounded-md shadow-sm focus:outline-gray-200"
-            placeholder="Enter text here"
-            type="text"
-            id="unique-input"
-          />
-        </div>
-        <div class="flex flex-col gap-2 w-full py-2">
-          <label for="username">Số điện thoại</label>
-          <input
-            class="text-sm custom-input w-full px-4 py-3 border rounded-md shadow-sm focus:outline-gray-200"
-            placeholder="Enter text here"
-            type="text"
-            id="unique-input"
-          />
+          <app-form-element [label]="'Tên người dùng'">
+            <input
+              class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
+              placeholder="Enter text here"
+              type="text"
+              id="unique-input"
+            />
+          </app-form-element>
         </div>
       </div>
       <div class="flex justify-between w-full gap-10">
         <div class="flex flex-col gap-2 w-full py-2">
-          <label for="username">Giới tính</label>
-          <p-select
-            [options]="cities"
-            [(ngModel)]="selectedCity"
-            placeholder="Select a City"
-            [editable]="true"
-            optionLabel="name"
-            class="w-full"
-          />
+          <app-form-element [label]="'Địa chỉ email'">
+            <input
+              class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
+              placeholder="Enter text here"
+              type="text"
+              id="unique-input"
+            />
+          </app-form-element>
         </div>
         <div class="flex flex-col gap-2 w-full py-2">
-          <label for="username">Quốc gia</label>
-          <p-select
-            [options]="cities"
-            [(ngModel)]="selectedCity"
-            placeholder="Select a City"
-            [editable]="true"
-            optionLabel="name"
-            class="w-full"
-          />
+          <app-form-element [label]="'Số điện thoại'">
+            <input
+              class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
+              placeholder="Enter text here"
+              type="text"
+              id="unique-input"
+            />
+          </app-form-element>
+        </div>
+      </div>
+      <div class="flex justify-between w-full gap-10">
+        <div class="flex flex-col gap-2 w-full py-2">
+          <app-form-element [label]="'Giới tính'">
+            <p-select
+              [options]="cities"
+              [(ngModel)]="selectedCity"
+              placeholder="Gender"
+              [editable]="true"
+              optionLabel="name"
+              class="w-full !bg-dark-light"
+            />
+          </app-form-element>
+        </div>
+        <div class="flex flex-col gap-2 w-full py-2">
+          <app-form-element [label]="'Quốc gia'">
+            <p-select
+              [options]="cities"
+              [(ngModel)]="selectedCity"
+              placeholder="Country"
+              [editable]="true"
+              optionLabel="name"
+              class="w-full !bg-dark-light"
+            />
+          </app-form-element>
         </div>
       </div>
     </div>
@@ -88,31 +95,37 @@
     <div class="pt-6">
       <h3 class="text-xl font-bold pb-3">Thay đổi mật khẩu</h3>
       <div class="flex flex-col gap-2 w-full py-2">
-        <label for="username">Mật khẩu cũ</label>
-        <input
-          class="text-sm custom-input w-full px-4 py-3 border rounded-md shadow-sm focus:outline-gray-200"
-          placeholder="Enter text here"
-          type="text"
-          id="unique-input"
-        />
+        <app-form-element [label]="'Mật khẩu hiện tại'">
+          <p-password
+            [toggleMask]="true"
+            [feedback]="false"
+            placeholder="Nhập mật khẩu"
+          />
+        </app-form-element>
       </div>
       <div class="flex flex-col gap-2 w-full py-2">
-        <label for="username">Mật khẩu mới</label>
-        <input
-          class="text-sm custom-input w-full px-4 py-3 border rounded-md shadow-sm focus:outline-gray-200"
-          placeholder="Enter text here"
-          type="text"
-          id="unique-input"
-        />
+        <app-form-element [label]="'Mật khẩu mới'">
+          <p-password
+            [toggleMask]="true"
+            placeholder="Nhập mật khẩu mới"
+            promptLabel="Điền mật khẩu mới"
+            weakLabel="Bảo mật yếu"
+            mediumLabel="Trung bình"
+            strongLabel="Mật khẩu tốt"
+          />
+        </app-form-element>
       </div>
       <div class="flex flex-col gap-2 w-full py-2">
-        <label for="username">Xác nhận mật khẩu</label>
-        <input
-          class="text-sm custom-input w-full px-4 py-3 border rounded-md shadow-sm focus:outline-gray-200"
-          placeholder="Enter text here"
-          type="text"
-          id="unique-input"
-        />
+        <app-form-element [label]="'Mật khẩu mới'">
+          <p-password
+            [toggleMask]="true"
+            placeholder="Nhập mật khẩu mới"
+            promptLabel="Điền mật khẩu mới"
+            weakLabel="Bảo mật yếu"
+            mediumLabel="Trung bình"
+            strongLabel="Mật khẩu tốt"
+          />
+        </app-form-element>
       </div>
       <div class="w-full text-end my-4">
         <p-button label="Thay đổi" severity="warn" />

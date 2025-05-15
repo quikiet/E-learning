@@ -26,8 +26,7 @@ export class IntructorComponent implements OnInit, AfterViewInit {
     gsap.from(".teacher_card", {
       opacity: 0,
       x: -50,
-      stagger: 0.3,
-      delay: 0,
+      stagger: 0.2,
       scrollTrigger: {
         trigger: ".shape_intructor",
         start: "top bottom",
@@ -41,7 +40,7 @@ export class IntructorComponent implements OnInit, AfterViewInit {
       x: 100,
       scrollTrigger: {
         trigger: ".teacher_card",
-        start: "top bottom",
+        start: "top center",
         scrub: 1,
         end: "+=250",
       }

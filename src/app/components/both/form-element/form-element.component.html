@@ -1,0 +1,19 @@
+<div class="relative">
+  <p class="pb-2 text-[15px]">{{ label }}</p>
+  <ng-content></ng-content>
+  <small
+    class="ml-2 text-xs text-red-500"
+    *ngIf="control && (control.touched || control.dirty) && control.invalid"
+  >
+    <span *ngIf="control.errors?.['required']">Không được để trống.</span>
+    <span *ngIf="control.errors?.['email']">Phải đúng dạng email.</span>
+    <span *ngIf="control.errors?.['minlength']"
+      >Phải có ít nhất {{ control.errors?.['minlength'].requiredLength }} ký
+      tự.</span
+    >
+    <span *ngIf="control.errors?.['maxlength']"
+      >Chỉ tối đa {{ control.errors?.['maxlength'].requiredLength }} ký
+      tự.</span
+    >
+  </small>
+</div>
