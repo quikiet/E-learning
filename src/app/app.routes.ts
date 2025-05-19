@@ -8,6 +8,8 @@ import { ProfileInfoComponent } from './components/both/profile-info/profile-inf
 import { ShoppingCartComponent } from './pages/User/shoping-cart/shoping-cart.component';
 import { CourseCardComponent } from './components/user/home/course-card/course-card.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
+import { CategoryManageComponent } from './pages/category-manage/category-manage.component';
+import { CourseManageComponent } from './pages/admin/course-manage/course-manage.component';
 
 export const routes: Routes = [
     {
@@ -23,11 +25,7 @@ export const routes: Routes = [
     {
         path: 'admin', component: DashboardComponent,
         children: [
-            { path: '', component: HomeComponent },
-            { path: 'login', component: LoginComponent },
-            { path: 'product', component: CourseCardComponent },
-            { path: 'course-learning', component: CourseDetailComponent },
-            { path: 'cart', component: ShoppingCartComponent },
+            { path: '', component: CourseManageComponent },
         ]
     },
     {

@@ -6,7 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 @Component({
   selector: 'app-instructor',
-  imports: [ButtonModule, Tag, Carousel],
+  imports: [ButtonModule, Carousel],
   templateUrl: './instructor.component.html',
   styleUrl: './instructor.component.css'
 })
