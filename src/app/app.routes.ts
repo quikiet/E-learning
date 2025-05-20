@@ -10,6 +10,7 @@ import { CourseCardComponent } from './components/user/home/course-card/course-c
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 import { CategoryManageComponent } from './pages/category-manage/category-manage.component';
 import { CourseManageComponent } from './pages/admin/course-manage/course-manage.component';
+import { isLoggedInGuard } from './guard/is-logged-in.guard';
 
 export const routes: Routes = [
     {
@@ -26,6 +27,7 @@ export const routes: Routes = [
         path: 'admin', component: DashboardComponent,
         children: [
             { path: '', component: CourseManageComponent },
+            { path: '**', redirectTo: '', pathMatch: 'full' },
         ]
     },
     {
@@ -35,4 +37,8 @@ export const routes: Routes = [
             { path: '', component: ProfileInfoComponent }
         ]
     },
+
+
+    { path: '**', redirectTo: '', pathMatch: 'full' },
+
 ];

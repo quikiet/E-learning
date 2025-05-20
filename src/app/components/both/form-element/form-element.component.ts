@@ -11,5 +11,6 @@ import { CommonModule } from '@angular/common';
 export class FormElementComponent {
   @Input() validation: any;
   @Input() label: string = '';
+  @Input() required: boolean = false;
   @Input() control!: AbstractControl;
 }

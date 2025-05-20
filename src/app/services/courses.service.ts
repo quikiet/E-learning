@@ -11,7 +11,6 @@ export class CoursesService {
 
   getCourses(page: number = 1, perPage: number = 10): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}?page=${page}&perPage=${perPage}`);
-
   }
 
 }

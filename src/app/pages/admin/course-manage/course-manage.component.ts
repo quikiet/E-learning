@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
@@ -66,8 +66,19 @@ export class CourseManageComponent implements OnInit {
   currentPage: number = 0;
   @ViewChild('tableCourse') dt!: Table;
   cols!: Column[];
-
   exportColumns!: ExportColumn[];
+
+  courseForm = new FormGroup({
+    id: new FormControl(''),
+    course_name: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+    university: new FormControl('', [Validators.maxLength(255)]),
+    difficulty_level: new FormControl('', [Validators.maxLength(50)]),
+    course_rating: new FormControl(0, [Validators.min(0), Validators.max(5)]),
+    course_url: new FormControl(''),
+    course_description: new FormControl(''),
+    price: new FormControl(0),
+    status: new FormControl('pending'),
+  });
 
   constructor(
     private courseService: CoursesService,
@@ -143,7 +154,11 @@ export class CourseManageComponent implements OnInit {
   }
 
   addCourse() {
-
+    if (this.courseForm.valid) {
+      console.log('Form submmitted: ', this.courseForm.value);
+    } else {
+      this.courseForm.markAllAsTouched();
+    }
   }
 
   updateCourse() {

@@ -54,7 +54,7 @@
               [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''"
               class="menu-group-title"
             >
-              MENU
+              Quản lý
             </span>
 
             <svg
@@ -93,106 +93,417 @@
                 class="menu-item group menu-item-active"
                 :class=" (selected === 'Dashboard') || (page === 'ecommerce' || page === 'analytics' || page === 'marketing' || page === 'crm' || page === 'stocks' || page === 'saas') ? 'menu-item-active' : 'menu-item-inactive'"
               >
-                <i class="pi pi-check" style="color: slateblue"></i>
+                <i class="pi pi-objects-column !font-normal"></i>
 
                 <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
+                  class="ml-1 !font-normal"
                 >
-                  Dashboard
+                  Thống kê
                 </span>
               </a>
             </li>
-            <li
-              class="hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded text-sm font-medium"
-            >
-              <a
-                href="calendar.html"
-                class="menu-item group menu-item-inactive"
-              >
-                <i class="pi pi-check" style="color: slateblue"></i>
 
+            <!-- Menu Item User -->
+            <li class="text-sm font-medium">
+              <div
+                (click)="isUserManageOpen = !isUserManageOpen"
+                [ngClass]="
+                  isUserManageOpen ? 'bg-secondary-light/50 text-secondary' : ''
+                "
+                class="cursor-pointer hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded flex items-center justify-between"
+              >
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-user !font-normal"></i>
+                  <span
+                    [ngClass]="
+                      sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                    "
+                    class="!font-normal"
+                  >
+                    Người dùng
+                  </span>
+                </div>
                 <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
                 >
-                  Calendar
+                  <i
+                    class="pi !font-normal"
+                    [ngClass]="{
+                      'pi-angle-down': !isUserManageOpen,
+                      'pi-angle-up': isUserManageOpen
+                    }"
+                  ></i>
                 </span>
-              </a>
+              </div>
+
+              <!-- Submenu -->
+              <ul
+                [ngClass]="
+                  sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                "
+                *ngIf="isUserManageOpen"
+                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+              >
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Danh sách người dùng
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Chi tiết
+                </li>
+              </ul>
             </li>
-            <li
-              class="hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded text-sm font-medium"
-            >
-              <a
-                href="calendar.html"
-                class="menu-item group menu-item-inactive"
-              >
-                <i class="pi pi-check" style="color: slateblue"></i>
 
+            <!-- Menu Item Course -->
+            <li class="text-sm font-medium">
+              <div
+                (click)="isCourseManageOpen = !isCourseManageOpen"
+                [ngClass]="
+                  isCourseManageOpen
+                    ? 'bg-secondary-light/50 text-secondary'
+                    : ''
+                "
+                class="cursor-pointer hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded flex items-center justify-between"
+              >
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-book !font-normal"></i>
+                  <span
+                    class="!font-normal"
+                    [ngClass]="
+                      sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                    "
+                  >
+                    Khoá học
+                  </span>
+                </div>
                 <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
                 >
-                  Calendar
+                  <i
+                    class="pi"
+                    [ngClass]="{
+                      'pi-angle-down': !isCourseManageOpen,
+                      'pi-angle-up': isCourseManageOpen
+                    }"
+                  ></i>
                 </span>
-              </a>
+              </div>
+
+              <!-- Submenu -->
+              <ul
+                [ngClass]="
+                  sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                "
+                *ngIf="isCourseManageOpen"
+                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+              >
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Danh sách khoá học
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Danh mục
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Bài học
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Nội dung bài học
+                </li>
+              </ul>
             </li>
-            <li
-              class="hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded text-sm font-medium"
-            >
-              <a
-                href="calendar.html"
-                class="menu-item group menu-item-inactive"
+            <li class="text-sm font-medium">
+              <div
+                (click)="isQuizManageOpen = !isQuizManageOpen"
+                [ngClass]="
+                  isQuizManageOpen ? 'bg-secondary-light/50 text-secondary' : ''
+                "
+                class="cursor-pointer hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded flex items-center justify-between"
               >
-                <i class="pi pi-check" style="color: slateblue"></i>
-
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-question-circle !font-normal"></i>
+                  <span
+                    class="!font-normal"
+                    [ngClass]="
+                      sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                    "
+                  >
+                    Bài kiểm tra / Quiz
+                  </span>
+                </div>
                 <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
                 >
-                  Calendar
+                  <i
+                    class="pi"
+                    [ngClass]="{
+                      'pi-angle-down': !isQuizManageOpen,
+                      'pi-angle-up': isQuizManageOpen
+                    }"
+                  ></i>
                 </span>
-              </a>
+              </div>
+
+              <!-- Submenu -->
+              <ul
+                [ngClass]="
+                  sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                "
+                *ngIf="isQuizManageOpen"
+                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+              >
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Danh sách bài học
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Câu hỏi của Quiz
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Kết quả làm bài
+                </li>
+              </ul>
             </li>
-            <li
-              class="hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded text-sm font-medium"
-            >
-              <a
-                href="calendar.html"
-                class="menu-item group menu-item-inactive"
+            <li class="text-sm font-medium">
+              <div
+                (click)="isQuizManageOpen = !isQuizManageOpen"
+                [ngClass]="
+                  isQuizManageOpen ? 'bg-secondary-light/50 text-secondary' : ''
+                "
+                class="cursor-pointer hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded flex items-center justify-between"
               >
-                <i class="pi pi-check" style="color: slateblue"></i>
-
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-graduation-cap !font-normal"></i>
+                  <span
+                    class="!font-normal"
+                    [ngClass]="
+                      sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                    "
+                  >
+                    Đăng ký học & chứng chỉ
+                  </span>
+                </div>
                 <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
                 >
-                  Calendar
+                  <i
+                    class="pi"
+                    [ngClass]="{
+                      'pi-angle-down': !isQuizManageOpen,
+                      'pi-angle-up': isQuizManageOpen
+                    }"
+                  ></i>
                 </span>
-              </a>
+              </div>
+
+              <!-- Submenu -->
+              <ul
+                [ngClass]="
+                  sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                "
+                *ngIf="isQuizManageOpen"
+                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+              >
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Đăng ký học
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Chứng nhận
+                </li>
+              </ul>
             </li>
-            <li
-              class="hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded text-sm font-medium"
-            >
-              <a
-                href="calendar.html"
-                class="menu-item group menu-item-inactive"
+            <li class="text-sm font-medium">
+              <div
+                (click)="isQuizManageOpen = !isQuizManageOpen"
+                [ngClass]="
+                  isQuizManageOpen ? 'bg-secondary-light/50 text-secondary' : ''
+                "
+                class="cursor-pointer hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded flex items-center justify-between"
               >
-                <i class="pi pi-check" style="color: slateblue"></i>
-
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-comments !font-normal"></i>
+                  <span
+                    class="!font-normal"
+                    [ngClass]="
+                      sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                    "
+                  >
+                    Đánh giá & phản hồi
+                  </span>
+                </div>
                 <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
                 >
-                  Calendar
+                  <i
+                    class="pi"
+                    [ngClass]="{
+                      'pi-angle-down': !isQuizManageOpen,
+                      'pi-angle-up': isQuizManageOpen
+                    }"
+                  ></i>
                 </span>
-              </a>
+              </div>
+
+              <!-- Submenu -->
+              <ul
+                [ngClass]="
+                  sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                "
+                *ngIf="isQuizManageOpen"
+                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+              >
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Đánh giá khóa học
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Bình luận bài học
+                </li>
+              </ul>
+            </li>
+            <li class="text-sm font-medium">
+              <div
+                (click)="isQuizManageOpen = !isQuizManageOpen"
+                [ngClass]="
+                  isQuizManageOpen ? 'bg-secondary-light/50 text-secondary' : ''
+                "
+                class="cursor-pointer hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded flex items-center justify-between"
+              >
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-wallet !font-normal"></i>
+                  <span
+                    class="!font-normal"
+                    [ngClass]="
+                      sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                    "
+                  >
+                    Thanh toán & khuyến mãi
+                  </span>
+                </div>
+                <span
+                  [ngClass]="
+                    sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                  "
+                >
+                  <i
+                    class="pi"
+                    [ngClass]="{
+                      'pi-angle-down': !isQuizManageOpen,
+                      'pi-angle-up': isQuizManageOpen
+                    }"
+                  ></i>
+                </span>
+              </div>
+
+              <!-- Submenu -->
+              <ul
+                [ngClass]="
+                  sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                "
+                *ngIf="isQuizManageOpen"
+                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+              >
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Lịch sử thanh toán
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Mã giảm giá
+                </li>
+              </ul>
+            </li>
+
+            <li class="text-sm font-medium">
+              <div
+                (click)="isQuizManageOpen = !isQuizManageOpen"
+                [ngClass]="
+                  isQuizManageOpen ? 'bg-secondary-light/50 text-secondary' : ''
+                "
+                class="cursor-pointer hover:bg-secondary-light/50 hover:text-secondary transition duration-200 p-2 rounded flex items-center justify-between"
+              >
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-chart-bar !font-normal"></i>
+                  <span
+                    class="!font-normal"
+                    [ngClass]="
+                      sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                    "
+                  >
+                    Tiến độ học tập
+                  </span>
+                </div>
+                <span
+                  [ngClass]="
+                    sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                  "
+                >
+                  <i
+                    class="pi"
+                    [ngClass]="{
+                      'pi-angle-down': !isQuizManageOpen,
+                      'pi-angle-up': isQuizManageOpen
+                    }"
+                  ></i>
+                </span>
+              </div>
+
+              <!-- Submenu -->
+              <ul
+                [ngClass]="
+                  sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
+                "
+                *ngIf="isQuizManageOpen"
+                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+              >
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Tiến độ người học
+                </li>
+                <li
+                  class="hover:bg-dark-light transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                >
+                  Theo dõi tiến trình học, hoàn thành quiz, chứng chỉ
+                </li>
+              </ul>
             </li>
           </ul>
 

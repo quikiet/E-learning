@@ -1,5 +1,7 @@
-<div class="relative">
-  <p class="pb-2 text-[15px]">{{ label }}</p>
+<div class="relative mb-1">
+  <p class="pb-2 text-[15px]">
+    {{ label }} <span class="text-primary" *ngIf="required">*</span>
+  </p>
   <ng-content></ng-content>
   <small
     class="ml-2 text-xs text-red-500"

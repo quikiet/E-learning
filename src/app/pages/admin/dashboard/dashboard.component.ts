@@ -13,6 +13,10 @@ export class DashboardComponent {
   dropdownOpen: boolean = false;
   isDarkMode: boolean = false; // Mặc định là light mode
   isSidebarHovered: boolean = false;
+  isUserManageOpen = false;
+  isCourseManageOpen = false;
+  isQuizManageOpen = false;
+
   toggleSidebar() {
     this.sidebarToggle = !this.sidebarToggle;
   }
