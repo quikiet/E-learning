@@ -25,4 +25,25 @@ export class AuthService {
 
     return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
   }
+
+  getCurrentAdmin(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    console.log('headers: ', headers);
+    return this.http.get(`${this.apiUrl}/admin/currentAdmin`, { headers });
+  }
+
+  getCurrentInstructor(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    console.log('headers: ', headers);
+    return this.http.get(`${this.apiUrl}/instructor/currentInstructor`, { headers });
+  }
+
+  getCurrentStudent(): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    console.log('headers: ', headers);
+    return this.http.get(`${this.apiUrl}/student/currentStudent`, { headers });
+  }
 }

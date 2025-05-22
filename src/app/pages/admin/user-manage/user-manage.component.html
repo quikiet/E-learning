@@ -1,1 +1,247 @@
-<p>user-manage works!</p>
+<p-toolbar styleClass="mb-4">
+  <ng-template #start>
+    <p-button
+      [outlined]="true"
+      icon="pi pi-filter-slash"
+      label="Clear"
+      class="mr-2"
+    />
+    <p-button
+      (click)="op.toggle($event)"
+      icon="pi pi-database"
+      label="Đã xoá"
+      severity="contrast"
+    />
+    <p-popover #op>
+      <div class="lg:w-[25rem] max-h-[20rem] overflow-auto">
+        <div class="px-2">
+          <span
+            class="font-medium text-surface-900 dark:text-surface-0 block mb-2"
+            >Khoá học đã bị xoá</span
+          >
+          <ul class="list-none p-0 m-0 flex flex-col gap-4">
+            <li>
+              <div class="flex items-center justify-between gap-2 pr-2">
+                <div class="flex items-center gap-3">
+                  <img style="width: 42px" />
+                  <div>
+                    <span class="font-medium"></span>
+                    <div class="text-sm text-muted-color"></div>
+                  </div>
+                </div>
+                <div class="flex flex-col gap-2 justify-between items-center">
+                  <a
+                    class="flex items-center gap-2 text-muted-color ml-auto text-sm text-blue-500 cursor-pointer hover:text-blue-700 hover:font-semibold"
+                  >
+                    <span class="text-xs">Khôi phục</span>
+                    <i class="pi pi-undo"></i>
+                  </a>
+                  <a
+                    class="flex items-center gap-2 text-muted-color ml-auto text-sm text-red-500 cursor-pointer hover:text-red-700 hover:font-semibold"
+                  >
+                    <span class="text-xs">Xoá vĩnh viễn</span>
+                    <i class="pi pi-trash"></i>
+                  </a>
+                </div>
+              </div>
+              <p-divider class="m-0" />
+            </li>
+
+            <li class="text-xs">Không có Khoá học nào đã bị xoá trước đó</li>
+          </ul>
+        </div>
+      </div>
+    </p-popover>
+  </ng-template>
+
+  <ng-template #end>
+    <p-button label="Xuất File" icon="pi pi-upload" severity="info" />
+  </ng-template>
+</p-toolbar>
+
+<p-table
+  class="w-full"
+  #tableUser
+  [value]="users"
+  [columns]="cols"
+  [lazy]="true"
+  (onLazyLoad)="loadUserData($event)"
+  [first]="currentPage * rows"
+  [rows]="rows"
+  [totalRecords]="totalRecords"
+  [paginator]="true"
+  [globalFilterFields]="['id', 'userid_DI', 'email']"
+  [(selection)]="selectedUsers"
+  [rowHover]="true"
+  dataKey="id"
+  currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} người dùng"
+  [showCurrentPageReport]="true"
+  [loading]="isLoading"
+>
+  <ng-template #caption>
+    <div class="flex items-center justify-between">
+      <p class="m-0 lg:text-lg font-semibold">Quản lý Khoá học</p>
+      <p-iconfield>
+        <p-inputicon styleClass="pi pi-search" />
+        <input
+          pInputText
+          type="text"
+          (input)="searchGlobal($event)"
+          [(ngModel)]="searchValue"
+          placeholder="Search..."
+        />
+      </p-iconfield>
+    </div>
+  </ng-template>
+  <ng-template #header>
+    <tr class="text-sm">
+      <th>
+        <p-tableHeaderCheckbox />
+      </th>
+      <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
+        <div class="flex items-center">
+          <p-sortIcon field="id" />
+          <span>Mã</span>
+        </div>
+      </th>
+      <th>
+        <div class="flex items-center">
+          ID Người dùng
+          <p-sortIcon field="userid_DI" />
+        </div>
+      </th>
+      <th>Email</th>
+      <th>Quốc gia</th>
+      <th>Trình độ học vấn</th>
+      <th>
+        <div class="flex items-center">
+          Năm sinh
+          <p-sortIcon field="YoB" />
+        </div>
+      </th>
+      <th>Giới tính</th>
+      <th>
+        <div class="flex items-center">Vai trò</div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-user>
+    <tr class="text-sm" (click)="showUser(user)">
+      <td>
+        <p-tableCheckbox [value]="user" />
+      </td>
+      <td class="hidden lg:table-cell !p-0 text-center align-middle">
+        <div class="flex items-center justify-center h-full">
+          {{ user.id }}
+        </div>
+      </td>
+      <td>
+        <span [pTooltip]="user.userid_DI" tooltipPosition="right">
+          {{ cutText(user.userid_DI, 10) }}
+        </span>
+      </td>
+      <td>
+        {{ user.email }}
+      </td>
+      <td>{{ user.final_cc_cname_DI }}</td>
+      <td class="text-center align-middle">
+        {{ user.LoE_DI }}
+      </td>
+      <td>
+        {{ user.YoB }}
+      </td>
+      <td class="text-center align-middle">
+        {{ user.gender || "NaN" }}
+      </td>
+      <td>
+        <div>
+          <p-tag
+            *ngIf="user.role === 'admin'"
+            severity="danger"
+            value="Quản trị viên"
+            [rounded]="true"
+            class="!text-xs"
+          />
+          <p-tag
+            *ngIf="user.role === 'student'"
+            severity="success"
+            class="!text-xs"
+            value="Học viên"
+            [rounded]="true"
+          />
+          <p-tag
+            *ngIf="user.role === 'instructor'"
+            severity="info"
+            class="!text-xs"
+            value="Giáo viên"
+            [rounded]="true"
+          />
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-drawer
+  [(visible)]="visibleDrawer"
+  position="right"
+  [dismissible]="false"
+  (onHide)="visibleDrawer = false"
+  modal="false"
+  styleClass="!w-full lg:!w-[30rem]"
+>
+  <ng-template #header>
+    <div class="flex items-center gap-2">
+      <p-avatar [image]="user.avatar" shape="circle" />
+      <span>{{ user.userid_DI }}</span>
+      <span class="text-primary text-sm">{{ user.role }}</span>
+    </div>
+  </ng-template>
+  <ng-template #content>
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center gap-5">
+        <img
+          [src]="user.avatar"
+          [alt]="user.avatar"
+          class="block w-32 h-32 md:w-64 md:h-64 lg:h-28 lg:w-28 border rounded-md"
+          *ngIf="user.avatar"
+        />
+
+        <div class="flex h-full w-full flex-col justify-between gap-5">
+          <div class="flex items-center gap-5 justify-between w-full pr-5">
+            <div>
+              <label class="text-sm block">Họ và tên</label>
+              <span class="text-sm text-secondary">{{ user.email }}</span>
+            </div>
+            <div>
+              <label class="text-sm block">Giới tính</label>
+              <span class="text-sm text-secondary">{{ user.gender }}</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-5 justify-between w-full pr-5">
+            <div>
+              <label class="text-sm block">Địa chỉ email</label>
+              <span class="text-sm text-secondary">{{ user.email }}</span>
+            </div>
+            <div>
+              <label for="bio" class="block font-semibold mb-2">Quốc gia</label>
+              <span class="text-sm text-primary">{{
+                user.final_cc_cname_DI
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-5">
+        <div>
+          <label class="block font-semibold mb-2">Trình độ học vấn</label>
+          <span class="text-sm text-secondary">{{ user.LoE_DI }}</span>
+        </div>
+        <div>
+          <label class="block font-semibold mb-2">Năm sinh</label>
+          <span class="text-sm text-secondary">{{ user.YoB }}</span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-drawer>

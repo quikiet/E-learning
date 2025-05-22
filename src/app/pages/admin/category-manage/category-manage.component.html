@@ -1,1 +1,165 @@
-<p>category-manage works!</p>
+<p-toast />
+
+<p-toolbar styleClass="mb-4">
+  <ng-template #start>
+    <p-button
+      label="Thêm"
+      (onClick)="openNew()"
+      icon="pi pi-plus"
+      class="mr-2"
+    />
+
+    <p-button
+      [outlined]="true"
+      icon="pi pi-filter-slash"
+      label="Clear"
+      class="mr-2"
+      (click)="clear(dt)"
+    />
+  </ng-template>
+
+  <ng-template #end>
+    <p-button label="Xuất File" icon="pi pi-upload" severity="info" />
+  </ng-template>
+</p-toolbar>
+
+<p-table
+  class="w-full"
+  #tableCourse
+  [value]="categories"
+  [columns]="cols"
+  [rows]="10"
+  [paginator]="true"
+  [globalFilterFields]="['name']"
+  [(selection)]="selectedCategories"
+  [rowHover]="true"
+  dataKey="id"
+  currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} danh mục"
+  [showCurrentPageReport]="true"
+  [loading]="isLoading"
+>
+  <ng-template #caption>
+    <div class="flex items-center justify-between">
+      <p class="m-0 lg:text-lg font-semibold">Quản lý Danh mục</p>
+      <p-iconfield>
+        <p-inputicon styleClass="pi pi-search" />
+        <input
+          pInputText
+          type="text"
+          (input)="searchGlobal($event)"
+          placeholder="Tìm kiếm..."
+        />
+      </p-iconfield>
+    </div>
+  </ng-template>
+  <ng-template #header>
+    <tr class="text-sm">
+      <th>
+        <p-tableHeaderCheckbox />
+      </th>
+      <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
+        <div class="flex items-center">
+          <p-sortIcon field="id" />
+          <span>Mã</span>
+        </div>
+      </th>
+      <th>
+        <div class="flex items-center">
+          Tên
+          <p-sortIcon field="name" />
+        </div>
+      </th>
+      <th>
+        <div class="flex items-center">Hành động</div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-category>
+    <tr class="text-sm">
+      <td>
+        <p-tableCheckbox [value]="category" />
+      </td>
+      <td class="hidden lg:table-cell">
+        {{ category.id }}
+      </td>
+      <td>
+        <span [pTooltip]="category.name" tooltipPosition="right">
+          {{ category.name }}
+        </span>
+      </td>
+      <td>
+        <p-button
+          icon="pi pi-pencil"
+          class="mr-2"
+          (onClick)="editCategory(category)"
+          label="Sửa"
+          [rounded]="true"
+          [outlined]="true"
+        />
+        <!-- <p-button
+          icon="pi pi-trash"
+          severity="danger"
+          [rounded]="true"
+          [outlined]="true"
+          (onClick)="confirmDelete($event)"
+        /> -->
+        <p-confirmpopup
+          [key]="'delete-category-' + category.id"
+        ></p-confirmpopup>
+
+        <p-button
+          (onClick)="confirmDelete($event, category.id)"
+          icon="pi pi-trash"
+          label="Xoá"
+          [rounded]="true"
+          severity="danger"
+          [outlined]="true"
+        />
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  [(visible)]="categoryDialog"
+  [style]="{ width: '450px' }"
+  header="{{ !isEditting ? 'Thêm Danh mục' : 'Sửa Danh mục' }}"
+  [modal]="true"
+>
+  <ng-template #content>
+    <div>
+      <form
+        [formGroup]="categoryForm"
+        (ngSubmit)="!isEditting ? addCategory() : updateCategory()"
+      >
+        <div class="flex flex-col gap-6">
+          <app-form-element [label]="'Tên danh mục'" [required]="true">
+            <input
+              class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
+              placeholder="Kinh doanh"
+              formControlName="name"
+              type="text"
+              id="unique-input"
+            />
+          </app-form-element>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+
+  <ng-template #footer>
+    <p-button label="Huỷ bỏ" icon="pi pi-times" text (click)="hideDialog()" />
+    <p-button
+      label="{{ !isEditting ? 'Thêm' : 'Sửa' }}"
+      icon="pi pi-check"
+      styleClass="p-button-raised"
+      [disabled]="categoryForm.invalid || isLoading"
+      (click)="!isEditting ? addCategory() : updateCategory()"
+    />
+    <!-- <app-button
+        [disabled]="isLoading"
+        (click)="!isEditting ? saveAuthor() : updateAuthor()"
+        >{{ !isEditting ? "Thêm" : "Sửa" }}</app-button
+      > -->
+  </ng-template>
+</p-dialog>

@@ -16,25 +16,26 @@ import { AuthService } from '../../../services/auth.service';
 export class HeaderComponent implements OnInit {
   navBarToggle: boolean = false;
   dropdownOpen: boolean = false;
-  token: string = '';
-  user: any = {};
-
+  currentUser: any = [];
+  isLoggedIn = false;
   constructor(
     private authService: AuthService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.token = localStorage.getItem('token') ?? '';
-    this.user = JSON.parse(localStorage.getItem('user') ?? '{}');
-    this.isLoggedIn();
+    this.getCurrentUser();
   }
 
-  isLoggedIn() {
-    if (this.token && this.user.id) {
-      return true;
-    }
-    return false;
+  getCurrentUser() {
+    this.authService.getCurrentStudent().subscribe({
+      next: (res) => {
+        this.currentUser = res.user;
+        this.isLoggedIn = true;
+      }, error: (error) => {
+        console.log(error.error);
+      }
+    });
   }
 
   logOut() {
@@ -42,6 +43,7 @@ export class HeaderComponent implements OnInit {
       next: (res) => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        this.isLoggedIn = false;
         this.router.navigate(['/login']);
         console.log(res.message);
       }, error: (error) => {

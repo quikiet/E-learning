@@ -8,7 +8,6 @@ import { ProfileInfoComponent } from './components/both/profile-info/profile-inf
 import { ShoppingCartComponent } from './pages/User/shoping-cart/shoping-cart.component';
 import { CourseCardComponent } from './components/user/home/course-card/course-card.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
-import { CategoryManageComponent } from './pages/category-manage/category-manage.component';
 import { CourseManageComponent } from './pages/admin/course-manage/course-manage.component';
 import { isLoggedInGuard } from './guard/is-logged-in.guard';
 import { AdminComponent } from './pages/admin/admin/admin.component';
@@ -20,21 +19,23 @@ import { PaymentManageComponent } from './pages/admin/payment-manage/payment-man
 import { ProgressManageComponent } from './pages/admin/progress-manage/progress-manage.component';
 import { CertificateManageComponent } from './pages/admin/certificate-manage/certificate-manage.component';
 import { CouponManageComponent } from './pages/admin/coupon-manage/coupon-manage.component';
+import { CategoryManageComponent } from './pages/admin/category-manage/category-manage.component';
 
 export const routes: Routes = [
     {
         path: '', component: MainLayoutComponent,
         children: [
             { path: '', component: HomeComponent },
-            { path: 'login', component: LoginComponent },
             { path: 'product', component: CourseCardComponent },
             { path: 'course-learning', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
         ]
     },
+    { path: 'login', component: LoginComponent },
     {
         path: 'admin', component: AdminComponent,
         children: [
+            { path: 'ho-so', component: ProfileInfoComponent },
             { path: 'thong-ke', component: DashboardComponent },
             { path: 'quan-ly-nguoi-dung', component: UserManageComponent },
             { path: 'quan-ly-khoa-hoc', component: CourseManageComponent },

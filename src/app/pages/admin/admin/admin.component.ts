@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -8,7 +9,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
   sidebarToggle: boolean = false;
   dropdownOpen: boolean = false;
   isDarkMode: boolean = false; // Mặc định là light mode
@@ -20,6 +21,25 @@ export class AdminComponent {
   isReviewManageOpen = false;
   isPaymentManageOpen = false;
   isProgressManageOpen = false;
+
+  currentAdmin: any = {};
+
+  constructor(private authService: AuthService) { }
+  ngOnInit(): void {
+    this.loadCurrentAdmin();
+  }
+
+  loadCurrentAdmin() {
+    this.authService.getCurrentAdmin().subscribe({
+      next: (res) => {
+        this.currentAdmin = res.user;
+        console.log(this.currentAdmin);
+
+      }, error: (error) => {
+        console.log(error.message);
+      }
+    })
+  }
 
   toggleSidebar() {
     this.sidebarToggle = !this.sidebarToggle;

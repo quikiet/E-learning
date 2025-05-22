@@ -13,6 +13,11 @@ import { DatePicker } from 'primeng/datepicker';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButton } from 'primeng/radiobutton';
 import { Divider } from 'primeng/divider';
+import { CategoryService } from '../../../services/courses-manage/category.service';
+import { CheckboxModule } from 'primeng/checkbox';
+
+
+
 
 export interface LoginRequest {
   email: string,
@@ -26,7 +31,7 @@ interface optionSelect {
 
 @Component({
   selector: 'app-login',
-  imports: [Divider, RadioButton, FieldsetModule, DatePicker, Select, ReactiveFormsModule, CommonModule, InputIcon, IconField, InputTextModule, FormsModule, PasswordModule, FormElementComponent],
+  imports: [CheckboxModule, Divider, RadioButton, FieldsetModule, DatePicker, Select, ReactiveFormsModule, CommonModule, InputIcon, IconField, InputTextModule, FormsModule, PasswordModule, FormElementComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -40,15 +45,7 @@ export class LoginComponent implements OnInit {
     { label: 'Cải thiện học tập', value: 'Academic improvement' },
     { label: 'Lấy chứng chỉ', value: 'Certification' }
   ];
-  interests = [
-    { label: 'Lập trình', value: 'Programming' },
-    { label: 'Phân tích dữ liệu', value: 'Data Analysis' },
-    { label: 'Thiết kế đồ họa', value: 'Graphic Design' },
-    { label: 'Marketing', value: 'Marketing' },
-    { label: 'Lãnh đạo', value: 'Leadership' },
-    { label: 'Sản xuất âm nhạc', value: 'Music Production' }
-  ];
-
+  categories: any[] = [];
 
   selectedLoE: optionSelect | undefined;
   tab: string = 'login';
@@ -66,6 +63,7 @@ export class LoginComponent implements OnInit {
   isLoading = false;
   constructor(
     private authService: AuthService,
+    private categoryService: CategoryService,
     private route: Router,
     private fb: FormBuilder
   ) { }
@@ -83,7 +81,7 @@ export class LoginComponent implements OnInit {
       role: ['student', Validators.required], // mặc định là student
       // Student fields
       learning_goals: [''],
-      interests: [''],
+      interests: [[]],
     }, { validators: this.passwordMatchValidator });
     this.LoE = [
       { name: 'Không rõ', value: 'Unknown' },
@@ -98,6 +96,45 @@ export class LoginComponent implements OnInit {
       { name: 'Nữ', value: 'Female' },
       { name: 'Không muốn trả lời', value: 'Prefer not to say' },
     ];
+    this.categoryService.getCategory().subscribe({
+      next: (res) => {
+        this.categories = res;
+      },
+      error: (error) => {
+        alert('Không thể tải danh mục' + error.message);
+      }
+    });
+
+  }
+  onSubmitRegister() {
+    this.isLoading = true;
+    if (this.registerForm.valid) {
+      const data = {
+        ...this.registerForm.value,
+        LoE_DI: this.registerForm.value.LoE_DI?.value || '',
+        gender: this.registerForm.value.gender?.value || '',
+        YoB: this.registerForm.value.YoB ? new Date(this.registerForm.value.YoB).getFullYear() : null,
+        interests: this.registerForm.value.interests?.map((i: any) => i.value) || [],
+        password_confirmation: this.registerForm.value.password_confirmation,
+      };
+      console.log(data);
+
+      this.authService.register(data).subscribe({
+        next: (res) => {
+          this.tab = 'login';
+          alert('Đăng ký thành công');
+          this.isLoading = false;
+        }, error: () => {
+          this.isLoading = false;
+          alert('Đăng ký thất bại');
+        }, complete: () => {
+          this.isLoading = false;
+          this.registerForm.reset();
+        }
+      });
+    } else {
+      this.registerForm.markAllAsTouched();
+    }
   }
 
   passwordMatchValidator(group: AbstractControl) {
@@ -125,34 +162,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onSubmitRegister() {
-    this.isLoading = true;
-    if (this.registerForm.valid) {
-      const data = {
-        ...this.registerForm.value,
-        LoE_DI: this.registerForm.value.LoE_DI?.value || '',
-        gender: this.registerForm.value.gender?.value || '',
-        YoB: this.registerForm.value.YoB ? new Date(this.registerForm.value.YoB).getFullYear() : null,
-        password_confirmation: this.registerForm.value.password_confirmation,
-      };
-      console.log(data);
 
-      this.authService.register(data).subscribe({
-        next: (res) => {
-          this.tab = 'login';
-          alert('Đăng ký thành công');
-          this.isLoading = false;
-        }, error: () => {
-          this.isLoading = false;
-          alert('Đăng ký thất bại');
-        }, complete: () => {
-          this.isLoading = false;
-          this.registerForm.reset();
-        }
-      });
-    } else {
-      this.registerForm.markAllAsTouched();
-    }
-  }
 
 }

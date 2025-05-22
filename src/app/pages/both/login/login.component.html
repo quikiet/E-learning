@@ -162,21 +162,17 @@
                 </app-form-element>
                 <p-divider />
 
-                <app-form-element [label]="'Lĩnh vực quan tâm'">
-                  <div class="flex flex-wrap gap-4">
-                    <div
-                      class="flex items-center"
-                      *ngFor="let interest of interests; let i = index"
-                    >
-                      <p-radiobutton
-                        [name]="'interests'"
-                        [inputId]="'interest' + i"
-                        [value]="interest.value"
-                        formControlName="interests"
+                <app-form-element [label]="'Danh mục bạn quan tâm'">
+                  <div class="flex flex-wrap gap-3">
+                    <div *ngFor="let cat of categories">
+                      <p-checkbox
+                        [inputId]="'cat' + cat.id"
+                        [value]="cat.id"
+                        formControlName="category_ids"
                       />
-                      <label class="ml-2 text-sm" [for]="'interest' + i">{{
-                        interest.label
-                      }}</label>
+                      <label for="{{ 'cat' + cat.id }}" class="ml-2">
+                        {{ cat.name }}
+                      </label>
                     </div>
                   </div>
                 </app-form-element>
