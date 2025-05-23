@@ -21,8 +21,8 @@ export class AdminComponent implements OnInit {
   isReviewManageOpen = false;
   isPaymentManageOpen = false;
   isProgressManageOpen = false;
-
-  currentAdmin: any = {};
+  userRole: string = '';
+  currentUser: any = {};
 
   constructor(private authService: AuthService) { }
   ngOnInit(): void {
@@ -30,10 +30,11 @@ export class AdminComponent implements OnInit {
   }
 
   loadCurrentAdmin() {
-    this.authService.getCurrentAdmin().subscribe({
+    this.authService.getCurrentUser().subscribe({
       next: (res) => {
-        this.currentAdmin = res.user;
-        console.log(this.currentAdmin);
+        this.currentUser = res.user;
+        this.userRole = this.currentUser.role;
+        console.log(this.currentUser);
 
       }, error: (error) => {
         console.log(error.message);

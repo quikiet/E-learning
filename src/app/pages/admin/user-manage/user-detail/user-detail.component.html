@@ -1,0 +1,472 @@
+<div class="">
+  <div class="flex justify-between gap-2">
+    <h6 class="text-xl font-bold mb-4">Chi tiết Người dùng</h6>
+    <a [routerLink]="['/admin/quan-ly-nguoi-dung']"
+      ><i class="pi pi-window-minimize"></i
+    ></a>
+  </div>
+
+  <p-progressSpinner
+    *ngIf="isLoading"
+    class="flex justify-center"
+  ></p-progressSpinner>
+
+  <!-- Dữ liệu người dùng -->
+  <div *ngIf="userData && !isLoading">
+    <!-- Thông tin người dùng -->
+    <p-card header="Thông tin Người dùng" styleClass="!rounded-none mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div><strong>ID:</strong> {{ userData.user.id }}</div>
+        <div><strong>Tên người dùng:</strong> {{ userData.user.username }}</div>
+        <div>
+          <strong>UserID_DI:</strong>
+          userData.user.userid_DI
+        </div>
+        <div><strong>Email:</strong> {{ userData.user.email }}</div>
+        <div>
+          <strong>Quốc gia:</strong> {{ userData.user.final_cc_cname_DI }}
+        </div>
+        <div><strong>Trình độ học vấn:</strong> {{ userData.user.LoE_DI }}</div>
+        <div><strong>Năm sinh:</strong> {{ userData.user.YoB }}</div>
+        <div><strong>Giới tính:</strong> {{ userData.user.gender }}</div>
+        <div class="flex items-center gap-2">
+          <strong>Vai trò:</strong>
+
+          <div>
+            <p-tag
+              *ngIf="userData.user.role === 'admin'"
+              severity="danger"
+              value="Quản trị viên"
+              [rounded]="true"
+              class="!text-xs"
+            />
+            <p-tag
+              *ngIf="userData.user.role === 'student'"
+              severity="success"
+              class="!text-xs"
+              value="Học viên"
+              [rounded]="true"
+            />
+            <p-tag
+              *ngIf="userData.user.role === 'instructor'"
+              severity="info"
+              class="!text-xs"
+              value="Giáo viên"
+              [rounded]="true"
+            />
+          </div>
+        </div>
+        <div>
+          <strong>Ngày tạo: </strong>
+          <span class="text-sm">{{
+            userData.user.created_at | date : "dd/MM/yyyy HH:mm"
+          }}</span>
+        </div>
+        <div>
+          <strong>Ngày cập nhật: </strong>
+          <span class="text-sm">{{
+            userData.user.updated_at | date : "dd/MM/yyyy HH:mm"
+          }}</span>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Thông tin học viên -->
+    <p-card
+      *ngIf="userData.user.role === 'student'"
+      header="Thông tin Học viên"
+      styleClass="!rounded-none mb-4"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div><strong>ID:</strong> {{ userData.user.student.id }}</div>
+        <div>
+          <strong>Mục tiêu học tập:</strong>
+          {{ userData.user.student.learning_goals }}
+        </div>
+        <div>
+          <strong>Tổng số khóa học đã hoàn thành:</strong>
+          {{ userData.user.student.total_courses_completed }}
+        </div>
+        <div>
+          <strong>Ngày tạo:</strong>
+          {{ userData.user.student.created_at | date : "dd/MM/yyyy HH:mm" }}
+        </div>
+        <div>
+          <strong>Ngày cập nhật:</strong>
+          {{ userData.user.student.updated_at | date : "dd/MM/yyyy HH:mm" }}
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <div class="flex gap-2 items-center">
+          <strong>Danh mục quan tâm:</strong>
+          <div
+            *ngIf="userData.user.student.categories.length === 0"
+            class="text-gray-500"
+          >
+            Không có danh mục nào.
+          </div>
+          <div
+            *ngIf="userData.user.student.categories.length > 0"
+            class="flex flex-wrap gap-2"
+          >
+            <p-tag
+              *ngFor="let category of userData.user.student.categories"
+              severity="info"
+              [value]="category.name"
+              [rounded]="true"
+              class="!text-xs"
+            ></p-tag>
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Đăng ký khóa học -->
+    <p-card
+      *ngIf="userData.user.role !== 'admin'"
+      header="Đăng ký Khóa học"
+      styleClass="!rounded-none mb-4"
+    >
+      <p-table [value]="userData.user.enrollments" [rowHover]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>ID Khóa học</th>
+            <th>Trạng thái</th>
+            <th>Ngày đăng ký</th>
+            <th>Ngày hoàn thành</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-enrollment>
+          <tr>
+            <td>{{ enrollment.id }}</td>
+            <td>{{ enrollment.course_id }}</td>
+            <td>{{ enrollment.status }}</td>
+            <td>{{ enrollment.enrolled_at | date : "dd/MM/yyyy HH:mm" }}</td>
+            <td>
+              {{
+                enrollment.completed_at
+                  ? (enrollment.completed_at | date : "dd/MM/yyyy HH:mm")
+                  : "Chưa hoàn thành"
+              }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="text-center">
+              Không tìm thấy khóa học đã đăng ký.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <!-- Chứng chỉ -->
+    <p-card
+      *ngIf="userData.user.role !== 'admin'"
+      header="Chứng chỉ"
+      styleClass="!rounded-none mb-4"
+    >
+      <div *ngIf="userData.user.certificates.length === 0" class="text-center">
+        Chưa có chứng chỉ nào.
+      </div>
+      <p-table
+        *ngIf="userData.user.certificates.length > 0"
+        [value]="userData.user.certificates"
+        [rowHover]="true"
+      >
+        <!-- Thêm tiêu đề và nội dung bảng nếu cần -->
+      </p-table>
+    </p-card>
+
+    <!-- Bài đăng diễn đàn -->
+    <p-card header="Bài đăng Diễn đàn" styleClass="!rounded-none mb-4">
+      <p-table [value]="userData.user.forum_posts" [rowHover]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>ID Khóa học</th>
+            <th>Tiêu đề</th>
+            <th>Đã bị đánh dấu</th>
+            <th>Ngày tạo</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-post>
+          <tr>
+            <td>{{ post.id }}</td>
+            <td>{{ post.course_id }}</td>
+            <td>{{ post.title }}</td>
+            <td>{{ post.flagged ? "Có" : "Không" }}</td>
+            <td>{{ post.created_at | date : "dd/MM/yyyy HH:mm" }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="text-center">
+              Không tìm thấy bài đăng diễn đàn.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <!-- Thanh toán -->
+    <p-card
+      *ngIf="userData.user.role !== 'admin'"
+      header="Thanh toán"
+      styleClass="!rounded-none mb-4"
+    >
+      <div *ngIf="userData.user.payments.length === 0" class="text-center">
+        Chưa có thanh toán nào.
+      </div>
+      <p-table
+        *ngIf="userData.user.payments.length > 0"
+        [value]="userData.user.payments"
+        [rowHover]="true"
+      >
+        <!-- Thêm tiêu đề và nội dung bảng nếu cần -->
+      </p-table>
+    </p-card>
+
+    <!-- Tiến độ bài học -->
+    <p-card
+      *ngIf="userData.user.role !== 'admin'"
+      header="Tiến độ Bài học"
+      styleClass="!rounded-none mb-4"
+    >
+      <p-table [value]="userData.user.lesson_progress" [rowHover]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>ID Bài học</th>
+            <th>Trạng thái</th>
+            <th>Ngày hoàn thành</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-progress>
+          <tr>
+            <td>{{ progress.id }}</td>
+            <td>{{ progress.lesson_id }}</td>
+            <td>
+              <div>
+                <p-tag
+                  *ngIf="progress.status === 'not_started'"
+                  severity="warn"
+                  value="Chưa bắt đầu"
+                  [rounded]="true"
+                  class="!text-xs"
+                />
+                <p-tag
+                  *ngIf="progress.status === 'in_progress'"
+                  severity="info"
+                  class="!text-xs"
+                  value="Đang trong quá trình"
+                  [rounded]="true"
+                />
+                <p-tag
+                  *ngIf="progress.status === 'completed'"
+                  severity="success"
+                  class="!text-xs"
+                  value="Hoàn thành"
+                  [rounded]="true"
+                />
+              </div>
+            </td>
+            <td>
+              {{
+                progress.completed_at
+                  ? (progress.completed_at | date : "dd/MM/yyyy HH:mm")
+                  : "Chưa hoàn thành"
+              }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center">
+              Không tìm thấy tiến độ bài học.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <!-- Đánh giá -->
+    <p-card
+      *ngIf="userData.user.role !== 'admin'"
+      header="Đánh giá"
+      styleClass="!rounded-none mb-4"
+    >
+      <p-table [value]="userData.user.reviews" [rowHover]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>ID Khóa học</th>
+            <th>Xếp hạng</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-review>
+          <tr>
+            <td>{{ review.id }}</td>
+            <td>{{ review.course_id }}</td>
+            <td>{{ review.rating }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="3" class="text-center">Không tìm thấy đánh giá.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <!-- Kết quả bài kiểm tra -->
+    <p-card
+      *ngIf="userData.user.role !== 'admin'"
+      header="Kết quả Bài kiểm tra"
+      styleClass="!rounded-none mb-4"
+    >
+      <p-table [value]="userData.user.quiz_results" [rowHover]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>ID Bài kiểm tra</th>
+            <th>Điểm số</th>
+            <th>Số lần thử</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-quiz>
+          <tr>
+            <td>{{ quiz.id }}</td>
+            <td>{{ quiz.quiz_id }}</td>
+            <td>
+              <div>
+                <p-tag
+                  *ngIf="quiz.score >= 0 && quiz.score <= 50"
+                  severity="error"
+                  [value]="quiz.score"
+                  [rounded]="true"
+                  class="!text-xs"
+                />
+                <p-tag
+                  *ngIf="quiz.score > 50 && quiz.score <= 65"
+                  severity="warn"
+                  [value]="quiz.score"
+                  [rounded]="true"
+                  class="!text-xs"
+                />
+                <p-tag
+                  *ngIf="quiz.score > 65 && quiz.score < 80"
+                  severity="info"
+                  class="!text-xs"
+                  [value]="quiz.score"
+                  [rounded]="true"
+                />
+                <p-tag
+                  *ngIf="quiz.score > 80"
+                  severity="success"
+                  class="!text-xs"
+                  [value]="quiz.score"
+                  [rounded]="true"
+                />
+              </div>
+            </td>
+            <td>{{ quiz.attempt_number }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center">
+              Không tìm thấy kết quả bài kiểm tra.
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <!-- Tương tác -->
+    <p-card
+      *ngIf="userData.user.role !== 'admin'"
+      header="Tương tác"
+      styleClass="!rounded-none mb-4"
+    >
+      <p-table [value]="userData.user.interactions" [rowHover]="true">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID Khóa học</th>
+            <th>Xếp hạng</th>
+            <th>Tổng sự kiện</th>
+            <th>Ngày hoạt động</th>
+            <th>Lượt phát video</th>
+            <th>Chương đã hoàn thành</th>
+            <th>Bài đăng diễn đàn</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-interaction>
+          <tr>
+            <td>{{ interaction.course_id }}</td>
+            <td>{{ interaction.rating }}</td>
+            <td>{{ interaction.nevents }}</td>
+            <td>{{ interaction.ndays_act }}</td>
+            <td>{{ interaction.nplay_video }}</td>
+            <td>{{ interaction.nchapters }}</td>
+            <td>{{ interaction.nforum_posts }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7" class="text-center">Không tìm thấy tương tác.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+
+    <!-- Phân tích -->
+    <p-card
+      *ngIf="userData.user.role !== 'admin'"
+      header="Phân tích"
+      styleClass="!rounded-none mb-4"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <strong>Tổng số khóa học đã đăng ký:</strong>
+          {{ userData.analytics.total_courses_enrolled }}
+        </div>
+        <div>
+          <strong>Khóa học đã hoàn thành:</strong>
+          {{ userData.analytics.courses_completed }}
+        </div>
+        <div>
+          <strong>Chứng chỉ đã đạt được:</strong>
+          {{ userData.analytics.certificates_earned }}
+        </div>
+        <div>
+          <strong>Tổng số tiền thanh toán:</strong>
+          {{ userData.analytics.total_payments_made }}
+        </div>
+        <div>
+          <strong>Xếp hạng trung bình đã đưa ra:</strong>
+          {{ userData.analytics.average_rating_given }}
+        </div>
+        <div>
+          <strong>Tỷ lệ hoàn thành bài học:</strong>
+          {{ userData.analytics.lesson_completion_rate }}%
+        </div>
+        <div>
+          <strong>Điểm kiểm tra trung bình:</strong>
+          {{ userData.analytics.average_quiz_score }}
+        </div>
+        <div>
+          <strong>Tổng số bài đăng diễn đàn:</strong>
+          {{ userData.analytics.forum_engagement.total_posts }}
+        </div>
+        <div>
+          <strong>Bài đăng bị đánh dấu:</strong>
+          {{ userData.analytics.forum_engagement.flagged_posts }}
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>

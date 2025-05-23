@@ -20,6 +20,7 @@ import { ProgressManageComponent } from './pages/admin/progress-manage/progress-
 import { CertificateManageComponent } from './pages/admin/certificate-manage/certificate-manage.component';
 import { CouponManageComponent } from './pages/admin/coupon-manage/coupon-manage.component';
 import { CategoryManageComponent } from './pages/admin/category-manage/category-manage.component';
+import { UserDetailComponent } from './pages/admin/user-manage/user-detail/user-detail.component';
 
 export const routes: Routes = [
     {
@@ -38,6 +39,7 @@ export const routes: Routes = [
             { path: 'ho-so', component: ProfileInfoComponent },
             { path: 'thong-ke', component: DashboardComponent },
             { path: 'quan-ly-nguoi-dung', component: UserManageComponent },
+            { path: 'quan-ly-nguoi-dung/:id', component: UserDetailComponent },
             { path: 'quan-ly-khoa-hoc', component: CourseManageComponent },
             { path: 'quan-ly-danh-muc', component: CategoryManageComponent },
             { path: 'quan-ly-bai-hoc', component: LessonManageComponent },

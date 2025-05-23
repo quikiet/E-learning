@@ -249,6 +249,13 @@
             value="Đã xoá"
             [rounded]="true"
           />
+          <p-tag
+            *ngIf="author.status === 'unavailable'"
+            severity="secondary"
+            class="!text-xs"
+            value="Đã ẩn"
+            [rounded]="true"
+          />
         </div>
       </td>
     </tr>

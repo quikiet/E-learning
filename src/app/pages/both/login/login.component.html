@@ -60,6 +60,19 @@
           >
             <app-form-element
               [required]="true"
+              [label]="'Tên người dùng'"
+              [control]="registerForm.get('username')!"
+            >
+              <input
+                pInputText
+                class="!rounded-full w-full"
+                placeholder="Tên người dùng"
+                formControlName="username"
+              />
+            </app-form-element>
+
+            <app-form-element
+              [required]="true"
               [label]="'Địa chỉ Email'"
               [control]="registerForm.get('email')!"
             >

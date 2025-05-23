@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="flex items-center gap-5">
-      <div class="flex items-center gap-2" *ngIf="!isLoggedIn">
+      <div class="flex items-center gap-2" *ngIf="!userRole">
         <i class="pi pi-user !text-xs text-primary"></i>
         <a href="/login" class="text-sm"> Login/Register </a>
       </div>
@@ -394,7 +394,7 @@
                   </div>
                 </div>
               </div>
-              <div class="relative" *ngIf="isLoggedIn">
+              <div class="relative" *ngIf="userRole">
                 <a
                   (click)="toggleDropdown()"
                   class="flex items-center text-gray-700 cursor-pointer"
@@ -444,9 +444,9 @@
                         Edit profile
                       </a>
                     </li>
-                    <li>
+                    <li *ngIf="userRole === 'admin'">
                       <a
-                        href="chat.html"
+                        routerLink="/admin"
                         class="group flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
                       >
                         <svg
@@ -464,7 +464,7 @@
                             fill=""
                           ></path>
                         </svg>
-                        Account settings
+                        Trang quản trị
                       </a>
                     </li>
                     <li>

@@ -14,26 +14,18 @@ export class CategoryService {
   }
 
   createCategory(data: any): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post<any>(`${this.apiUrl}`, data, { headers });
+    return this.http.post<any>(`${this.apiUrl}`, data, { withCredentials: true });
   }
 
   deleteCategory(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers });
+    return this.http.delete<any>(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
 
   showCategory(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post<any>(`${this.apiUrl}/${id}`, { headers });
+    return this.http.post<any>(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
 
   updateCategory(id: number, data: any): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.put<any>(`${this.apiUrl}/${id}`, data, { headers });
+    return this.http.put<any>(`${this.apiUrl}/${id}`, data, { withCredentials: true });
   }
 }

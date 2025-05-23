@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Carousel } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { Tag } from 'primeng/tag';
+import { CategoryService } from '../../../services/courses-manage/category.service';
 @Component({
   selector: 'app-category-carousel',
   imports: [Carousel, ButtonModule, Tag],
@@ -9,20 +10,13 @@ import { Tag } from 'primeng/tag';
   styleUrl: './category-carousel.component.css'
 })
 export class CategoryCarouselComponent implements OnInit {
-  lists: any[] = [
-    { 'value': 1, },
-    { 'value': 2, },
-    { 'value': 3, },
-    { 'value': 4, },
-    { 'value': 5, },
-    { 'value': 6, },
-    { 'value': 7, },
-    { 'value': 8, },
-  ];
+  lists: any[] = [];
 
   responsiveOptions: any[] | undefined;
-
+  constructor(private categoryService: CategoryService) { }
   ngOnInit() {
+    this.loadCategory();
+
     this.responsiveOptions = [
       {
         breakpoint: '1400px',
@@ -46,4 +40,15 @@ export class CategoryCarouselComponent implements OnInit {
       }
     ]
   }
+
+  loadCategory() {
+    this.categoryService.getCategory().subscribe({
+      next: (res) => {
+        this.lists = res
+      }, error: (err) => {
+        console.log(err.message);
+      }
+    })
+  }
+
 }

@@ -13,4 +13,12 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     gsap.registerPlugin(ScrollTrigger);
   }
+
+  cutText(text: string, wordLimit: number = 50): string {
+    if (!text) return '';
+    const words = text.split('');
+    if (words.length <= wordLimit) return text;
+
+    return words.slice(0, wordLimit).join('') + '...';
+  }
 }

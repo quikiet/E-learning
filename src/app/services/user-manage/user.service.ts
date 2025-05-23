@@ -10,14 +10,14 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getAllUser(page: number = 1, perPage: number = 20): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any>(`${this.apiUrl}/users?page=${page}&perPage=${perPage}`, { headers });
+    return this.http.get<any>(`${this.apiUrl}/users?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
 
   showUser(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any>(`${this.apiUrl}/users/${id}`, { headers });
+    return this.http.get<any>(`${this.apiUrl}/users/${id}`, { withCredentials: true });
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/users/${id}`, { withCredentials: true });
   }
 }

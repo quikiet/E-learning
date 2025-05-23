@@ -15,35 +15,15 @@ export class AuthService {
   }
 
   login(data: LoginRequest): Observable<{ message: string; token: string; user: any }> {
-    return this.http.post<{ message: string; token: string; user: any }>(`${this.apiUrl}/login`, data);
+    return this.http.post<{ message: string; token: string; user: any }>(`${this.apiUrl}/login`, data, { withCredentials: true });
   }
 
   logout(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    console.log('headers: ', headers);
-
-    return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
+    return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true });
   }
 
-  getCurrentAdmin(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    console.log('headers: ', headers);
-    return this.http.get(`${this.apiUrl}/admin/currentAdmin`, { headers });
-  }
+  getCurrentUser(): Observable<any> {
 
-  getCurrentInstructor(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    console.log('headers: ', headers);
-    return this.http.get(`${this.apiUrl}/instructor/currentInstructor`, { headers });
-  }
-
-  getCurrentStudent(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    console.log('headers: ', headers);
-    return this.http.get(`${this.apiUrl}/student/currentStudent`, { headers });
+    return this.http.get(`${this.apiUrl}/currentStudent `, { withCredentials: true });
   }
 }

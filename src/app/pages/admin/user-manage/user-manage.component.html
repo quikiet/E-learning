@@ -95,10 +95,7 @@
   </ng-template>
   <ng-template #header>
     <tr class="text-sm">
-      <th>
-        <p-tableHeaderCheckbox />
-      </th>
-      <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
+      <th pSortableColumn="id" class="hidden lg:table-cell">
         <div class="flex items-center">
           <p-sortIcon field="id" />
           <span>Mã</span>
@@ -127,10 +124,7 @@
   </ng-template>
   <ng-template #body let-user>
     <tr class="text-sm" (click)="showUser(user)">
-      <td>
-        <p-tableCheckbox [value]="user" />
-      </td>
-      <td class="hidden lg:table-cell !p-0 text-center align-middle">
+      <td class="hidden lg:table-cell">
         <div class="flex items-center justify-center h-full">
           {{ user.id }}
         </div>
@@ -143,7 +137,11 @@
       <td>
         {{ user.email }}
       </td>
-      <td>{{ user.final_cc_cname_DI }}</td>
+      <td>
+        <span [pTooltip]="user.final_cc_cname_DI" tooltipPosition="right">{{
+          cutText(user.final_cc_cname_DI, 10)
+        }}</span>
+      </td>
       <td class="text-center align-middle">
         {{ user.LoE_DI }}
       </td>
@@ -192,9 +190,41 @@
 >
   <ng-template #header>
     <div class="flex items-center gap-2">
-      <p-avatar [image]="user.avatar" shape="circle" />
+      <p-avatar
+        [image]="
+          user.avatar ||
+          'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
+        "
+        shape="circle"
+      />
       <span>{{ user.userid_DI }}</span>
-      <span class="text-primary text-sm">{{ user.role }}</span>
+      <span>
+        <div>
+          <p-tag
+            *ngIf="user.role === 'admin'"
+            severity="danger"
+            value="Quản trị viên"
+            [rounded]="true"
+            class="!text-xs"
+          />
+          <p-tag
+            *ngIf="user.role === 'student'"
+            severity="success"
+            class="!text-xs"
+            value="Học viên"
+            [rounded]="true"
+          />
+          <p-tag
+            *ngIf="user.role === 'instructor'"
+            severity="info"
+            class="!text-xs"
+            value="Giáo viên"
+            [rounded]="true"
+          /></div
+      ></span>
+      <a [routerLink]="[user.id]"
+        ><i class="pi pi-window-maximize text-sm ml-2"></i
+      ></a>
     </div>
   </ng-template>
   <ng-template #content>
@@ -232,6 +262,14 @@
           </div>
         </div>
       </div>
+      <div>
+        <strong>Ngày tạo:</strong>
+        {{ user.created_at | date : "dd/MM/yyyy HH:mm" }}
+      </div>
+      <div>
+        <strong>Ngày cập nhật:</strong>
+        {{ user.updated_at | date : "dd/MM/yyyy HH:mm" }}
+      </div>
       <div class="flex flex-wrap gap-5">
         <div>
           <label class="block font-semibold mb-2">Trình độ học vấn</label>
@@ -244,4 +282,15 @@
       </div>
     </div>
   </ng-template>
+  <ng-template #footer>
+    <div class="flex justify-center">
+      <p-button
+        (onClick)="deleteUser(user.id)"
+        label="Xoá người dùng"
+        icon="pi pi-trash"
+        severity="danger"
+      />
+    </div>
+  </ng-template>
 </p-drawer>
+<p-toast />

@@ -1,0 +1,12 @@
+/* user-detail.component.css */
+.p-card {
+    margin-bottom: 1rem;
+}
+
+.p-table {
+    width: 100%;
+}
+
+.grid {
+    display: grid;
+}

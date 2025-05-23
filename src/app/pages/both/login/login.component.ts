@@ -70,6 +70,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
+      username: ['', [Validators.required, Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password_confirmation: ['', Validators.required],
@@ -77,11 +78,9 @@ export class LoginComponent implements OnInit {
       LoE_DI: ['', Validators.maxLength(50)],
       YoB: [null, [Validators.min(1900), Validators.max(this.currentYear - 13)]],
       gender: [''],
-      // gender: ['', [Validators.required, Validators.pattern(/^(Male|Female|Prefer not to say)$/)]],
       role: ['student', Validators.required], // mặc định là student
-      // Student fields
       learning_goals: [''],
-      interests: [[]],
+      category_ids: [[]],
     }, { validators: this.passwordMatchValidator });
     this.LoE = [
       { name: 'Không rõ', value: 'Unknown' },
@@ -114,26 +113,28 @@ export class LoginComponent implements OnInit {
         LoE_DI: this.registerForm.value.LoE_DI?.value || '',
         gender: this.registerForm.value.gender?.value || '',
         YoB: this.registerForm.value.YoB ? new Date(this.registerForm.value.YoB).getFullYear() : null,
-        interests: this.registerForm.value.interests?.map((i: any) => i.value) || [],
+        category_ids: this.registerForm.value.category_ids || [],
         password_confirmation: this.registerForm.value.password_confirmation,
       };
       console.log(data);
 
       this.authService.register(data).subscribe({
-        next: (res) => {
+        next: () => {
           this.tab = 'login';
           alert('Đăng ký thành công');
           this.isLoading = false;
-        }, error: () => {
-          this.isLoading = false;
+        }, error: (err) => {
+          console.error('Registration Error:', err);
           alert('Đăng ký thất bại');
-        }, complete: () => {
           this.isLoading = false;
+        }, complete: () => {
           this.registerForm.reset();
+          this.isLoading = false;
         }
       });
     } else {
       this.registerForm.markAllAsTouched();
+      this.isLoading = false;
     }
   }
 
@@ -149,12 +150,11 @@ export class LoginComponent implements OnInit {
         next: (res) => {
           // console.log('Form submitted:', this.loginForm.value);
           // console.log(res.message);
-          localStorage.setItem('token', res.token);
           localStorage.setItem('user', JSON.stringify(res.user));
           console.log('Đăng nhập thành công!');
           this.route.navigate(['/']);
-        }, error: () => {
-          console.log('Đăng nhập thất bại!');
+        }, error: (err) => {
+          console.log('Đăng nhập thất bại!: ' + err.message);
         }
       });
     } else {

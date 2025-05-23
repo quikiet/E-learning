@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   navBarToggle: boolean = false;
   dropdownOpen: boolean = false;
   currentUser: any = [];
-  isLoggedIn = false;
+  userRole: string = '';
   constructor(
     private authService: AuthService,
     private router: Router
@@ -28,10 +28,10 @@ export class HeaderComponent implements OnInit {
   }
 
   getCurrentUser() {
-    this.authService.getCurrentStudent().subscribe({
+    this.authService.getCurrentUser().subscribe({
       next: (res) => {
         this.currentUser = res.user;
-        this.isLoggedIn = true;
+        this.userRole = this.currentUser.role;
       }, error: (error) => {
         console.log(error.error);
       }
@@ -41,9 +41,7 @@ export class HeaderComponent implements OnInit {
   logOut() {
     this.authService.logout().subscribe({
       next: (res) => {
-        localStorage.removeItem('token');
         localStorage.removeItem('user');
-        this.isLoggedIn = false;
         this.router.navigate(['/login']);
         console.log(res.message);
       }, error: (error) => {

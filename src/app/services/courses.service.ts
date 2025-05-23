@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -6,11 +6,16 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CoursesService {
-  private apiUrl = 'http://localhost:8000/api/courses';
+  private apiUrl = 'http://localhost:8000/api';
   constructor(private http: HttpClient) { }
 
   getCourses(page: number = 1, perPage: number = 10): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}?page=${page}&perPage=${perPage}`);
+    return this.http.get<any>(`${this.apiUrl}/courses?page=${page}&perPage=${perPage}`);
+  }
+
+  getAllCourses(page: number = 1, perPage: number = 10): Observable<any> {
+
+    return this.http.get<any>(`${this.apiUrl}/admin/courses?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
 
 }

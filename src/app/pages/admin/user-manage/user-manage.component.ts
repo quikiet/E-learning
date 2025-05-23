@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Ripple } from 'primeng/ripple';
 import { Button, ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -31,6 +30,11 @@ import { CoursesService } from '../../../services/courses.service';
 import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
 import { Tag } from 'primeng/tag';
 import { UserService } from '../../../services/user-manage/user.service';
+import { RouterLink } from '@angular/router';
+import { Toast } from 'primeng/toast';
+
+
+
 interface Column {
   field: string;
   header: string;
@@ -43,7 +47,8 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-user-manage',
-  imports: [Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  imports: [Toast, RouterLink, Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  providers: [MessageService],
   templateUrl: './user-manage.component.html',
   styleUrl: './user-manage.component.css'
 })
@@ -105,10 +110,14 @@ export class UserManageComponent implements OnInit {
   constructor(
     private userService: UserService,
     private cd: ChangeDetectorRef,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
     this.loadUserData();
+    if (!this.user) {
+      this.visibleDrawer = false;
+    }
   }
 
   searchGlobal(event: Event) {
@@ -167,7 +176,21 @@ export class UserManageComponent implements OnInit {
     this.submitted = false;
     this.visibleDrawer = true;
     this.user = { ...user };
-    this.originalUser = { ...user };
+  }
+
+  deleteUser(userID: number) {
+    this.userService.deleteUser(userID).subscribe({
+      next: () => {
+        this.loadUserData();
+        this.visibleDrawer = false;
+        this.user = null;
+        this.messageService.add({ severity: 'success', summary: 'Thành công', detail: 'Xoá người dùng thành công', life: 3000 });
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'error', detail: err.message, life: 3000 });
+        console.log(err.message);
+      }
+    })
   }
 
 
