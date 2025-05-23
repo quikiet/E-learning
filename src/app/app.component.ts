@@ -1,24 +1,56 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { AuthService } from './services/auth.service';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnInit {
   title = 'Elearning-Website';
   ngAfterViewInit(): void {
     gsap.registerPlugin(ScrollTrigger);
   }
-
-  cutText(text: string, wordLimit: number = 50): string {
-    if (!text) return '';
-    const words = text.split('');
-    if (words.length <= wordLimit) return text;
-
-    return words.slice(0, wordLimit).join('') + '...';
+  constructor(private authService: AuthService,
+    private router: Router
+  ) { }
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        localStorage.removeItem('token_expiry');
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Logout failed', err);
+        // vẫn xoá localStorage nếu cần
+        localStorage.removeItem('token_expiry');
+        this.router.navigate(['/login']);
+      }
+    });
   }
+
+  ngOnInit(): void {
+    this.checkTokenExpiry();
+  }
+
+  checkTokenExpiry() {
+    const expiry = localStorage.getItem('token_expiry');
+    if (expiry) {
+      const now = new Date().getTime();
+      const remaining = parseInt(expiry) - now;
+
+      if (remaining <= 0) {
+        this.logout(); // tự động logout
+      } else {
+        setTimeout(() => {
+          this.logout(); // logout khi hết hạn
+        }, remaining);
+      }
+    }
+  }
+
+
 }

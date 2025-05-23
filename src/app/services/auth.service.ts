@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { LoginRequest } from '../pages/both/login/login.component';
 
 @Injectable({
@@ -15,7 +15,13 @@ export class AuthService {
   }
 
   login(data: LoginRequest): Observable<{ message: string; token: string; user: any }> {
-    return this.http.post<{ message: string; token: string; user: any }>(`${this.apiUrl}/login`, data, { withCredentials: true });
+    return this.http.post<{ message: string; token: string; user: any }>(`${this.apiUrl}/login`, data, { withCredentials: true })
+      .pipe(
+        tap(res => {
+          const expiry = new Date().getTime() + 60 * 60 * 1000; // 60 phút
+          localStorage.setItem('token_expiry', expiry.toString());
+        })
+      );
   }
 
   logout(): Observable<any> {
@@ -23,7 +29,6 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<any> {
-
     return this.http.get(`${this.apiUrl}/currentStudent `, { withCredentials: true });
   }
 }

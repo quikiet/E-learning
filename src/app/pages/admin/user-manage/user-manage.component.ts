@@ -67,7 +67,7 @@ export class UserManageComponent implements OnInit {
   isLoading = true;
   visibleDrawer: boolean = false;
   totalRecords: number = 0;
-  rows: number = 10; // số dòng mỗi trang
+  rows: number = 20; // số dòng mỗi trang
   currentPage: number = 0;
 
   @ViewChild('tableUser') dt!: Table;

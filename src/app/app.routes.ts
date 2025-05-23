@@ -21,6 +21,7 @@ import { CertificateManageComponent } from './pages/admin/certificate-manage/cer
 import { CouponManageComponent } from './pages/admin/coupon-manage/coupon-manage.component';
 import { CategoryManageComponent } from './pages/admin/category-manage/category-manage.component';
 import { UserDetailComponent } from './pages/admin/user-manage/user-detail/user-detail.component';
+import { UserDeletedComponent } from './pages/admin/user-manage/user-deleted/user-deleted.component';
 
 export const routes: Routes = [
     {
@@ -39,6 +40,7 @@ export const routes: Routes = [
             { path: 'ho-so', component: ProfileInfoComponent },
             { path: 'thong-ke', component: DashboardComponent },
             { path: 'quan-ly-nguoi-dung', component: UserManageComponent },
+            { path: 'nguoi-dung-da-xoa', component: UserDeletedComponent },
             { path: 'quan-ly-nguoi-dung/:id', component: UserDetailComponent },
             { path: 'quan-ly-khoa-hoc', component: CourseManageComponent },
             { path: 'quan-ly-danh-muc', component: CategoryManageComponent },
@@ -46,7 +48,7 @@ export const routes: Routes = [
             { path: 'quan-ly-quiz', component: QuizManageComponent },
             { path: 'quan-ly-danh-gia', component: ReviewManageComponent },
             { path: 'quan-ly-thanh-toan', component: PaymentManageComponent },
-            { path: 'quan-ly-giam-gia', component: CouponManageComponent },
+            { path: 'quan-ly-ma-giam-gia', component: CouponManageComponent },
             { path: 'quan-ly-tien-do', component: ProgressManageComponent },
             { path: 'quan-ly-chung-chi', component: CertificateManageComponent },
             { path: '**', redirectTo: 'thong-ke', pathMatch: 'full' },

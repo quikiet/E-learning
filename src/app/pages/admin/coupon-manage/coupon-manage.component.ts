@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { TableModule } from 'primeng/table';
+import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { Ripple } from 'primeng/ripple';
 import { Button, ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'primeng/select';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
@@ -30,6 +30,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CoursesService } from '../../../services/courses.service';
 import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
 import { Tag } from 'primeng/tag';
+import { CouponService } from '../../../services/coupon.service';
+import { Checkbox } from 'primeng/checkbox';
+import { DatePickerModule } from 'primeng/datepicker';
+
+
 interface Column {
   field: string;
   header: string;
@@ -42,75 +47,73 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-coupon-manage',
-  imports: [Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  imports: [ReactiveFormsModule, DatePickerModule, FormsModule, Checkbox, Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './coupon-manage.component.html',
   styleUrl: './coupon-manage.component.css'
 })
 export class CouponManageComponent implements OnInit {
-
-  courseDialog: boolean = false;
+  couponDialog: boolean = false;
   selectedFile: File | null = null;
-  courses!: any[];
-  deletedCourses: any = [];
-  originalCourse: any = {};
-  course!: any;
+  coupons: any[] = [];
+  deletedCoupons: any[] = [];
+  originalCoupon: any = {};
+  coupon: any;
   isEditting = false;
-  selectedCourses: any[] = [];
-  searchValue: string | undefined = '';
+  selectedCoupons: any[] = [];
   submitted: boolean = false;
   isLoading = true;
   visibleDrawer: boolean = false;
   totalRecords: number = 0;
-  rows: number = 10; // số dòng mỗi trang
+  rows: number = 10; // Số dòng mỗi trang
   currentPage: number = 0;
-  @ViewChild('tableCourse') dt!: Table;
+  @ViewChild('tableCoupon') dt!: Table;
   cols!: Column[];
   exportColumns!: ExportColumn[];
-
-  courseForm = new FormGroup({
+  minDate: Date | undefined;
+  couponForm = new FormGroup({
     id: new FormControl(''),
-    course_name: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-    university: new FormControl('', [Validators.maxLength(255)]),
-    difficulty_level: new FormControl('', [Validators.maxLength(50)]),
-    course_rating: new FormControl(0, [Validators.min(0), Validators.max(5)]),
-    course_url: new FormControl(''),
-    course_description: new FormControl(''),
-    price: new FormControl(0),
-    status: new FormControl('pending'),
+    code: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    discount_type: new FormControl('', [Validators.required]),
+    discount_value: new FormControl(0, [Validators.required, Validators.min(0)]),
+    min_order: new FormControl(null, [Validators.min(0)]),
+    start_date: new FormControl(null),
+    end_date: new FormControl(null),
+    usage_limit: new FormControl(null, [Validators.min(1)]),
+    used_count: new FormControl(0, [Validators.min(0)]),
+    is_active: new FormControl(true),
   });
 
   constructor(
-    private courseService: CoursesService,
+    private couponService: CouponService, // Đổi từ CoursesService sang CouponService
     private cd: ChangeDetectorRef,
+    private fb: FormBuilder,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
-    this.loadCourseData();
-  }
-
-  searchGlobal(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    this.searchValue = value;
-    this.dt.reset();
+    this.loadCouponData();
+    this.minDate = new Date();
   }
 
   clear(table: Table) {
     table.clear();
-    this.searchValue = ''
   }
 
   exportCSV() {
     this.dt.exportCSV();
   }
 
-  loadCourseData(event?: any) {
+  loadCouponData(event?: TableLazyLoadEvent) {
+    this.isLoading = true;
+
     const first = event?.first ?? 0;
-    const rows = event?.rows ?? this.rows ?? 10;
+    const rows = event?.rows ?? this.rows;
     const page = Math.floor(first / rows) + 1;
-    this.courseService.getCourses(page, rows
-    ).subscribe({
+
+    this.couponService.getCoupon().subscribe({
       next: (res) => {
-        this.courses = res.data;
+        this.coupons = res.data;
         this.totalRecords = res.total;
         this.rows = res.per_page;
         this.currentPage = res.current_page - 1;
@@ -119,21 +122,30 @@ export class CouponManageComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Lỗi tải dữ liệu', err);
+        console.error('Lỗi tải dữ liệu coupon', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: err.message || 'Không thể tải danh sách coupon',
+          life: 3000
+        });
         this.isLoading = false;
       }
     });
+
     this.cols = [
       { field: 'id', header: 'Mã' },
-      { field: 'course_name', header: 'Tên' },
-      { field: 'university', header: 'Trường' },
-      { field: 'difficulty_level', header: 'Độ khó' },
-      { field: 'course_rating', header: 'Đánh giá' },
-      { field: 'course_url', header: 'Đánh giá' },
-      { field: 'course_description', header: 'Mô tả' },
-      { field: 'price', header: 'Giá' },
-      { field: 'status', header: 'Trạng thái' },
+      { field: 'code', header: 'Mã giảm giá' },
+      { field: 'discount_type', header: 'Loại giảm giá' },
+      { field: 'discount_value', header: 'Giá trị giảm' },
+      { field: 'min_order', header: 'Đơn tối thiểu' },
+      { field: 'start_date', header: 'Ngày bắt đầu' },
+      { field: 'end_date', header: 'Ngày kết thúc' },
+      { field: 'usage_limit', header: 'Giới hạn sử dụng' },
+      { field: 'used_count', header: 'Số lần đã dùng' },
+      { field: 'is_active', header: 'Trạng thái' },
     ];
+
     this.exportColumns = this.cols.map((col) => ({
       title: col.header,
       dataKey: col.field
@@ -141,35 +153,166 @@ export class CouponManageComponent implements OnInit {
   }
 
   openNew() {
-    this.course = {};
+    this.coupon = {};
+    this.couponForm.reset();
     this.submitted = false;
-    this.courseDialog = true;
+    this.couponDialog = true;
+    this.isEditting = false;
   }
 
   hideDialog() {
-    this.courseDialog = false;
+    this.couponDialog = false;
     this.submitted = false;
     this.isLoading = false;
   }
 
-  addCourse() {
-    if (this.courseForm.valid) {
-      console.log('Form submmitted: ', this.courseForm.value);
+  addCoupon() {
+    this.submitted = true;
+    if (this.couponForm.valid) {
+      this.isLoading = true;
+      const couponData = this.couponForm.value;
+
+      // Chuyển đổi ngày thành định dạng YYYY-MM-DD trước khi gửi API
+      const formattedData = {
+        ...couponData,
+        start_date: couponData.start_date ? this.formatDate(couponData.start_date) : null,
+        end_date: couponData.end_date ? this.formatDate(couponData.end_date) : null,
+        used_count: couponData.used_count ? couponData.used_count : 0,
+        is_active: couponData.is_active ? couponData.is_active : false
+      };
+
+      console.log('Coupon Data (Add):', formattedData); // Log để kiểm tra
+
+      this.couponService.createCoupon(formattedData).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: 'Thêm mã giảm giá thành công',
+            life: 3000
+          });
+          this.loadCouponData();
+          this.hideDialog();
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: err.message || 'Không thể thêm mã giảm giá',
+            life: 3000
+          });
+          this.isLoading = false;
+        }
+      });
     } else {
-      this.courseForm.markAllAsTouched();
+      this.couponForm.markAllAsTouched();
     }
   }
 
-  updateCourse() {
+  updateCoupon() {
+    this.submitted = true;
+    if (this.couponForm.valid) {
+      this.isLoading = true;
+      const couponData = this.couponForm.value;
 
+      // Chuyển đổi ngày thành định dạng YYYY-MM-DD trước khi gửi API
+      const formattedData = {
+        ...couponData,
+        start_date: couponData.start_date ? this.formatDate(couponData.start_date) : null,
+        end_date: couponData.end_date ? this.formatDate(couponData.end_date) : null
+      };
+
+      console.log('Coupon Data (Update):', formattedData); // Log để kiểm tra
+
+      this.couponService.updateCoupon(this.coupon.id, formattedData).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: 'Cập nhật mã giảm giá thành công',
+            life: 3000
+          });
+          this.loadCouponData();
+          this.hideDialog();
+          this.isEditting = false;
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: err.message || 'Không thể cập nhật mã giảm giá',
+            life: 3000
+          });
+          this.isEditting = false;
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.couponForm.markAllAsTouched();
+    }
   }
 
+  editCoupon(coupon: any) {
+    this.coupon = { ...coupon };
+
+    // Chuyển đổi start_date và end_date thành đối tượng Date
+    const updatedCoupon = {
+      ...coupon,
+      start_date: coupon.start_date ? new Date(coupon.start_date) : null,
+      end_date: coupon.end_date ? new Date(coupon.end_date) : null
+    };
+
+    this.couponForm.patchValue(updatedCoupon);
+    this.couponDialog = true;
+    this.isEditting = true;
+  }
+
+  deleteCoupon(couponId: number) {
+    this.isLoading = true;
+    this.couponService.deleteCoupon(couponId).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thành công',
+          detail: 'Xóa mã giảm giá thành công',
+          life: 3000
+        });
+        this.loadCouponData();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: err.message || 'Không thể xóa mã giảm giá',
+          life: 3000
+        });
+        this.isLoading = false;
+      }
+    });
+  }
 
   cutText(text: string, wordLimit: number = 50): string {
     if (!text) return '';
     const words = text.split(' ');
     if (words.length <= wordLimit) return text;
-
     return words.slice(0, wordLimit).join(' ') + '...';
+  }
+
+  formatDate(date: Date | string): string | null {
+    if (!date) return null;
+
+    let dateObj: Date;
+    if (typeof date === 'string') {
+      dateObj = new Date(date);
+    } else {
+      dateObj = date;
+    }
+
+    if (isNaN(dateObj.getTime())) return null; // Kiểm tra nếu ngày không hợp lệ
+
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }
