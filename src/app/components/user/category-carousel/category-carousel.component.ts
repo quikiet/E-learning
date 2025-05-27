@@ -3,9 +3,10 @@ import { Carousel } from 'primeng/carousel';
 import { ButtonModule } from 'primeng/button';
 import { Tag } from 'primeng/tag';
 import { CategoryService } from '../../../services/courses-manage/category.service';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-category-carousel',
-  imports: [Carousel, ButtonModule, Tag],
+  imports: [RouterLink, Carousel, ButtonModule, Tag],
   templateUrl: './category-carousel.component.html',
   styleUrl: './category-carousel.component.css'
 })
@@ -25,12 +26,12 @@ export class CategoryCarouselComponent implements OnInit {
       },
       {
         breakpoint: '1199px',
-        numVisible: 3,
+        numVisible: 5,
         numScroll: 1
       },
       {
         breakpoint: '767px',
-        numVisible: 2,
+        numVisible: 3,
         numScroll: 1
       },
       {

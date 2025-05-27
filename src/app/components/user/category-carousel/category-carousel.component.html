@@ -12,9 +12,11 @@
     >
       <ng-template let-list #item>
         <div
+          [routerLink]="['/khoa-hoc']"
+          [queryParams]="{ categories: list.id }"
           class="cursor-pointer border hover:bg-surface-100 transition-all border-surface-300 m-2 p-4 text-center duration-300"
         >
-          <a href="#" class="font-medium text-center w-full"
+          <a class="font-medium text-center w-full"
             ><span class="select-none">{{ list.name }}</span></a
           >
         </div>
