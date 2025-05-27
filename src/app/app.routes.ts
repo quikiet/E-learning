@@ -22,6 +22,7 @@ import { CouponManageComponent } from './pages/admin/coupon-manage/coupon-manage
 import { CategoryManageComponent } from './pages/admin/category-manage/category-manage.component';
 import { UserDetailComponent } from './pages/admin/user-manage/user-detail/user-detail.component';
 import { UserDeletedComponent } from './pages/admin/user-manage/user-deleted/user-deleted.component';
+import { CourseSearchComponent } from './pages/User/course-search/course-search.component';
 
 export const routes: Routes = [
     {
@@ -31,6 +32,7 @@ export const routes: Routes = [
             { path: 'product', component: CourseCardComponent },
             { path: 'course-learning', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
+            { path: 'khoa-hoc', component: CourseSearchComponent },
         ]
     },
     { path: 'login', component: LoginComponent },

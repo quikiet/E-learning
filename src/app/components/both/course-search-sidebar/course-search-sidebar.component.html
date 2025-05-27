@@ -1,0 +1,113 @@
+<!-- course-search-sidebar.component.html -->
+<div class="p-4 h-full">
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    <!-- Sắp xếp -->
+    <div class="px-5">
+      <label class="block mb-1 font-semibold">Sắp xếp</label>
+      <p-dropdown
+        class="w-full"
+        [options]="sortOptions"
+        formControlName="sort"
+        placeholder="Chọn cách sắp xếp"
+      ></p-dropdown>
+    </div>
+    <p-divider></p-divider>
+    <!-- Từ khóa -->
+    <div class="px-5">
+      <label class="block mb-1 font-semibold">Từ khóa</label>
+      <input
+        pInputText
+        class="w-full"
+        placeholder="Tìm theo tên, mô tả, kỹ năng..."
+        formControlName="keyword"
+      />
+    </div>
+    <p-divider></p-divider>
+
+    <p-accordion [value]="['0']" [multiple]="true">
+      <p-accordion-panel value="0">
+        <p-accordion-header class="!bg-[#F8F8F8]">Danh mục</p-accordion-header>
+        <p-accordion-content>
+          <div class="flex flex-wrap gap-3">
+            <div *ngFor="let cat of categories">
+              <p-checkbox
+                [inputId]="'cat' + cat.id"
+                [value]="cat.id"
+                formControlName="categories"
+              />
+              <label [for]="'cat' + cat.id" class="ml-2">
+                {{ cat.name }}
+              </label>
+            </div>
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="1">
+        <p-accordion-header class="!bg-[#F8F8F8]">Độ khó</p-accordion-header>
+        <p-accordion-content>
+          <div class="flex flex-wrap gap-4">
+            <div
+              class="flex items-center"
+              *ngFor="let difficult of difficultyOptions; let i = index"
+            >
+              <p-radiobutton
+                [name]="'difficultyOptions'"
+                [inputId]="'difficult' + i"
+                [value]="difficult.value"
+                formControlName="difficulty"
+              />
+              <label class="ml-2 text-sm" [for]="'difficult' + i">{{
+                difficult.label
+              }}</label>
+            </div>
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="2">
+        <p-accordion-header class="!bg-[#F8F8F8]"
+          >Đánh giá tối thiểu</p-accordion-header
+        >
+        <p-accordion-content>
+          <p-slider
+            formControlName="min_rating"
+            [min]="0"
+            [max]="5"
+            [step]="0.5"
+          ></p-slider>
+          <div class="text-center mt-2">
+            {{ searchForm.get("min_rating")?.value }}
+          </div>
+        </p-accordion-content>
+      </p-accordion-panel>
+      <p-accordion-panel value="3">
+        <p-accordion-header class="!bg-[#F8F8F8]">Giá</p-accordion-header>
+        <p-accordion-content>
+          <div class="flex gap-2">
+            <input
+              pInputText
+              type="number"
+              class="w-full"
+              placeholder="Từ"
+              formControlName="min_price"
+            />
+            <input
+              pInputText
+              type="number"
+              class="w-full"
+              placeholder="Đến"
+              formControlName="max_price"
+            /></div
+        ></p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>
+
+    <!-- Nút đặt lại -->
+    <button
+      pButton
+      type="button"
+      label="Đặt lại bộ lọc"
+      class="bg-secondary w-full mt-4"
+      (click)="resetFilters()"
+    ></button>
+  </form>
+</div>

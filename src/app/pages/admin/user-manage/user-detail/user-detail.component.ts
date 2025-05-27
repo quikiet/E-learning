@@ -7,7 +7,6 @@ import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { Tag } from 'primeng/tag';
-import { Tooltip } from 'primeng/tooltip';
 
 
 
@@ -40,7 +39,7 @@ interface UserData {
 }
 @Component({
   selector: 'app-user-detail',
-  imports: [Tooltip, Tag, ProgressSpinnerModule, MessageModule, TableModule, CardModule, CommonModule, RouterLink],
+  imports: [Tag, ProgressSpinnerModule, MessageModule, TableModule, CardModule, CommonModule, RouterLink],
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.css'
 })

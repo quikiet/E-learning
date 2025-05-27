@@ -1,13 +1,10 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table, TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { UserService } from '../../../../services/user-manage/user.service';
 import { Toast, ToastModule } from 'primeng/toast';
-import { ProgressSpinner } from 'primeng/progressspinner';
-import { IconField, IconFieldModule } from 'primeng/iconfield';
-import { Button, ButtonModule } from 'primeng/button';
+import { IconFieldModule } from 'primeng/iconfield';
+import { ButtonModule } from 'primeng/button';
 import { Tag } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -20,7 +17,6 @@ import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { InputIconModule } from 'primeng/inputicon';
-import { FormElementComponent } from '../../../../components/both/form-element/form-element.component';
 
 interface Column {
   field: string;
@@ -28,7 +24,7 @@ interface Column {
 }
 @Component({
   selector: 'app-user-deleted',
-  imports: [Tag, ProgressSpinner, Toast, AvatarModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule],
+  imports: [Tag, Toast, AvatarModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule],
   providers: [MessageService],
   templateUrl: './user-deleted.component.html',
   styleUrl: './user-deleted.component.css'

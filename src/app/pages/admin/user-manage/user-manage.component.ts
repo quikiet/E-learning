@@ -27,7 +27,6 @@ import { Divider } from 'primeng/divider';
 import { LazyLoadEvent } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { CoursesService } from '../../../services/courses.service';
-import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
 import { Tag } from 'primeng/tag';
 import { UserService } from '../../../services/user-manage/user.service';
 import { RouterLink } from '@angular/router';
@@ -47,7 +46,7 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-user-manage',
-  imports: [Toast, RouterLink, Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  imports: [Toast, RouterLink, Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule],
   providers: [MessageService],
   templateUrl: './user-manage.component.html',
   styleUrl: './user-manage.component.css'

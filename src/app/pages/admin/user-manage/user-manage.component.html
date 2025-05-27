@@ -117,9 +117,9 @@
         </div>
       </th>
       <th>Giới tính</th>
-      <th>
+      <!-- <th>
         <div class="flex items-center">Vai trò</div>
-      </th>
+      </th> -->
     </tr>
   </ng-template>
   <ng-template #body let-user>
@@ -135,7 +135,46 @@
         </span>
       </td>
       <td>
-        {{ user.email }}
+        <div class="flex items-center gap-1">
+          <p-avatar
+            [image]="
+              user.avatar ||
+              'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
+            "
+            shape="circle"
+          />
+          <div>
+            <span
+              [tooltipDisabled]="user.email.lenght < 20"
+              [pTooltip]="user.email"
+              tooltipPosition="right"
+              >{{ cutText(user.email, 20) }}</span
+            >
+            <div>
+              <p-tag
+                *ngIf="user.role === 'admin'"
+                severity="danger"
+                value="Quản trị viên"
+                [rounded]="true"
+                class="!text-xs"
+              />
+              <p-tag
+                *ngIf="user.role === 'student'"
+                severity="success"
+                class="!text-xs"
+                value="Học viên"
+                [rounded]="true"
+              />
+              <p-tag
+                *ngIf="user.role === 'instructor'"
+                severity="info"
+                class="!text-xs"
+                value="Giáo viên"
+                [rounded]="true"
+              />
+            </div>
+          </div>
+        </div>
       </td>
       <td>
         <span [pTooltip]="user.final_cc_cname_DI" tooltipPosition="right">{{
@@ -151,7 +190,7 @@
       <td class="text-center align-middle">
         {{ user.gender || "NaN" }}
       </td>
-      <td>
+      <!-- <td>
         <div>
           <p-tag
             *ngIf="user.role === 'admin'"
@@ -175,7 +214,7 @@
             [rounded]="true"
           />
         </div>
-      </td>
+      </td> -->
     </tr>
   </ng-template>
 </p-table>

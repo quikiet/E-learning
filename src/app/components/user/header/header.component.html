@@ -30,7 +30,7 @@
   </div>
 </div>
 <nav
-  class="bg-white shadow-sm sticky top-0 z-[99999] transition-all duration-300 min-w-full"
+  class="bg-white shadow-sm top-0 z-[99999] transition-all duration-300 min-w-full"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div
@@ -75,7 +75,9 @@
             <div
               class="relative rounded inline-block group w-full hover:text-secondary hover:bg-secondary-light p-2 transition-all duration-300"
             >
-              <a class="overflow-hidden"> Khám phá </a>
+              <a class="overflow-hidden" [routerLink]="['khoa-hoc']">
+                Khám phá
+              </a>
               <div
                 class="lg:block hidden absolute select-none opacity-0 invisible z-50 group-hover:select-auto group-hover:visible group-hover:opacity-100 top-full transition-all duration-200 ease-out transform group-hover:translate-y-6"
               >

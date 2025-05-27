@@ -1,0 +1,135 @@
+<!-- course-search.component.html -->
+<div class="my-10 max-w-7xl mx-auto">
+  <div class="flex items-center justify-between w-full">
+    <p-button
+      class="lg:hidden"
+      (click)="visibleFilter = true"
+      icon="pi pi-arrow-right"
+    />
+    <p-drawer
+      header="Bộ lọc"
+      [(visible)]="visibleFilter"
+      styleClass="!w-full md:!w-[30rem] z-50 lg:!hidden"
+    >
+      <p>
+        <app-course-search-sidebar
+          [selectedCategories]="currentSearchParams.categories"
+          (search)="onSearch($event)"
+          (reset)="onReset()"
+        ></app-course-search-sidebar>
+      </p>
+    </p-drawer>
+    <span>Total Records: {{ totalRecords }}</span>
+  </div>
+  <div class="flex">
+    <!-- Sidebar -->
+    <div class="hidden lg:block lg:w-1/4">
+      <app-course-search-sidebar
+        [selectedCategories]="currentSearchParams.categories"
+        (search)="onSearch($event)"
+        (reset)="onReset()"
+      ></app-course-search-sidebar>
+    </div>
+
+    <!-- Nội dung chính -->
+    <div class="w-full lg:w-3/4 px-4">
+      <!-- Rest của template giữ nguyên -->
+      <p-progressSpinner
+        *ngIf="isLoading"
+        class="flex justify-center"
+      ></p-progressSpinner>
+      <p-toast></p-toast>
+
+      <!-- Danh sách khóa học dạng card -->
+      <div class="">
+        <div *ngFor="let course of courses" class="flex flex-col gap-5 my-2">
+          <div class="w-full">
+            <a class="flex gap-2 items-start" [href]="course.course_url">
+              <div class="w-1/4">
+                <img
+                  [alt]="course.course_name"
+                  class="w-full"
+                  [src]="
+                    course.image
+                      ? course.image
+                      : 'https://primefaces.org/cdn/primeng/images/card-ng.jpg'
+                  "
+                />
+              </div>
+              <div class="p-0 w-3/4">
+                <div class="flex flex-col justify-between">
+                  <div class="flex items-start justify-between w-full">
+                    <h3 class="font-semibold text-lg">
+                      {{ course.course_name }}
+                    </h3>
+                    <b class="py-1 text-xs">{{
+                      course.price
+                        | currency : "VND" : "symbol-narrow" : "1.0-0"
+                    }}</b>
+                  </div>
+                  <p class="text-sm">{{ course.course_description }}</p>
+                  <span class="text-gray-400 text-xs">{{
+                    course.instructors.name || "Tên tác giả"
+                  }}</span>
+                  <p class="text-sm text-gray-600 mb-1">
+                    Danh mục:
+                    <span
+                      class="text-xs text-secondary"
+                      *ngFor="
+                        let category of course.categories;
+                        let isLast = last
+                      "
+                    >
+                      {{ category.name }}{{ isLast ? "" : ", " }}
+                    </span>
+                  </p>
+                  <div class="flex items-center gap-1 text-xs">
+                    <span class="font-bold text-red-500">
+                      {{ course.course_rating | number : "1.1-1" }}
+                    </span>
+                    <span class="text-red-500">
+                      <span
+                        *ngFor="let star of getStarArray(course.course_rating)"
+                        >{{ star }}</span
+                      >
+                    </span>
+                    (12)
+                  </div>
+                  <span class="text-gray-400">
+                    <ul
+                      class="flex list-disc w-full items-center gap-4 text-xs"
+                    >
+                      <li class="list-none">Tổng giờ học: 10.5 giờ</li>
+                      <li>20 bài học</li>
+                      <li>{{ course.difficulty_level }}</li>
+                    </ul>
+                  </span>
+                </div>
+              </div>
+            </a>
+            <!-- <p-divider></p-divider> -->
+            <hr class="my-3 text-gray" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Không có khóa học -->
+      <div *ngIf="!isLoading && courses.length === 0" class="text-center mt-4">
+        <p>Không tìm thấy khóa học.</p>
+      </div>
+
+      <!-- Phân trang -->
+      <div
+        class="mt-4 flex justify-center"
+        *ngIf="!isLoading && totalRecords > 0"
+      >
+        <p-paginator
+          [rows]="rows"
+          [totalRecords]="totalRecords"
+          [first]="(currentPage - 1) * rows"
+          (onPageChange)="onPageChange($event)"
+        ></p-paginator>
+      </div>
+    </div>
+  </div>
+</div>

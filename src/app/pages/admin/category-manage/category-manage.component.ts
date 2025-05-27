@@ -14,22 +14,16 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
-import { FileUpload } from 'primeng/fileupload';
 import { DropdownModule } from 'primeng/dropdown';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { ProgressSpinner } from 'primeng/progressspinner';
 import { DrawerModule } from 'primeng/drawer';
 import { AvatarModule } from 'primeng/avatar';
 import { AccordionModule } from 'primeng/accordion';
 import { PopoverModule } from 'primeng/popover';
-import { Divider } from 'primeng/divider';
-import { LazyLoadEvent } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
-import { CoursesService } from '../../../services/courses.service';
 import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
-import { Tag } from 'primeng/tag';
 import { CategoryService } from '../../../services/courses-manage/category.service';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
@@ -48,7 +42,7 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-category-manage',
-  imports: [FormsModule, ConfirmPopupModule, ReactiveFormsModule, ToastModule, Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  imports: [FormsModule, ConfirmPopupModule, ReactiveFormsModule, ToastModule, TooltipModule, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
   providers: [ConfirmationService, MessageService],
   templateUrl: './category-manage.component.html',
   styleUrl: './category-manage.component.css'

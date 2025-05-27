@@ -30,6 +30,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CoursesService } from '../../../services/courses.service';
 import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
 import { Tag } from 'primeng/tag';
+import { CourseSearchSidebarComponent } from "../../../components/both/course-search-sidebar/course-search-sidebar.component";
+import { CourseSearchComponent } from "../../User/course-search/course-search.component";
 interface Column {
   field: string;
   header: string;
@@ -42,7 +44,7 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-progress-manage',
-  imports: [Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  imports: [Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent, CourseSearchSidebarComponent, CourseSearchComponent],
   templateUrl: './progress-manage.component.html',
   styleUrl: './progress-manage.component.css'
 })

@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { Ripple } from 'primeng/ripple';
-import { Button, ButtonModule } from 'primeng/button';
+import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -14,20 +13,15 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
-import { FileUpload } from 'primeng/fileupload';
 import { DropdownModule } from 'primeng/dropdown';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { ProgressSpinner } from 'primeng/progressspinner';
 import { DrawerModule } from 'primeng/drawer';
 import { AvatarModule } from 'primeng/avatar';
 import { AccordionModule } from 'primeng/accordion';
 import { PopoverModule } from 'primeng/popover';
-import { Divider } from 'primeng/divider';
-import { LazyLoadEvent } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
-import { CoursesService } from '../../../services/courses.service';
 import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
 import { Tag } from 'primeng/tag';
 import { CouponService } from '../../../services/coupon.service';
@@ -47,7 +41,7 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-coupon-manage',
-  imports: [ReactiveFormsModule, DatePickerModule, FormsModule, Checkbox, Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  imports: [ReactiveFormsModule, DatePickerModule, FormsModule, Checkbox, Tag, TooltipModule, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
   providers: [ConfirmationService, MessageService],
   templateUrl: './coupon-manage.component.html',
   styleUrl: './coupon-manage.component.css'
