@@ -7,6 +7,7 @@ import { IconField } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
+import { CategoryService } from '../../../services/courses-manage/category.service';
 @Component({
   selector: 'app-header',
   imports: [BadgeModule, RouterLink, Divider, InputIcon, IconField, InputTextModule, CommonModule],
@@ -18,13 +19,26 @@ export class HeaderComponent implements OnInit {
   dropdownOpen: boolean = false;
   currentUser: any = [];
   userRole: string = '';
+  categories: any = {};
   constructor(
     private authService: AuthService,
-    private router: Router
+    private categoryService: CategoryService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
     this.getCurrentUser();
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.categoryService.getCategory().subscribe({
+      next: (res) => {
+        this.categories = res;
+      }, error: (err) => {
+        console.log(err.message);
+      }
+    })
   }
 
   getCurrentUser() {

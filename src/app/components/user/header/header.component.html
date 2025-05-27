@@ -30,7 +30,7 @@
   </div>
 </div>
 <nav
-  class="bg-white shadow-sm top-0 z-[99999] transition-all duration-300 min-w-full"
+  class="bg-white shadow-sm top-0 z-50 transition-all duration-300 min-w-full"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div
@@ -82,25 +82,19 @@
                 class="lg:block hidden absolute select-none opacity-0 invisible z-50 group-hover:select-auto group-hover:visible group-hover:opacity-100 top-full transition-all duration-200 ease-out transform group-hover:translate-y-6"
               >
                 <div
-                  class="w-[70vw] p-4 bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-md border border-white/10 shadow-[0_0_30px_rgba(79,70,229,0.15)]"
+                  class="w-[70vw] p-2 bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-md border border-white/10 shadow-[0_0_30px_rgba(79,70,229,0.15)]"
                 >
                   <div
-                    class="flex items-center z-50 text-white min-w-fit mx-auto flex-wrap"
+                    class="flex items-center z-50 text-white min-w-fit mx-auto flex-wrap justify-around"
                   >
-                    <a class="p-2"> Kinh doanh </a>
-                    <a class="p-2"> Lập trình </a>
-                    <a class="p-2"> Thiết kế </a>
-                    <a class="p-2"> Nghiên cứu </a>
-                    <a class="p-2"> Khoa học </a>
-                    <a class="p-2"> Âm nhạc </a>
-                    <a class="p-2"> Tài chính </a>
-                    <a class="p-2"> Lập trình </a>
-                    <a class="p-2"> Thiết kế </a>
-                    <a class="p-2"> Nghiên cứu </a>
-                    <a class="p-2"> Khoa học </a>
-                    <a class="p-2"> Âm nhạc </a>
-                    <a class="p-2"> Tài chính </a>
-                    <a class="p-2"> Lập trình </a>
+                    <a
+                      class="p-3 cursor-pointer hover:bg-secondary hover:font-semibold"
+                      *ngFor="let cate of categories"
+                      [routerLink]="['/khoa-hoc']"
+                      [queryParams]="{ categories: cate.id }"
+                    >
+                      {{ cate.name }}
+                    </a>
                   </div>
 
                   <div
@@ -409,7 +403,7 @@
                 <!-- Dropdown Start -->
                 <div
                   *ngIf="dropdownOpen"
-                  class="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg"
+                  class="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg z-50"
                 >
                   <div>
                     <span class="block text-theme-sm font-medium text-gray-700">
