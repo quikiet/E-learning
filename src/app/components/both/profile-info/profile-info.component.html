@@ -1,4 +1,4 @@
-<main
+<!-- <main
   class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20 rounded-md bg-gradient-to-r from-[#f3e7e1] to-[#d9f0f0]"
 >
   <div class="mt-24 bg-white w-full h-full p-6">
@@ -157,6 +157,261 @@
         <p-skeleton width="4rem" height="2rem" />
         <p-skeleton width="4rem" height="2rem" />
       </div>
+    </div>
+  </div>
+</main> -->
+
+<main
+  class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20 rounded-md bg-gradient-to-r from-[#f3e7e1] to-[#d9f0f0]"
+>
+  <div class="mt-24 bg-white w-full h-full p-6">
+    <p-toast></p-toast>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <div class="flex items-center justify-between gap-5">
+        <div class="flex items-center gap-5">
+          <p-avatar
+            [image]="
+              avatarPreview ||
+              'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'
+            "
+            size="xlarge"
+            shape="circle"
+          />
+          <div>
+            <span class="font-bold text-lg">{{
+              user?.username || "Tên người dùng"
+            }}</span>
+            <p class="text-gray-500 text-sm">
+              {{ user?.email || "email@example.com" }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <p-fileUpload
+            mode="basic"
+            accept="image/*"
+            [maxFileSize]="2000000"
+            chooseLabel="Tải ảnh lên"
+            (onSelect)="onFileSelect($event)"
+            [auto]="true"
+            [customUpload]="true"
+          />
+        </div>
+      </div>
+      <div class="pt-6">
+        <div class="flex justify-between w-full gap-10">
+          <div class="flex flex-col gap-2 w-full py-2">
+            <app-form-element
+              label="Tên người dùng"
+              [control]="profileForm.get('username')!"
+              [required]="true"
+            >
+              <input
+                pInputText
+                class="text-sm w-full px-4 py-3 rounded-md"
+                formControlName="username"
+                placeholder="Nhập tên người dùng"
+              />
+            </app-form-element>
+          </div>
+          <div class="flex flex-col gap-2 w-full py-2">
+            <app-form-element
+              label="Quốc gia"
+              [control]="profileForm.get('final_cc_cname_DI')!"
+            >
+              <input
+                pInputText
+                class="text-sm w-full px-4 py-3 rounded-md"
+                formControlName="final_cc_cname_DI"
+                placeholder="Quốc gia bạn đang ở"
+              />
+            </app-form-element>
+          </div>
+        </div>
+        <div class="flex justify-between w-full gap-10">
+          <div class="flex flex-col gap-2 w-full py-2">
+            <app-form-element
+              label="Trình độ học vấn"
+              [control]="profileForm.get('LoE_DI')!"
+            >
+              <input
+                pInputText
+                class="text-sm w-full px-4 py-3 rounded-md"
+                formControlName="LoE_DI"
+                placeholder="Nhập trình độ học vấn"
+              />
+            </app-form-element>
+          </div>
+          <div class="flex flex-col gap-2 w-full py-2">
+            <app-form-element
+              label="Năm sinh"
+              [control]="profileForm.get('YoB')!"
+            >
+              <input
+                pInputText
+                type="number"
+                class="text-sm w-full px-4 py-3 rounded-md"
+                formControlName="YoB"
+                placeholder="Nhập năm sinh"
+              />
+            </app-form-element>
+          </div>
+        </div>
+        <div class="flex justify-between w-full gap-10">
+          <div class="flex flex-col gap-2 w-full py-2">
+            <app-form-element label="Giới tính">
+              <p-select
+                [options]="genderOptions"
+                formControlName="gender"
+                placeholder="Chọn giới tính"
+                optionLabel="label"
+                optionValue="value"
+                class="w-full"
+              />
+            </app-form-element>
+          </div>
+          <div
+            class="flex flex-col gap-2 w-full py-2"
+            *ngIf="user?.role === 'student'"
+          >
+            <app-form-element label="Danh mục quan tâm">
+              <p-multiSelect
+                [options]="categories"
+                formControlName="category_ids"
+                placeholder="Chọn danh mục"
+                optionLabel="label"
+                optionValue="value"
+                class="w-full"
+              />
+            </app-form-element>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-2 w-full py-2"
+          *ngIf="user?.role === 'student'"
+        >
+          <app-form-element
+            label="Mục tiêu học tập"
+            [control]="profileForm.get('learning_goals')!"
+          >
+            <textarea
+              pInputTextarea
+              class="w-full"
+              formControlName="learning_goals"
+              placeholder="Nhập mục tiêu học tập"
+              rows="4"
+            ></textarea>
+          </app-form-element>
+        </div>
+        <div *ngIf="user?.role === 'instructor'">
+          <div class="flex flex-col gap-2 w-full py-2">
+            <app-form-element
+              label="Tiểu sử"
+              [control]="profileForm.get('bio')!"
+            >
+              <textarea
+                pInputTextarea
+                class="w-full"
+                formControlName="bio"
+                placeholder="Nhập tiểu sử (tối đa 1000 ký tự)"
+                rows="4"
+              ></textarea>
+            </app-form-element>
+          </div>
+          <div class="flex flex-col gap-2 w-full py-2">
+            <app-form-element
+              label="Tổ chức"
+              [control]="profileForm.get('organization')!"
+            >
+              <input
+                pInputText
+                class="text-sm w-full px-4 py-3 rounded-md"
+                formControlName="organization"
+                placeholder="Nhập tổ chức"
+              />
+            </app-form-element>
+          </div>
+          <div class="flex flex-col gap-2 w-full py-2">
+            <app-form-element
+              label="Họ và tên giảng viên"
+              [control]="profileForm.get('name')!"
+            >
+              <input
+                pInputText
+                class="text-sm w-full px-4 py-3 rounded-md"
+                formControlName="name"
+                placeholder="Nhập họ và tên"
+              />
+            </app-form-element>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 mt-4">
+          <p-button label="Hủy" severity="secondary" (onClick)="resetForm()" />
+          <p-button
+            label="Lưu"
+            type="submit"
+            [disabled]="profileForm.invalid || isSubmitting"
+          />
+        </div>
+      </div>
+    </form>
+    <p-divider />
+    <!-- Password Change Section (Placeholder for Future Implementation) -->
+    <div class="pt-6">
+      <h3 class="text-xl font-bold pb-3">Thay đổi mật khẩu</h3>
+      <form [formGroup]="passwordForm" (ngSubmit)="onResetPassword()">
+        <div class="flex flex-col gap-2 w-full py-2">
+          <app-form-element [label]="'Mật khẩu hiện tại'" [required]="true">
+            <p-password
+              [toggleMask]="true"
+              [feedback]="false"
+              placeholder="Nhập mật khẩu"
+            />
+          </app-form-element>
+        </div>
+        <div class="flex flex-col gap-2 w-full py-2">
+          <app-form-element [label]="'Mật khẩu mới'" [required]="true">
+            <p-password
+              [toggleMask]="true"
+              placeholder="Nhập mật khẩu mới"
+              promptLabel="Điền mật khẩu mới"
+              weakLabel="Bảo mật yếu"
+              mediumLabel="Trung bình"
+              strongLabel="Mật khẩu tốt"
+            />
+          </app-form-element>
+        </div>
+        <div class="flex flex-col gap-2 w-full py-2">
+          <app-form-element [label]="'Mật khẩu mới'" [required]="true">
+            <p-password
+              [toggleMask]="true"
+              placeholder="Nhập mật khẩu mới"
+              promptLabel="Điền mật khẩu mới"
+              weakLabel="Bảo mật yếu"
+              mediumLabel="Trung bình"
+              strongLabel="Mật khẩu tốt"
+            />
+          </app-form-element>
+        </div>
+        <div class="flex justify-end gap-2 mt-4">
+          <p-button
+            label="Hủy"
+            severity="secondary"
+            (onClick)="resetPasswordForm()"
+          />
+          <p-button
+            label="Đặt lại mật khẩu"
+            type="submit"
+            [disabled]="passwordForm.invalid || isPasswordSubmitting"
+          />
+        </div>
+      </form>
+    </div>
+    <p-divider />
+    <!-- Account Deletion Section (Placeholder for Future Implementation) -->
+    <div class="pt-6">
+      <h3 class="text-xl font-bold pb-3">Xóa tài khoản</h3>
+      <p>Chức năng xóa tài khoản sẽ được triển khai sau.</p>
     </div>
   </div>
 </main>

@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { Ripple } from 'primeng/ripple';
 import { Button, ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -14,12 +13,9 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
-import { FileUpload } from 'primeng/fileupload';
 import { DropdownModule } from 'primeng/dropdown';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { ProgressSpinner } from 'primeng/progressspinner';
 import { DrawerModule } from 'primeng/drawer';
 import { AvatarModule } from 'primeng/avatar';
 import { AccordionModule } from 'primeng/accordion';
@@ -48,7 +44,6 @@ interface ExportColumn {
   styleUrl: './course-manage.component.css'
 })
 export class CourseManageComponent implements OnInit {
-
   courseDialog: boolean = false;
   selectedFile: File | null = null;
   courses!: any[];
@@ -67,7 +62,17 @@ export class CourseManageComponent implements OnInit {
   @ViewChild('tableCourse') dt!: Table;
   cols!: Column[];
   exportColumns!: ExportColumn[];
-
+  currentSearchParams: any = {
+    keyword: null,
+    categories: null,
+    difficulty: null,
+    min_rating: null,
+    min_price: null,
+    max_price: null,
+    sort_by: 'course_rating',
+    sort_order: 'desc',
+    per_page: 10
+  };
   courseForm = new FormGroup({
     id: new FormControl(''),
     course_name: new FormControl('', [Validators.required, Validators.maxLength(255)]),
@@ -88,6 +93,7 @@ export class CourseManageComponent implements OnInit {
   ngOnInit(): void {
     this.loadCourseData();
   }
+
 
   searchGlobal(event: Event) {
     const value = (event.target as HTMLInputElement).value;
@@ -112,6 +118,8 @@ export class CourseManageComponent implements OnInit {
     ).subscribe({
       next: (res) => {
         this.courses = res.data;
+        console.log(this.course);
+
         this.totalRecords = res.total;
         this.rows = res.per_page;
         this.currentPage = res.current_page - 1;
@@ -130,7 +138,7 @@ export class CourseManageComponent implements OnInit {
       { field: 'university', header: 'Trường' },
       { field: 'difficulty_level', header: 'Độ khó' },
       { field: 'course_rating', header: 'Đánh giá' },
-      { field: 'course_url', header: 'Đánh giá' },
+      { field: 'course_url', header: 'URL' },
       { field: 'course_description', header: 'Mô tả' },
       { field: 'price', header: 'Giá' },
       { field: 'status', header: 'Trạng thái' },

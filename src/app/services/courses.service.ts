@@ -10,7 +10,10 @@ export class CoursesService {
   constructor(private http: HttpClient) { }
 
   getCourses(page: number = 1, perPage: number = 10): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/courses?page=${page}&perPage=${perPage}`);
+    return this.http.get<any>(`${this.apiUrl}/courses?page=${page}&perPage=${perPage}`,
+      {
+        params: { page: page.toString(), perPage: perPage.toString() }
+      });
   }
 
   getAllCourses(page: number = 1, perPage: number = 10): Observable<any> {

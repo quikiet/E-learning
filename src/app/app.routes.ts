@@ -23,6 +23,7 @@ import { CategoryManageComponent } from './pages/admin/category-manage/category-
 import { UserDetailComponent } from './pages/admin/user-manage/user-detail/user-detail.component';
 import { UserDeletedComponent } from './pages/admin/user-manage/user-deleted/user-deleted.component';
 import { CourseSearchComponent } from './pages/User/course-search/course-search.component';
+import { InstructorRequestComponent } from './pages/User/instructor-request/instructor-request.component';
 
 export const routes: Routes = [
     {
@@ -33,6 +34,7 @@ export const routes: Routes = [
             { path: 'course-learning', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
             { path: 'khoa-hoc', component: CourseSearchComponent },
+            { path: 'yeu-cau', component: InstructorRequestComponent },
         ]
     },
     { path: 'login', component: LoginComponent },
@@ -57,7 +59,7 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'profile',
+        path: 'ho-so',
         component: ProfileComponent,
         children: [
             { path: '', component: ProfileInfoComponent }

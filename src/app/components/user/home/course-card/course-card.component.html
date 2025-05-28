@@ -4,36 +4,38 @@
   <div>
     <p-carousel
       #carousel
-      [value]="lists"
-      [numVisible]="5"
-      [numScroll]="5"
+      [value]="courses"
+      [numVisible]="numVisible"
+      [numScroll]="numScroll"
       [circular]="true"
       [showIndicators]="false"
-      contentClass=" pt-16"
+      contentClass="pt-16"
       [responsiveOptions]="responsiveOptions"
       (onPage)="onCarouselPageChange($event)"
     >
-      <ng-template let-list #item>
+      <ng-template let-course #item>
         <div
           class="m-2 relative group"
-          (mouseenter)="showCardHover($event, list)"
+          (mouseenter)="showCardHover($event, course)"
           (mouseleave)="hideCardHover()"
         >
           <div class="flex flex-col">
             <img
               alt="Card"
               class="w-full"
-              src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
+              [src]="
+                course.image
+                  ? course.image
+                  : 'https://primefaces.org/cdn/primeng/images/card-ng.jpg'
+              "
             />
-            <b class="py-2">Khoá học lập trình cơ bản {{ list.value }}</b>
+            <b class="py-2">{{ course.course_name }}</b>
             <span class="text-gray-400 text-sm"
-              >Tên tác giả {{ list.index }}</span
+              >Tên tác giả {{ course.instructor }}</span
             >
-            <span class="text-gray-400 text-sm"
-              >Vị trí hiện tại: {{ getCurrentPosition(list) }}</span
-            >
-
-            <b class="py-1"><u>đ</u>399,000</b>
+            <b class="py-1">{{
+              course.price | currency : "VND" : "symbol-narrow" : "1.0-0"
+            }}</b>
             <p-tag
               severity="success"
               value="Best seller"
@@ -61,27 +63,26 @@
       [ngStyle]="cardHoverPosition"
     >
       <div class="py-2 font-semibold">
-        <h4 class="text-lg font-bold pb-2">
-          Khoá học lập trình cơ bản {{ activeCard.value }}
-        </h4>
+        <h4 class="text-lg font-bold pb-2">{{ activeCard.course_name }}</h4>
         <div class="flex gap-5">
           <p-tag severity="success" value="Bán chạy" class="w-fit opacity-60" />
           <span class="text-green-400"
             >Cập nhật
-            <span class="font-semibold text-green-600">12/2024</span></span
+            <span class="font-semibold text-green-600">{{
+              activeCard.updated_at | date : "dd/MM/yyyy HH:mm"
+            }}</span></span
           >
         </div>
-        <p class="text-sm font-thin py-2">Tổng 2.5 giờ học</p>
+        <p class="text-sm font-thin py-2">
+          Tổng {{ activeCard.total_time }} giờ học
+        </p>
         <div>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto minus
-          possimus illum voluptatem quod amet, dignissimos nulla autem velit
-          ratione quaerat, in nemo, veritatis at! Quibusdam labore id iure
-          sapiente.
+          {{ cutText(activeCard.course_description, 25) }}
         </div>
         <ul class="list-disc ml-4 text-sm py-2">
-          <li>Lorem 1</li>
-          <li>Lorem 2</li>
-          <li>Lorem 3</li>
+          <li>Độ khó: {{ activeCard.difficulty_level }}</li>
+          <li>Kỹ năng học được: {{ activeCard.skills }}</li>
+          <li>Số bài học: {{ activeCard.total_lessons }}</li>
         </ul>
         <div class="flex justify-between items-center gap-5 pt-5">
           <button
@@ -99,7 +100,6 @@
       </div>
     </div>
   </div>
-  <div class="min-h-96 bg-black"></div>
 
   <!-- <h5 class="text-xl font-bold mb-2">Được đề xuất cho bạn</h5>
   <div>

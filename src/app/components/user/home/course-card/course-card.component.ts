@@ -6,17 +6,33 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Carousel, CarouselPageEvent } from 'primeng/carousel';
 import { TabsModule } from 'primeng/tabs';
+import { CoursesService } from '../../../../services/courses.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-course-card',
-  imports: [TabsModule, Carousel, DividerModule, ButtonModule, CardModule, Tag, CommonModule, FormsModule],
+  imports: [RouterLink, TabsModule, Carousel, DividerModule, ButtonModule, CardModule, Tag, CommonModule, FormsModule],
   templateUrl: './course-card.component.html',
   styleUrl: './course-card.component.css'
 })
 export class CourseCardComponent implements OnInit {
   @ViewChild('carousel') carousel!: Carousel;
   @ViewChild('cardHover') cardHover!: ElementRef;
-  private hoverTimeout: any;
+
+  courses: any[] = [];
+  currentPage: number = 0; // Trang hiện tại của carousel
+  numVisible: number = 5; // Số item hiển thị (mặc định là 5)
+  numScroll: number = 5; // Số item cuộn mỗi lần
+  activeCard: any = null; // Quản lý card đang hover
+  cardDetail: any = null;
+  currentIndex = 0;
+  cardHoverPosition: any = {};
+  responsiveOptions: any[] = [
+    { breakpoint: '1400px', numVisible: 5, numScroll: 5 },
+    { breakpoint: '1199px', numVisible: 3, numScroll: 1 },
+    { breakpoint: '767px', numVisible: 2, numScroll: 1 },
+    { breakpoint: '575px', numVisible: 1, numScroll: 1 }
+  ];
 
   prevSlide(event: MouseEvent) {
     this.carousel.navBackward(event);
@@ -26,54 +42,24 @@ export class CourseCardComponent implements OnInit {
     this.carousel.navForward(event);
   }
 
-  lists: any[] = [
-    { 'value': 1, },
-    { 'value': 2, },
-    { 'value': 3, },
-    { 'value': 4, },
-    { 'value': 5, },
-    { 'value': 6, },
-    { 'value': 7, },
-    { 'value': 8, },
-  ];
-  currentIndex = 0;
+  constructor(private courseService: CoursesService) { }
 
-
-  responsiveOptions: any[] | undefined;
-
-  constructor() { }
-  currentPage: number = 0; // Trang hiện tại của carousel
-  numVisible: number = 5; // Số item hiển thị (mặc định là 5)
-  numScroll: number = 5; // Số item cuộn mỗi lần
-  activeCard: any = null; // Quản lý card đang hover
-  cardDetail: any = null;
-  cardHoverPosition: any = {};
 
   ngOnInit() {
-    console.log(this.lists);
+    this.loadCourses();
+  }
 
-    this.responsiveOptions = [
-      {
-        breakpoint: '1400px',
-        numVisible: 5,
-        numScroll: 5
+  loadCourses() {
+    this.courseService.getCourses(1, 10).subscribe({
+      next: (res) => {
+        console.log('Full API Response:', res);
+        this.courses = res.courses?.data || [];
+        console.log('Courses loaded:', this.courses);
       },
-      {
-        breakpoint: '1199px',
-        numVisible: 3,
-        numScroll: 1
-      },
-      {
-        breakpoint: '767px',
-        numVisible: 2,
-        numScroll: 1,
-      },
-      {
-        breakpoint: '575px',
-        numVisible: 1,
-        numScroll: 1
+      error: (err) => {
+        console.error('Error loading courses:', err);
       }
-    ]
+    });
   }
 
   onCarouselPageChange(event: any): void {
@@ -83,10 +69,10 @@ export class CourseCardComponent implements OnInit {
   }
 
   getCurrentPosition(list: any): number {
-    const totalItems = this.lists.length;
+    const totalItems = this.courses.length;
     const startIndex = this.currentPage * this.numScroll;
     const itemsInCurrentPage = Math.min(this.numVisible, totalItems - startIndex);
-    const currentIndex = this.lists.indexOf(list);
+    const currentIndex = this.courses.indexOf(list);
 
     if (currentIndex >= startIndex && currentIndex < startIndex + itemsInCurrentPage) {
       return currentIndex - startIndex;
@@ -95,11 +81,19 @@ export class CourseCardComponent implements OnInit {
   }
 
   getItemsInCurrentPage(): number {
-    const totalItems = this.lists.length;
+    const totalItems = this.courses.length;
     const startIndex = this.currentPage * this.numScroll;
     return Math.min(this.numVisible, totalItems - startIndex);
   }
 
+  getDifficultySeverity(level: string): string {
+    switch (level?.toLowerCase()) {
+      case 'beginner': return 'success';
+      case 'intermediate': return 'info';
+      case 'advanced': return 'warning';
+      default: return 'secondary';
+    }
+  }
 
   showCardHover(event: MouseEvent, list: any): void {
     console.log(1);
@@ -131,14 +125,12 @@ export class CourseCardComponent implements OnInit {
     this.activeCard = this.cardDetail;
   }
 
-  // @HostListener('document:mousemove', ['$event'])
-  // onMouseMove(event: MouseEvent) {
-  //   const cardElement = document.querySelector('.group:hover');
-  //   const hoverElement = document.querySelector('.hover-popup:hover'); // class tùy bạn
+  cutText(text: string, wordLimit: number = 50): string {
+    if (!text) return '';
+    const words = text.split(' ');
+    if (words.length <= wordLimit) return text;
 
-  //   if (!cardElement && !hoverElement) {
-  //     this.hideCardHover();
-  //   }
-  // }
+    return words.slice(0, wordLimit).join(' ') + '...';
+  }
 }
 

@@ -184,31 +184,31 @@
           <p-tag
             *ngIf="author.course_rating >= 4"
             severity="success"
-            [value]="author.course_rating"
+            value="{{ author.course_rating | number : '1.1-1' }}"
             [rounded]="true"
           />
           <p-tag
             *ngIf="author.course_rating >= 3 && author.course_rating < 4"
             severity="info"
-            [value]="author.course_rating"
+            value="{{ author.course_rating | number : '1.1-1' }}"
             [rounded]="true"
           />
           <p-tag
             *ngIf="author.course_rating >= 2 && author.course_rating < 3"
             severity="warn"
-            [value]="author.course_rating"
+            value="{{ author.course_rating | number : '1.1-1' }}"
             [rounded]="true"
           />
           <p-tag
             *ngIf="author.course_rating >= 1 && author.course_rating < 2"
             severity="danger"
-            [value]="author.course_rating"
+            value="{{ author.course_rating | number : '1.1-1' }}"
             [rounded]="true"
           />
           <p-tag
             *ngIf="author.course_rating === 0"
             severity="contrast"
-            [value]="author.course_rating"
+            value="{{ author.course_rating | number : '1.1-1' }}"
             [rounded]="true"
           />
         </div>
