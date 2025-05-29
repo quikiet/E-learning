@@ -25,14 +25,14 @@
               class="w-full"
               [src]="
                 course.image
-                  ? course.image
+                  ? 'https://primefaces.org/cdn/primeng/images/card-ng.jpg'
                   : 'https://primefaces.org/cdn/primeng/images/card-ng.jpg'
               "
             />
             <b class="py-2">{{ course.course_name }}</b>
-            <span class="text-gray-400 text-sm"
-              >Tên tác giả {{ course.instructor }}</span
-            >
+            <span class="text-gray-400 text-sm">{{
+              course.instructor.name
+            }}</span>
             <b class="py-1">{{
               course.price | currency : "VND" : "symbol-narrow" : "1.0-0"
             }}</b>
