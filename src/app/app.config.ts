@@ -22,3 +22,8 @@ export const appConfig: ApplicationConfig = {
     })
   ]
 };
+
+export const cloudinaryConfig = {
+  cloudName: 'djk2ys41m',
+  uploadPreset: 'newsproject'
+};

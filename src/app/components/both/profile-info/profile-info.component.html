@@ -166,14 +166,15 @@
 >
   <div class="mt-24 bg-white w-full h-full p-6">
     <p-toast></p-toast>
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <form
+      [formGroup]="profileForm"
+      (ngSubmit)="onSubmit()"
+      enctype="multipart/form-data"
+    >
       <div class="flex items-center justify-between gap-5">
         <div class="flex items-center gap-5">
           <p-avatar
-            [image]="
-              avatarPreview ||
-              'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'
-            "
+            [image]="avatarPreview || user?.avatar"
             size="xlarge"
             shape="circle"
           />
@@ -195,7 +196,10 @@
             (onSelect)="onFileSelect($event)"
             [auto]="true"
             [customUpload]="true"
+            invalidFileSizeMessageSummary="File quá lớn: "
+            invalidFileSizeMessageDetail="Kích thước tối đa là 2MB."
           />
+          <!-- <input type="file" (change)="onFileSelect($event)" /> -->
         </div>
       </div>
       <div class="pt-6">
@@ -211,6 +215,7 @@
                 class="text-sm w-full px-4 py-3 rounded-md"
                 formControlName="username"
                 placeholder="Nhập tên người dùng"
+                required
               />
             </app-form-element>
           </div>
@@ -230,7 +235,7 @@
         </div>
         <div class="flex justify-between w-full gap-10">
           <div class="flex flex-col gap-2 w-full py-2">
-            <app-form-element
+            <!-- <app-form-element
               label="Trình độ học vấn"
               [control]="profileForm.get('LoE_DI')!"
             >
@@ -239,6 +244,16 @@
                 class="text-sm w-full px-4 py-3 rounded-md"
                 formControlName="LoE_DI"
                 placeholder="Nhập trình độ học vấn"
+              />
+            </app-form-element> -->
+            <app-form-element [label]="'Trình độ học vấn'">
+              <p-select
+                [options]="LoE"
+                formControlName="LoE_DI"
+                optionLabel="name"
+                optionValue="value"
+                placeholder="Trình độ"
+                class="w-full"
               />
             </app-form-element>
           </div>
@@ -270,7 +285,7 @@
               />
             </app-form-element>
           </div>
-          <div
+          <!-- <div
             class="flex flex-col gap-2 w-full py-2"
             *ngIf="user?.role === 'student'"
           >
@@ -284,23 +299,43 @@
                 class="w-full"
               />
             </app-form-element>
-          </div>
+            <app-form-element [label]="'Danh mục bạn quan tâm'">
+              <div class="flex flex-wrap gap-3">
+                <div *ngFor="let cat of categories">
+                  <p-checkbox
+                    [inputId]="'cat' + cat.id"
+                    [value]="cat.id"
+                    formControlName="category_ids"
+                  />
+                  <label for="{{ 'cat' + cat.id }}" class="ml-2">
+                    {{ cat.name }}
+                  </label>
+                </div>
+              </div>
+            </app-form-element>
+          </div> -->
         </div>
         <div
           class="flex flex-col gap-2 w-full py-2"
           *ngIf="user?.role === 'student'"
         >
-          <app-form-element
-            label="Mục tiêu học tập"
-            [control]="profileForm.get('learning_goals')!"
-          >
-            <textarea
-              pInputTextarea
-              class="w-full"
-              formControlName="learning_goals"
-              placeholder="Nhập mục tiêu học tập"
-              rows="4"
-            ></textarea>
+          <app-form-element [label]="'Mục tiêu học tập'">
+            <div class="flex flex-wrap gap-4">
+              <div
+                class="flex items-center"
+                *ngFor="let goal of learningGoals; let i = index"
+              >
+                <p-radiobutton
+                  [name]="'learning_goals'"
+                  [inputId]="'goal' + i"
+                  [value]="goal.value"
+                  formControlName="learning_goals"
+                />
+                <label class="ml-2 text-sm" [for]="'goal' + i">{{
+                  goal.label
+                }}</label>
+              </div>
+            </div>
           </app-form-element>
         </div>
         <div *ngIf="user?.role === 'instructor'">

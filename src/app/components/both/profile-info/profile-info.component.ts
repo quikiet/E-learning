@@ -15,10 +15,18 @@ import { MessageService } from 'primeng/api';
 import { CategoryService } from '../../../services/courses-manage/category.service';
 import { AuthService } from '../../../services/auth.service';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { UploadService } from '../../../services/upload.service';
+import { RadioButtonModule } from 'primeng/radiobutton';
 interface City {
   name: string;
   code: string;
 }
+
+interface optionSelect {
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-profile-info',
   imports: [
@@ -35,6 +43,7 @@ interface City {
     FileUploadModule,
     MultiSelectModule,
     FormElementComponent,
+    RadioButtonModule,
   ],
   providers: [MessageService],
   templateUrl: './profile-info.component.html',
@@ -53,13 +62,23 @@ export class ProfileInfoComponent implements OnInit {
     { label: 'Nữ', value: 'Female' },
     { label: 'Khác', value: 'other' },
   ];
+  LoE: optionSelect[] | undefined;
+  selectedFile: File | null = null;
+  learningGoals = [
+    { label: 'Thăng tiến sự nghiệp', value: 'Career advancement' },
+    { label: 'Phát triển kỹ năng', value: 'Skill development' },
+    { label: 'Phát triển bản thân', value: 'Personal growth' },
+    { label: 'Cải thiện học tập', value: 'Academic improvement' },
+    { label: 'Lấy chứng chỉ', value: 'Certification' }
+  ];
   currentYear = new Date().getFullYear();
 
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
     private categoryService: CategoryService,
-    private authService: AuthService
+    private authService: AuthService,
+    private uploadService: UploadService
   ) {
     this.profileForm = this.fb.group({
       username: ['', [Validators.required, Validators.maxLength(50)]],
@@ -69,7 +88,6 @@ export class ProfileInfoComponent implements OnInit {
       gender: [''],
       avatar: [null],
       learning_goals: [''],
-      category_ids: [[]],
       bio: ['', [Validators.maxLength(1000)]],
       organization: ['', [Validators.maxLength(100)]],
       name: ['', [Validators.maxLength(100)]],
@@ -80,6 +98,14 @@ export class ProfileInfoComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       password_confirmation: ['', Validators.required],
     }, { validators: this.confirmedValidator('password', 'password_confirmation') });
+
+    this.LoE = [
+      { name: 'Không rõ', value: 'Unknown' },
+      { name: 'THPT', value: 'High School' },
+      { name: 'Đại học', value: 'Bachelor' },
+      { name: 'Thạc sĩ', value: 'Master' },
+      { name: 'Tiến sĩ', value: 'PhD' }
+    ];
   }
 
   confirmedValidator(controlName: string, matchingControlName: string) {
@@ -129,14 +155,26 @@ export class ProfileInfoComponent implements OnInit {
     this.authService.getCurrentUser().subscribe({
       next: (res: any) => {
         this.user = res.user;
+        console.log('User data loaded:', this.user);
+
+        if (!this.user.username) {
+          console.error('Username is missing in user data');
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: 'Tên người dùng không được để trống',
+            life: 3000,
+          });
+          return;
+        }
+
         this.profileForm.patchValue({
           username: this.user.username,
           final_cc_cname_DI: this.user.final_cc_cname_DI || '',
           LoE_DI: this.user.LoE_DI || '',
-          YoY: this.user.YoY || null,
+          YoB: this.user.YoB || null,
           gender: this.user.gender || '',
           learning_goals: this.user.role === 'student' ? this.user.student?.learning_goals || '' : '',
-          category_ids: this.user.role === 'student' ? this.user.student?.categories?.map((cat: any) => cat.id) || [] : [],
           bio: this.user.role === 'instructor' ? this.user.instructor?.bio || '' : '',
           organization: this.user.role === 'instructor' ? this.user.instructor?.organization || '' : '',
           name: this.user.role === 'instructor' ? this.user.instructor?.name || '' : '',
@@ -144,6 +182,7 @@ export class ProfileInfoComponent implements OnInit {
         this.avatarPreview = this.user.avatar || null;
       },
       error: (err) => {
+        console.error('Error loading user profile:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
@@ -157,7 +196,7 @@ export class ProfileInfoComponent implements OnInit {
   onFileSelect(event: any) {
     const file = event.files[0];
     if (file) {
-      this.profileForm.patchValue({ avatar: file });
+      this.selectedFile = file;
       const reader = new FileReader();
       reader.onload = () => {
         this.avatarPreview = reader.result as string;
@@ -168,6 +207,7 @@ export class ProfileInfoComponent implements OnInit {
 
   onSubmit() {
     if (this.profileForm.invalid) {
+      console.log('Profile form invalid:', this.profileForm.errors);
       this.profileForm.markAllAsTouched();
       return;
     }
@@ -176,23 +216,59 @@ export class ProfileInfoComponent implements OnInit {
     const formData = new FormData();
     const formValue = this.profileForm.value;
 
-    // Append form fields to FormData
+    // Log giá trị form trước khi gửi
+    console.log('Form value before sending:', formValue);
+
+    // Kiểm tra username
+    if (!formValue.username || formValue.username.trim() === '') {
+      console.error('Username is missing or empty');
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Tên người dùng là bắt buộc và không được để trống',
+        life: 3000,
+      });
+      this.isSubmitting = false;
+      return;
+    }
+
+    // Thêm các trường vào FormData
     for (const key in formValue) {
       if (formValue[key] !== null && formValue[key] !== undefined) {
         if (key === 'category_ids') {
-          formValue[key].forEach((id: number, index: number) => {
-            formData.append(`category_ids[${index}]`, id.toString());
-          });
-        } else if (key === 'avatar' && formValue[key]) {
-          formData.append('avatar', formValue[key]);
+          if (Array.isArray(formValue[key]) && formValue[key].length > 0) {
+            formValue[key].forEach((id: number, index: number) => {
+              formData.append(`category_ids[${index}]`, id.toString());
+            });
+          }
+        } else if (key === 'avatar') {
+          continue; // Bỏ qua avatar vì sẽ xử lý riêng
         } else {
-          formData.append(key, formValue[key]);
+          const value = String(formValue[key]).trim();
+          if (value !== '') {
+            formData.append(key, value);
+          } else {
+            console.warn(`Skipping empty field: ${key}`);
+          }
         }
       }
     }
 
-    this.authService.updateUser(formValue).subscribe({
+    // Thêm file avatar nếu có
+    if (this.selectedFile) {
+      formData.append('avatar', this.selectedFile);
+    } else {
+      console.warn('No file selected for avatar');
+    }
+
+    // Log toàn bộ FormData để kiểm tra
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+
+    this.authService.updateUser(formData).subscribe({
       next: (response: any) => {
+        console.log('Update profile success:', response);
         this.messageService.add({
           severity: 'success',
           summary: 'Thành công',
@@ -202,8 +278,11 @@ export class ProfileInfoComponent implements OnInit {
         this.user = response.user;
         this.avatarPreview = this.user.avatar || null;
         this.isSubmitting = false;
+        this.selectedFile = null;
       },
       error: (err) => {
+        console.error('Update profile error:', err);
+        console.error('Error details:', err.error);
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
@@ -211,6 +290,7 @@ export class ProfileInfoComponent implements OnInit {
           life: 3000,
         });
         this.isSubmitting = false;
+        this.resetForm();
       },
     });
   }
@@ -249,6 +329,7 @@ export class ProfileInfoComponent implements OnInit {
 
   resetForm() {
     this.profileForm.reset();
+    this.selectedFile = null; // Reset file
     this.avatarPreview = this.user.avatar || null;
     this.loadUserProfile();
   }

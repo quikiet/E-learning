@@ -32,8 +32,9 @@ export class AuthService {
     return this.http.get(`${this.apiUrl}/currentStudent `, { withCredentials: true });
   }
 
-  updateUser(data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/user/profile/update`, data, { withCredentials: true });
+
+  updateUser(data: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/user/profile/update`, data, { withCredentials: true });
   }
 
   changePassword(data: any): Observable<any> {
