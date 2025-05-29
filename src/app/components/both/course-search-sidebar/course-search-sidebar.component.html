@@ -26,7 +26,9 @@
 
     <p-accordion [value]="['0']" [multiple]="true">
       <p-accordion-panel value="0">
-        <p-accordion-header class="!bg-[#F8F8F8]">Danh mục</p-accordion-header>
+        <p-accordion-header class="lg:!bg-[#F8F8F8]"
+          >Danh mục</p-accordion-header
+        >
         <p-accordion-content>
           <div class="flex flex-wrap gap-3">
             <div *ngFor="let cat of categories">
@@ -43,7 +45,7 @@
         </p-accordion-content>
       </p-accordion-panel>
       <p-accordion-panel value="1">
-        <p-accordion-header class="!bg-[#F8F8F8]">Độ khó</p-accordion-header>
+        <p-accordion-header class="lg:!bg-[#F8F8F8]">Độ khó</p-accordion-header>
         <p-accordion-content>
           <div class="flex flex-wrap gap-4">
             <div
@@ -64,7 +66,7 @@
         </p-accordion-content>
       </p-accordion-panel>
       <p-accordion-panel value="2">
-        <p-accordion-header class="!bg-[#F8F8F8]"
+        <p-accordion-header class="lg:!bg-[#F8F8F8]"
           >Đánh giá tối thiểu</p-accordion-header
         >
         <p-accordion-content>
@@ -80,7 +82,7 @@
         </p-accordion-content>
       </p-accordion-panel>
       <p-accordion-panel value="3">
-        <p-accordion-header class="!bg-[#F8F8F8]">Giá</p-accordion-header>
+        <p-accordion-header class="lg:!bg-[#F8F8F8]">Giá</p-accordion-header>
         <p-accordion-content>
           <div class="flex gap-2">
             <input

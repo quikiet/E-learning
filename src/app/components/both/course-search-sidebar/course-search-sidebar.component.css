@@ -1,5 +1,7 @@
-::ng-deep .p-accordioncontent-content {
-    background-color: #F8F8F8 !important;
-    padding: 0 !important;
-    margin: 0 1.125rem 1.125rem 1.125rem;
+@media (min-width: 1024px) {
+    ::ng-deep .p-accordioncontent-content {
+        background-color: #F8F8F8 !important;
+        padding: 0 !important;
+        margin: 0 1.125rem 1.125rem 1.125rem;
+    }
 }

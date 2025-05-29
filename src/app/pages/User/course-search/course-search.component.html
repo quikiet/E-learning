@@ -1,10 +1,10 @@
 <!-- course-search.component.html -->
 <div class="my-10 max-w-7xl mx-auto">
-  <div class="flex items-center justify-between w-full">
+  <div class="flex items-center justify-between w-full my-2">
     <p-button
-      class="lg:hidden"
+      class="ml-5 lg:hidden"
       (click)="visibleFilter = true"
-      icon="pi pi-arrow-right"
+      icon="pi pi-filter"
     />
     <p-drawer
       header="Bộ lọc"
@@ -19,7 +19,7 @@
         ></app-course-search-sidebar>
       </p>
     </p-drawer>
-    <span>Total Records: {{ totalRecords }}</span>
+    <span class="mr-5">Tổng số lượng: {{ totalRecords }}</span>
   </div>
   <div class="flex">
     <!-- Sidebar -->
@@ -93,14 +93,16 @@
                         >{{ star }}</span
                       >
                     </span>
-                    (12)
+                    ({{ course.number_of_ratings }})
                   </div>
                   <span class="text-gray-400">
                     <ul
                       class="flex list-disc w-full items-center gap-4 text-xs"
                     >
-                      <li class="list-none">Tổng giờ học: 10.5 giờ</li>
-                      <li>20 bài học</li>
+                      <li class="list-none">
+                        Tổng giờ học: {{ course.total_time }} giờ
+                      </li>
+                      <li>{{ course.total_lessons }} bài học</li>
                       <li>{{ course.difficulty_level }}</li>
                     </ul>
                   </span>
