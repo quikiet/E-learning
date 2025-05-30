@@ -97,6 +97,7 @@ export class IntructorComponent implements OnInit, AfterViewInit {
     this.instructorService.getAllInstructors().subscribe({
       next: (res) => {
         this.instructors = res;
+
       }, error: (err) => {
         console.log(err.message);
       }

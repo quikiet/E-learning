@@ -16,6 +16,10 @@ export class CoursesService {
       });
   }
 
+  getCourseBySlug(slug: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/courses/${slug}`);
+  }
+
   getAllCourses(page: number = 1, perPage: number = 10): Observable<any> {
 
     return this.http.get<any>(`${this.apiUrl}/admin/courses?page=${page}&perPage=${perPage}`, { withCredentials: true });
@@ -40,6 +44,10 @@ export class CoursesService {
         return throwError(() => new Error(errorMessage));
       })
     );
+  }
+
+  enrollCourse(courseId: number, data: { amount: number; method: string; coupon_id: number | null }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/enroll-paid`, data, { withCredentials: true });
   }
 
 }

@@ -33,7 +33,7 @@ export const routes: Routes = [
         children: [
             { path: '', component: HomeComponent },
             { path: 'product', component: CourseCardComponent },
-            { path: 'course-learning', component: CourseDetailComponent },
+            { path: 'chi-tiet-khoa-hoc/:slug', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
             { path: 'khoa-hoc', component: CourseSearchComponent },
             { path: 'yeu-cau', component: InstructorRequestComponent },

@@ -1,166 +1,188 @@
 <div class="max-w-7xl mx-auto my-10 grid grid-cols-12 gap-5 h-full">
   <div class="col-span-8 mb-6">
-    <video
-      class="rounded-3xl w-full"
-      controls
-      poster="https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=facearea&w=600&h=350"
-    >
-      <source
-        src="https://www.w3schools.com/html/mov_bbb.mp4"
-        type="video/mp4"
-      />
+    <!-- Video Preview -->
+    <video class="rounded-3xl w-full" controls [poster]="course?.image">
+      <source [src]="previewVideoUrl" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
+    <!-- <img [src]="course.image" [alt]="course.course_name" /> -->
+    <!-- <video class="w-full" controls [src]="currentVideoUrl" type="video/mp4">
+      Your browser does not support the video tag.
+    </video> -->
     <!-- Top: Studio Info & Stats -->
     <div class="my-6">
       <h5 class="text-black font-bold text-2xl leading-tight mb-4">
-        VUE JAVASCRIPT COURSE
+        {{ course?.course_name || "VUE JAVASCRIPT COURSE" }}
       </h5>
       <div class="flex items-center gap-4">
         <div class="flex items-center gap-2">
           <img
-            src="https://randomuser.me/api/portraits/men/32.jpg"
+            [src]="course?.instructors?.avatar"
             alt="logo"
             class="w-8 h-8 rounded-full bg-white border border-[#32d296] p-1"
           />
-          <span class="text-[#32d296] text-sm font-bold">Kitani Studio</span>
+          <span class="text-[#32d296] text-sm font-bold">
+            {{ course?.instructors?.name }}
+          </span>
         </div>
         <span class="ml-auto flex items-center gap-4">
           <span class="flex items-center gap-1 text-[#32d296] text-sm">
-            <span class="pi pi-users"></span>2.3k</span
-          >
+            <span class="pi pi-users"></span>
+            {{ course?.enrollments_count || 0 }}
+          </span>
           <span class="flex items-center gap-1 text-[#32d296] text-sm">
-            <span class="pi pi-comments"></span>1.4k</span
-          >
+            <span class="pi pi-comments"></span>
+            {{ course?.forum_posts_count || 0 }}
+          </span>
         </span>
       </div>
       <p-divider />
     </div>
+
     <!-- Course Description -->
     <div class="course-description mb-4">
-      <p class="text-black font-bold text-lg mb-2">Chi tiết khoá học</p>
+      <p class="text-black font-bold text-lg mb-2">Chi tiết khóa học</p>
       <p class="text-[#3a3f44] text-sm">
-        Unlike other monolithic frameworks, Vue is designed from the ground up
-        to be incrementally adoptable. The core library is focused on the view
-        layer only, and is easy to pick up and integrate with other libraries or
-        existing projects. On the other hand, Vue is also perfectly capable of
-        powering sophisticated Single-Page Applications when used in combination
-        with modern tooling and supporting libraries.
+        {{ course?.course_description }}
       </p>
       <p-divider />
     </div>
+
     <!-- Review List -->
     <div class="space-y-5">
       <p class="text-black font-bold text-lg mb-2">Bình luận</p>
-      <div class="flex items-start gap-3">
+      <div *ngFor="let review of reviews" class="flex items-start gap-3">
         <p-avatar
-          image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
+          [image]="review.user?.avatar"
           size="normal"
           class="mt-1"
           shape="circle"
         />
         <div>
-          <span class="font-bold">Leonardo</span>
-          <div class="text-gray-400 text-sm">Today</div>
+          <span class="font-bold">{{ review.user?.username || "User" }}</span>
+          <div class="text-gray-400 text-sm">
+            {{ review.created_at | date : "dd/MM/yyyy" }}
+          </div>
           <div class="text-sm">
-            Loved the course. I’ve learned some very subtle techniques,
-            especially on leaves.
+            {{ review.comment }}
           </div>
         </div>
       </div>
-      <div>
-        <div class="flex items-start gap-3">
-          <p-avatar
-            image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
-            size="normal"
-            shape="circle"
-            class="mt-1"
-          />
-          <div>
-            <span class="font-bold">Titania</span>
-            <div class="text-gray-400 text-sm">Today</div>
-            <div class="text-sm">
-              I loved the course, it had been a long time since I had
-              experimented with watercolors and now I will do it more often
-              thanks to Kitani Studio.
-            </div>
-          </div>
-        </div>
+      <div *ngIf="!reviews?.length" class="text-gray-500 text-sm">
+        Chưa có bình luận nào cho khóa học này.
       </div>
-      <div>
-        <div class="flex items-start gap-3">
-          <p-avatar
-            image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
-            size="normal"
-            class="mt-1"
-            shape="circle"
-          />
-          <div>
-            <span class="font-bold">Zhrikov</span>
-            <div class="text-gray-400 text-sm">Today</div>
-            <div class="text-sm">
-              Yes. I just emphasize that the use of Photoshop, for non-users,
-              becomes difficult to follow. What requires a course to master it.
-              Safe and very didactic teacher.
-            </div>
-          </div>
-        </div>
+      <div class="mt-8 flex justify-center">
+        <button
+          class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
+        >
+          Xem thêm
+        </button>
       </div>
-      <div>
-        <div class="flex items-start gap-3">
-          <p-avatar
-            image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
-            size="normal"
-            class="mt-1"
-            shape="circle"
-          />
-          <div>
-            <span class="font-bold">Miphoska</span>
-            <div class="text-gray-400 text-sm">Today</div>
-            <div class="text-sm">
-              I haven’t finished the course yet, as I would like to have some
-              feedback from the teacher, about the comments I shared on the
-              forum a 3 months ago,...
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-8 flex justify-center">
-      <button
-        class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
-      >
-        Load more review
-      </button>
     </div>
   </div>
+
   <div class="col-span-4 h-full">
     <div
-      class="sticky top-20 bg-white px-0 py-0 flex-col shadow border-l border-gray-100 h-fit"
+      class="sticky top-10 px-0 py-0 flex-col shadow border-l border-gray-100 h-fit"
     >
-      <p-accordion [value]="0" [multiple]="true">
-        @for (tab of tabs; track tab.title) {
-        <p-accordion-panel [value]="tab.value">
-          <p-accordion-header
-            >{{ tab.title }}
-            <span class="text-xs font-normal ml-2">1/12 Videos • 8m</span>
+      <div class="flex items-center gap-1 px-4 py-2">
+        <span class="font-bold text-red-500">
+          {{ course.course_rating | number : "1.1-1" }}
+        </span>
+        <span class="text-red-500">
+          <span *ngFor="let star of getStarArray(course.course_rating)">{{
+            star
+          }}</span>
+        </span>
+        |
+        <p class="text-lg font-semibold">
+          {{ course.certificates_count }} chứng chỉ
+        </p>
+        |
+        <p class="text-xl font-bold text-primary">
+          {{ formatPrice(course.price) }}
+        </p>
+      </div>
+      <button
+        *ngIf="!isUserEnrolled"
+        (click)="enrollCourse()"
+        class="px-6 py-3 bg-secondary hover:bg-secondary-content transition duration-300 text-white font-semibold w-full cursor-pointer"
+      >
+        Mua ngay
+      </button>
+      <p
+        *ngIf="isUserEnrolled"
+        class="text-secondary text-sm w-full text-center py-2"
+      >
+        Bạn đã đăng ký khóa học này.
+      </p>
+      <p-accordion [value]="0" [multiple]="true" class="!rounded-none">
+        <!-- Chỉ có 1 tab duy nhất với tiêu đề "Bài học" -->
+        <p-accordion-panel [value]="0">
+          <p-accordion-header class="!bg-gray/30 !rounded-none">
+            <div class="w-full justify-between flex items-center mr-5">
+              Bài học
+              <span class="text-xs font-normal ml-2 text-end">
+                {{ lessons.length || 0 }}/{{ lessons.length || 0 }} Videos •
+                {{ getTotalDuration(lessons) }} phút
+              </span>
+            </div>
           </p-accordion-header>
           <p-accordion-content>
-            <div class="m-0" *ngFor="let item of tab.content | keyvalue">
+            <!-- Lặp qua toàn bộ lessons -->
+            <div class="m-0" *ngFor="let lesson of lessons; let i = index">
               <div class="flex items-center justify-between">
-                <div lass="flex items-center gap-2">
-                  <span class="text-sm">{{ item.value }}</span>
-                  <p class="text-green-400">10m</p>
+                <div
+                  class="flex items-center gap-2 py-4 border-b-2 border-gray/20 w-full justify-between"
+                >
+                  <span class="text-sm">{{ lesson.title }}</span>
+                  <!-- Hiển thị video nếu đã chọn -->
+                  <div class="flex items-center gap-2">
+                    <!-- <video
+                  class="w-full"
+                  controls
+                  [src]="
+                    currentVideoUrl ||
+                    'https://www.w3schools.com/html/mov_bbb.mp4'
+                  "
+                  type="video/mp4"
+                >
+                  Your browser does not support the video tag.
+                </video> -->
+
+                    <a
+                      *ngIf="lesson.is_preview && lesson.video_url"
+                      (click)="
+                        playVideo(lesson.video_url); $event.preventDefault()
+                      "
+                      class="underline text-xs text-secondary cursor-pointer"
+                      >Xem trước</a
+                    >
+                    <p class="text-xs">{{ lesson.duration }} phút</p>
+                  </div>
                 </div>
-                <p-tag
-                  value="Hoàn thành"
-                  class="!text-xs !text-white !bg-[#00DDC0] !font-semibold"
-                />
               </div>
+              <!-- Hiển thị video nếu đã chọn -->
+              <div *ngIf="currentVideoUrl === lesson.video_url" class="mt-2">
+                <video
+                  class="w-full"
+                  controls
+                  [src]="currentVideoUrl"
+                  type="video/mp4"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <!-- Thông báo nếu không có quyền xem -->
+              <!-- <div
+                *ngIf="!lesson.is_preview && !isUserEnrolled"
+                class="text-sm text-red-500 mt-2"
+              >
+                Vui lòng đăng ký khóa học để xem video này.
+              </div> -->
             </div>
           </p-accordion-content>
         </p-accordion-panel>
-        }
       </p-accordion>
     </div>
   </div>

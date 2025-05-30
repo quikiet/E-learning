@@ -1,0 +1,5 @@
+@media (min-width: 1024px) {
+    ::ng-deep .p-accordioncontent-content {
+        background-color: #F8F8F8 !important;
+    }
+}
