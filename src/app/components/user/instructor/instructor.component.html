@@ -4,9 +4,9 @@
       <div class="max-w-7xl mx-auto relative z-10 p-10">
         <div class="flex items-center justify-between w-full m-3">
           <div class="flex items-start gap-2 flex-col pt-4">
-            <p class="text-orange-600">Teacher</p>
+            <p class="text-orange-600">Giáo viên</p>
             <h3 class="font-bold text-3xl text-black">
-              Meet our expert Instructor
+              Những giáo viên nổi bật của chúng tôi
             </h3>
           </div>
           <div class="mr-10">
@@ -30,7 +30,7 @@
         </div>
         <p-carousel
           #carousel
-          [value]="lists"
+          [value]="instructors"
           [numVisible]="4"
           [numScroll]="4"
           [circular]="true"
@@ -40,7 +40,7 @@
           (onPage)="onCarouselPageChange($event)"
           [showNavigators]="false"
         >
-          <ng-template let-list #item>
+          <ng-template let-instructor #item>
             <div
               class="m-5 relative group rounded-md overflow-hidden bg-white teacher_card"
             >
@@ -74,7 +74,9 @@
                 </div>
 
                 <div class="p-6 pt-3">
-                  <p class="text-black font-semibold">Nathan Allen</p>
+                  <p class="text-black font-semibold">
+                    {{ instructor.instructor.name }}
+                  </p>
                   <p class="text-orange-600">Teacher</p>
                 </div>
               </div>

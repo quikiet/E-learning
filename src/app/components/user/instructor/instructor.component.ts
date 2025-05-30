@@ -1,17 +1,21 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { Carousel } from 'primeng/carousel';
+import { Carousel, CarouselModule } from 'primeng/carousel';
 import { Tag } from 'primeng/tag';
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { InstructorsService } from '../../../services/instructors.service';
 @Component({
   selector: 'app-instructor',
-  imports: [ButtonModule, Carousel],
+  imports: [ButtonModule, CarouselModule],
   templateUrl: './instructor.component.html',
   styleUrl: './instructor.component.css'
 })
 export class IntructorComponent implements OnInit, AfterViewInit {
   @ViewChild('carousel') carousel!: Carousel;
+
+  constructor(private instructorService: InstructorsService) { }
+
   prevSlide(event: MouseEvent) {
     this.carousel.navBackward(event);
   }
@@ -58,15 +62,11 @@ export class IntructorComponent implements OnInit, AfterViewInit {
     { 'value': 7, },
     { 'value': 8, },
   ];
-
+  instructors: any[] = [];
 
   responsiveOptions: any[] | undefined;
 
-  constructor() { }
-
   ngOnInit() {
-    console.log(this.lists);
-
     this.responsiveOptions = [
       {
         breakpoint: '1400px',
@@ -89,7 +89,19 @@ export class IntructorComponent implements OnInit, AfterViewInit {
         numScroll: 1
       }
     ]
+    this.loadInstructor();
   }
+
+  loadInstructor() {
+    this.instructorService.getAllInstructors().subscribe({
+      next: (res) => {
+        this.instructors = res;
+      }, error: (err) => {
+        console.log(err.message);
+      }
+    })
+  }
+
   currentPage: number = 0; // Trang hiện tại của carousel
   numVisible: number = 4; // Số item hiển thị (mặc định là 5)
   numScroll: number = 4; // Số item cuộn mỗi lần
