@@ -27,10 +27,11 @@ export class IntructorComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.from(".teacher_card", {
+    gsap.from("#teacher_carousel", {
       opacity: 0,
-      x: -50,
-      stagger: 0.2,
+      y: 100,
+      delay: 1,
+      duration: 1,
       scrollTrigger: {
         trigger: ".shape_intructor",
         start: "top bottom",
@@ -43,7 +44,7 @@ export class IntructorComponent implements OnInit, AfterViewInit {
       opacity: 0,
       x: 100,
       scrollTrigger: {
-        trigger: ".teacher_card",
+        trigger: "#teacher_carousel",
         start: "top center",
         scrub: 1,
         end: "+=250",

@@ -9,7 +9,27 @@ export class InstructorsService {
   private apiUrl = 'http://localhost:8000/api';
   constructor(private http: HttpClient) { }
 
+  AdminGetAllInstructors(page: number = 1, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/instructors?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  }
+
   getAllInstructors(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/all/getAllInstructors`);
   }
+
+  // Xóa mềm giảng viên
+  deleteInstructor(instructorId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/admin/instructors/${instructorId}`, { withCredentials: true });
+  }
+
+  // Lấy danh sách giảng viên đã bị xóa
+  getTrashedInstructors(page: number = 1, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/instructors/trashed?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  }
+
+  // Khôi phục giảng viên
+  restoreInstructor(instructorId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/admin/instructors/restore/${instructorId}`, {}, { withCredentials: true });
+  }
+
 }

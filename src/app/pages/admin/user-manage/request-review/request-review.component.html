@@ -1,0 +1,270 @@
+<p-toast></p-toast>
+<p-dialog
+  header="Thông tin chi tiết yêu cầu"
+  [(visible)]="displayDialog"
+  [modal]="true"
+  styleClass="md:w-[50vw]"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div *ngIf="selectedRequest" class="cv-container">
+    <div class="w-full flex items-center gap-5 mb-4">
+      <p-avatar
+        [image]="
+          selectedRequest.avatar
+            ? selectedRequest.avatar
+            : 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'
+        "
+        class="mr-2"
+        size="xlarge"
+        shape="circle"
+      />
+      <h3 class="text-xl font-bold mb-4">{{ selectedRequest.name }}</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Thông tin cá nhân -->
+      <div>
+        <p><strong>Email:</strong> {{ selectedRequest.user.email }}</p>
+        <p>
+          <strong>Số điện thoại:</strong> {{ selectedRequest.phone_number }}
+        </p>
+        <p>
+          <strong>Liên kết chuyên môn:</strong>
+          <a
+            [href]="selectedRequest.professional_links"
+            target="_blank"
+            class="text-blue-500 hover:underline"
+          >
+            {{ selectedRequest.professional_links }}
+          </a>
+        </p>
+        <p>
+          <strong>Quốc gia:</strong>
+          {{ selectedRequest.user.final_cc_cname_DI }}
+        </p>
+        <p><strong>Giới tính:</strong> {{ selectedRequest.user.gender }}</p>
+        <p><strong>Năm sinh:</strong> {{ selectedRequest.user.YoB }}</p>
+      </div>
+      <!-- Thông tin học vấn và kinh nghiệm -->
+      <div>
+        <p><strong>Tiểu sử:</strong> {{ selectedRequest.bio }}</p>
+        <p><strong>Tổ chức:</strong> {{ selectedRequest.organization }}</p>
+        <p><strong>Trình độ:</strong> {{ selectedRequest.qualifications }}</p>
+        <p>
+          <strong>Kinh nghiệm giảng dạy:</strong>
+          {{ selectedRequest.teaching_experience }}
+        </p>
+        <p><strong>Chuyên môn:</strong> {{ selectedRequest.expertise }}</p>
+      </div>
+    </div>
+    <!-- Yêu cầu và động lực -->
+    <div class="mt-4">
+      <p>
+        <strong>Đề xuất khóa học:</strong> {{ selectedRequest.course_proposal }}
+      </p>
+      <p><strong>Động lực:</strong> {{ selectedRequest.motivation }}</p>
+      <p>
+        <strong>Tài liệu:</strong>
+        <a
+          [href]="selectedRequest.document_urls"
+          target="_blank"
+          class="text-blue-500 hover:underline"
+        >
+          {{ selectedRequest.document_urls }}
+        </a>
+      </p>
+      <div>
+        <strong class="mr-2">Trạng thái:</strong>
+        <span>
+          <p-tag
+            *ngIf="selectedRequest.status === 'pending'"
+            severity="warn"
+            value="Chờ duyệt"
+            [rounded]="true"
+            class="!text-xs"
+          />
+          <p-tag
+            *ngIf="selectedRequest.status === 'approved'"
+            severity="success"
+            class="!text-xs"
+            value="Chấp nhận"
+            [rounded]="true"
+          />
+          <p-tag
+            *ngIf="selectedRequest.status === 'rejected'"
+            severity="danger"
+            class="!text-xs"
+            value="Từ chối"
+            [rounded]="true"
+          />
+        </span>
+      </div>
+      <p>
+        <strong>Ngày gửi:</strong>
+        {{ selectedRequest.created_at | date : "dd/MM/yyyy HH:mm" }}
+      </p>
+      <p *ngIf="selectedRequest.admin_notes">
+        <strong>Ghi chú từ admin:</strong> {{ selectedRequest.admin_notes }}
+      </p>
+      <p *ngIf="selectedRequest.reviewed_at">
+        <strong>Ngày duyệt:</strong>
+        {{ selectedRequest.reviewed_at | date : "dd/MM/yyyy HH:mm" }}
+      </p>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      label="Từ chối"
+      class="p-button-danger"
+      (click)="
+        openReviewDialog(selectedRequest.id, 'rejected');
+        $event.stopPropagation()
+      "
+    ></button>
+    <button
+      pButton
+      label="Duyệt"
+      class="p-button-primary"
+      (click)="
+        openReviewDialog(selectedRequest.id, 'approved');
+        $event.stopPropagation()
+      "
+    ></button>
+
+    <p-dialog
+      [header]="
+        reviewAction === 'approved' ? 'Duyệt yêu cầu' : 'Từ chối yêu cầu'
+      "
+      [(visible)]="displayReviewDialog"
+      [modal]="true"
+      [style]="{ width: '30vw' }"
+      [draggable]="false"
+      [resizable]="false"
+    >
+      <div class="p-4">
+        <p>Vui lòng nhập ghi chú (nếu có):</p>
+        <textarea
+          rows="5"
+          cols="30"
+          placeholder="Nhập ghi chú (tối đa 2000 ký tự)"
+          maxlength="2000"
+          pTextarea
+          [(ngModel)]="adminNotes"
+          class="w-full mt-4"
+        ></textarea>
+      </div>
+      <ng-template pTemplate="footer">
+        <button
+          pButton
+          label="Hủy"
+          class="p-button-secondary"
+          (click)="displayReviewDialog = false; adminNotes = ''"
+        ></button>
+        <button
+          pButton
+          [label]="
+            reviewAction === 'approved' ? 'Xác nhận duyệt' : 'Xác nhận từ chối'
+          "
+          [ngClass]="
+            reviewAction === 'approved' ? 'p-button-success' : 'p-button-danger'
+          "
+          (click)="submitReview()"
+        ></button>
+      </ng-template>
+    </p-dialog>
+  </ng-template>
+</p-dialog>
+
+<div>
+  <p-table
+    [value]="requests"
+    class="w-full !text-sm"
+    [rowHover]="true"
+    #tableRequest
+  >
+    <ng-template #caption>
+      <div class="flex items-center justify-between">
+        <p class="m-0 lg:text-lg font-semibold">
+          Danh sách yêu cầu trở thành giảng viên
+          <p-button type="button" icon="pi pi-refresh" (click)="reset()" text />
+        </p>
+
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input pInputText type="text" placeholder="Search..." />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="user_id">
+          Mã người dùng <p-sortIcon field="user_id" />
+        </th>
+        <th>Tên</th>
+        <th>Email</th>
+        <th>Chuyên môn</th>
+        <th>Trình độ</th>
+        <th>Kinh nghiệm giảng dạy</th>
+        <th>Đề xuất khóa học</th>
+        <th>Ngày gửi</th>
+        <th>Trạng thái</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-request>
+      <tr (click)="showRequestDetails(request)">
+        <td>{{ request.user_id }}</td>
+        <td>{{ request.name }}</td>
+        <td [pTooltip]="request.user.email" tooltipPosition="right">
+          {{ cutText(request.user.email, 16) }}
+        </td>
+        <td [pTooltip]="request.expertise" tooltipPosition="right">
+          {{ cutText(request.expertise, 20) }}
+        </td>
+        <td [pTooltip]="request.qualifications" tooltipPosition="right">
+          {{ cutText(request.qualifications, 30) }}
+        </td>
+        <td [pTooltip]="request.teaching_experience" tooltipPosition="right">
+          {{ cutText(request.teaching_experience, 20) }}
+        </td>
+        <td [pTooltip]="request.course_proposal" tooltipPosition="right">
+          {{ cutText(request.course_proposal, 20) }}
+        </td>
+        <td>{{ request.created_at | date : "dd/MM/yyyy" }}</td>
+        <td>
+          <div>
+            <p-tag
+              *ngIf="request.status === 'pending'"
+              severity="warn"
+              value="Chờ duyệt"
+              [rounded]="true"
+              class="!text-xs"
+            />
+            <p-tag
+              *ngIf="request.status === 'approved'"
+              severity="success"
+              class="!text-xs"
+              value="Chấp nhận"
+              [rounded]="true"
+            />
+            <p-tag
+              *ngIf="request.status === 'rejected'"
+              severity="danger"
+              class="!text-xs"
+              value="Từ chối"
+              [rounded]="true"
+            />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Phân trang -->
+  <p-paginator
+    [rows]="perPage"
+    [totalRecords]="totalRecords"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    (onPageChange)="onPageChange($event)"
+  ></p-paginator>
+</div>

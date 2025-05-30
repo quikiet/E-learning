@@ -39,6 +39,7 @@
           [responsiveOptions]="responsiveOptions"
           (onPage)="onCarouselPageChange($event)"
           [showNavigators]="false"
+          id="teacher_carousel"
         >
           <ng-template let-instructor #item>
             <div
@@ -48,10 +49,18 @@
                 <div class="relative">
                   <img
                     alt="Card"
-                    class="w-full max-h-[300px] p-2"
-                    src="teacher_avatar2.png"
+                    class="w-full h-80 p-2 object-center"
+                    [src]="
+                      instructor.avatar
+                        ? instructor.avatar
+                        : 'teacher_avatar2.png'
+                    "
                   />
-                  <div class="absolute -bottom-3 right-10">
+                  <a
+                    class="absolute -bottom-3 right-10 cursor-pointer"
+                    [href]="instructor.professional_links"
+                    target="_blank"
+                  >
                     <svg
                       width="41"
                       height="41"
@@ -70,14 +79,14 @@
                         fill="white"
                       />
                     </svg>
-                  </div>
+                  </a>
                 </div>
 
                 <div class="p-6 pt-3">
                   <p class="text-black font-semibold">
                     {{ instructor.instructor.name }}
                   </p>
-                  <p class="text-orange-600">Teacher</p>
+                  <p class="text-orange-600">{{ instructor.email }}</p>
                 </div>
               </div>
             </div>

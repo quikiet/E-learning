@@ -1,0 +1,64 @@
+<p-toast></p-toast>
+<div>
+  <p-tabView>
+    <!-- Tab 1: Danh sách giảng viên -->
+    <p-tabPanel header="Danh sách giảng viên">
+      <p-table
+        [value]="instructors"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [loading]="isLoading"
+      >
+        <ng-template #caption>
+          <div class="flex items-center justify-between">
+            <p class="m-0 lg:text-lg font-semibold">
+              Danh sách yêu cầu trở thành giảng viên
+              <p-button
+                type="button"
+                icon="pi pi-refresh"
+                (click)="loadInstructors()"
+                text
+              />
+            </p>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Tên</th>
+            <th>Avatar</th>
+            <th>Tiểu sử</th>
+            <th>Tổ chức</th>
+            <th>Ngày tạo</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-instructor>
+          <tr>
+            <td>{{ instructor.name }}</td>
+            <td>
+              <img
+                [src]="
+                  instructor.avatar
+                    ? instructor.avatar
+                    : 'assets/default-avatar.jpg'
+                "
+                alt="Avatar"
+                class="w-12 h-12 rounded-full"
+                [style]="{ 'object-fit': 'cover' }"
+              />
+            </td>
+            <td>{{ instructor.bio }}</td>
+            <td>{{ instructor.organization }}</td>
+            <td>{{ instructor.created_at | date : "dd/MM/yyyy" }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <!-- Phân trang cho danh sách giảng viên -->
+      <p-paginator
+        [rows]="perPage"
+        [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        (onPageChange)="onPageChange($event)"
+      ></p-paginator>
+    </p-tabPanel>
+  </p-tabView>
+</div>

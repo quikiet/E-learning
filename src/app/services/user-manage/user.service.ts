@@ -22,7 +22,7 @@ export class UserService {
   }
 
   restoreDeleteUser(id: number): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/users/${id}/restore`, { withCredentials: true });
+    return this.http.put<any>(`${this.apiUrl}/users/${id}/restore`, {}, { withCredentials: true });
   }
 
   forceDeleteUser(id: number): Observable<any> {

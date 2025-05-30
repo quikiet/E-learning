@@ -24,6 +24,8 @@ import { UserDetailComponent } from './pages/admin/user-manage/user-detail/user-
 import { UserDeletedComponent } from './pages/admin/user-manage/user-deleted/user-deleted.component';
 import { CourseSearchComponent } from './pages/User/course-search/course-search.component';
 import { InstructorRequestComponent } from './pages/User/instructor-request/instructor-request.component';
+import { RequestReviewComponent } from './pages/admin/user-manage/request-review/request-review.component';
+import { InstructorManageComponent } from './pages/admin/user-manage/instructor-manage/instructor-manage.component';
 
 export const routes: Routes = [
     {
@@ -44,6 +46,8 @@ export const routes: Routes = [
             { path: 'ho-so', component: ProfileInfoComponent },
             { path: 'thong-ke', component: DashboardComponent },
             { path: 'quan-ly-nguoi-dung', component: UserManageComponent },
+            { path: 'quan-ly-giang-vien', component: InstructorManageComponent },
+            { path: 'quan-ly-don-duyet', component: RequestReviewComponent },
             { path: 'nguoi-dung-da-xoa', component: UserDeletedComponent },
             { path: 'quan-ly-nguoi-dung/:id', component: UserDetailComponent },
             { path: 'quan-ly-khoa-hoc', component: CourseManageComponent },
