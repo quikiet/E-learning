@@ -149,31 +149,6 @@ export class CourseManageComponent implements OnInit {
     }));
   }
 
-  openNew() {
-    this.course = {};
-    this.submitted = false;
-    this.courseDialog = true;
-  }
-
-  hideDialog() {
-    this.courseDialog = false;
-    this.submitted = false;
-    this.isLoading = false;
-  }
-
-  addCourse() {
-    if (this.courseForm.valid) {
-      console.log('Form submmitted: ', this.courseForm.value);
-    } else {
-      this.courseForm.markAllAsTouched();
-    }
-  }
-
-  updateCourse() {
-
-  }
-
-
   cutText(text: string, wordLimit: number = 50): string {
     if (!text) return '';
     const words = text.split(' ');

@@ -25,6 +25,10 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/admin/courses?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
 
+  getPendingCourses(page: number, perPage: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/courses/pending?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  }
+
   searchCourses(params: any): Observable<any> {
     let httpParams = new HttpParams();
 
@@ -54,4 +58,11 @@ export class CoursesService {
     return this.http.post<any>(`${this.apiUrl}/instructor/courses`, data, { withCredentials: true });
   }
 
+  reviewCourse(courseId: number, data: { notes: string | null }): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/courses/${courseId}/approve`, data, { withCredentials: true });
+  }
+
+  rejectCourse(courseId: number, data: { notes: string | null }): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/courses/${courseId}/reject`, data, { withCredentials: true });
+  }
 }
