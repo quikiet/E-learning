@@ -26,6 +26,7 @@ import { CourseSearchComponent } from './pages/User/course-search/course-search.
 import { InstructorRequestComponent } from './pages/User/instructor-request/instructor-request.component';
 import { RequestReviewComponent } from './pages/admin/user-manage/request-review/request-review.component';
 import { InstructorManageComponent } from './pages/admin/user-manage/instructor-manage/instructor-manage.component';
+import { CreateCourseComponent } from './pages/User/create-course/create-course.component';
 
 export const routes: Routes = [
     {
@@ -36,6 +37,7 @@ export const routes: Routes = [
             { path: 'chi-tiet-khoa-hoc/:slug', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
             { path: 'khoa-hoc', component: CourseSearchComponent },
+            { path: 'tao-khoa-hoc', component: CreateCourseComponent },
             { path: 'yeu-cau', component: InstructorRequestComponent },
         ]
     },

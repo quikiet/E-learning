@@ -119,8 +119,16 @@
             <a
               class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
               [routerLink]="['/yeu-cau']"
+              *ngIf="userRole === 'student'"
             >
               Giảng dạy trên SmartLearn
+            </a>
+            <a
+              *ngIf="userRole === 'instructor'"
+              class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
+              [routerLink]="['/tao-khoa-hoc']"
+            >
+              Đăng khoá học
             </a>
           </li>
           <li class="my-5 lg:my-0">

@@ -50,4 +50,8 @@ export class CoursesService {
     return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/enroll-paid`, data, { withCredentials: true });
   }
 
+  createCourse(data: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/instructor/courses`, data, { withCredentials: true });
+  }
+
 }

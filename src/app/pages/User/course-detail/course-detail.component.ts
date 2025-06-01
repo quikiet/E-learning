@@ -8,7 +8,7 @@ import { CoursesService } from '../../../services/courses.service';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
-
+import { MultiSelectModule } from 'primeng/multiselect';
 // Định nghĩa interface cho bài học
 interface Lesson {
   title: string;
@@ -34,7 +34,8 @@ interface Tab {
     CommonModule,
     DividerModule,
     AvatarModule,
-    TagModule
+    TagModule,
+    MultiSelectModule
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',

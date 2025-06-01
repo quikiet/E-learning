@@ -1,0 +1,141 @@
+<p-toast></p-toast>
+<div class="max-w-3xl mx-auto my-10 p-6 bg-white shadow-md rounded-lg">
+  <h2 class="text-2xl font-bold mb-6">Tạo khóa học mới</h2>
+  <form (ngSubmit)="createCourse()" #courseForm="ngForm">
+    <div class="mb-4">
+      <label for="course_name" class="block text-sm font-medium text-gray-700"
+        >Tên khóa học</label
+      >
+      <input
+        type="text"
+        id="course_name"
+        name="course_name"
+        [(ngModel)]="course.course_name"
+        required
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+      />
+    </div>
+    <div class="mb-4">
+      <label for="university" class="block text-sm font-medium text-gray-700"
+        >Đại học</label
+      >
+      <input
+        type="text"
+        id="university"
+        name="university"
+        [(ngModel)]="course.university"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+      />
+    </div>
+    <div class="mb-4">
+      <label
+        for="difficulty_level"
+        class="block text-sm font-medium text-gray-700"
+        >Mức độ khó</label
+      >
+      <select
+        id="difficulty_level"
+        name="difficulty_level"
+        [(ngModel)]="course.difficulty_level"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+      >
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label
+        for="course_description"
+        class="block text-sm font-medium text-gray-700"
+        >Mô tả khóa học</label
+      >
+      <textarea
+        id="course_description"
+        name="course_description"
+        [(ngModel)]="course.course_description"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        rows="4"
+      ></textarea>
+    </div>
+    <div class="mb-4">
+      <label for="skills" class="block text-sm font-medium text-gray-700"
+        >Kỹ năng</label
+      >
+      <input
+        type="text"
+        id="skills"
+        name="skills"
+        [(ngModel)]="course.skills"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+      />
+    </div>
+    <div class="mb-4">
+      <label for="price" class="block text-sm font-medium text-gray-700"
+        >Giá khóa học (VND)</label
+      >
+      <input
+        type="number"
+        id="price"
+        name="price"
+        [(ngModel)]="course.price"
+        required
+        min="0"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+      />
+    </div>
+    <div class="mb-4">
+      <label for="image" class="block text-sm font-medium text-gray-700"
+        >Ảnh đại diện</label
+      >
+      <input
+        type="file"
+        id="image"
+        name="image"
+        (change)="onImageSelected($event)"
+        accept="image/*"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+      />
+    </div>
+    <div class="mb-4">
+      <label for="category_ids" class="block text-sm font-medium text-gray-700"
+        >Danh mục</label
+      >
+      <p-multiSelect
+        [options]="categories"
+        [(ngModel)]="selectedCategories"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Chọn danh mục"
+        class="w-full md:w-56"
+        name="category_ids"
+        required
+        #categoryIds="ngModel"
+        (onChange)="onCategoryChange($event)"
+      ></p-multiSelect>
+      <div
+        *ngIf="courseForm.submitted && categoryIds.invalid"
+        class="text-red-500 text-sm mt-1"
+      >
+        Vui lòng chọn ít nhất một danh mục.
+      </div>
+      <!-- Hiển thị danh mục đã chọn để kiểm tra -->
+      <div
+        *ngIf="selectedCategories?.length"
+        class="mt-2 text-sm text-gray-600"
+      >
+        Danh mục đã chọn: {{ selectedCategories.join(", ") }}
+      </div>
+    </div>
+    <button
+      type="submit"
+      [disabled]="!courseForm.valid"
+      class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+    >
+      Gửi khóa học
+    </button>
+    <div *ngIf="selectedCategories?.length" class="mt-2 text-sm text-gray-600">
+      Danh mục đã chọn: {{ selectedCategories.join(", ") }}
+    </div>
+  </form>
+</div>
