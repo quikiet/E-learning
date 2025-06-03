@@ -20,15 +20,26 @@
           <ul class="list-none p-4 m-0">
             <li>
               <ul class="list-none p-0 m-0 overflow-hidden">
-                <li>
+                <li class="mb-2">
                   <a
+                    [routerLink]="['/ho-so']"
+                    routerLinkActive="bg-secondary-content text-white"
                     pRipple
-                    class="flex items-center cursor-pointer p-4 rounded-border text-surface-700 hover:bg-surface-100 duration-150 transition-colors p-ripple"
+                    class="flex items-center cursor-pointer p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                   >
                     <i class="pi pi-user mr-2"></i>
-                    <span class="font-medium text-black"
-                      >Thông tin cá nhân</span
-                    >
+                    <span class="font-medium">Thông tin cá nhân</span>
+                  </a>
+                </li>
+                <li class="mb-2">
+                  <a
+                    [routerLink]="['/danh-sach-khoa-hoc']"
+                    routerLinkActive="bg-secondary-content text-white"
+                    pRipple
+                    class="flex items-center cursor-pointer p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-list mr-2"></i>
+                    <span class="font-medium">Danh sách khoá học</span>
                   </a>
                 </li>
               </ul>

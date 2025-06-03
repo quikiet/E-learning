@@ -41,7 +41,6 @@ export const routes: Routes = [
             { path: 'chi-tiet-khoa-hoc/:slug', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
             { path: 'khoa-hoc', component: CourseSearchComponent },
-            { path: 'danh-sach-khoa-hoc', component: InstructorCoursesComponent },
             { path: 'tao-khoa-hoc', component: CreateCourseComponent },
             { path: 'them-bai-hoc/:courseId', component: AddLessonsComponent },
             { path: 'yeu-cau', component: InstructorRequestComponent },
@@ -73,10 +72,12 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'ho-so',
+        path: '',
         component: ProfileComponent,
         children: [
-            { path: '', component: ProfileInfoComponent }
+            { path: 'ho-so', component: ProfileInfoComponent },
+            { path: 'danh-sach-khoa-hoc', component: InstructorCoursesComponent },
+            { path: '**', redirectTo: 'ho-so', pathMatch: 'full' },
         ]
     },
 

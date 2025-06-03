@@ -120,12 +120,12 @@
         Vui lòng chọn ít nhất một danh mục.
       </div>
       <!-- Hiển thị danh mục đã chọn để kiểm tra -->
-      <div
+      <!-- <div
         *ngIf="selectedCategories?.length"
         class="mt-2 text-sm text-gray-600"
       >
         Danh mục đã chọn: {{ selectedCategories.join(", ") }}
-      </div>
+      </div> -->
     </div>
     <button
       type="submit"
@@ -134,8 +134,5 @@
     >
       Gửi khóa học
     </button>
-    <div *ngIf="selectedCategories?.length" class="mt-2 text-sm text-gray-600">
-      Danh mục đã chọn: {{ selectedCategories.join(", ") }}
-    </div>
   </form>
 </div>

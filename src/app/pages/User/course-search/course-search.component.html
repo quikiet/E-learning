@@ -62,12 +62,17 @@
                     <h3 class="font-semibold text-lg">
                       {{ course.course_name }}
                     </h3>
-                    <b class="py-1 text-xs">{{
+                    <b class="" *ngIf="course.price > 0">{{
                       course.price
                         | currency : "VND" : "symbol-narrow" : "1.0-0"
                     }}</b>
+                    <b class="text-secondary" *ngIf="course.price === 0"
+                      >Miễn phí</b
+                    >
                   </div>
-                  <p class="text-sm">{{ course.course_description }}</p>
+                  <p class="text-sm">
+                    {{ cutText(course.course_description) }}
+                  </p>
                   <span class="text-gray-400 text-xs">{{
                     course.instructors.name || "Tên tác giả"
                   }}</span>

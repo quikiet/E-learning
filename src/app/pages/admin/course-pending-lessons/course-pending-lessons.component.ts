@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CoursesService } from '../../../services/courses.service';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -14,7 +14,8 @@ import { DialogModule } from 'primeng/dialog';
     TableModule,
     TagModule,
     ToastModule,
-    DialogModule
+    DialogModule,
+    RouterLink
   ],
   providers: [MessageService],
   templateUrl: './course-pending-lessons.component.html',
