@@ -1,0 +1,122 @@
+<h2 class="text-2xl font-bold text-gray-800 mb-6">
+  Bài học đang chờ duyệt - Khóa học {{ courseId }}
+</h2>
+
+<!-- Bảng hiển thị bài học -->
+<p-table
+  class="w-full bg-white shadow-lg rounded-lg border border-gray-100"
+  [value]="lessons"
+  [rowHover]="true"
+  dataKey="id"
+  [loading]="isLoading"
+>
+  <ng-template pTemplate="caption">
+    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-t-lg">
+      <p class="m-0 lg:text-lg font-semibold text-gray-800">
+        Danh sách bài học
+      </p>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr class="text-sm bg-gray-100 text-gray-700">
+      <th class="p-3">ID</th>
+      <th class="p-3">Tiêu đề</th>
+      <th class="p-3">Video</th>
+      <th class="p-3">Thời lượng (phút)</th>
+      <th class="p-3">Xem trước</th>
+      <th class="p-3">Thứ tự sắp xếp</th>
+      <th class="p-3">Trạng thái</th>
+      <th class="p-3">Hành động</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-lesson>
+    <tr class="text-sm hover:bg-gray-50 transition duration-200">
+      <td class="p-3 text-gray-800">{{ lesson.id }}</td>
+      <td class="p-3 text-gray-800 truncate" [title]="lesson.title">
+        {{ lesson.title }}
+      </td>
+      <td class="p-3">
+        <a
+          [href]="lesson.video_url"
+          target="_blank"
+          class="text-blue-500 underline hover:text-blue-700 transition duration-200"
+        >
+          Xem video
+        </a>
+      </td>
+      <td class="p-3 text-gray-800">
+        {{ lesson.duration }}
+      </td>
+      <td class="p-3 text-gray-800">
+        {{ lesson.is_preview ? "Có" : "Không" }}
+      </td>
+      <td class="p-3 text-gray-800">{{ lesson.sort_order }}</td>
+      <td class="p-3">
+        <p-tag
+          *ngIf="lesson.status === 'pending'"
+          severity="warn"
+          value="Đang chờ duyệt"
+          [rounded]="true"
+          class="!text-xs"
+        />
+        <p-tag
+          *ngIf="lesson.status === 'approved'"
+          severity="success"
+          value="Đã duyệt"
+          [rounded]="true"
+          class="!text-xs"
+        />
+        <p-tag
+          *ngIf="lesson.status === 'rejected'"
+          severity="danger"
+          value="Đã từ chối"
+          [rounded]="true"
+          class="!text-xs"
+        />
+      </td>
+      <td class="p-3">
+        <!-- Nút xem video (nếu cần thêm hành động khác như duyệt/từ chối) -->
+        <button
+          (click)="viewVideo(lesson.video_url)"
+          class="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 transition duration-200 text-sm"
+        >
+          Xem video
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8" class="text-center text-gray-500 py-4">
+        Không có bài học nào đang chờ duyệt.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- Dialog xem video -->
+<p-dialog
+  [(visible)]="showVideoDialog"
+  [style]="{ width: '800px' }"
+  header="Xem video bài học"
+  [modal]="true"
+  class="rounded-lg shadow-lg"
+>
+  <ng-template pTemplate="content">
+    <div class="p-4">
+      <video controls class="w-full h-auto rounded-lg" [src]="selectedVideoUrl">
+        Trình duyệt của bạn không hỗ trợ video.
+      </video>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Đóng"
+      icon="pi pi-times"
+      class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
+      (click)="showVideoDialog = false"
+    ></button>
+  </ng-template>
+</p-dialog>

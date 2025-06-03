@@ -47,6 +47,11 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons/${lessonId}`, { withCredentials: true });
   }
 
+  // Lấy danh sách bài học đang chờ duyệt của khóa học
+  getPendingLessonsForCourse(courseId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/courses/${courseId}/pending-lessons`, { withCredentials: true });
+  }
+
   getPendingCourses(page: number, perPage: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/admin/courses/pending?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }

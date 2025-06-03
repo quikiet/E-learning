@@ -30,6 +30,7 @@ import { CreateCourseComponent } from './pages/User/create-course/create-course.
 import { PendingCoursesComponent } from './pages/admin/pending-courses/pending-courses.component';
 import { AddLessonsComponent } from './pages/User/add-lessons/add-lessons.component';
 import { InstructorCoursesComponent } from './pages/User/instructor-courses/instructor-courses.component';
+import { CoursePendingLessonsComponent } from './pages/admin/course-pending-lessons/course-pending-lessons.component';
 
 export const routes: Routes = [
     {
@@ -58,6 +59,7 @@ export const routes: Routes = [
             { path: 'nguoi-dung-da-xoa', component: UserDeletedComponent },
             { path: 'quan-ly-nguoi-dung/:id', component: UserDetailComponent },
             { path: 'quan-ly-khoa-hoc', component: CourseManageComponent },
+            { path: 'quan-ly-khoa-hoc/:courseId/danh-sach-khoa-hoc', component: CoursePendingLessonsComponent },
             { path: 'danh-sach-khoa-hoc-cho', component: PendingCoursesComponent },
             { path: 'quan-ly-danh-muc', component: CategoryManageComponent },
             { path: 'quan-ly-bai-hoc', component: LessonManageComponent },

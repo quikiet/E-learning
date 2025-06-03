@@ -153,7 +153,10 @@
     </tr>
   </ng-template>
   <ng-template #body let-author>
-    <tr class="text-sm">
+    <tr
+      class="text-sm"
+      routerLink="/admin/quan-ly-khoa-hoc/{{ author.id }}/danh-sach-khoa-hoc"
+    >
       <td>
         <p-tableCheckbox [value]="author" />
       </td>

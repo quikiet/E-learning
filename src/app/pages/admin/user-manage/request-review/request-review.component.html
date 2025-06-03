@@ -22,7 +22,6 @@
       <h3 class="text-xl font-bold mb-4">{{ selectedRequest.name }}</h3>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Thông tin cá nhân -->
       <div>
         <p><strong>Email:</strong> {{ selectedRequest.user.email }}</p>
         <p>
@@ -45,7 +44,6 @@
         <p><strong>Giới tính:</strong> {{ selectedRequest.user.gender }}</p>
         <p><strong>Năm sinh:</strong> {{ selectedRequest.user.YoB }}</p>
       </div>
-      <!-- Thông tin học vấn và kinh nghiệm -->
       <div>
         <p><strong>Tiểu sử:</strong> {{ selectedRequest.bio }}</p>
         <p><strong>Tổ chức:</strong> {{ selectedRequest.organization }}</p>
@@ -57,7 +55,6 @@
         <p><strong>Chuyên môn:</strong> {{ selectedRequest.expertise }}</p>
       </div>
     </div>
-    <!-- Yêu cầu và động lực -->
     <div class="mt-4">
       <p>
         <strong>Đề xuất khóa học:</strong> {{ selectedRequest.course_proposal }}
@@ -177,24 +174,164 @@
 </p-dialog>
 
 <div>
+  <!-- Bảng hiển thị yêu cầu -->
   <p-table
     [value]="requests"
     class="w-full !text-sm"
     [rowHover]="true"
     #tableRequest
   >
-    <ng-template #caption>
+    <ng-template pTemplate="caption">
       <div class="flex items-center justify-between">
         <p class="m-0 lg:text-lg font-semibold">
           Danh sách yêu cầu trở thành giảng viên
           <p-button type="button" icon="pi pi-refresh" (click)="reset()" text />
+          <p-button
+            type="button"
+            icon="pi pi-filter"
+            (click)="drawerFilter = true"
+            text
+          />
         </p>
-
-        <p-iconfield>
-          <p-inputicon styleClass="pi pi-search" />
-          <input pInputText type="text" placeholder="Search..." />
-        </p-iconfield>
       </div>
+      <p-drawer
+        header="Tìm kiếm yêu cầu"
+        [(visible)]="drawerFilter"
+        position="right"
+        styleClass="!w-full md:!w-[40rem] lg:!w-[30rem]"
+      >
+        <!-- Form tìm kiếm -->
+        <form (ngSubmit)="search()" class="grid grid-cols-1 gap-4 w-full">
+          <div class="w-full">
+            <label
+              for="name"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Tên</label
+            >
+            <input
+              id="name"
+              type="text"
+              [(ngModel)]="searchParams.name"
+              name="name"
+              placeholder="Nhập tên..."
+              class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
+            />
+          </div>
+          <div class="w-full">
+            <label
+              for="email"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Email</label
+            >
+            <input
+              id="email"
+              type="text"
+              [(ngModel)]="searchParams.email"
+              name="email"
+              placeholder="Nhập email..."
+              class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
+            />
+          </div>
+          <div>
+            <label
+              for="phone_number"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Số điện thoại</label
+            >
+            <input
+              id="phone_number"
+              type="text"
+              [(ngModel)]="searchParams.phone_number"
+              name="phone_number"
+              placeholder="Nhập số điện thoại..."
+              class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
+            />
+          </div>
+          <div>
+            <label
+              for="organization"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Tổ chức</label
+            >
+            <input
+              id="organization"
+              type="text"
+              [(ngModel)]="searchParams.organization"
+              name="organization"
+              placeholder="Nhập tổ chức..."
+              class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
+            />
+          </div>
+          <div>
+            <label
+              for="status"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Trạng thái</label
+            >
+            <p-dropdown
+              id="status"
+              [(ngModel)]="searchParams.status"
+              name="status"
+              [options]="statusOptions"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Chọn trạng thái"
+              class="w-full"
+            ></p-dropdown>
+          </div>
+          <div class="md:col-span-2 flex gap-2">
+            <div class="w-1/2">
+              <label
+                for="sort_by"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Sắp xếp theo</label
+              >
+              <p-dropdown
+                id="sort_by"
+                [(ngModel)]="searchParams.sort_by"
+                name="sort_by"
+                [options]="sortByOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Chọn trường sắp xếp"
+                class="w-full"
+              ></p-dropdown>
+            </div>
+            <div class="w-1/2">
+              <label
+                for="sort_order"
+                class="block text-sm font-medium text-gray-700 mb-1"
+                >Thứ tự</label
+              >
+              <p-dropdown
+                id="sort_order"
+                [(ngModel)]="searchParams.sort_order"
+                name="sort_order"
+                [options]="sortOrderOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Chọn thứ tự"
+                class="w-full"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div class="flex gap-2 items-end">
+            <button
+              type="submit"
+              class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+            >
+              Tìm kiếm
+            </button>
+            <button
+              type="button"
+              (click)="reset()"
+              class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
+            >
+              Xóa bộ lọc
+            </button>
+          </div>
+        </form>
+      </p-drawer>
     </ng-template>
     <ng-template pTemplate="header">
       <tr>

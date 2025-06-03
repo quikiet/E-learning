@@ -18,4 +18,9 @@ export class InstructorRequestService {
     return this.http.put<any>(`${this.apiUrl}/instructor/request/${requestId}/review`, data, { withCredentials: true });
   }
 
+  // Phương thức mới để tìm kiếm yêu cầu
+  searchRequests(searchParams: any): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/instructor-requests/search`, { params: searchParams, withCredentials: true });
+  }
+
 }
