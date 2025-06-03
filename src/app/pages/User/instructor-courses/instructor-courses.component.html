@@ -1,0 +1,229 @@
+<p-toast></p-toast>
+<div class="max-w-7xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Khóa học của bạn</h2>
+
+  <!-- Grid layout cho các card khóa học -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
+    <div
+      *ngFor="let course of courses"
+      class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200"
+    >
+      <div class="relative">
+        <!-- Hình ảnh khóa học -->
+        <img
+          [src]="course.course.image || 'https://via.placeholder.com/300x150'"
+          alt="{{ course.course.course_name }}"
+          class="w-full h-40 object-cover"
+        />
+        <!-- Trạng thái -->
+        <div class="absolute top-5 right-5">
+          <p-tag
+            *ngIf="course.course.status === 'approved'"
+            severity="success"
+            value="Đang bán"
+            [rounded]="true"
+            class="!text-xs"
+          />
+          <p-tag
+            *ngIf="course.course.status === 'pending'"
+            severity="warn"
+            class="!text-xs"
+            value="Đang chờ"
+            [rounded]="true"
+          />
+          <p-tag
+            *ngIf="course.course.status === 'rejected'"
+            severity="danger"
+            class="!text-xs"
+            value="Đã xóa"
+            [rounded]="true"
+          />
+          <p-tag
+            *ngIf="course.course.status === 'unavailable'"
+            severity="secondary"
+            class="!text-xs"
+            value="Đã ẩn"
+            [rounded]="true"
+          />
+        </div>
+      </div>
+
+      <!-- Nội dung card -->
+      <div class="p-4">
+        <!-- Tên khóa học -->
+        <h3
+          class="text-lg font-semibold text-gray-800 mb-2 truncate"
+          [title]="course.course.course_name"
+        >
+          {{ course.course.course_name }}
+        </h3>
+
+        <!-- Trường đại học -->
+        <p
+          class="text-sm text-gray-600 mb-1 truncate"
+          [title]="course.course.university"
+        >
+          <i class="pi pi-building mr-1"></i> {{ course.course.university }}
+        </p>
+
+        <!-- Mức độ khó -->
+        <p class="text-sm text-gray-600 mb-1">
+          <i class="pi pi-star mr-1"></i> Mức độ:
+          {{ course.course.difficulty_level }}
+        </p>
+
+        <!-- Đánh giá -->
+        <div class="flex items-center mb-1">
+          <span class="text-sm text-gray-600 mr-1">
+            <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
+            {{ course.course.course_rating | number : "1.1-1" }}
+          </span>
+          <span class="text-xs text-gray-500"
+            >({{
+              course.course.course_rating >= 4
+                ? "Xuất sắc"
+                : course.course.course_rating >= 3
+                ? "Tốt"
+                : "Trung bình"
+            }})</span
+          >
+        </div>
+
+        <!-- Giá -->
+        <p class="text-sm font-medium text-gray-800 mb-1">
+          <i class="pi pi-money-bill mr-1"></i>
+          {{ course.course.price | number }} VND
+        </p>
+
+        <!-- Số lượng bài học -->
+        <p class="text-sm text-gray-600 mb-2">
+          <i class="pi pi-book mr-1"></i> Số bài học:
+          {{ course.lessonCount || 0 }}
+        </p>
+
+        <!-- Nút thêm bài học và xem chi tiết bài học -->
+        <div class="flex gap-2">
+          <button
+            (click)="navigateToAddLesson(course.course.id)"
+            class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 text-sm font-medium"
+          >
+            Thêm bài học
+          </button>
+          <button
+            (click)="showLessons(course.course.id)"
+            class="w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200 text-sm font-medium"
+          >
+            Xem chi tiết bài học
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phân trang -->
+  <p-paginator
+    [rows]="perPage"
+    [totalRecords]="totalRecords"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    (onPageChange)="onPageChange($event)"
+    [first]="(currentPage - 1) * perPage"
+    class="mt-6"
+  ></p-paginator>
+</div>
+
+<!-- Dialog hiển thị danh sách bài học -->
+<p-dialog
+  [(visible)]="showLessonsDialog"
+  [style]="{ width: '700px' }"
+  header="Danh sách bài học"
+  [modal]="true"
+  class="rounded-lg shadow-lg"
+>
+  <ng-template #content>
+    <div *ngIf="selectedCourseLessons.length > 0; else noLessons">
+      <div class="max-h-[400px] overflow-y-auto">
+        <div
+          *ngFor="let lesson of selectedCourseLessons"
+          class="border-b border-gray-200 py-3"
+        >
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="text-md font-semibold text-gray-800">
+                {{ lesson.title }}
+              </h4>
+              <p class="text-sm text-gray-600">
+                <i class="pi pi-clock mr-1"></i> Thời lượng:
+                {{ lesson.duration }} phút
+              </p>
+              <p class="text-sm text-gray-600">
+                <i class="pi pi-eye mr-1"></i> Xem trước:
+                {{ lesson.is_preview ? "Có" : "Không" }}
+              </p>
+              <p-tag
+                *ngIf="lesson.status === 'approved'"
+                severity="success"
+                value="Đang hoạt động"
+                [rounded]="true"
+                class="!text-xs mt-1"
+              />
+              <p-tag
+                *ngIf="lesson.status === 'pending'"
+                severity="warn"
+                class="!text-xs mt-1"
+                value="Đang chờ duyệt"
+                [rounded]="true"
+              />
+              <p-tag
+                *ngIf="lesson.status === 'rejected'"
+                severity="danger"
+                class="!text-xs mt-1"
+                value="Đã bị từ chối"
+                [rounded]="true"
+              />
+            </div>
+            <!-- Nút xem chi tiết bài học (nếu cần) -->
+            <!-- <button
+              (click)="showLessonDetails(lesson.id)"
+              class="bg-gray-200 text-gray-700 py-1 px-3 rounded-lg hover:bg-gray-300 transition duration-200 text-sm"
+            >
+              Xem chi tiết
+            </button> -->
+            <video
+              class="w-52 h-32"
+              controls
+              [src]="lesson.video_url"
+              type="video/mp4"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+      <!-- Phân trang cho danh sách bài học -->
+      <p-paginator
+        [rows]="lessonsPerPage"
+        [totalRecords]="lessonsTotalRecords"
+        [rowsPerPageOptions]="[10, 20, 30]"
+        (onPageChange)="onLessonsPageChange($event)"
+        [first]="(lessonsCurrentPage - 1) * lessonsPerPage"
+        class="mt-4"
+      ></p-paginator>
+    </div>
+    <ng-template #noLessons>
+      <p class="text-center text-gray-500 py-4">
+        Chưa có bài học nào cho khóa học này.
+      </p>
+    </ng-template>
+  </ng-template>
+
+  <ng-template #footer>
+    <button
+      pButton
+      type="button"
+      label="Đóng"
+      icon="pi pi-times"
+      class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
+      (click)="showLessonsDialog = false"
+    ></button>
+  </ng-template>
+</p-dialog>

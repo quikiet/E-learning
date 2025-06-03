@@ -94,9 +94,9 @@ export class IntructorComponent implements OnInit, AfterViewInit {
   }
 
   loadInstructor() {
-    this.instructorService.getAllInstructors().subscribe({
+    this.instructorService.getTop10Instructor().subscribe({
       next: (res) => {
-        this.instructors = res;
+        this.instructors = res.data;
 
       }, error: (err) => {
         console.log(err.message);

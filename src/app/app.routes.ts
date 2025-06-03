@@ -28,6 +28,8 @@ import { RequestReviewComponent } from './pages/admin/user-manage/request-review
 import { InstructorManageComponent } from './pages/admin/user-manage/instructor-manage/instructor-manage.component';
 import { CreateCourseComponent } from './pages/User/create-course/create-course.component';
 import { PendingCoursesComponent } from './pages/admin/pending-courses/pending-courses.component';
+import { AddLessonsComponent } from './pages/User/add-lessons/add-lessons.component';
+import { InstructorCoursesComponent } from './pages/User/instructor-courses/instructor-courses.component';
 
 export const routes: Routes = [
     {
@@ -38,7 +40,9 @@ export const routes: Routes = [
             { path: 'chi-tiet-khoa-hoc/:slug', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
             { path: 'khoa-hoc', component: CourseSearchComponent },
+            { path: 'danh-sach-khoa-hoc', component: InstructorCoursesComponent },
             { path: 'tao-khoa-hoc', component: CreateCourseComponent },
+            { path: 'them-bai-hoc/:courseId', component: AddLessonsComponent },
             { path: 'yeu-cau', component: InstructorRequestComponent },
         ]
     },
@@ -53,8 +57,7 @@ export const routes: Routes = [
             { path: 'quan-ly-don-duyet', component: RequestReviewComponent },
             { path: 'nguoi-dung-da-xoa', component: UserDeletedComponent },
             { path: 'quan-ly-nguoi-dung/:id', component: UserDetailComponent },
-            // { path: 'quan-ly-khoa-hoc', component: CourseManageComponent },
-            { path: 'quan-ly-khoa-hoc', component: PendingCoursesComponent },
+            { path: 'quan-ly-khoa-hoc', component: CourseManageComponent },
             { path: 'danh-sach-khoa-hoc-cho', component: PendingCoursesComponent },
             { path: 'quan-ly-danh-muc', component: CategoryManageComponent },
             { path: 'quan-ly-bai-hoc', component: LessonManageComponent },

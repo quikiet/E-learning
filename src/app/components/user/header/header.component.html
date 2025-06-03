@@ -471,9 +471,9 @@
                         Trang quản trị
                       </a>
                     </li>
-                    <li>
+                    <li *ngIf="userRole === 'instructor'">
                       <a
-                        href="profile.html"
+                        [routerLink]="['/danh-sach-khoa-hoc']"
                         class="group flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
                       >
                         <svg
@@ -491,7 +491,7 @@
                             fill=""
                           ></path>
                         </svg>
-                        Support
+                        Danh sách khoá học
                       </a>
                     </li>
                   </ul>

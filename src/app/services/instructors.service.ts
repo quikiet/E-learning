@@ -17,6 +17,10 @@ export class InstructorsService {
     return this.http.get<any>(`${this.apiUrl}/all/getAllInstructors`);
   }
 
+  getTop10Instructor(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/top-instructors`);
+  }
+
   // Xóa mềm giảng viên
   deleteInstructor(instructorId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/admin/instructors/${instructorId}`, { withCredentials: true });

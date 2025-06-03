@@ -16,13 +16,35 @@ export class CoursesService {
       });
   }
 
+  // Thêm bài học mới (dùng chunk file upload)
+  addLesson(courseId: number, data: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons`, data, {
+      reportProgress: true,
+      observe: 'events',
+      withCredentials: true
+    });
+  }
+
   getCourseBySlug(slug: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/courses/${slug}`);
   }
 
   getAllCourses(page: number = 1, perPage: number = 10): Observable<any> {
-
     return this.http.get<any>(`${this.apiUrl}/admin/courses?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  }
+
+  getInstructorCourses(page: number = 1, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/instructor/allcourses?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  }
+
+  // Lấy danh sách bài học của khóa học
+  getLessonsForCourse(courseId: number, page: number = 1, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  }
+
+  // Lấy chi tiết bài học
+  getLessonDetails(courseId: number, lessonId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons/${lessonId}`, { withCredentials: true });
   }
 
   getPendingCourses(page: number, perPage: number): Observable<any> {
