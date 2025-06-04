@@ -29,6 +29,10 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/courses/${slug}`);
   }
 
+  getCourseById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/courses_id/${id}`, { withCredentials: true });
+  }
+
   getAllCourses(page: number = 1, perPage: number = 10): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/admin/courses?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
@@ -97,7 +101,11 @@ export class CoursesService {
     return this.http.put<any>(`${this.apiUrl}/courses/${courseId}/reject`, data, { withCredentials: true });
   }
 
-  instructorDeleteCourse(courseId: number = 10): Observable<any> {
+  instructorUpdateCourse(courseId: number, data: FormData): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/instructor/courses/${courseId}`, data, { withCredentials: true });
+  }
+
+  instructorDeleteCourse(courseId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/instructor/courses/${courseId}`, { withCredentials: true });
   }
 

@@ -50,6 +50,13 @@
             [rounded]="true"
           />
         </div>
+        <div class="absolute top-5 left-5">
+          <span
+            (click)="openEditDialog(course)"
+            class="rounded-full bg-secondary-content hover:bg-secondary w-8 h-8 cursor-pointer"
+            ><i class="pi pi-file-edit p-2"></i
+          ></span>
+        </div>
       </div>
 
       <!-- Nội dung card -->
@@ -229,5 +236,211 @@
       class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
       (click)="showLessonsDialog = false"
     ></button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="showEditDialog"
+  [style]="{ width: '600px' }"
+  header="Chỉnh sửa khóa học"
+  [modal]="true"
+  class="rounded-lg shadow-lg"
+>
+  <ng-template pTemplate="content">
+    <form (ngSubmit)="updateCourse()" #courseForm="ngForm">
+      <div class="p-4 grid grid-cols-1 gap-4">
+        <!-- Tên khóa học -->
+        <div class="mb-4">
+          <label
+            for="course_name"
+            class="block text-sm font-medium text-gray-700"
+          >
+            Tên khóa học <span class="text-red-500">*</span>
+          </label>
+          <input
+            id="course_name"
+            name="course_name"
+            [(ngModel)]="course.course_name"
+            required
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            [ngClass]="{
+              'border-red-500':
+                courseForm.submitted &&
+                courseForm.controls['course_name']?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              courseForm.submitted &&
+              courseForm.controls['course_name']?.invalid
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            Vui lòng nhập tên khóa học.
+          </div>
+        </div>
+
+        <!-- Trường đại học -->
+        <div class="mb-4">
+          <label
+            for="university"
+            class="block text-sm font-medium text-gray-700"
+          >
+            Đại học
+          </label>
+          <input
+            id="university"
+            name="university"
+            [(ngModel)]="course.university"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <!-- Mức độ khó -->
+        <div class="mb-4">
+          <label
+            for="difficulty_level"
+            class="block text-sm font-medium text-gray-700"
+          >
+            Mức độ khó
+          </label>
+          <select
+            id="difficulty_level"
+            name="difficulty_level"
+            [(ngModel)]="course.difficulty_level"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          >
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </div>
+
+        <!-- Mô tả khóa học -->
+        <div class="mb-4">
+          <label
+            for="course_description"
+            class="block text-sm font-medium text-gray-700"
+          >
+            Mô tả khóa học
+          </label>
+          <textarea
+            id="course_description"
+            name="course_description"
+            [(ngModel)]="course.course_description"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            rows="4"
+          ></textarea>
+        </div>
+
+        <!-- Kỹ năng -->
+        <div class="mb-4">
+          <label for="skills" class="block text-sm font-medium text-gray-700">
+            Kỹ năng
+          </label>
+          <input
+            id="skills"
+            name="skills"
+            [(ngModel)]="course.skills"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+
+        <!-- Giá -->
+        <div class="mb-4">
+          <label for="price" class="block text-sm font-medium text-gray-700">
+            Giá khóa học (VND) <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            [(ngModel)]="course.price"
+            required
+            min="0"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            [ngClass]="{
+              'border-red-500':
+                courseForm.submitted && courseForm.controls['price']?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              courseForm.submitted && courseForm.controls['price']?.invalid
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            Vui lòng nhập giá khóa học.
+          </div>
+        </div>
+
+        <!-- Hình ảnh -->
+        <div class="mb-4">
+          <label for="image" class="block text-sm font-medium text-gray-700">
+            Ảnh đại diện
+          </label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            (change)="onImageSelected($event)"
+            accept="image/*"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          />
+          <div *ngIf="selectedCourse?.image" class="mt-2">
+            <p>Hình ảnh hiện tại:</p>
+            <img
+              [src]="selectedCourse.image"
+              alt="Course Image"
+              class="w-32 h-32 object-cover rounded-lg"
+            />
+          </div>
+        </div>
+
+        <!-- Danh mục -->
+        <div class="mb-4">
+          <label
+            for="category_ids"
+            class="block text-sm font-medium text-gray-700"
+          >
+            Danh mục <span class="text-red-500">*</span>
+          </label>
+          <p-multiSelect
+            id="category_ids"
+            name="category_ids"
+            [(ngModel)]="selectedCategories"
+            [options]="categories"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Chọn danh mục"
+            class="w-full md:w-56"
+            required
+            #categoryIds="ngModel"
+          ></p-multiSelect>
+          <div
+            *ngIf="courseForm.submitted && categoryIds.invalid"
+            class="text-red-500 text-sm mt-1"
+          >
+            Vui lòng chọn ít nhất một danh mục.
+          </div>
+        </div>
+      </div>
+      <div class="p-4 flex justify-end gap-2">
+        <button
+          type="button"
+          (click)="showEditDialog = false"
+          class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
+        >
+          Hủy
+        </button>
+        <button
+          type="submit"
+          [disabled]="courseForm.invalid || isSubmitting"
+          class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          {{ isSubmitting ? "Đang cập nhật..." : "Cập nhật" }}
+        </button>
+      </div>
+    </form>
   </ng-template>
 </p-dialog>
