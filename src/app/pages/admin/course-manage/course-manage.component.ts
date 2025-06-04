@@ -119,8 +119,7 @@ export class CourseManageComponent implements OnInit {
     ).subscribe({
       next: (res) => {
         this.courses = res.data;
-        console.log(this.course);
-
+        console.log(this.courses);
         this.totalRecords = res.total;
         this.rows = res.per_page;
         this.currentPage = res.current_page - 1;
@@ -141,6 +140,9 @@ export class CourseManageComponent implements OnInit {
       { field: 'course_rating', header: 'Đánh giá' },
       { field: 'course_url', header: 'URL' },
       { field: 'course_description', header: 'Mô tả' },
+      { field: 'skills', header: 'Kỹ năng' },
+      { field: 'lessons_count', header: 'Số bài học' },
+      { field: 'instructor_name', header: 'Tác giả' },
       { field: 'price', header: 'Giá' },
       { field: 'status', header: 'Trạng thái' },
     ];

@@ -11,35 +11,39 @@
       <div class="relative">
         <!-- Hình ảnh khóa học -->
         <img
-          [src]="course.course.image || 'https://via.placeholder.com/300x150'"
-          alt="{{ course.course.course_name }}"
+          [src]="course.image || 'https://via.placeholder.com/300x150'"
+          alt="{{ course.course_name }}"
           class="w-full h-40 object-cover"
         />
         <!-- Trạng thái -->
-        <div class="absolute top-5 right-5">
+        <div
+          class="absolute top-5 right-5"
+          pTooltip="{{ getNotes(course.coursereview) }}"
+          tooltipPosition="bottom"
+        >
           <p-tag
-            *ngIf="course.course.status === 'approved'"
+            *ngIf="course.status === 'approved'"
             severity="success"
             value="Đang bán"
             [rounded]="true"
             class="!text-xs"
           />
           <p-tag
-            *ngIf="course.course.status === 'pending'"
+            *ngIf="course.status === 'pending'"
             severity="warn"
             class="!text-xs"
             value="Đang chờ"
             [rounded]="true"
           />
           <p-tag
-            *ngIf="course.course.status === 'rejected'"
+            *ngIf="course.status === 'rejected'"
             severity="danger"
             class="!text-xs"
-            value="Đã xóa"
+            value="Bị từ chối"
             [rounded]="true"
           />
           <p-tag
-            *ngIf="course.course.status === 'unavailable'"
+            *ngIf="course.status === 'unavailable'"
             severity="secondary"
             class="!text-xs"
             value="Đã ẩn"
@@ -53,36 +57,36 @@
         <!-- Tên khóa học -->
         <h3
           class="text-lg font-semibold text-gray-800 mb-2 truncate"
-          [title]="course.course.course_name"
+          [title]="course.course_name"
         >
-          {{ course.course.course_name }}
+          {{ course.course_name }}
         </h3>
 
         <!-- Trường đại học -->
         <p
           class="text-sm text-gray-600 mb-1 truncate"
-          [title]="course.course.university"
+          [title]="course.university"
         >
-          <i class="pi pi-building mr-1"></i> {{ course.course.university }}
+          <i class="pi pi-building mr-1"></i> {{ course.university }}
         </p>
 
         <!-- Mức độ khó -->
         <p class="text-sm text-gray-600 mb-1">
           <i class="pi pi-star mr-1"></i> Mức độ:
-          {{ course.course.difficulty_level }}
+          {{ course.difficulty_level }}
         </p>
 
         <!-- Đánh giá -->
         <div class="flex items-center mb-1">
           <span class="text-sm text-gray-600 mr-1">
             <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
-            {{ course.course.course_rating | number : "1.1-1" }}
+            {{ course.course_rating | number : "1.1-1" }}
           </span>
           <span class="text-xs text-gray-500"
             >({{
-              course.course.course_rating >= 4
+              course.course_rating >= 4
                 ? "Xuất sắc"
-                : course.course.course_rating >= 3
+                : course.course_rating >= 3
                 ? "Tốt"
                 : "Trung bình"
             }})</span
@@ -92,7 +96,7 @@
         <!-- Giá -->
         <p class="text-sm font-medium text-gray-800 mb-1">
           <i class="pi pi-money-bill mr-1"></i>
-          {{ course.course.price | number }} VND
+          {{ course.price | number }} VND
         </p>
 
         <!-- Số lượng bài học -->
@@ -104,13 +108,13 @@
         <!-- Nút thêm bài học và xem chi tiết bài học -->
         <div class="flex gap-2">
           <button
-            (click)="navigateToAddLesson(course.course.id)"
+            (click)="navigateToAddLesson(course.id)"
             class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 text-sm font-medium"
           >
             Thêm bài học
           </button>
           <button
-            (click)="showLessons(course.course.id)"
+            (click)="showLessons(course.id)"
             class="w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200 text-sm font-medium"
           >
             Xem chi tiết bài học

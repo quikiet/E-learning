@@ -112,34 +112,25 @@
         </div>
       </th>
       <th>
-        <div class="flex items-center">
-          Tên
-          <p-sortIcon field="course_name" />
-        </div>
+        <div class="flex items-center">Tên</div>
       </th>
       <th>
-        <div class="flex items-center">
-          Trường
-          <p-sortIcon field="university" />
-        </div>
+        <div class="flex items-center">Tác giả</div>
       </th>
       <th>
-        <div class="flex items-center">
-          Độ khó
-          <p-sortIcon field="difficulty_level" />
-        </div>
+        <div class="flex items-center">Kỹ năng</div>
       </th>
       <th>
-        <div class="flex items-center">
-          Đánh giá
-          <p-sortIcon field="course_rating" />
-        </div>
+        <div class="flex items-center">Bài học</div>
       </th>
       <th>
-        <div class="flex items-center">
-          Đường link
-          <p-sortIcon field="course_url" />
-        </div>
+        <div class="flex items-center">Độ khó</div>
+      </th>
+      <th>
+        <div class="flex items-center">Đánh giá</div>
+      </th>
+      <th>
+        <div class="flex items-center">Đường link</div>
       </th>
       <th>
         <div class="flex items-center">
@@ -171,8 +162,18 @@
         </span>
       </td>
       <td>
-        <span [pTooltip]="author.university" tooltipPosition="right">
-          {{ cutText(author.university, 3) }}
+        <span>
+          {{ author.instructors?.name }}
+        </span>
+      </td>
+      <td>
+        <span [pTooltip]="author.skills" tooltipPosition="right">
+          {{ cutText(author.skills, 3) }}
+        </span>
+      </td>
+      <td>
+        <span>
+          {{ author.lessons_count }}
         </span>
       </td>
       <td>{{ author.difficulty_level }}</td>
@@ -220,7 +221,7 @@
       </td>
       <td class="text-center align-middle">
         <div class="flex items-center justify-center h-full">
-          {{ author.price }}
+          {{ author.price | currency : "VND" : "symbol-narrow" : "1.0-0" }}
         </div>
       </td>
       <td>

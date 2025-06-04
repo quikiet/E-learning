@@ -7,6 +7,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
+import { TooltipModule } from 'primeng/tooltip';
 @Component({
   selector: 'app-instructor-courses',
   imports: [
@@ -14,7 +15,8 @@ import { DialogModule } from 'primeng/dialog';
     TagModule,
     PaginatorModule,
     ToastModule,
-    DialogModule
+    DialogModule,
+    TooltipModule
   ],
   providers: [MessageService],
   templateUrl: './instructor-courses.component.html',
@@ -44,6 +46,11 @@ export class InstructorCoursesComponent implements OnInit {
     this.loadCourses();
   }
 
+  getNotes(coursereview: any[]): string {
+    if (!coursereview || coursereview.length === 0) return 'Không có ghi chú';
+    return coursereview.map(note => note.notes).join('\n'); // Nối các ghi chú, mỗi ghi chú 1 dòng
+  }
+
   loadCourses() {
     this.coursesService.getInstructorCourses(this.currentPage, this.perPage).subscribe({
       next: (res) => {
@@ -54,7 +61,7 @@ export class InstructorCoursesComponent implements OnInit {
 
         // Lấy số lượng bài học cho từng khóa học
         this.courses.forEach(course => {
-          this.loadLessonCount(course.course.id, course);
+          this.loadLessonCount(course.id, course);
         });
       },
       error: (err) => {
@@ -70,7 +77,7 @@ export class InstructorCoursesComponent implements OnInit {
   }
 
   loadLessonCount(courseId: number, course: any) {
-    this.coursesService.getLessonsForCourse(courseId, 1, 1).subscribe({
+    this.coursesService.getLessonsForCourse(courseId, 1, 10).subscribe({
       next: (res) => {
         course.lessonCount = res.total; // Lấy tổng số bài học
       },
