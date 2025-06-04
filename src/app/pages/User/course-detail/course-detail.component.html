@@ -85,7 +85,7 @@
     <div
       class="sticky top-10 px-0 py-0 flex-col shadow border-l border-gray-100 h-fit"
     >
-      <div class="flex items-center gap-1 px-4 py-2">
+      <div class="flex items-center gap-1 px-4 py-2 select-none">
         <span class="font-bold text-red-500">
           {{ course.course_rating | number : "1.1-1" }}
         </span>
@@ -99,16 +99,26 @@
           {{ course.certificates_count }} chứng chỉ
         </p>
         |
-        <p class="text-xl font-bold text-primary">
+        <p class="text-xl font-bold text-primary" *ngIf="course.price > 0">
           {{ formatPrice(course.price) }}
+        </p>
+        <p class="text-xl font-bold text-secondary" *ngIf="course.price === 0">
+          Miễn phí
         </p>
       </div>
       <button
-        *ngIf="!isUserEnrolled"
+        *ngIf="!isUserEnrolled && course.price > 0"
         (click)="enrollCourse()"
         class="px-6 py-3 bg-secondary hover:bg-secondary-content transition duration-300 text-white font-semibold w-full cursor-pointer"
       >
         Mua ngay
+      </button>
+      <button
+        *ngIf="!isUserEnrolled && course.price === 0"
+        (click)="enrollFreeCourse()"
+        class="px-6 py-3 bg-secondary hover:bg-secondary-content transition duration-300 text-white font-semibold w-full cursor-pointer"
+      >
+        Nhận khoá học Miễn phí
       </button>
       <p
         *ngIf="isUserEnrolled"
@@ -133,9 +143,15 @@
             <div class="m-0" *ngFor="let lesson of lessons; let i = index">
               <div class="flex items-center justify-between">
                 <div
+                  *ngIf="lesson.status !== 'rejected'"
                   class="flex items-center gap-2 py-4 border-b-2 border-gray/20 w-full justify-between"
                 >
-                  <span class="text-sm">{{ lesson.title }}</span>
+                  <span
+                    class="text-sm mr-5"
+                    [pTooltip]="lesson.title"
+                    tooltipPosition="top"
+                    >{{ cutText(lesson.title, 10) }}</span
+                  >
                   <!-- Hiển thị video nếu đã chọn -->
                   <div class="flex items-center gap-2">
                     <!-- <video
@@ -151,14 +167,29 @@
                 </video> -->
 
                     <a
-                      *ngIf="lesson.is_preview && lesson.video_url"
+                      *ngIf="
+                        lesson.is_preview &&
+                        lesson.video_url &&
+                        lesson.status === 'approved'
+                      "
                       (click)="
                         playVideo(lesson.video_url); $event.preventDefault()
                       "
                       class="underline text-xs text-secondary cursor-pointer"
                       >Xem trước</a
                     >
-                    <p class="text-xs">{{ lesson.duration }} phút</p>
+                    <p
+                      class="text-xs w-12 font-semibold"
+                      *ngIf="lesson.status === 'approved'"
+                    >
+                      {{ lesson.duration }} phút
+                    </p>
+                    <p
+                      class="text-xs font-semibold text-secondary"
+                      *ngIf="lesson.status === 'pending'"
+                    >
+                      Đang cập nhật
+                    </p>
                   </div>
                 </div>
               </div>

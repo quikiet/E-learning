@@ -7,7 +7,7 @@ import { ProgressSpinner } from 'primeng/progressspinner';
 import { Toast } from 'primeng/toast';
 import { PaginatorModule } from 'primeng/paginator';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Divider } from 'primeng/divider';
 import { Drawer } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
@@ -26,7 +26,8 @@ interface Column {
     PaginatorModule,
     CommonModule,
     Drawer,
-    ButtonModule
+    ButtonModule,
+    RouterLink
   ],
   templateUrl: './course-search.component.html',
   styleUrl: './course-search.component.css',

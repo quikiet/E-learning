@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
 // Định nghĩa interface cho bài học
 interface Lesson {
   title: string;
@@ -35,7 +36,8 @@ interface Tab {
     DividerModule,
     AvatarModule,
     TagModule,
-    MultiSelectModule
+    MultiSelectModule,
+    TooltipModule
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',
@@ -200,5 +202,44 @@ export class CourseDetailComponent implements OnInit {
         });
       }
     });
+  }
+
+  enrollFreeCourse() {
+    if (!this.course) return;
+
+    this.coursesService.enrollFreeCourse(this.course.id).subscribe({
+      next: (res) => {
+        if (res.order?.data) {
+          // Điều hướng người dùng đến URL thanh toán
+          window.location.href = res.order.data;
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: 'Không thể khởi tạo thanh toán',
+            life: 3000,
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error enrolling course:', err);
+        const errorMessage = err.error?.message || 'Không thể mua khóa học. Vui lòng thử lại.';
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: errorMessage,
+          life: 3000,
+        });
+      }
+    });
+  }
+
+
+  cutText(text: string, wordLimit: number = 50): string {
+    if (!text) return '';
+    const words = text.split(' ');
+    if (words.length <= wordLimit) return text;
+
+    return words.slice(0, wordLimit).join(' ') + '...';
   }
 }

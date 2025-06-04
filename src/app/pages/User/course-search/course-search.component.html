@@ -44,7 +44,10 @@
       <div class="">
         <div *ngFor="let course of courses" class="flex flex-col gap-5 my-2">
           <div class="w-full">
-            <a class="flex gap-2 items-start" [href]="course.course_url">
+            <a
+              class="flex gap-2 items-start"
+              [routerLink]="['/chi-tiet-khoa-hoc', course.course_url]"
+            >
               <div class="w-1/4">
                 <img
                   [alt]="course.course_name"

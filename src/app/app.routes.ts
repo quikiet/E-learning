@@ -31,6 +31,7 @@ import { PendingCoursesComponent } from './pages/admin/pending-courses/pending-c
 import { AddLessonsComponent } from './pages/User/add-lessons/add-lessons.component';
 import { InstructorCoursesComponent } from './pages/User/instructor-courses/instructor-courses.component';
 import { CoursePendingLessonsComponent } from './pages/admin/course-pending-lessons/course-pending-lessons.component';
+import { StudentPaymentHistoryComponent } from './pages/User/student-payment-history/student-payment-history.component';
 
 export const routes: Routes = [
     {
@@ -77,6 +78,7 @@ export const routes: Routes = [
         children: [
             { path: 'ho-so', component: ProfileInfoComponent },
             { path: 'danh-sach-khoa-hoc', component: InstructorCoursesComponent },
+            { path: 'lich-su-thanh-toan', component: StudentPaymentHistoryComponent },
             { path: '**', redirectTo: 'ho-so', pathMatch: 'full' },
         ]
     },

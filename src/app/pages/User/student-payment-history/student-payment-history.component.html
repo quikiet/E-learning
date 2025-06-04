@@ -1,0 +1,212 @@
+<p-toast></p-toast>
+
+<!-- Bảng hiển thị lịch sử thanh toán -->
+<p-table
+  class="w-full bg-white shadow-lg rounded-lg border border-gray-100"
+  [value]="payments"
+  [rowHover]="true"
+  dataKey="id"
+  [loading]="isLoading"
+>
+  <ng-template pTemplate="caption">
+    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-t-lg">
+      <p class="m-0 lg:text-lg font-semibold text-gray-800">
+        Lịch sử giao dịch
+      </p>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr class="text-sm bg-gray-100 text-gray-700">
+      <th class="p-3">ID Giao dịch</th>
+      <th class="p-3">Tên Khóa học</th>
+      <th class="p-3">Số tiền</th>
+      <th class="p-3">Phương thức</th>
+      <th class="p-3">Mã giao dịch</th>
+      <th class="p-3">Trạng thái</th>
+      <th class="p-3">Ngày thanh toán</th>
+      <th class="p-3">Hành động</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-payment>
+    <tr class="text-sm hover:bg-gray-50 transition duration-200">
+      <td class="p-3 text-gray-800">{{ payment.id }}</td>
+      <td
+        class="p-3 text-gray-800 truncate"
+        [title]="payment.course?.course_name"
+      >
+        {{ payment.course?.course_name || "N/A" }}
+      </td>
+      <td class="p-3 text-gray-800">{{ payment.amount | number }} VND</td>
+      <td class="p-3 text-gray-800">{{ payment.method }}</td>
+      <td class="p-3 text-gray-800">{{ payment.transaction_code }}</td>
+      <td class="p-3">
+        <p-tag
+          *ngIf="payment.status === 'completed'"
+          severity="success"
+          value="Hoàn tất"
+          [rounded]="true"
+          class="!text-xs"
+        />
+        <p-tag
+          *ngIf="payment.status === 'pending'"
+          severity="warn"
+          value="Đang chờ"
+          [rounded]="true"
+          class="!text-xs"
+        />
+        <p-tag
+          *ngIf="payment.status === 'failed'"
+          severity="danger"
+          value="Thất bại"
+          [rounded]="true"
+          class="!text-xs"
+        />
+      </td>
+      <td class="p-3 text-gray-800">
+        {{ payment.payment_date | date : "dd/MM/yyyy HH:mm" }}
+      </td>
+      <td class="p-3">
+        <button
+          (click)="viewPaymentDetails(payment.id)"
+          class="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 transition duration-200 text-sm"
+        >
+          Xem chi tiết
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8" class="text-center text-gray-500 py-4">
+        Bạn chưa mua khóa học nào.
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- Phân trang -->
+<p-paginator
+  [rows]="perPage"
+  [totalRecords]="totalRecords"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  (onPageChange)="onPageChange($event)"
+  [first]="(currentPage - 1) * perPage"
+  class="mt-6"
+></p-paginator>
+
+<!-- Dialog chi tiết giao dịch -->
+<p-dialog
+  [(visible)]="showDetailsDialog"
+  [style]="{ width: '700px' }"
+  header="Chi tiết giao dịch"
+  [modal]="true"
+  class="rounded-lg shadow-lg"
+>
+  <ng-template pTemplate="content">
+    <div *ngIf="selectedPayment" class="p-4">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        Thông tin giao dịch
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <p><strong>ID Giao dịch:</strong> {{ selectedPayment.id }}</p>
+          <p>
+            <strong>Số tiền:</strong> {{ selectedPayment.amount | number }} VND
+          </p>
+          <p><strong>Phương thức:</strong> {{ selectedPayment.method }}</p>
+        </div>
+        <div>
+          <p>
+            <strong>Mã giao dịch:</strong>
+            {{ selectedPayment.transaction_code }}
+          </p>
+          <p>
+            <strong>Trạng thái:</strong>
+            <p-tag
+              *ngIf="selectedPayment.status === 'completed'"
+              severity="success"
+              value="Hoàn tất"
+              [rounded]="true"
+              class="!text-xs"
+            />
+            <p-tag
+              *ngIf="selectedPayment.status === 'pending'"
+              severity="warn"
+              value="Đang chờ"
+              [rounded]="true"
+              class="!text-xs"
+            />
+            <p-tag
+              *ngIf="selectedPayment.status === 'failed'"
+              severity="danger"
+              value="Thất bại"
+              [rounded]="true"
+              class="!text-xs"
+            />
+          </p>
+          <p>
+            <strong>Ngày thanh toán:</strong>
+            {{ selectedPayment.payment_date | date : "dd/MM/yyyy HH:mm" }}
+          </p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        Thông tin khóa học
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p>
+            <strong>Tên khóa học:</strong>
+            {{ selectedPayment.course.course_name }}
+          </p>
+          <p>
+            <strong>Trường đại học:</strong>
+            {{ selectedPayment.course.university }}
+          </p>
+          <p>
+            <strong>Mức độ khó:</strong>
+            {{ selectedPayment.course.difficulty_level }}
+          </p>
+          <p>
+            <strong>Đánh giá:</strong>
+            {{ selectedPayment.course.course_rating | number : "1.1-1" }}
+          </p>
+        </div>
+        <div>
+          <p>
+            <strong>Giá:</strong>
+            {{ selectedPayment.course.price | number }} VND
+          </p>
+          <p><strong>Kỹ năng:</strong> {{ selectedPayment.course.skills }}</p>
+          <p>
+            <strong>Trạng thái:</strong>
+            <p-tag
+              *ngIf="selectedPayment.course.status === 'approved'"
+              severity="success"
+              value="Đang bán"
+              [rounded]="true"
+              class="!text-xs"
+            />
+          </p>
+        </div>
+      </div>
+      <div class="mt-4">
+        <p><strong>Mô tả khóa học:</strong></p>
+        <p class="text-sm text-gray-600">
+          {{ selectedPayment.course.course_description }}
+        </p>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Đóng"
+      icon="pi pi-times"
+      class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
+      (click)="showDetailsDialog = false"
+    ></button>
+  </ng-template>
+</p-dialog>

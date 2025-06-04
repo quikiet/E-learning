@@ -81,6 +81,10 @@ export class CoursesService {
     return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/enroll-paid`, data, { withCredentials: true });
   }
 
+  enrollFreeCourse(courseId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/enroll-free`, {}, { withCredentials: true });
+  }
+
   createCourse(data: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/instructor/courses`, data, { withCredentials: true });
   }
@@ -91,5 +95,13 @@ export class CoursesService {
 
   rejectCourse(courseId: number, data: { notes: string | null }): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/courses/${courseId}/reject`, data, { withCredentials: true });
+  }
+
+  instructorDeleteCourse(courseId: number = 10): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/instructor/courses/${courseId}`, { withCredentials: true });
+  }
+
+  instructorViewDeletedCourse(page: number = 1, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/instructor/deleted-courses?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
 }

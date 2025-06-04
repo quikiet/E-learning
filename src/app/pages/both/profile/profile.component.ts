@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { DividerModule } from 'primeng/divider';
 import { RippleModule } from 'primeng/ripple';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 interface City {
   name: string;
   code: string;
@@ -16,17 +17,17 @@ interface City {
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-  cities: City[] | undefined;
-
-  selectedCity: City | undefined;
-
+  users: any[] = [];
+  constructor(private authService: AuthService) { }
   ngOnInit() {
-    this.cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' }
-    ];
+
+    this.authService.getCurrentUser().subscribe({
+      next: (res) => {
+        this.users = res.data;
+      }, error: (err) => {
+        console.log(err.message);
+      }
+    })
+
   }
 }
