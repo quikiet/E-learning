@@ -5,9 +5,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Subscription } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-footer',
-  imports: [GalleriaModule, CommonModule],
+  imports: [GalleriaModule, CommonModule, ButtonModule],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })

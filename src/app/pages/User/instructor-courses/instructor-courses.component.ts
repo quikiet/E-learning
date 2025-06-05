@@ -226,6 +226,7 @@ export class InstructorCoursesComponent implements OnInit {
 
   openEditDialog(course: any) {
     this.selectedCourse = course;
+
     this.course = {
       course_name: course.course_name,
       university: course.university,
@@ -275,11 +276,11 @@ export class InstructorCoursesComponent implements OnInit {
     this.isSubmitting = true;
     const formData = new FormData();
     console.log('course_name before append:', this.course.course_name);
-    formData.append('course_name', this.course.course_name ? this.course.course_name.trim() : '');
-    formData.append('university', this.course.university || '');
-    formData.append('difficulty_level', this.course.difficulty_level || '');
-    formData.append('course_description', this.course.course_description || '');
-    formData.append('skills', this.course.skills || '');
+    formData.append('course_name', this.course.course_name);
+    formData.append('university', this.course.university);
+    formData.append('difficulty_level', this.course.difficulty_level);
+    formData.append('course_description', this.course.course_description);
+    formData.append('skills', this.course.skills);
     formData.append('price', this.course.price.toString());
     // Gửi category_ids dưới dạng chuỗi JSON
     console.log('Sending category_ids:', this.selectedCategories); // Debug
@@ -301,7 +302,7 @@ export class InstructorCoursesComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Thành công',
-          detail: 'Khóa học đã được cập nhật và đang chờ duyệt.',
+          detail: res.message || 'Khóa học đã được cập nhật và đang chờ duyệt.',
           life: 3000,
         });
         this.loadCourses();

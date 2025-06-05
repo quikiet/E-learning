@@ -115,7 +115,7 @@ export class CoursesService {
   }
 
   instructorUpdateCourse(courseId: number, data: FormData): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/instructor/courses/${courseId}`, data, { withCredentials: true });
+    return this.http.put<any>(`${this.apiUrl}/instructor/courses/${courseId}`, { data }, { withCredentials: true });
   }
 
   instructorDeleteCourse(courseId: number): Observable<any> {
