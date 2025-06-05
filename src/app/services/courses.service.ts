@@ -25,6 +25,19 @@ export class CoursesService {
     });
   }
 
+  // Thêm phương thức cập nhật bài học
+  updateLesson(courseId: number, lessonId: number, data: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/instructor/courses/${courseId}/lessons/${lessonId}`, data, {
+      reportProgress: true,
+      observe: 'events',
+      withCredentials: true
+    });
+  }
+
+  instructorDeleteLesson(lessonId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/lessons/${lessonId}`, { withCredentials: true });
+  }
+
   getCourseBySlug(slug: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/courses/${slug}`);
   }

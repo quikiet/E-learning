@@ -2,10 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule, RouterOutlet, RouterLinkActive, RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLinkActive, RouterLink, BadgeModule],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })

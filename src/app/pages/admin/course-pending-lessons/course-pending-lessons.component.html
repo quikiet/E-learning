@@ -5,12 +5,28 @@
   [rowHover]="true"
   dataKey="id"
   [loading]="isLoading"
+  [globalFilterFields]="['title']"
+  #dt
 >
   <ng-template pTemplate="caption">
     <div class="flex items-center justify-between py-2">
-      <p class="m-0 lg:text-lg font-semibold text-gray-800">
-        Danh sách bài học của khoá học có id: {{ courseId }}
-      </p>
+      <div class="flex gap-5 items-center">
+        <p class="m-0 lg:text-lg font-semibold text-gray-800">
+          Danh sách bài học của khoá học có id: {{ courseId }}
+        </p>
+        <p-iconfield iconPosition="left" class="ml-auto">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            class="lg:w-96"
+            (input)="onFilter($event, dt)"
+            placeholder="Nhập tiêu đề bài học"
+          />
+        </p-iconfield>
+      </div>
       <button>
         <a [routerLink]="['/admin/quan-ly-khoa-hoc']"
           ><i class="pi pi-times mr-10"></i
@@ -20,29 +36,47 @@
   </ng-template>
   <ng-template pTemplate="header">
     <tr class="text-sm bg-gray-100 text-gray-700">
-      <th class="p-3">ID</th>
-      <th class="p-3">Tiêu đề</th>
-      <th class="p-3">Thời lượng (phút)</th>
-      <th class="p-3">Xem trước</th>
-      <th class="p-3">Thứ tự sắp xếp</th>
-      <th class="p-3">Trạng thái</th>
-      <th class="p-3">Hành động</th>
+      <th pSortableColumn="id">
+        ID
+        <p-sortIcon field="id" />
+      </th>
+      <th>Tiêu đề</th>
+      <th pSortableColumn="duration">
+        Thời lượng (phút)<p-sortIcon field="duration" />
+      </th>
+      <th>Xem trước</th>
+      <th pSortableColumn="sort_order">
+        Thứ tự sắp xếp<p-sortIcon field="sort_order" />
+      </th>
+      <th>Trạng thái</th>
+      <th>Hành động</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-lesson>
     <tr class="text-sm hover:bg-gray-50 transition duration-200">
-      <td class="p-3 text-gray-800">{{ lesson.id }}</td>
-      <td class="p-3 text-gray-800 truncate" [title]="lesson.title">
-        {{ lesson.title }}
+      <td class="text-gray-800">{{ lesson.id }}</td>
+      <td
+        class="text-gray-800 truncate"
+        [pTooltip]="lesson.title"
+        tooltipPosition="right"
+      >
+        {{ cutText(lesson.title, 5) }}
       </td>
-      <td class="p-3 text-gray-800">
+      <td class="text-gray-800">
         {{ lesson.duration }}
       </td>
-      <td class="p-3 text-gray-800">
-        {{ lesson.is_preview ? "Có" : "Không" }}
+      <td>
+        <i
+          class="pi"
+          [ngClass]="
+            lesson.is_preview
+              ? 'pi-check text-secondary'
+              : 'pi-times text-primary'
+          "
+        ></i>
       </td>
-      <td class="p-3 text-gray-800">{{ lesson.sort_order }}</td>
-      <td class="p-3">
+      <td class="text-gray-800">{{ lesson.sort_order }}</td>
+      <td class="">
         <p-tag
           *ngIf="lesson.status === 'pending'"
           severity="warn"
@@ -65,14 +99,29 @@
           class="!text-xs"
         />
       </td>
-      <td class="p-3">
-        <!-- Nút xem video (nếu cần thêm hành động khác như duyệt/từ chối) -->
-        <button
+      <td class="flex gap-2">
+        <p-button
           (click)="viewVideo(lesson.video_url)"
-          class="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 transition duration-200 text-sm"
-        >
-          Xem video
-        </button>
+          icon="pi pi-eye"
+          [rounded]="true"
+          [raised]="true"
+          severity="help"
+        />
+        <p-button
+          (click)="reviewLesson(lesson.id, 'approved')"
+          icon="pi pi-check"
+          [rounded]="true"
+          [raised]="true"
+          severity="success"
+          [disabled]="lesson.status === 'approved'"
+        />
+        <p-button
+          (click)="viewVideo(lesson.video_url)"
+          icon="pi pi-times"
+          [rounded]="true"
+          [raised]="true"
+          severity="danger"
+        />
       </td>
     </tr>
   </ng-template>

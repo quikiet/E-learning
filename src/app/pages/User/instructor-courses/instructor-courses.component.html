@@ -159,8 +159,12 @@
         >
           <div class="flex items-center justify-between">
             <div>
-              <h4 class="text-md font-semibold text-gray-800">
-                {{ lesson.title }}
+              <h4
+                class="text-md font-semibold text-gray-800"
+                [pTooltip]="lesson.title"
+                tooltipPosition="right"
+              >
+                {{ cutText(lesson.title, 5) }}
               </h4>
               <p class="text-sm text-gray-600">
                 <i class="pi pi-clock mr-1"></i> Thời lượng:
@@ -192,21 +196,30 @@
                 [rounded]="true"
               />
             </div>
-            <!-- Nút xem chi tiết bài học (nếu cần) -->
-            <!-- <button
-              (click)="showLessonDetails(lesson.id)"
-              class="bg-gray-200 text-gray-700 py-1 px-3 rounded-lg hover:bg-gray-300 transition duration-200 text-sm"
-            >
-              Xem chi tiết
-            </button> -->
-            <video
-              class="w-52 h-32"
-              controls
-              [src]="lesson.video_url"
-              type="video/mp4"
-            >
-              Your browser does not support the video tag.
-            </video>
+            <div>
+              <video
+                class="w-52 h-32"
+                controls
+                [src]="lesson.video_url"
+                type="video/mp4"
+              >
+                Your browser does not support the video tag.
+              </video>
+              <div class="flex gap-2 justify-center items-center">
+                <p-button
+                  (click)="deleteLesson(lesson.id)"
+                  icon="pi pi-trash"
+                  label="Xoá"
+                  severity="danger"
+                />
+                <p-button
+                  (click)="openEditLessonDialog(lesson)"
+                  icon="pi pi-file-edit"
+                  label="Chỉnh sửa"
+                  severity="info"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -439,6 +452,153 @@
           class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {{ isSubmitting ? "Đang cập nhật..." : "Cập nhật" }}
+        </button>
+      </div>
+    </form>
+  </ng-template>
+</p-dialog>
+
+<!-- Dialog chỉnh sửa bài học -->
+<p-dialog
+  [(visible)]="showEditLessonDialog"
+  [style]="{ width: '600px' }"
+  header="Chỉnh sửa bài học"
+  [modal]="true"
+  class="rounded-lg shadow-lg"
+>
+  <ng-template pTemplate="content">
+    <form (ngSubmit)="updateLesson()" #lessonForm="ngForm">
+      <div class="p-4 grid grid-cols-1 gap-4">
+        <!-- Tiêu đề bài học -->
+        <div class="mb-4">
+          <label
+            for="lesson_title"
+            class="block text-sm font-medium text-gray-700"
+          >
+            Tiêu đề bài học <span class="text-red-500">*</span>
+          </label>
+          <input
+            id="lesson_title"
+            name="lesson_title"
+            [(ngModel)]="lesson.title"
+            required
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            [ngClass]="{
+              'border-red-500':
+                lessonForm.submitted &&
+                lessonForm.controls['lesson_title']?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              lessonForm.submitted &&
+              lessonForm.controls['lesson_title']?.invalid
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            Vui lòng nhập tiêu đề bài học.
+          </div>
+        </div>
+
+        <!-- Thời lượng -->
+        <div class="mb-4">
+          <label
+            for="lesson_duration"
+            class="block text-sm font-medium text-gray-700"
+          >
+            Thời lượng (phút) <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            id="lesson_duration"
+            name="lesson_duration"
+            [(ngModel)]="lesson.duration"
+            required
+            min="1"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            [ngClass]="{
+              'border-red-500':
+                lessonForm.submitted &&
+                lessonForm.controls['lesson_duration']?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              lessonForm.submitted &&
+              lessonForm.controls['lesson_duration']?.invalid
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            Vui lòng nhập thời lượng hợp lệ.
+          </div>
+        </div>
+
+        <!-- Xem trước -->
+        <div class="mb-4">
+          <label class="flex items-center text-sm font-medium text-gray-700">
+            <input
+              type="checkbox"
+              id="is_preview"
+              name="is_preview"
+              [(ngModel)]="lesson.is_preview"
+              class="mr-2"
+            />
+            Cho phép xem trước
+          </label>
+        </div>
+
+        <!-- Video -->
+        <div class="mb-4">
+          <label for="video" class="block text-sm font-medium text-gray-700">
+            Video bài học
+          </label>
+          <input
+            type="file"
+            id="video"
+            name="video"
+            (change)="onVideoSelected($event)"
+            accept="video/*"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          />
+          <!-- Progress bar -->
+          <div *ngIf="uploadProgress > 0 && isSubmittingLesson" class="mt-2">
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                class="bg-blue-500 h-2.5 rounded-full"
+                [style.width]="uploadProgress + '%'"
+              ></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-1">
+              Đang upload: {{ uploadProgress }}%
+            </p>
+          </div>
+          <div *ngIf="selectedLesson?.video_url" class="mt-2">
+            <p>Video hiện tại:</p>
+            <video
+              class="w-52 h-32"
+              controls
+              [src]="selectedLesson.video_url"
+              type="video/mp4"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+      <div class="p-4 flex justify-end gap-2">
+        <button
+          type="button"
+          (click)="showEditLessonDialog = false"
+          class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
+        >
+          Hủy
+        </button>
+        <button
+          type="submit"
+          [disabled]="lessonForm.invalid || isSubmittingLesson"
+          class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          {{ isSubmittingLesson ? "Đang cập nhật..." : "Cập nhật" }}
         </button>
       </div>
     </form>

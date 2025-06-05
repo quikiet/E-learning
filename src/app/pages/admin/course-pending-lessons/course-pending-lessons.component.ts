@@ -2,11 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CoursesService } from '../../../services/courses.service';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+import { LessonService } from '../../../services/lesson/lesson.service';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputIconModule } from 'primeng/inputicon';
 @Component({
   selector: 'app-course-pending-lessons',
   imports: [
@@ -15,7 +21,12 @@ import { DialogModule } from 'primeng/dialog';
     TagModule,
     ToastModule,
     DialogModule,
-    RouterLink
+    RouterLink,
+    ButtonModule,
+    TooltipModule,
+    IconFieldModule,
+    InputTextModule,
+    InputIconModule
   ],
   providers: [MessageService],
   templateUrl: './course-pending-lessons.component.html',
@@ -30,6 +41,7 @@ export class CoursePendingLessonsComponent implements OnInit {
 
   constructor(
     private coursesService: CoursesService,
+    private lessonService: LessonService,
     private route: ActivatedRoute,
     private messageService: MessageService
   ) { }
@@ -39,6 +51,14 @@ export class CoursePendingLessonsComponent implements OnInit {
     if (courseId) {
       this.courseId = parseInt(courseId, 10);
       this.loadPendingLessons();
+    }
+  }
+
+  onFilter(event: Event, dt: Table) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement) {
+      const value = inputElement.value;
+      dt.filterGlobal(value, 'contains');
     }
   }
 
@@ -65,5 +85,37 @@ export class CoursePendingLessonsComponent implements OnInit {
   viewVideo(videoUrl: string) {
     this.selectedVideoUrl = videoUrl;
     this.showVideoDialog = true;
+  }
+
+  reviewLesson(lessonId: number, status: string) {
+    const isConfirmed = confirm('Bạn có chắc chắn muốn duyệt bài học này không?');
+    if (isConfirmed) {
+      this.lessonService.adminReviewLesson(lessonId, status).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: res.message || 'Bài học đã được duyệt',
+            life: 3000,
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: err.message || 'Không thể duyệt bài học. Vui lòng thử lại.',
+            life: 3000,
+          });
+        }
+      });
+    }
+  }
+
+  cutText(text: string, wordLimit: number = 50): string {
+    if (!text) return '';
+    const words = text.split(' ');
+    if (words.length <= wordLimit) return text;
+
+    return words.slice(0, wordLimit).join(' ') + '...';
   }
 }

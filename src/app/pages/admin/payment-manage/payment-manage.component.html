@@ -1,322 +1,211 @@
-<p-toolbar styleClass="mb-4">
-  <ng-template #start>
-    <p-button
-      label="Thêm"
-      (onClick)="openNew()"
-      icon="pi pi-plus"
-      class="mr-2"
-    />
-    <p-button
-      severity="danger"
-      label="Delete"
-      icon="pi pi-trash"
-      class="mr-2"
-      outlined
-    />
-    <p-button
-      [outlined]="true"
-      icon="pi pi-filter-slash"
-      label="Clear"
-      class="mr-2"
-    />
-    <p-button
-      (click)="op.toggle($event)"
-      icon="pi pi-database"
-      label="Đã xoá"
-      severity="contrast"
-    />
-    <p-popover #op>
-      <div class="lg:w-[25rem] max-h-[20rem] overflow-auto">
-        <div class="px-2">
-          <span
-            class="font-medium text-surface-900 dark:text-surface-0 block mb-2"
-            >Khoá học đã bị xoá</span
-          >
-          <ul class="list-none p-0 m-0 flex flex-col gap-4">
-            <li>
-              <div class="flex items-center justify-between gap-2 pr-2">
-                <div class="flex items-center gap-3">
-                  <img style="width: 42px" />
-                  <div>
-                    <span class="font-medium"></span>
-                    <div class="text-sm text-muted-color"></div>
-                  </div>
-                </div>
-                <div class="flex flex-col gap-2 justify-between items-center">
-                  <a
-                    class="flex items-center gap-2 text-muted-color ml-auto text-sm text-blue-500 cursor-pointer hover:text-blue-700 hover:font-semibold"
-                  >
-                    <span class="text-xs">Khôi phục</span>
-                    <i class="pi pi-undo"></i>
-                  </a>
-                  <a
-                    class="flex items-center gap-2 text-muted-color ml-auto text-sm text-red-500 cursor-pointer hover:text-red-700 hover:font-semibold"
-                  >
-                    <span class="text-xs">Xoá vĩnh viễn</span>
-                    <i class="pi pi-trash"></i>
-                  </a>
-                </div>
-              </div>
-              <p-divider class="m-0" />
-            </li>
+<p-toast></p-toast>
 
-            <li class="text-xs">Không có Khoá học nào đã bị xoá trước đó</li>
-          </ul>
-        </div>
-      </div>
-    </p-popover>
-  </ng-template>
-
-  <ng-template #end>
-    <p-button label="Xuất File" icon="pi pi-upload" severity="info" />
-  </ng-template>
-</p-toolbar>
-
+<!-- Bảng hiển thị lịch sử thanh toán -->
 <p-table
-  class="w-full"
-  #tableCourse
-  [value]="courses"
-  [columns]="cols"
-  [lazy]="true"
-  (onLazyLoad)="loadCourseData($event)"
-  [first]="currentPage * rows"
-  [rows]="rows"
-  [totalRecords]="totalRecords"
-  [paginator]="true"
-  [globalFilterFields]="['id', 'course_name', 'university']"
-  [(selection)]="selectedCourses"
+  class="w-full bg-white shadow-lg rounded-lg border border-gray-100"
+  [value]="payments"
   [rowHover]="true"
   dataKey="id"
-  currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} khoá học"
-  [showCurrentPageReport]="true"
   [loading]="isLoading"
 >
-  <ng-template #caption>
-    <div class="flex items-center justify-between">
-      <p class="m-0 lg:text-lg font-semibold">Quản lý Khoá học</p>
-      <p-iconfield>
-        <p-inputicon styleClass="pi pi-search" />
-        <input
-          pInputText
-          type="text"
-          (input)="searchGlobal($event)"
-          [(ngModel)]="searchValue"
-          placeholder="Search..."
-        />
-      </p-iconfield>
+  <ng-template pTemplate="caption">
+    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-t-lg">
+      <p class="m-0 lg:text-lg font-semibold text-black">Lịch sử giao dịch</p>
     </div>
   </ng-template>
-  <ng-template #header>
-    <tr class="text-sm">
-      <th>
-        <p-tableHeaderCheckbox />
-      </th>
-      <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
-        <div class="flex items-center">
-          <p-sortIcon field="id" />
-          <span>Mã</span>
-        </div>
-      </th>
-      <th>
-        <div class="flex items-center">
-          Tên
-          <p-sortIcon field="course_name" />
-        </div>
-      </th>
-      <th>
-        <div class="flex items-center">
-          Trường
-          <p-sortIcon field="university" />
-        </div>
-      </th>
-      <th>
-        <div class="flex items-center">
-          Độ khó
-          <p-sortIcon field="difficulty_level" />
-        </div>
-      </th>
-      <th>
-        <div class="flex items-center">
-          Đánh giá
-          <p-sortIcon field="course_rating" />
-        </div>
-      </th>
-      <th>
-        <div class="flex items-center">
-          Đường link
-          <p-sortIcon field="course_url" />
-        </div>
-      </th>
-      <th>
-        <div class="flex items-center">
-          Giá
-          <p-sortIcon field="price" />
-        </div>
-      </th>
-      <th>
-        <div class="flex items-center">Trạng thái</div>
-      </th>
+  <ng-template pTemplate="header">
+    <tr class="text-sm bg-gray-100 text-gray-700">
+      <th class="p-3">ID Giao dịch</th>
+      <th class="p-3">Tên Khóa học</th>
+      <th class="p-3">Số tiền</th>
+      <th class="p-3">Phương thức</th>
+      <th class="p-3">Mã giao dịch</th>
+      <th class="p-3">Trạng thái</th>
+      <th class="p-3">Ngày thanh toán</th>
+      <th class="p-3">Hành động</th>
     </tr>
   </ng-template>
-  <ng-template #body let-author>
-    <tr class="text-sm">
-      <td>
-        <p-tableCheckbox [value]="author" />
+  <ng-template pTemplate="body" let-payment>
+    <tr class="text-sm hover:bg-gray-50 transition duration-200">
+      <td class="p-3 text-black">{{ payment.id }}</td>
+      <td
+        class="p-3 text-black truncate"
+        [title]="payment.course?.course_name"
+        [pTooltip]="payment.course?.course_name"
+        tooltipPosition="right"
+      >
+        {{ cutText(payment.course?.course_name, 3) || "N/A" }}
       </td>
-      <td class="hidden lg:table-cell !p-0 text-center align-middle">
-        <div class="flex items-center justify-center h-full">
-          {{ author.id }}
-        </div>
+      <td class="p-3 text-primary font-semibold">
+        {{ payment.amount | number }} VND
       </td>
-      <td>
-        <span [pTooltip]="author.course_name" tooltipPosition="right">
-          {{ cutText(author.course_name, 4) }}
-        </span>
+      <td class="p-3 text-black">{{ payment.method }}</td>
+      <td class="p-3 text-black">{{ payment.transaction_code }}</td>
+      <td class="p-3">
+        <p-tag
+          *ngIf="payment.status === 'completed'"
+          severity="success"
+          value="Hoàn tất"
+          [rounded]="true"
+          class="!text-xs"
+        />
+        <p-tag
+          *ngIf="payment.status === 'pending'"
+          severity="warn"
+          value="Đang chờ"
+          [rounded]="true"
+          class="!text-xs"
+        />
+        <p-tag
+          *ngIf="payment.status === 'failed'"
+          severity="danger"
+          value="Thất bại"
+          [rounded]="true"
+          class="!text-xs"
+        />
       </td>
-      <td>
-        <span [pTooltip]="author.university" tooltipPosition="right">
-          {{ cutText(author.university, 3) }}
-        </span>
+      <td class="p-3 text-black">
+        {{ payment.payment_date | date : "dd/MM/yyyy HH:mm" }}
       </td>
-      <td>{{ author.difficulty_level }}</td>
-      <td class="text-center align-middle">
-        <div class="flex items-center justify-center h-full">
-          <p-tag
-            *ngIf="author.course_rating >= 4"
-            severity="success"
-            [value]="author.course_rating"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="author.course_rating >= 3 && author.course_rating < 4"
-            severity="info"
-            [value]="author.course_rating"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="author.course_rating >= 2 && author.course_rating < 3"
-            severity="warn"
-            [value]="author.course_rating"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="author.course_rating >= 1 && author.course_rating < 2"
-            severity="danger"
-            [value]="author.course_rating"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="author.course_rating === 0"
-            severity="contrast"
-            [value]="author.course_rating"
-            [rounded]="true"
-          />
-        </div>
-      </td>
-      <td>
-        <a
-          class="text-secondary underline"
-          href="{{ author.course_url }}"
-          target="_blank"
-          >Xem khóa học</a
+      <td class="p-3">
+        <button
+          (click)="viewPaymentDetails(payment.id)"
+          class="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 transition duration-200 text-sm"
         >
+          Xem chi tiết
+        </button>
       </td>
-      <td class="text-center align-middle">
-        <div class="flex items-center justify-center h-full">
-          {{ author.price }}
-        </div>
-      </td>
-      <td>
-        <div>
-          <p-tag
-            *ngIf="author.status === 'approved'"
-            severity="success"
-            value="Đang bán"
-            [rounded]="true"
-            class="!text-xs"
-          />
-          <p-tag
-            *ngIf="author.status === 'pending'"
-            severity="warn"
-            class="!text-xs"
-            value="Đang chờ"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="author.status === 'rejected'"
-            severity="danger"
-            class="!text-xs"
-            value="Đã xoá"
-            [rounded]="true"
-          />
-        </div>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="8" class="text-center text-gray-500 py-4">
+        Bạn chưa mua khóa học nào.
       </td>
     </tr>
   </ng-template>
 </p-table>
 
+<!-- Phân trang -->
+<p-paginator
+  [rows]="perPage"
+  [totalRecords]="totalRecords"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  (onPageChange)="onPageChange($event)"
+  [first]="(currentPage - 1) * perPage"
+  class="mt-6"
+></p-paginator>
+
+<!-- Dialog chi tiết giao dịch -->
 <p-dialog
-  [(visible)]="courseDialog"
-  [style]="{ width: '450px' }"
-  header="{{ !isEditting ? 'Thêm Khoá học' : 'Sửa Khoá học' }}"
+  [(visible)]="showDetailsDialog"
+  [style]="{ width: '700px' }"
+  header="Chi tiết giao dịch"
   [modal]="true"
+  class="rounded-lg shadow-lg"
 >
-  <ng-template #content>
-    <div class="flex flex-col gap-6">
-      <app-form-element [label]="'Họ và tên'">
-        <input
-          class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
-          placeholder="Enter text here"
-          type="text"
-          id="unique-input"
-        />
-      </app-form-element>
-      <app-form-element [label]="'Họ và tên'">
-        <input
-          class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
-          placeholder="Enter text here"
-          type="text"
-          id="unique-input"
-        />
-      </app-form-element>
-      <app-form-element [label]="'Họ và tên'">
-        <input
-          class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
-          placeholder="Enter text here"
-          type="text"
-          id="unique-input"
-        />
-      </app-form-element>
-      <app-form-element [label]="'Họ và tên'">
-        <input
-          class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
-          placeholder="Enter text here"
-          type="text"
-          id="unique-input"
-        />
-      </app-form-element>
-      <app-form-element [label]="'Họ và tên'">
-        <input
-          class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
-          placeholder="Enter text here"
-          type="text"
-          id="unique-input"
-        />
-      </app-form-element>
+  <ng-template pTemplate="content">
+    <div *ngIf="selectedPayment" class="p-4">
+      <h3 class="text-lg font-semibold text-black mb-4">Thông tin giao dịch</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <p><strong>ID Giao dịch:</strong> {{ selectedPayment.id }}</p>
+          <p>
+            <strong>Số tiền:</strong> {{ selectedPayment.amount | number }} VND
+          </p>
+          <p><strong>Phương thức:</strong> {{ selectedPayment.method }}</p>
+        </div>
+        <div>
+          <p>
+            <strong>Mã giao dịch:</strong>
+            {{ selectedPayment.transaction_code }}
+          </p>
+          <p>
+            <strong>Trạng thái:</strong>
+            <p-tag
+              *ngIf="selectedPayment.status === 'completed'"
+              severity="success"
+              value="Hoàn tất"
+              [rounded]="true"
+              class="!text-xs"
+            />
+            <p-tag
+              *ngIf="selectedPayment.status === 'pending'"
+              severity="warn"
+              value="Đang chờ"
+              [rounded]="true"
+              class="!text-xs"
+            />
+            <p-tag
+              *ngIf="selectedPayment.status === 'failed'"
+              severity="danger"
+              value="Thất bại"
+              [rounded]="true"
+              class="!text-xs"
+            />
+          </p>
+          <p>
+            <strong>Ngày thanh toán:</strong>
+            {{ selectedPayment.payment_date | date : "dd/MM/yyyy HH:mm" }}
+          </p>
+        </div>
+      </div>
+
+      <h3 class="text-lg font-semibold text-black mb-4">Thông tin khóa học</h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p>
+            <strong>Tên khóa học:</strong>
+            {{ selectedPayment.course.course_name }}
+          </p>
+          <p>
+            <strong>Trường đại học:</strong>
+            {{ selectedPayment.course.university }}
+          </p>
+          <p>
+            <strong>Mức độ khó:</strong>
+            {{ selectedPayment.course.difficulty_level }}
+          </p>
+          <p>
+            <strong>Đánh giá:</strong>
+            {{ selectedPayment.course.course_rating | number : "1.1-1" }}
+          </p>
+        </div>
+        <div>
+          <p>
+            <strong>Giá:</strong>
+            {{ selectedPayment.course.price | number }} VND
+          </p>
+          <p><strong>Kỹ năng:</strong> {{ selectedPayment.course.skills }}</p>
+          <p>
+            <strong>Trạng thái:</strong>
+            <p-tag
+              *ngIf="selectedPayment.course.status === 'approved'"
+              severity="success"
+              value="Đang bán"
+              [rounded]="true"
+              class="!text-xs"
+            />
+          </p>
+        </div>
+      </div>
+      <div class="mt-4">
+        <p><strong>Mô tả khóa học:</strong></p>
+        <p class="text-sm text-gray-600">
+          {{ selectedPayment.course.course_description }}
+        </p>
+      </div>
     </div>
   </ng-template>
-
-  <ng-template #footer>
-    <p-button label="Huỷ bỏ" icon="pi pi-times" text (click)="hideDialog()" />
-    <p-button
-      label="{{ !isEditting ? 'Thêm' : 'Sửa' }}"
-      icon="pi pi-check"
-      (click)="!isEditting ? addCourse() : updateCourse()"
-    />
-    <!-- <app-button
-        [disabled]="isLoading"
-        (click)="!isEditting ? saveAuthor() : updateAuthor()"
-        >{{ !isEditting ? "Thêm" : "Sửa" }}</app-button
-      > -->
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Đóng"
+      icon="pi pi-times"
+      class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
+      (click)="showDetailsDialog = false"
+    ></button>
   </ng-template>
 </p-dialog>

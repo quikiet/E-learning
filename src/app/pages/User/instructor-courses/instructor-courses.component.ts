@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CategoryService } from '../../../services/courses-manage/category.service';
 import { DropdownModule } from 'primeng/dropdown';
+import { HttpEventType } from '@angular/common/http';
+import { ButtonModule } from 'primeng/button';
 interface Category {
   name: string;
   id: number;
@@ -28,6 +30,7 @@ interface Category {
     FormsModule,
     MultiSelectModule,
     DropdownModule,
+    ButtonModule,
   ],
   providers: [MessageService],
   templateUrl: './instructor-courses.component.html',
@@ -70,6 +73,19 @@ export class InstructorCoursesComponent implements OnInit {
   ];
   isSubmitting: boolean = false;
   selectedImage: File | null = null;
+
+  // Biến cho dialog chỉnh sửa bài học
+  showEditLessonDialog: boolean = false;
+  selectedLesson: any = null;
+  lesson = {
+    title: '',
+    duration: 0,
+    is_preview: false,
+    video: null as File | null,
+  };
+  isSubmittingLesson: boolean = false;
+  selectedVideo: File | null = null;
+  uploadProgress: number = 0;
 
   constructor(
     private coursesService: CoursesService,
@@ -302,5 +318,126 @@ export class InstructorCoursesComponent implements OnInit {
         });
       }
     });
+  }
+
+  openEditLessonDialog(lesson: any) {
+    this.selectedLesson = lesson;
+    this.lesson = {
+      title: lesson.title,
+      duration: lesson.duration,
+      is_preview: lesson.is_preview,
+      video: null,
+    };
+    this.selectedVideo = null;
+    this.uploadProgress = 0; // Reset tiến trình upload
+    this.showEditLessonDialog = true;
+  }
+
+  onVideoSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedVideo = file;
+      this.lesson.video = file;
+    }
+  }
+
+  updateLesson() {
+    if (!this.lesson.title || this.lesson.title.trim() === '') {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Vui lòng nhập tiêu đề bài học.',
+        life: 3000,
+      });
+      return;
+    }
+
+    if (!this.lesson.duration || this.lesson.duration <= 0) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Vui lòng nhập thời lượng hợp lệ (phút).',
+        life: 3000,
+      });
+      return;
+    }
+
+    this.isSubmittingLesson = true;
+    const formData = new FormData();
+    formData.append('title', this.lesson.title.trim());
+    formData.append('duration', this.lesson.duration.toString());
+    formData.append('is_preview', this.lesson.is_preview ? '1' : '0');
+
+    if (this.selectedVideo) {
+      formData.append('video', this.selectedVideo);
+    }
+
+    // Debug payload
+    for (const [key, value] of (formData as any).entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    // Gọi API với chunk upload
+    this.coursesService.updateLesson(this.selectedCourseId, this.selectedLesson.id, formData).subscribe({
+      next: (event: any) => {
+        if (event.type === HttpEventType.UploadProgress && event.total) {
+          this.uploadProgress = Math.round(100 * event.loaded / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          this.isSubmittingLesson = false;
+          this.showEditLessonDialog = false;
+          this.uploadProgress = 0;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: 'Bài học đã được cập nhật thành công.',
+            life: 3000,
+          });
+          this.loadLessons(); // Reload danh sách bài học
+        }
+      },
+      error: (err) => {
+        console.error('Error updating lesson:', err);
+        console.error('Error response:', err.error);
+        this.isSubmittingLesson = false;
+        this.uploadProgress = 0;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: err.error?.message || 'Không thể cập nhật bài học. Vui lòng thử lại.',
+          life: 3000,
+        });
+      }
+    });
+  }
+
+  deleteLesson(lessonId: number) {
+    if (!lessonId) {
+      return;
+    }
+    this.coursesService.instructorDeleteLesson(lessonId).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thành công',
+          detail: 'Bài học đã được xoá thành công.',
+          life: 3000,
+        });
+      }, error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: err.error?.message || 'Không thể xoá bài học. Vui lòng thử lại.',
+          life: 3000,
+        });
+      }
+    });
+  }
+
+  cutText(text: string, wordLimit: number = 50): string {
+    if (!text) return '';
+    const words = text.split(' ');
+    if (words.length <= wordLimit) return text;
+
+    return words.slice(0, wordLimit).join(' ') + '...';
   }
 }

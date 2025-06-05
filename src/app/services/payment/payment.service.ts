@@ -15,8 +15,18 @@ export class PaymentService {
     return this.http.get<any>(`${this.apiUrl}/payments?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
 
+
   // Lấy chi tiết giao dịch
   getPaymentDetails(paymentId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/payments/${paymentId}`, { withCredentials: true });
+  }
+
+
+  adminGetPayments(page: number = 1, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/payments?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  }
+
+  adminGetPaymentDetails(paymentId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/payments/${paymentId}`, { withCredentials: true });
   }
 }
