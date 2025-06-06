@@ -155,7 +155,7 @@ export class ProfileInfoComponent implements OnInit {
     this.authService.getCurrentUser().subscribe({
       next: (res: any) => {
         this.user = res.user;
-        console.log('User data loaded:', this.user);
+        // console.log('User data loaded:', this.user);
 
         if (!this.user.username) {
           console.error('Username is missing in user data');

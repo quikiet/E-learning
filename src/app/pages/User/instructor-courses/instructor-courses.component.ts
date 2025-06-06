@@ -440,7 +440,7 @@ export class InstructorCoursesComponent implements OnInit {
     if (!lessonId) {
       return;
     }
-    this.coursesService.instructorDeleteLesson(lessonId).subscribe({
+    this.coursesService.instructorDeleteLesson(this.selectedCourseId, lessonId).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -448,6 +448,7 @@ export class InstructorCoursesComponent implements OnInit {
           detail: 'Bài học đã được xoá thành công.',
           life: 3000,
         });
+        this.loadLessons();
       }, error: (err) => {
         this.messageService.add({
           severity: 'error',
@@ -455,6 +456,7 @@ export class InstructorCoursesComponent implements OnInit {
           detail: err.error?.message || 'Không thể xoá bài học. Vui lòng thử lại.',
           life: 3000,
         });
+        this.loadLessons();
       }
     });
   }

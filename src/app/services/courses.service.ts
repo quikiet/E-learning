@@ -35,8 +35,8 @@ export class CoursesService {
     });
   }
 
-  instructorDeleteLesson(lessonId: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/lessons/${lessonId}`, { withCredentials: true });
+  instructorDeleteLesson(courseId: number, lessonId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons/${lessonId}`, { withCredentials: true });
   }
 
   getCourseBySlug(slug: string): Observable<any> {

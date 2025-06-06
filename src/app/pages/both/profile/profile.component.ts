@@ -6,24 +6,21 @@ import { DividerModule } from 'primeng/divider';
 import { RippleModule } from 'primeng/ripple';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-interface City {
-  name: string;
-  code: string;
-}
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-profile',
-  imports: [RouterOutlet, RippleModule, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RippleModule, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule, RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-  users: any[] = [];
+  user: any = null;
   constructor(private authService: AuthService) { }
   ngOnInit() {
 
     this.authService.getCurrentUser().subscribe({
       next: (res) => {
-        this.users = res.data;
+        this.user = res.user;
       }, error: (err) => {
         console.log(err.message);
       }

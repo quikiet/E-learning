@@ -12,7 +12,7 @@
               width="32"
             />
             <span class="font-semibold text-2xl text-[#1a2a3a] select-none">
-              edunity
+              SmartLearn
             </span>
           </a>
         </div>
@@ -31,7 +31,7 @@
                     <span class="font-medium">Thông tin cá nhân</span>
                   </a>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2" *ngIf="user && user.role === 'instructor'">
                   <a
                     [routerLink]="['/danh-sach-khoa-hoc']"
                     routerLinkActive="bg-secondary-content text-white"
