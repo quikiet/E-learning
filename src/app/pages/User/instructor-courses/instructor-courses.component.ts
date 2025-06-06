@@ -263,6 +263,26 @@ export class InstructorCoursesComponent implements OnInit {
       return;
     }
 
+    if (!this.course.price || this.course.price < 0) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Vui lòng nhập giá khóa học hợp lệ.',
+        life: 3000,
+      });
+      return;
+    }
+
+    if (!this.course.difficulty_level || !['Beginner', 'Intermediate', 'Advanced'].includes(this.course.difficulty_level)) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Vui lòng chọn mức độ khó hợp lệ.',
+        life: 3000,
+      });
+      return;
+    }
+
     if (!this.selectedCategories || this.selectedCategories.length === 0) {
       this.messageService.add({
         severity: 'error',
@@ -276,15 +296,19 @@ export class InstructorCoursesComponent implements OnInit {
     this.isSubmitting = true;
     const formData = new FormData();
     console.log('course_name before append:', this.course.course_name);
-    formData.append('course_name', this.course.course_name);
-    formData.append('university', this.course.university);
+    formData.append('course_name', this.course.course_name || '');
+    formData.append('university', this.course.university ?? '');
     formData.append('difficulty_level', this.course.difficulty_level);
-    formData.append('course_description', this.course.course_description);
-    formData.append('skills', this.course.skills);
+    formData.append('course_description', this.course.course_description ?? '');
+    formData.append('skills', this.course.skills ?? '');
     formData.append('price', this.course.price.toString());
-    // Gửi category_ids dưới dạng chuỗi JSON
-    console.log('Sending category_ids:', this.selectedCategories); // Debug
-    formData.append('category_ids', JSON.stringify(this.selectedCategories));
+
+    // Thêm _method để giả lập PUT
+    formData.append('_method', 'PUT');
+
+    this.selectedCategories.forEach((id, index) => {
+      formData.append(`category_ids[${index}]`, id.toString());
+    });
 
     if (this.course.image) {
       formData.append('image', this.course.image);
@@ -365,6 +389,7 @@ export class InstructorCoursesComponent implements OnInit {
 
     this.isSubmittingLesson = true;
     const formData = new FormData();
+    formData.append('_method', 'PUT');
     formData.append('title', this.lesson.title.trim());
     formData.append('duration', this.lesson.duration.toString());
     formData.append('is_preview', this.lesson.is_preview ? '1' : '0');

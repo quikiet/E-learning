@@ -85,7 +85,7 @@ export class CourseDetailComponent implements OnInit {
           this.lessons = res.lessons || [];
 
           // Kiểm tra trạng thái đăng ký của người dùng
-          this.isUserEnrolled = this.checkUserEnrollment(res.enrollments || []);
+          this.isUserEnrolled = this.checkUserEnrollment(res.enrollments);
 
           // Tìm video preview
           const previewLesson = this.lessons.find(lesson => lesson.is_preview === true);
@@ -108,7 +108,7 @@ export class CourseDetailComponent implements OnInit {
     if (!this.currentUserId || !enrollments?.length) return false;
 
     // Kiểm tra xem user_id của người dùng hiện tại có trong danh sách enrollments không
-    return enrollments.some(enrollment => enrollment.user_id === this.currentUserId && enrollment.status === 'active');
+    return enrollments.some(enrollment => enrollment.user_id === this.currentUserId);
   }
 
   createTabsFromLessons(lessons: any[]): Tab[] {

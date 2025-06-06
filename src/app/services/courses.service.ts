@@ -16,6 +16,7 @@ export class CoursesService {
       });
   }
 
+
   // Thêm bài học mới (dùng chunk file upload)
   addLesson(courseId: number, data: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons`, data, {
@@ -27,7 +28,7 @@ export class CoursesService {
 
   // Thêm phương thức cập nhật bài học
   updateLesson(courseId: number, lessonId: number, data: FormData): Observable<any> {
-    return this.http.put(`${this.apiUrl}/instructor/courses/${courseId}/lessons/${lessonId}`, data, {
+    return this.http.post(`${this.apiUrl}/instructor/courses/${courseId}/lessons/${lessonId}`, data, {
       reportProgress: true,
       observe: 'events',
       withCredentials: true
@@ -115,7 +116,7 @@ export class CoursesService {
   }
 
   instructorUpdateCourse(courseId: number, data: FormData): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/instructor/courses/${courseId}`, { data }, { withCredentials: true });
+    return this.http.post<any>(`${this.apiUrl}/instructor/courses/${courseId}`, data, { withCredentials: true });
   }
 
   instructorDeleteCourse(courseId: number): Observable<any> {

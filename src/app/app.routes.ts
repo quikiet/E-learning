@@ -32,6 +32,8 @@ import { AddLessonsComponent } from './pages/User/add-lessons/add-lessons.compon
 import { InstructorCoursesComponent } from './pages/User/instructor-courses/instructor-courses.component';
 import { CoursePendingLessonsComponent } from './pages/admin/course-pending-lessons/course-pending-lessons.component';
 import { StudentPaymentHistoryComponent } from './pages/User/student-payment-history/student-payment-history.component';
+import { StudentPurchasedCoursesComponentComponent } from './pages/User/student-purchased-courses-component/student-purchased-courses-component.component';
+import { StudentCourseLessonsComponentComponent } from './pages/User/student-course-lessons-component/student-course-lessons-component.component';
 
 export const routes: Routes = [
     {
@@ -42,6 +44,8 @@ export const routes: Routes = [
             { path: 'chi-tiet-khoa-hoc/:slug', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
             { path: 'khoa-hoc', component: CourseSearchComponent },
+            { path: 'khoa-hoc-cua-toi', component: StudentPurchasedCoursesComponentComponent },
+            { path: 'khoa-hoc-cua-toi/hoc-bai/:id', component: StudentCourseLessonsComponentComponent },
             { path: 'tao-khoa-hoc', component: CreateCourseComponent },
             { path: 'them-bai-hoc/:courseId', component: AddLessonsComponent },
             { path: 'yeu-cau', component: InstructorRequestComponent },

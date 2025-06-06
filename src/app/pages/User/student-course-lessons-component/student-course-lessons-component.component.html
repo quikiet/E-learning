@@ -1,0 +1,195 @@
+<p-toast></p-toast>
+<div class="max-w-7xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
+  <!-- Layout chính -->
+  <div
+    *ngIf="lessons.length > 0; else noLessons"
+    class="flex flex-col md:flex-row gap-6 items-start"
+  >
+    <!-- Danh sách bài học -->
+    <div class="w-full md:w-1/3 bg-white shadow p-4">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        Danh sách bài học
+      </h3>
+      <div
+        class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto no-scrollbar"
+      >
+        <div
+          *ngFor="let lesson of lessons; let i = index"
+          class="flex items-center justify-between p-3 cursor-pointer transition-colors"
+          [ngClass]="{
+            'bg-secondary-light': selectedLesson?.id === lesson.id,
+            'hover:bg-dark-light': selectedLesson?.id !== lesson.id
+          }"
+          (click)="selectLesson(lesson, i)"
+        >
+          <div class="flex-1">
+            <p class="text-sm font-medium text-gray-800 truncate">
+              {{ lesson.title }}
+            </p>
+            <p class="text-xs text-gray-600">
+              <i class="pi pi-clock mr-1"></i> {{ lesson.duration }} phút
+            </p>
+            <p class="text-xs text-gray-600">
+              <i class="pi pi-eye mr-1"></i>
+              {{ lesson.is_preview ? "Xem trước" : "Không xem trước" }}
+            </p>
+            <p-tag
+              [severity]="lesson.completed_at ? 'success' : 'danger'"
+              [value]="lesson.completed_at ? 'Hoàn thành' : 'Chưa hoàn thành'"
+              [rounded]="true"
+              class="!text-xs mt-1"
+            />
+            <span class="text-xs ml-2 text-gray">{{
+              lesson.completed_at | date : "dd/MM/yyyy HH:mm"
+            }}</span>
+          </div>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-play"
+            class="p-button-text p-button-sm"
+            (click)="selectLesson(lesson, i)"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video bài học -->
+    <div class="w-full md:w-2/3 bg-white shadow-lg p-4">
+      <div *ngIf="selectedLesson; else selectLessonPrompt">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+          {{ selectedLesson.title }}
+        </h3>
+        <div class="mb-4">
+          <video
+            controls
+            [src]="selectedLesson.video_url"
+            class="w-full h-96"
+            type="video/mp4"
+          >
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="flex justify-between items-center">
+          <button
+            pButton
+            type="button"
+            label="Bài trước"
+            icon="pi pi-chevron-left"
+            [disabled]="currentLessonIndex === 0"
+            (click)="selectPreviousLesson()"
+            class="p-button-outlined p-button-sm"
+          ></button>
+          <button
+            pButton
+            type="button"
+            [label]="
+              selectedLesson.completed_at
+                ? 'Đã hoàn thành'
+                : 'Đánh dấu hoàn thành'
+            "
+            [icon]="
+              selectedLesson.completed_at ? 'pi pi-check-circle' : 'pi pi-check'
+            "
+            [disabled]="
+              selectedLesson.completed_at || !canMarkComplete(selectedLesson)
+            "
+            (click)="markLessonComplete()"
+            class="p-button-sm"
+            [ngClass]="{
+              'p-button-success': selectedLesson.completed_at,
+              'p-button-primary': !selectedLesson.completed_at
+            }"
+          ></button>
+          <button
+            pButton
+            type="button"
+            label="Bài sau"
+            icon="pi pi-chevron-right"
+            iconPos="right"
+            [disabled]="
+              currentLessonIndex === lessons.length - 1 ||
+              !selectedLesson.completed_at
+            "
+            (click)="selectNextLesson()"
+            class="p-button-outlined p-button-sm"
+          ></button>
+        </div>
+      </div>
+      <ng-template #selectLessonPrompt>
+        <div class="text-center text-gray-500 py-4">
+          Vui lòng chọn một bài học để bắt đầu học.
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Thông tin khóa học -->
+  <div *ngIf="course" class="my-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-2">
+      {{ course.course_name }}
+    </h2>
+    <p class="text-sm text-gray-600 mb-1">
+      <i class="pi pi-building mr-1"></i> {{ course.university }}
+    </p>
+    <p class="text-sm text-gray-600 mb-1">
+      <i class="pi pi-star mr-1"></i> Mức độ: {{ course.difficulty_level }}
+    </p>
+    <div class="flex items-center mb-1">
+      <span class="text-sm text-gray-600 mr-1">
+        <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
+        {{ course.course_rating | number : "1.1-1" }}
+      </span>
+      <span class="text-xs text-gray-500">
+        ({{
+          course.course_rating >= 4
+            ? "Xuất sắc"
+            : course.course_rating >= 3
+            ? "Tốt"
+            : "Trung bình"
+        }})
+      </span>
+    </div>
+    <p class="text-sm text-gray-600 line-clamp-3">
+      {{ course.course_description }}
+    </p>
+  </div>
+
+  <!-- Review List -->
+  <div class="space-y-5">
+    <p class="text-black font-bold text-lg mb-2">Bình luận</p>
+    <div *ngFor="let review of course.reviews" class="flex items-start gap-3">
+      <p-avatar
+        [image]="review.user?.avatar"
+        size="normal"
+        class="mt-1"
+        shape="circle"
+      />
+      <div>
+        <span class="font-bold">{{ review.user?.username || "User" }}</span>
+        <div class="text-gray-400 text-sm">
+          {{ review.created_at | date : "dd/MM/yyyy" }}
+        </div>
+        <div class="text-sm">
+          {{ review.comment }}
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!course.reviews?.length" class="text-gray-500 text-sm">
+      Chưa có bình luận nào cho khóa học này.
+    </div>
+    <div class="mt-8 flex justify-center">
+      <button
+        class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
+      >
+        Xem thêm
+      </button>
+    </div>
+  </div>
+
+  <ng-template #noLessons>
+    <div class="text-center text-gray-500 py-4">
+      Khóa học này chưa có bài học nào.
+    </div>
+  </ng-template>
+</div>

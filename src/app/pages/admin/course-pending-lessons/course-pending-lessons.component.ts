@@ -98,6 +98,7 @@ export class CoursePendingLessonsComponent implements OnInit {
             detail: res.message || 'Bài học đã được duyệt',
             life: 3000,
           });
+          this.loadPendingLessons();
         },
         error: (err) => {
           this.messageService.add({
@@ -106,6 +107,7 @@ export class CoursePendingLessonsComponent implements OnInit {
             detail: err.message || 'Không thể duyệt bài học. Vui lòng thử lại.',
             life: 3000,
           });
+          this.loadPendingLessons();
         }
       });
     }

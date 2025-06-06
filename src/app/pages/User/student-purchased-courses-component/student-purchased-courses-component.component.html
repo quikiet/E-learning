@@ -1,0 +1,261 @@
+<p-toast></p-toast>
+<div class="max-w-7xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Khóa học đã mua</h2>
+
+  <!-- Grid layout cho các card khóa học -->
+  <div
+    *ngIf="enrollments.length > 0; else noCourses"
+    class="grid grid-cols-1 lg:grid-cols-2 gap-5 py-5"
+  >
+    <a
+      *ngFor="let enrollment of enrollments"
+      [routerLink]="['/khoa-hoc-cua-toi/hoc-bai/', enrollment.id]"
+      class="bg-white overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col md:flex-row"
+    >
+      <div class="relative flex-shrink-0 w-full md:w-1/2">
+        <!-- Hình ảnh khóa học -->
+        <img
+          [src]="enrollment.course.image"
+          alt="{{ enrollment.course.course_name }}"
+          class="w-full h-48 md:h-full object-center"
+        />
+        <!-- Trạng thái đăng ký -->
+        <div class="absolute top-5 right-5">
+          <p-tag
+            *ngIf="enrollment.status === 'active'"
+            severity="success"
+            value="Đang học"
+            [rounded]="true"
+            class="!text-xs"
+          />
+          <p-tag
+            *ngIf="enrollment.status === 'expired'"
+            severity="danger"
+            value="Hết hạn"
+            [rounded]="true"
+            class="!text-xs"
+          />
+          <p-tag
+            *ngIf="enrollment.status === 'completed'"
+            severity="info"
+            value="Hoàn thành"
+            [rounded]="true"
+            class="!text-xs"
+          />
+        </div>
+      </div>
+
+      <!-- Nội dung card -->
+      <div class="p-4 flex-1 flex flex-col">
+        <!-- Tên khóa học -->
+        <h3
+          class="text-lg font-semibold text-gray-800 mb-2 truncate"
+          [title]="enrollment.course.course_name"
+        >
+          {{ enrollment.course.course_name }}
+        </h3>
+
+        <!-- Trường đại học -->
+        <p
+          class="text-sm mb-1 truncate text-gray-600"
+          [title]="enrollment.course.university"
+        >
+          <i class="pi pi-building mr-1 text-primary"></i>
+          {{ enrollment.course.university }}
+        </p>
+
+        <!-- Mức độ khó -->
+        <p class="text-sm text-gray-600 mb-1">
+          <i class="pi pi-star mr-1 text-secondary"></i> Mức độ:
+          {{ enrollment.course.difficulty_level }}
+        </p>
+
+        <!-- Đánh giá -->
+        <div class="flex items-center mb-1">
+          <span class="text-sm text-gray-600 mr-1">
+            <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
+            {{ enrollment.course.course_rating | number : "1.1-1" }}
+          </span>
+          <span class="text-xs text-gray-500">
+            ({{
+              enrollment.course.course_rating >= 4
+                ? "Xuất sắc"
+                : enrollment.course.course_rating >= 3
+                ? "Tốt"
+                : "Trung bình"
+            }})
+          </span>
+        </div>
+
+        <!-- Giá -->
+        <p class="text-sm font-medium text-gray-800 mb-1">
+          <i class="pi pi-money-bill mr-1"></i>
+          {{ enrollment.course.price | number }} VND
+        </p>
+
+        <!-- Kỹ năng -->
+        <p class="text-sm text-gray-600 mb-1 truncate">
+          <i class="pi pi-book mr-1"></i> Kỹ năng:
+          {{ enrollment.course.skills }}
+        </p>
+
+        <!-- Mô tả ngắn -->
+        <p class="text-sm text-gray-600 mb-2 line-clamp-2">
+          {{ cutText(enrollment.course.course_description, 30) }}
+        </p>
+
+        <!-- Ngày đăng ký -->
+        <p class="text-sm text-gray-600 mb-1">
+          <i class="pi pi-calendar mr-1"></i> Đăng ký:
+          {{ enrollment.enrolled_at | date : "dd/MM/yyyy HH:mm" }}
+        </p>
+
+        <!-- Ngày hết hạn -->
+        <p class="text-sm text-gray-600 mb-2">
+          <i class="pi pi-calendar-times mr-1"></i> Hết hạn:
+          {{ enrollment.expires_at | date : "dd/MM/yyyy HH:mm" }}
+        </p>
+
+        <!-- Tiến độ học tập -->
+        <div *ngIf="progressData[enrollment.id]" class="mb-2">
+          <p class="text-sm text-gray-600 mb-1">
+            <i class="pi pi-bookmark mr-1"></i> Tổng số bài học:
+            {{ progressData[enrollment.id].total_lessons }}
+          </p>
+          <p class="text-sm text-gray-600 mb-1">
+            <i
+              class="pi pi-check-circle mr-1"
+              [ngClass]="
+                progressData[enrollment.id].completed_lessons
+                  ? 'text-secondary'
+                  : 'text-primary'
+              "
+            ></i>
+            Đã hoàn thành:
+            {{ progressData[enrollment.id].completed_lessons }}
+          </p>
+          <div class="w-full bg-gray-200 rounded-full">
+            <!-- <div
+              class="bg-secondary h-2.5 rounded-full"
+              [style.width]="+'%'"
+            ></div> -->
+            <p-progressbar
+              class="!rounded-full !h-2.5"
+              [value]="progressData[enrollment.id].progress_percentage"
+            />
+          </div>
+          <p class="text-sm text-gray-600 mt-1">
+            Tiến độ:
+            {{
+              progressData[enrollment.id].progress_percentage
+                | number : "1.1-1"
+            }}%
+          </p>
+        </div>
+
+        <!-- Nút tiếp tục học -->
+        <!-- <div class="mt-auto">
+          <button
+            [routerLink]="['/khoa-hoc-cua-toi/hoc-bai/', enrollment.id]"
+            class="w-full bg-secondary-content text-white py-2 px-4 rounded-lg hover:bg-secondary transition duration-200 text-sm font-medium"
+          >
+            Tiếp tục học
+          </button>
+        </div> -->
+      </div>
+    </a>
+  </div>
+
+  <ng-template #noCourses>
+    <div class="text-center text-gray-500 py-4">Bạn chưa mua khóa học nào.</div>
+  </ng-template>
+
+  <!-- Phân trang -->
+  <p-paginator
+    [rows]="perPage"
+    [totalRecords]="totalRecords"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    (onPageChange)="onPageChange($event)"
+    [first]="(currentPage - 1) * perPage"
+    class="mt-6"
+  ></p-paginator>
+</div>
+
+<!-- Dialog chi tiết khóa học -->
+<!-- <p-dialog
+  [(visible)]="showDetailsDialog"
+  [style]="{ width: '700px' }"
+  header="Chi tiết khóa học"
+  [modal]="true"
+  class="rounded-lg shadow-lg"
+>
+  <ng-template pTemplate="content">
+    <div *ngIf="selectedEnrollment" class="p-4">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">
+        {{ selectedEnrollment.course.course_name }}
+      </h3>
+      <p>
+        <strong>Trường đại học:</strong>
+        {{ selectedEnrollment.course.university }}
+      </p>
+      <p>
+        <strong>Mức độ khó:</strong>
+        {{ selectedEnrollment.course.difficulty_level }}
+      </p>
+      <p>
+        <strong>Đánh giá:</strong>
+        {{ selectedEnrollment.course.course_rating | number : "1.1-1" }}
+      </p>
+      <p>
+        <strong>Giá:</strong> {{ selectedEnrollment.course.price | number }} VND
+      </p>
+      <p><strong>Kỹ năng:</strong> {{ selectedEnrollment.course.skills }}</p>
+      <p><strong>Mô tả khóa học:</strong></p>
+      <p class="text-sm text-gray-600">
+        {{ selectedEnrollment.course.course_description }}
+      </p>
+      <p>
+        <strong>Trạng thái:</strong>
+        <p-tag
+          *ngIf="selectedEnrollment.status === 'active'"
+          severity="success"
+          value="Đang hoạt động"
+          [rounded]="true"
+          class="!text-xs"
+        />
+        <p-tag
+          *ngIf="selectedEnrollment.status === 'expired'"
+          severity="danger"
+          value="Hết hạn"
+          [rounded]="true"
+          class="!text-xs"
+        />
+        <p-tag
+          *ngIf="selectedEnrollment.status === 'completed'"
+          severity="info"
+          value="Hoàn thành"
+          [rounded]="true"
+          class="!text-xs"
+        />
+      </p>
+      <p>
+        <strong>Ngày đăng ký:</strong>
+        {{ selectedEnrollment.enrolled_at | date : "dd/MM/yyyy HH:mm" }}
+      </p>
+      <p>
+        <strong>Ngày hết hạn:</strong>
+        {{ selectedEnrollment.expires_at | date : "dd/MM/yyyy HH:mm" }}
+      </p>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Đóng"
+      icon="pi pi-times"
+      class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
+      (click)="showDetailsDialog = false"
+    ></button>
+  </ng-template>
+</p-dialog> -->
