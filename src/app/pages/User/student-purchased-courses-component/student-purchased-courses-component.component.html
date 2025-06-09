@@ -4,7 +4,7 @@
 
   <!-- Grid layout cho các card khóa học -->
   <div
-    *ngIf="enrollments.length > 0; else noCourses"
+    *ngIf="enrollments.length > 0"
     class="grid grid-cols-1 lg:grid-cols-2 gap-5 py-5"
   >
     <a
@@ -166,7 +166,7 @@
     </a>
   </div>
 
-  <ng-template #noCourses>
+  <ng-template *ngIf="enrollments.length === 0">
     <div class="text-center text-gray-500 py-4">Bạn chưa mua khóa học nào.</div>
   </ng-template>
 

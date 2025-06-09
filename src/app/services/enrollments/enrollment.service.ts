@@ -28,8 +28,8 @@ export class EnrollmentService {
     return this.http.post<any>(`${this.apiUrl}/lessons/${lessonId}/progress`, { status }, { withCredentials: true });
   }
 
-  reviewCourse(enrollmentId: number, data: { rating: number, comment: string | null, feedback_type: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/enrollments/${enrollmentId}/review`, { data }, { withCredentials: true });
+  reviewCourse(enrollmentId: number, data: { rating: number, comment: string | null, feedback_type: string | null }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/enrollments/${enrollmentId}/review`, data, { withCredentials: true });
   }
 
 

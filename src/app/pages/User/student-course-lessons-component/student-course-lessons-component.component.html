@@ -148,13 +148,18 @@
   </div>
   <!-- Review List -->
   <div class="space-y-5">
-    <p-card header="Viết đánh giá của bạn" styleClass="mb-6">
+    <p-card
+      header="Viết đánh giá của bạn"
+      styleClass="mb-6"
+      *ngIf="!hasReviewed && currentUserId"
+    >
       <div class="space-y-4">
         <!-- Rating selector -->
         <div class="flex flex-col gap-2">
           <p-select
             [options]="feedback_type"
             [(ngModel)]="selectedFeedback"
+            optionValue="name"
             optionLabel="name"
             placeholder="Chọn kiểu đánh giá"
             class="w-full md:w-56"

@@ -14,6 +14,7 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
+import { AuthService } from '../../../services/auth.service';
 
 interface Feedback {
   name: string;
@@ -52,21 +53,29 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   displayedReviews: any[] = []; // Array to hold displayed reviews
   showAll = false;
   selectedFeedback = 'content_quality';
+  hasReviewed: boolean = false; // Track if user has reviewed
+  currentUserId: number | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private enrollmentService: EnrollmentService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.enrollmentId = +this.route.snapshot.paramMap.get('id')!;
-    this.loadCourseLessons();
+    this.authService.getCurrentUser().subscribe(res => {
+      this.currentUserId = res.user.id;
+      this.loadCourseLessons();
+    });
     this.feedback_type = [
       { name: 'content_quality' },
       { name: 'instructor' },
       { name: 'platform_issue' },
       { name: 'not_interested' },
     ];
+
   }
 
   loadCourseLessons() {
@@ -77,6 +86,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
         this.lessons = res.data.lessons;
         this.reviews = res.data.reviews;
         this.updateDisplayedReviews();
+        this.checkIfUserHasReviewed();
         this.isLoading = false;
 
         // Chọn bài học đầu tiên chưa hoàn thành
@@ -98,6 +108,16 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
         });
       }
     });
+  }
+
+  checkIfUserHasReviewed() {
+    if (this.currentUserId && this.reviews.length > 0) {
+      this.hasReviewed = this.reviews.some(
+        (review) => review.user_id === this.currentUserId
+      );
+    } else {
+      this.hasReviewed = false;
+    }
   }
 
   updateDisplayedReviews() {
@@ -218,6 +238,8 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
         // Reload reviews
         this.loadCourseLessons();
       }, error: (err) => {
+        console.log(err.message);
+
         this.messageService.add({
           severity: 'error',
           summary: 'Thất bại',
