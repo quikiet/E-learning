@@ -8,6 +8,17 @@ import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { EnrollmentService } from '../../../services/enrollments/enrollment.service';
 import { AvatarModule } from 'primeng/avatar';
+import { Divider } from 'primeng/divider';
+import { CardModule } from 'primeng/card';
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
+import { TextareaModule } from 'primeng/textarea';
+import { SelectModule } from 'primeng/select';
+
+interface Feedback {
+  name: string;
+}
+
 @Component({
   selector: 'app-student-course-lessons-component',
   imports: [
@@ -15,7 +26,13 @@ import { AvatarModule } from 'primeng/avatar';
     TagModule,
     ToastModule,
     ButtonModule,
-    AvatarModule
+    AvatarModule,
+    Divider,
+    CardModule,
+    RatingModule,
+    FormsModule,
+    SelectModule,
+    TextareaModule,
   ],
   providers: [MessageService],
   templateUrl: './student-course-lessons-component.component.html',
@@ -25,10 +42,16 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   enrollmentId: number = 0;
   course: any = null;
   lessons: any[] = [];
+  reviews: any[] = [];
   selectedLesson: any = null;
   currentLessonIndex: number = -1;
   isLoading: boolean = true;
-
+  newRating: number = 0;
+  newComment: string = '';
+  feedback_type: Feedback[] | undefined;
+  displayedReviews: any[] = []; // Array to hold displayed reviews
+  showAll = false;
+  selectedFeedback = 'content_quality';
   constructor(
     private route: ActivatedRoute,
     private enrollmentService: EnrollmentService,
@@ -38,6 +61,12 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   ngOnInit() {
     this.enrollmentId = +this.route.snapshot.paramMap.get('id')!;
     this.loadCourseLessons();
+    this.feedback_type = [
+      { name: 'content_quality' },
+      { name: 'instructor' },
+      { name: 'platform_issue' },
+      { name: 'not_interested' },
+    ];
   }
 
   loadCourseLessons() {
@@ -46,6 +75,8 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
       next: (res) => {
         this.course = res.data.course;
         this.lessons = res.data.lessons;
+        this.reviews = res.data.reviews;
+        this.updateDisplayedReviews();
         this.isLoading = false;
 
         // Chọn bài học đầu tiên chưa hoàn thành
@@ -68,6 +99,23 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
       }
     });
   }
+
+  updateDisplayedReviews() {
+    this.displayedReviews = this.showAll
+      ? this.reviews
+      : this.reviews.slice(0, 1);
+  }
+
+  // Toggle show more/less
+  toggleShowMore() {
+    this.showAll = !this.showAll;
+    this.updateDisplayedReviews();
+  }
+
+  getStars(): number[] {
+    return [1, 2, 3, 4, 5];
+  }
+
 
   selectLesson(lesson: any, index: number) {
     if (this.canAccessLesson(lesson)) {
@@ -135,5 +183,53 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
         });
       }
     });
+  }
+
+  submitReview() {
+    if (this.newRating === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Thông báo',
+        detail: 'Vui lòng chọn số sao đánh giá'
+      });
+      return;
+    }
+
+    const reviewData = {
+      rating: this.newRating,
+      comment: this.newComment.trim() || null,
+      feedback_type: this.selectedFeedback
+    };
+
+    // Gửi API request
+    console.log('Submitting review:', reviewData);
+    this.enrollmentService.reviewCourse(this.enrollmentId, reviewData).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thành công',
+          detail: res.message || 'Đánh giá của bạn đã được gửi thành công!'
+        });
+
+        // Reset form
+        this.newRating = 0;
+        this.newComment = '';
+        this.selectedFeedback = '';
+        // Reload reviews
+        this.loadCourseLessons();
+      }, error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Thất bại',
+          detail: err.message || 'Đánh giá của bạn không được gửi!'
+        });
+      }
+    })
+
+  }
+
+  getRatingLabel(rating: number): string {
+    const labels = ['', 'Rất tệ', 'Tệ', 'Bình thường', 'Tốt', 'Rất tốt'];
+    return labels[rating] || '';
   }
 }

@@ -140,49 +140,117 @@
         <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
         {{ course.course_rating | number : "1.1-1" }}
       </span>
-      <span class="text-xs text-gray-500">
-        ({{
-          course.course_rating >= 4
-            ? "Xuất sắc"
-            : course.course_rating >= 3
-            ? "Tốt"
-            : "Trung bình"
-        }})
-      </span>
+      <span class="text-xs text-gray-500"> ({{ reviews.length }}) </span>
     </div>
     <p class="text-sm text-gray-600 line-clamp-3">
       {{ course.course_description }}
     </p>
   </div>
-
   <!-- Review List -->
   <div class="space-y-5">
-    <p class="text-black font-bold text-lg mb-2">Bình luận</p>
-    <div *ngFor="let review of course.reviews" class="flex items-start gap-3">
-      <p-avatar
-        [image]="review.user?.avatar"
-        size="normal"
-        class="mt-1"
-        shape="circle"
-      />
-      <div>
-        <span class="font-bold">{{ review.user?.username || "User" }}</span>
-        <div class="text-gray-400 text-sm">
-          {{ review.created_at | date : "dd/MM/yyyy" }}
+    <p-card header="Viết đánh giá của bạn" styleClass="mb-6">
+      <div class="space-y-4">
+        <!-- Rating selector -->
+        <div class="flex flex-col gap-2">
+          <p-select
+            [options]="feedback_type"
+            [(ngModel)]="selectedFeedback"
+            optionLabel="name"
+            placeholder="Chọn kiểu đánh giá"
+            class="w-full md:w-56"
+          />
+          <label class="text-sm font-medium text-gray-700"
+            >Chọn số sao đánh giá:</label
+          >
+          <div class="flex items-center gap-2">
+            <p-rating
+              [(ngModel)]="newRating"
+              [stars]="5"
+              styleClass="custom-rating"
+            >
+            </p-rating>
+            <span class="text-sm text-gray-600 ml-2" *ngIf="newRating > 0">
+              {{ getRatingLabel(newRating) }}
+            </span>
+          </div>
         </div>
-        <div class="text-sm">
-          {{ review.comment }}
+        <!-- Comment input -->
+        <div class="flex flex-col gap-2">
+          <label for="comment" class="text-sm font-medium text-gray-700">
+            Nhận xét của bạn:
+          </label>
+          <textarea
+            id="comment"
+            pInputTextarea
+            [(ngModel)]="newComment"
+            placeholder="Chia sẻ trải nghiệm của bạn về khóa học này..."
+            [rows]="4"
+            class="w-full resize-none"
+          >
+          </textarea>
+        </div>
+
+        <!-- Submit button -->
+        <div class="flex justify-end">
+          <p-button
+            label="Gửi đánh giá"
+            icon="pi pi-send"
+            (onClick)="submitReview()"
+            [disabled]="newRating === 0"
+            styleClass="bg-blue-600 hover:bg-blue-700"
+          >
+          </p-button>
         </div>
       </div>
+    </p-card>
+    <p class="text-black font-bold text-lg mb-4">Đánh giá</p>
+
+    <div *ngFor="let review of displayedReviews">
+      <div class="flex items-start gap-3">
+        <p-avatar
+          [image]="review.user?.avatar"
+          size="normal"
+          class="mt-1"
+          shape="circle"
+        />
+        <div>
+          <span class="font-bold">{{
+            review.user?.username || review.user?.email
+          }}</span>
+          <div class="text-gray text-sm flex gap-1">
+            <span *ngFor="let star of getStars(); let i = index">
+              <i
+                class="pi pi-star-fill !text-xs"
+                [ngClass]="i < review.rating ? 'text-yellow-500' : ''"
+              ></i>
+            </span>
+            <span class="ml-2">{{
+              review.created_at | date : "dd/MM/yyyy"
+            }}</span>
+          </div>
+          <div class="text-sm mt-3 font-thin">
+            {{ review.comment }}
+          </div>
+          <p-tag
+            severity="secondary"
+            [value]="review.feedback_type"
+            [rounded]="true"
+            class="!text-xs"
+          />
+        </div>
+      </div>
+      <p-divider />
     </div>
-    <div *ngIf="!course.reviews?.length" class="text-gray-500 text-sm">
-      Chưa có bình luận nào cho khóa học này.
+    <div *ngIf="!reviews?.length" class="text-gray text-sm">
+      Chưa có đánh giá nào cho khóa học này.
     </div>
-    <div class="mt-8 flex justify-center">
+    <!-- Show More Button -->
+    <div *ngIf="reviews.length > 1" class="mt-8 flex justify-center">
       <button
         class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
+        (click)="toggleShowMore()"
       >
-        Xem thêm
+        {{ showAll ? "Thu gọn" : "Xem thêm" }}
       </button>
     </div>
   </div>

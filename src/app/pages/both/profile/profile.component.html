@@ -11,7 +11,9 @@
               src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
               width="32"
             />
-            <span class="font-semibold text-2xl text-[#1a2a3a] select-none">
+            <span
+              class="font-semibold text-2xl text-[#1a2a3a] select-none hidden lg:block"
+            >
               SmartLearn
             </span>
           </a>
@@ -25,10 +27,12 @@
                     [routerLink]="['/ho-so']"
                     routerLinkActive="bg-secondary-content text-white"
                     pRipple
-                    class="flex items-center cursor-pointer p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                   >
                     <i class="pi pi-user mr-2"></i>
-                    <span class="font-medium">Thông tin cá nhân</span>
+                    <span class="font-medium hidden lg:block"
+                      >Thông tin cá nhân</span
+                    >
                   </a>
                 </li>
                 <li class="mb-2" *ngIf="user && user.role === 'instructor'">
@@ -36,21 +40,25 @@
                     [routerLink]="['/danh-sach-khoa-hoc']"
                     routerLinkActive="bg-secondary-content text-white"
                     pRipple
-                    class="flex items-center cursor-pointer p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                   >
                     <i class="pi pi-list mr-2"></i>
-                    <span class="font-medium">Danh sách khoá học</span>
+                    <span class="font-medium hidden lg:block"
+                      >Danh sách khoá học</span
+                    >
                   </a>
                 </li>
-                <li class="mb-2">
+                <li class="mb-2" *ngIf="user && user.role === 'student'">
                   <a
                     [routerLink]="['/lich-su-thanh-toan']"
                     routerLinkActive="bg-secondary-content text-white"
                     pRipple
-                    class="flex items-center cursor-pointer p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                   >
                     <i class="pi pi-credit-card mr-2"></i>
-                    <span class="font-medium">Lịch sử thanh toán</span>
+                    <span class="font-medium hidden lg:block"
+                      >Lịch sử thanh toán</span
+                    >
                   </a>
                 </li>
               </ul>
