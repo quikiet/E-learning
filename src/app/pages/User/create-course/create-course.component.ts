@@ -29,7 +29,6 @@ interface Category {
 export class CreateCourseComponent implements OnInit {
   course = {
     course_name: '',
-    university: '',
     difficulty_level: 'Beginner',
     course_description: '',
     skills: '',
@@ -94,7 +93,6 @@ export class CreateCourseComponent implements OnInit {
 
     const formData = new FormData();
     formData.append('course_name', this.course.course_name);
-    formData.append('university', this.course.university || '');
     formData.append('difficulty_level', this.course.difficulty_level || '');
     formData.append('course_description', this.course.course_description || '');
     formData.append('skills', this.course.skills || '');
@@ -120,7 +118,6 @@ export class CreateCourseComponent implements OnInit {
         });
         this.course = {
           course_name: '',
-          university: '',
           difficulty_level: 'Beginner',
           course_description: '',
           skills: '',

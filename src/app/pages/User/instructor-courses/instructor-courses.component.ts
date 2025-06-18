@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CoursesService } from '../../../services/courses.service';
 import { TagModule } from 'primeng/tag';
 import { PaginatorModule } from 'primeng/paginator';
@@ -31,6 +31,7 @@ interface Category {
     MultiSelectModule,
     DropdownModule,
     ButtonModule,
+    RouterLink
   ],
   providers: [MessageService],
   templateUrl: './instructor-courses.component.html',

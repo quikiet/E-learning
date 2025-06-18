@@ -227,9 +227,16 @@
       <td>
         <div>
           <p-tag
+            *ngIf="author.status === 'banned'"
+            severity="danger"
+            [value]="author.status"
+            [rounded]="true"
+            class="!text-xs"
+          />
+          <p-tag
             *ngIf="author.status === 'approved'"
             severity="success"
-            value="Đang bán"
+            [value]="author.status"
             [rounded]="true"
             class="!text-xs"
           />
@@ -237,21 +244,21 @@
             *ngIf="author.status === 'pending'"
             severity="warn"
             class="!text-xs"
-            value="Đang chờ"
+            [value]="author.status"
             [rounded]="true"
           />
           <p-tag
             *ngIf="author.status === 'rejected'"
-            severity="danger"
+            severity="contrast"
             class="!text-xs"
-            value="Đã xoá"
+            [value]="author.status"
             [rounded]="true"
           />
           <p-tag
             *ngIf="author.status === 'unavailable'"
             severity="secondary"
             class="!text-xs"
-            value="Đã ẩn"
+            [value]="author.status"
             [rounded]="true"
           />
         </div>

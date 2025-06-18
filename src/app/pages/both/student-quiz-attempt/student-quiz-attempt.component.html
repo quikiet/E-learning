@@ -1,0 +1,99 @@
+<div class="p-4 space-y-6">
+  <p-card header="Take Quiz" styleClass="mb-6">
+    <div class="text-gray-600">
+      Quiz ID: {{ quizId }}<br />
+      Please answer all questions before submitting.
+    </div>
+  </p-card>
+
+  <div *ngIf="questions.length === 0" class="text-center text-gray-600">
+    No questions available in this quiz.
+  </div>
+
+  <div *ngFor="let question of questions; let i = index" class="mb-6">
+    <p-card [header]="'Question ' + (i + 1) + ': ' + question.title">
+      <div class="space-y-4">
+        <p class="text-sm text-gray-600">
+          Type:
+          {{
+            question.question_type === "multiple_choice"
+              ? "Multiple Choice"
+              : question.question_type === "true_false"
+              ? "True/False"
+              : "Open Ended"
+          }}
+          | Points: {{ question.points }}
+        </p>
+
+        <!-- Multiple Choice -->
+        <div
+          *ngIf="question.question_type === 'multiple_choice'"
+          class="space-y-2"
+        >
+          <div
+            *ngFor="let choice of question.choices; let j = index"
+            class="flex items-center gap-2"
+          >
+            <p-checkbox
+              [inputId]="'choice' + question.id + j"
+              [binary]="false"
+              [(ngModel)]="answers[question.id]"
+              [value]="choice.id"
+              name="question{{ question.id }}"
+              (onChange)="
+                selectAnswer(question.id, choice.id, question.question_type)
+              "
+            ></p-checkbox>
+            <label [for]="'choice' + question.id + j" class="ml-2">{{
+              choice.content
+            }}</label>
+          </div>
+        </div>
+
+        <!-- True/False -->
+        <div *ngIf="question.question_type === 'true_false'" class="space-y-2">
+          <div
+            *ngFor="let choice of question.choices; let j = index"
+            class="flex items-center gap-2"
+          >
+            <p-radioButton
+              [inputId]="'choice' + question.id + j"
+              [value]="choice.id"
+              [(ngModel)]="answers[question.id][0]"
+              (onClick)="
+                selectAnswer(question.id, choice.id, question.question_type)
+              "
+            ></p-radioButton>
+            <label [for]="'choice' + question.id + j" class="ml-2">{{
+              choice.content
+            }}</label>
+          </div>
+        </div>
+
+        <!-- Open Ended -->
+        <div *ngIf="question.question_type === 'open_ended'">
+          <textarea
+            pInputTextarea
+            [(ngModel)]="answers[question.id]"
+            (input)="updateOpenEndedAnswer(question.id, $event)"
+            placeholder="Enter your answer..."
+            class="w-full"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="flex justify-end">
+    <p-button
+      label="Submit Quiz"
+      icon="pi pi-check"
+      (click)="submitQuiz()"
+      styleClass="p-button-success"
+      [disabled]="questions.length === 0"
+    />
+  </div>
+</div>
+
+<p-toast />

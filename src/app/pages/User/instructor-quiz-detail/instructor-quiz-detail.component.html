@@ -1,0 +1,253 @@
+<div class="space-y-5 p-4">
+  <!-- Quiz Information -->
+  <p-card header="Chi tiết Quiz: Test thêm quiz instructor" styleClass="mb-6">
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <p><strong>Số lần thử tối đa:</strong> 3</p>
+        <p><strong>Thời gian giới hạn:</strong> 30 phút</p>
+      </div>
+      <div>
+        <p><strong>Trạng thái:</strong> Hiển thị</p>
+        <p>
+          <strong>Bài học:</strong> Lesson 1: Topic for The Music of American
+          English Pronunciation
+        </p>
+      </div>
+    </div>
+  </p-card>
+
+  <!-- Add Question Form -->
+  <p-card header="Thêm Câu Hỏi" styleClass="mb-6">
+    <div class="space-y-4">
+      <div class="flex flex-col gap-2">
+        <label for="questionTitle" class="text-sm font-medium text-gray-700"
+          >Tiêu đề Câu Hỏi:</label
+        >
+        <input
+          id="questionTitle"
+          pInputText
+          placeholder="Nhập tiêu đề câu hỏi"
+          class="w-full"
+          value="What is the capital of France?"
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="questionType" class="text-sm font-medium text-gray-700"
+          >Loại Câu Hỏi:</label
+        >
+        <p-select
+          [options]="[{ label: 'Trắc nghiệm', value: 'multiple_choice' }]"
+          placeholder="Chọn loại câu hỏi"
+          class="w-full"
+          value="multiple_choice"
+        />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="points" class="text-sm font-medium text-gray-700"
+          >Điểm:</label
+        >
+        <input
+          id="points"
+          type="number"
+          pInputText
+          placeholder="Số điểm (e.g., 1)"
+          class="w-full"
+          value="1"
+        />
+      </div>
+      <div class="flex items-center gap-2">
+        <p-checkbox [binary]="true" label="Hiển thị Câu Hỏi" [value]="true" />
+      </div>
+      <div class="flex justify-end gap-2">
+        <p-button
+          label="Hủy"
+          icon="pi pi-times"
+          styleClass="p-button-secondary"
+        />
+        <p-button
+          label="Tạo Câu Hỏi"
+          icon="pi pi-check"
+          styleClass="p-button-success"
+        />
+      </div>
+    </div>
+  </p-card>
+
+  <!-- Question List -->
+  <p class planet="text-black font-bold text-lg mb-4">Danh sách Câu Hỏi</p>
+  <p-table [value]="questions" styleClass="p-datatable-gridlines">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 40%">Tiêu đề</th>
+        <th style="width: 15%">Loại</th>
+        <th style="width: 10%">Điểm</th>
+        <th style="width: 15%">Trạng thái</th>
+        <th style="width: 20%">Hành động</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-question>
+      <tr>
+        <td>What is the capital of France?</td>
+        <td>Trắc nghiệm</td>
+        <td>1</td>
+        <td>
+          <p-tag
+            value="Hiển thị"
+            severity="success"
+            [rounded]="true"
+            class="!text-xs"
+          />
+        </td>
+        <td>
+          <p-button
+            label="Sửa"
+            icon="pi pi-pencil"
+            styleClass="p-button-sm p-button-warning mr-2"
+          />
+          <p-button
+            label="Xóa"
+            icon="pi pi-trash"
+            styleClass="p-button-sm p-button-danger mr-2"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>What is the largest planet in our solar system?</td>
+        <td>Trắc nghiệm</td>
+        <td>2</td>
+        <td>
+          <p-tag
+            value="Ẩn"
+            severity="warning"
+            [rounded]="true"
+            class="!text-xs"
+          />
+        </td>
+        <td>
+          <p-button
+            label="Sửa"
+            icon="pi pi-pencil"
+            styleClass="p-button-sm p-button-warning mr-2"
+          />
+          <p-button
+            label="Xóa"
+            icon="pi pi-trash"
+            styleClass="p-button-sm p-button-danger mr-2"
+          />
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="text-center">
+          Chưa có câu hỏi nào cho quiz này.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Question Choices (Example for First Question) -->
+  <p class="text-black font-bold text-lg mt-6 mb-4">
+    Lựa chọn cho câu hỏi: What is the capital of France?
+  </p>
+  <p-table [value]="choices" styleClass="p-datatable-gridlines">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 60%">Nội dung</th>
+        <th style="width: 20%">Đáp án đúng</th>
+        <th style="width: 20%">Hành động</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-choice>
+      <tr>
+        <td>Paris</td>
+        <td>
+          <p-tag
+            value="Đúng"
+            severity="success"
+            [rounded]="true"
+            class="!text-xs"
+          />
+        </td>
+        <td>
+          <p-button
+            label="Sửa"
+            icon="pi pi-pencil"
+            styleClass="p-button-sm p-button-warning mr-2"
+          />
+          <p-button
+            label="Xóa"
+            icon="pi pi-trash"
+            styleClass="p-button-sm p-button-danger"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>London</td>
+        <td>
+          <p-tag
+            value="Sai"
+            severity="danger"
+            [rounded]="true"
+            class="!text-xs"
+          />
+        </td>
+        <td>
+          <p-button
+            label="Sửa"
+            icon="pi pi-pencil"
+            styleClass="p-button-sm p-button-warning mr-2"
+          />
+          <p-button
+            label="Xóa"
+            icon="pi pi-trash"
+            styleClass="p-button-sm p-button-danger"
+          />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- Add Question Choice Modal -->
+<p-dialog
+  header="Thêm Lựa Chọn cho Câu Hỏi"
+  [(visible)]="showAddChoiceModal"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+>
+  <div class="space-y-4">
+    <div class="flex flex-col gap-2">
+      <label for="choiceContent" class="text-sm font-medium text-gray-700"
+        >Nội dung Lựa Chọn:</label
+      >
+      <input
+        id="choiceContent"
+        pInputText
+        placeholder="Nhập nội dung lựa chọn"
+        class="w-full"
+        value="Paris"
+      />
+    </div>
+    <div class="flex items-center gap-2">
+      <p-checkbox [binary]="true" label="Đáp án đúng" [value]="true" />
+    </div>
+    <div class="flex justify-end gap-2">
+      <p-button
+        label="Hủy"
+        icon="pi pi-times"
+        styleClass="p-button-secondary"
+      />
+      <p-button
+        label="Tạo Lựa Chọn"
+        icon="pi pi-check"
+        styleClass="p-button-success"
+      />
+      <p-button
+        label="Tạo và Thêm Tiếp"
+        icon="pi pi-plus"
+        styleClass="p-button-success"
+      />
+    </div>
+  </div>
+</p-dialog>

@@ -34,12 +34,18 @@ import { CoursePendingLessonsComponent } from './pages/admin/course-pending-less
 import { StudentPaymentHistoryComponent } from './pages/User/student-payment-history/student-payment-history.component';
 import { StudentPurchasedCoursesComponentComponent } from './pages/User/student-purchased-courses-component/student-purchased-courses-component.component';
 import { StudentCourseLessonsComponentComponent } from './pages/User/student-course-lessons-component/student-course-lessons-component.component';
+import { InstructorQuizManagementComponent } from './pages/User/instructor-quiz-management/instructor-quiz-management.component';
+import { StudentQuizAttemptComponent } from './pages/both/student-quiz-attempt/student-quiz-attempt.component';
 
 export const routes: Routes = [
     {
         path: '', component: MainLayoutComponent,
         children: [
             { path: '', component: HomeComponent },
+            {
+                path: 'quiz/:quizId/attempt',
+                component: StudentQuizAttemptComponent
+            },
             { path: 'product', component: CourseCardComponent },
             { path: 'chi-tiet-khoa-hoc/:slug', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
@@ -82,6 +88,7 @@ export const routes: Routes = [
         children: [
             { path: 'ho-so', component: ProfileInfoComponent },
             { path: 'danh-sach-khoa-hoc', component: InstructorCoursesComponent },
+            { path: 'danh-sach-bai-tap/:courseId', component: InstructorQuizManagementComponent },
             { path: 'lich-su-thanh-toan', component: StudentPaymentHistoryComponent },
             { path: '**', redirectTo: 'ho-so', pathMatch: 'full' },
         ]

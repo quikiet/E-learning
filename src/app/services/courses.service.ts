@@ -126,4 +126,11 @@ export class CoursesService {
   instructorViewDeletedCourse(page: number = 1, perPage: number = 10): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/instructor/deleted-courses?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
+
+  getQuizOfCourse(courseId: number, page: number = 1, perPage: number = 10): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/instructor/courses/${courseId}/quizzes?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  }
+
+
+
 }
