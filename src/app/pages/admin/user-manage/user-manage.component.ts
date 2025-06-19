@@ -144,6 +144,7 @@ export class UserManageComponent implements OnInit {
         this.totalRecords = res.data.total;
         this.rows = res.data.per_page;
         this.currentPage = res.data.current_page - 1;
+        console.log(this.users);
 
         this.cd.markForCheck();
         this.isLoading = false;

@@ -14,24 +14,19 @@ interface UserData {
   user: {
     id: number;
     username: string;
-    userid_DI: string;
     email: string;
     avatar: string | null;
-    final_cc_cname_DI: string;
     LoE_DI: string;
-    YoB: number;
+    birthdate: number;
     gender: string;
     role: string;
     created_at: string;
     updated_at: string;
     enrollments: any[];
-    certificates: any[];
-    forum_posts: any[];
     payments: any[];
     lesson_progress: any[];
     reviews: any[];
     quiz_results: any[];
-    interactions: any[];
     student: any;
     instructor: any;
   };

@@ -101,14 +101,7 @@
           <span>Mã</span>
         </div>
       </th>
-      <th>
-        <div class="flex items-center">
-          ID Người dùng
-          <p-sortIcon field="userid_DI" />
-        </div>
-      </th>
       <th>Email</th>
-      <th>Quốc gia</th>
       <th>Trình độ học vấn</th>
       <th>
         <div class="flex items-center">
@@ -117,9 +110,6 @@
         </div>
       </th>
       <th>Giới tính</th>
-      <!-- <th>
-        <div class="flex items-center">Vai trò</div>
-      </th> -->
     </tr>
   </ng-template>
   <ng-template #body let-user>
@@ -128,11 +118,6 @@
         <div class="flex items-center justify-center h-full">
           {{ user.id }}
         </div>
-      </td>
-      <td>
-        <span [pTooltip]="user.userid_DI" tooltipPosition="right">
-          {{ cutText(user.userid_DI, 10) }}
-        </span>
       </td>
       <td>
         <div class="flex items-center gap-1">
@@ -176,16 +161,16 @@
           </div>
         </div>
       </td>
-      <td>
+      <!-- <td>
         <span [pTooltip]="user.final_cc_cname_DI" tooltipPosition="right">{{
           cutText(user.final_cc_cname_DI, 10)
         }}</span>
-      </td>
+      </td> -->
       <td class="text-center align-middle">
         {{ user.LoE_DI }}
       </td>
       <td>
-        {{ user.YoB }}
+        {{ user.birthdate | date }}
       </td>
       <td class="text-center align-middle">
         {{ user.gender || "NaN" }}
@@ -236,7 +221,6 @@
         "
         shape="circle"
       />
-      <span>{{ user.userid_DI }}</span>
       <span>
         <div>
           <p-tag
@@ -292,12 +276,6 @@
               <label class="text-sm block">Địa chỉ email</label>
               <span class="text-sm text-secondary">{{ user.email }}</span>
             </div>
-            <div>
-              <label for="bio" class="block font-semibold mb-2">Quốc gia</label>
-              <span class="text-sm text-primary">{{
-                user.final_cc_cname_DI
-              }}</span>
-            </div>
           </div>
         </div>
       </div>
@@ -316,7 +294,9 @@
         </div>
         <div>
           <label class="block font-semibold mb-2">Năm sinh</label>
-          <span class="text-sm text-secondary">{{ user.YoB }}</span>
+          <span class="text-sm text-secondary">{{
+            user.birthdate | date
+          }}</span>
         </div>
       </div>
     </div>

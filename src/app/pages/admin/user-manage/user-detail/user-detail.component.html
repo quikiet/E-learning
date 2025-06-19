@@ -23,11 +23,8 @@
           userData.user.userid_DI
         </div>
         <div><strong>Email:</strong> {{ userData.user.email }}</div>
-        <div>
-          <strong>Quốc gia:</strong> {{ userData.user.final_cc_cname_DI }}
-        </div>
         <div><strong>Trình độ học vấn:</strong> {{ userData.user.LoE_DI }}</div>
-        <div><strong>Năm sinh:</strong> {{ userData.user.YoB }}</div>
+        <div><strong>Năm sinh:</strong> {{ userData.user.birthdate }}</div>
         <div><strong>Giới tính:</strong> {{ userData.user.gender }}</div>
         <div class="flex items-center gap-2">
           <strong>Vai trò:</strong>
@@ -157,55 +154,6 @@
           <tr>
             <td colspan="5" class="text-center">
               Không tìm thấy khóa học đã đăng ký.
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </p-card>
-
-    <!-- Chứng chỉ -->
-    <p-card
-      *ngIf="userData.user.role !== 'admin'"
-      header="Chứng chỉ"
-      styleClass="!rounded-none mb-4"
-    >
-      <div *ngIf="userData.user.certificates.length === 0" class="text-center">
-        Chưa có chứng chỉ nào.
-      </div>
-      <p-table
-        *ngIf="userData.user.certificates.length > 0"
-        [value]="userData.user.certificates"
-        [rowHover]="true"
-      >
-        <!-- Thêm tiêu đề và nội dung bảng nếu cần -->
-      </p-table>
-    </p-card>
-
-    <!-- Bài đăng diễn đàn -->
-    <p-card header="Bài đăng Diễn đàn" styleClass="!rounded-none mb-4">
-      <p-table [value]="userData.user.forum_posts" [rowHover]="true">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>ID</th>
-            <th>ID Khóa học</th>
-            <th>Tiêu đề</th>
-            <th>Đã bị đánh dấu</th>
-            <th>Ngày tạo</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-post>
-          <tr>
-            <td>{{ post.id }}</td>
-            <td>{{ post.course_id }}</td>
-            <td>{{ post.title }}</td>
-            <td>{{ post.flagged ? "Có" : "Không" }}</td>
-            <td>{{ post.created_at | date : "dd/MM/yyyy HH:mm" }}</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="5" class="text-center">
-              Không tìm thấy bài đăng diễn đàn.
             </td>
           </tr>
         </ng-template>
@@ -381,43 +329,6 @@
             <td colspan="4" class="text-center">
               Không tìm thấy kết quả bài kiểm tra.
             </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </p-card>
-
-    <!-- Tương tác -->
-    <p-card
-      *ngIf="userData.user.role !== 'admin'"
-      header="Tương tác"
-      styleClass="!rounded-none mb-4"
-    >
-      <p-table [value]="userData.user.interactions" [rowHover]="true">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>ID Khóa học</th>
-            <th>Xếp hạng</th>
-            <th>Tổng sự kiện</th>
-            <th>Ngày hoạt động</th>
-            <th>Lượt phát video</th>
-            <th>Chương đã hoàn thành</th>
-            <th>Bài đăng diễn đàn</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-interaction>
-          <tr>
-            <td>{{ interaction.course_id }}</td>
-            <td>{{ interaction.rating }}</td>
-            <td>{{ interaction.nevents }}</td>
-            <td>{{ interaction.ndays_act }}</td>
-            <td>{{ interaction.nplay_video }}</td>
-            <td>{{ interaction.nchapters }}</td>
-            <td>{{ interaction.nforum_posts }}</td>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-          <tr>
-            <td colspan="7" class="text-center">Không tìm thấy tương tác.</td>
           </tr>
         </ng-template>
       </p-table>

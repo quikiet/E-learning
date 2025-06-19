@@ -1,4 +1,3 @@
-<!-- course-search.component.html -->
 <div class="my-10 max-w-7xl mx-auto">
   <div class="flex items-center justify-between w-full my-2">
     <p-button
@@ -7,7 +6,7 @@
       icon="pi pi-filter"
     />
     <p-drawer
-      header="Bộ lọc"
+      header="Filters"
       [(visible)]="visibleFilter"
       styleClass="!w-full md:!w-[30rem] z-50 lg:!hidden"
     >
@@ -19,7 +18,7 @@
         ></app-course-search-sidebar>
       </p>
     </p-drawer>
-    <span class="mr-5">Tổng số lượng: {{ totalRecords }}</span>
+    <span class="mr-5">Total: {{ totalRecords }}</span>
   </div>
   <div class="flex">
     <!-- Sidebar -->
@@ -31,22 +30,22 @@
       ></app-course-search-sidebar>
     </div>
 
-    <!-- Nội dung chính -->
+    <!-- Main content -->
     <div class="w-full lg:w-3/4 px-4">
-      <!-- Rest của template giữ nguyên -->
+      <!-- Rest of the template remains unchanged -->
       <p-progressSpinner
         *ngIf="isLoading"
         class="flex justify-center"
       ></p-progressSpinner>
       <p-toast></p-toast>
 
-      <!-- Danh sách khóa học dạng card -->
+      <!-- Course list as cards -->
       <div class="">
         <div *ngFor="let course of courses" class="flex flex-col gap-5 my-2">
           <div class="w-full">
             <a
               class="flex gap-2 items-start"
-              [routerLink]="['/chi-tiet-khoa-hoc', course.course_url]"
+              [routerLink]="['/course-details', course.course_url]"
             >
               <div class="w-1/4">
                 <img
@@ -70,17 +69,17 @@
                         | currency : "VND" : "symbol-narrow" : "1.0-0"
                     }}</b>
                     <b class="text-secondary" *ngIf="course.price === 0"
-                      >Miễn phí</b
+                      >Free</b
                     >
                   </div>
                   <p class="text-sm">
                     {{ cutText(course.course_description) }}
                   </p>
                   <span class="text-gray-400 text-xs">{{
-                    course.instructors.name || "Tên tác giả"
+                    course.instructors.name
                   }}</span>
                   <p class="text-sm text-gray-600 mb-1">
-                    Danh mục:
+                    Categories:
                     <span
                       class="text-xs text-secondary"
                       *ngFor="
@@ -108,27 +107,26 @@
                       class="flex list-disc w-full items-center gap-4 text-xs"
                     >
                       <li class="list-none">
-                        Tổng giờ học: {{ course.total_time }} giờ
+                        Hour total: {{ course.total_time }} hour
                       </li>
-                      <li>{{ course.total_lessons }} bài học</li>
+                      <li>{{ course.total_lessons }} lessons</li>
                       <li>{{ course.difficulty_level }}</li>
                     </ul>
                   </span>
                 </div>
               </div>
             </a>
-            <!-- <p-divider></p-divider> -->
             <hr class="my-3 text-gray" />
           </div>
         </div>
       </div>
 
-      <!-- Không có khóa học -->
+      <!-- No courses found -->
       <div *ngIf="!isLoading && courses.length === 0" class="text-center mt-4">
-        <p>Không tìm thấy khóa học.</p>
+        <p>No courses found.</p>
       </div>
 
-      <!-- Phân trang -->
+      <!-- Pagination -->
       <div
         class="mt-4 flex justify-center"
         *ngIf="!isLoading && totalRecords > 0"

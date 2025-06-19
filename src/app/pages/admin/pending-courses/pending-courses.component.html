@@ -98,7 +98,7 @@
   [rows]="rows"
   [totalRecords]="totalRecords"
   [paginator]="true"
-  [globalFilterFields]="['id', 'course_name', 'university']"
+  [globalFilterFields]="['id', 'course_name']"
   [(selection)]="selectedCourses"
   [rowHover]="true"
   dataKey="id"
@@ -139,12 +139,6 @@
           <p-sortIcon field="course_name" />
         </div>
       </th>
-      <th>
-        <div class="flex items-center">
-          Trường
-          <p-sortIcon field="university" />
-        </div>
-      </th>
       <th>Độ khó</th>
       <th>Kỹ năng</th>
       <th>
@@ -180,11 +174,6 @@
       <td>
         <span [pTooltip]="course.course_name" tooltipPosition="right">
           {{ cutText(course.course_name, 4) }}
-        </span>
-      </td>
-      <td>
-        <span [pTooltip]="course.university" tooltipPosition="right">
-          {{ cutText(course.university, 3) }}
         </span>
       </td>
       <td>{{ course.difficulty_level }}</td>

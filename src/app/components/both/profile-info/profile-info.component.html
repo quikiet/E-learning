@@ -221,31 +221,19 @@
           </div>
           <div class="flex flex-col gap-2 w-full py-2">
             <app-form-element
-              label="Quốc gia"
-              [control]="profileForm.get('final_cc_cname_DI')!"
+              label="Birthdate"
+              [control]="profileForm.get('birthdate')!"
             >
-              <input
-                pInputText
-                class="text-sm w-full px-4 py-3 rounded-md"
-                formControlName="final_cc_cname_DI"
-                placeholder="Quốc gia bạn đang ở"
+              <p-datepicker
+                formControlName="birthdate"
+                [showIcon]="true"
+                placeholder="YYYY-MM-DD"
               />
             </app-form-element>
           </div>
         </div>
         <div class="flex justify-between w-full gap-10">
           <div class="flex flex-col gap-2 w-full py-2">
-            <!-- <app-form-element
-              label="Trình độ học vấn"
-              [control]="profileForm.get('LoE_DI')!"
-            >
-              <input
-                pInputText
-                class="text-sm w-full px-4 py-3 rounded-md"
-                formControlName="LoE_DI"
-                placeholder="Nhập trình độ học vấn"
-              />
-            </app-form-element> -->
             <app-form-element [label]="'Trình độ học vấn'">
               <p-select
                 [options]="LoE"
@@ -258,22 +246,6 @@
             </app-form-element>
           </div>
           <div class="flex flex-col gap-2 w-full py-2">
-            <app-form-element
-              label="Năm sinh"
-              [control]="profileForm.get('YoB')!"
-            >
-              <input
-                pInputText
-                type="number"
-                class="text-sm w-full px-4 py-3 rounded-md"
-                formControlName="YoB"
-                placeholder="Nhập năm sinh"
-              />
-            </app-form-element>
-          </div>
-        </div>
-        <div class="flex justify-between w-full gap-10">
-          <div class="flex flex-col gap-2 w-full py-2">
             <app-form-element label="Giới tính">
               <p-select
                 [options]="genderOptions"
@@ -285,6 +257,8 @@
               />
             </app-form-element>
           </div>
+        </div>
+        <div class="flex justify-between w-full gap-10">
           <!-- <div
             class="flex flex-col gap-2 w-full py-2"
             *ngIf="user?.role === 'student'"
@@ -314,29 +288,6 @@
               </div>
             </app-form-element>
           </div> -->
-        </div>
-        <div
-          class="flex flex-col gap-2 w-full py-2"
-          *ngIf="user?.role === 'student'"
-        >
-          <app-form-element [label]="'Mục tiêu học tập'">
-            <div class="flex flex-wrap gap-4">
-              <div
-                class="flex items-center"
-                *ngFor="let goal of learningGoals; let i = index"
-              >
-                <p-radiobutton
-                  [name]="'learning_goals'"
-                  [inputId]="'goal' + i"
-                  [value]="goal.value"
-                  formControlName="learning_goals"
-                />
-                <label class="ml-2 text-sm" [for]="'goal' + i">{{
-                  goal.label
-                }}</label>
-              </div>
-            </div>
-          </app-form-element>
         </div>
         <div *ngIf="user?.role === 'instructor'">
           <div class="flex flex-col gap-2 w-full py-2">

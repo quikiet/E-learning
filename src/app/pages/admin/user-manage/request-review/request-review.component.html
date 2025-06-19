@@ -37,12 +37,11 @@
             {{ selectedRequest.professional_links }}
           </a>
         </p>
+        <p><strong>Gender:</strong> {{ selectedRequest.user.gender }}</p>
         <p>
-          <strong>Quốc gia:</strong>
-          {{ selectedRequest.user.final_cc_cname_DI }}
+          <strong>Birthdate:</strong>
+          {{ selectedRequest.user.birthdate | date }}
         </p>
-        <p><strong>Giới tính:</strong> {{ selectedRequest.user.gender }}</p>
-        <p><strong>Năm sinh:</strong> {{ selectedRequest.user.YoB }}</p>
       </div>
       <div>
         <p><strong>Tiểu sử:</strong> {{ selectedRequest.bio }}</p>
