@@ -131,6 +131,7 @@ export class InstructorCoursesComponent implements OnInit {
         this.currentPage = res.current_page;
         this.perPage = res.per_page;
         this.totalRecords = res.total;
+        console.log(this.courses);
 
         // Lấy số lượng bài học cho từng khóa học
         this.courses.forEach(course => {
@@ -186,6 +187,8 @@ export class InstructorCoursesComponent implements OnInit {
         this.lessonsCurrentPage = res.current_page;
         this.lessonsPerPage = res.per_page;
         this.lessonsTotalRecords = res.total;
+        console.log(this.selectedCourseLessons);
+
       },
       error: (err) => {
         console.error('Error loading lessons:', err);
@@ -403,6 +406,7 @@ export class InstructorCoursesComponent implements OnInit {
     for (const [key, value] of (formData as any).entries()) {
       console.log(`${key}: ${value}`);
     }
+    console.log('courseID: ' + this.selectedCourseId);
 
     // Gọi API với chunk upload
     this.coursesService.updateLesson(this.selectedCourseId, this.selectedLesson.id, formData).subscribe({

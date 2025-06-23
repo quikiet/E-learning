@@ -20,6 +20,8 @@ export class HeaderComponent implements OnInit {
   currentUser: any = [];
   userRole: string = '';
   categories: any = {};
+  parentCategories: any[] = [];
+
   constructor(
     private authService: AuthService,
     private categoryService: CategoryService,
@@ -34,11 +36,12 @@ export class HeaderComponent implements OnInit {
   loadCategories() {
     this.categoryService.getCategory().subscribe({
       next: (res) => {
-        this.categories = res;
-      }, error: (err) => {
-        console.log(err.message);
+        this.parentCategories = res.filter((category: any) => category.parent_id === null);
+      },
+      error: (err) => {
+        console.error('Error fetching categories:', err.message);
       }
-    })
+    });
   }
 
   getCurrentUser() {

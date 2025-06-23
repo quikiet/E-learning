@@ -52,8 +52,9 @@ export class CourseCardComponent implements OnInit {
   loadCourses() {
     this.courseService.getCourses(1, 10).subscribe({
       next: (res) => {
-        console.log('Full API Response:', res);
-        this.courses = res.courses.data;
+        this.courses = res.data;
+        console.log('Full API Response:', this.courses);
+
         console.log('Courses loaded:', this.courses);
       },
       error: (err) => {
