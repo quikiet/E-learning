@@ -195,7 +195,7 @@
         class="w-full"
       />
     </div>
-    <div class="flex flex-col gap-2">
+    <!-- <div class="flex flex-col gap-2">
       <label for="points" class="text-sm font-medium text-gray-700"
         >Điểm số:</label
       >
@@ -207,8 +207,8 @@
         placeholder="Số điểm (e.g., 1)"
         class="w-full"
       />
-    </div>
-    <div class="flex flex-col gap-2">
+    </div> -->
+    <!-- <div class="flex flex-col gap-2">
       <label for="sortOrder" class="text-sm font-medium text-gray-700"
         >Thứ tự:</label
       >
@@ -220,7 +220,7 @@
         placeholder="Thứ tự (e.g., 0)"
         class="w-full"
       />
-    </div>
+    </div> -->
     <div class="flex items-center gap-2">
       <p-checkbox
         [(ngModel)]="newQuestion.is_visible"
@@ -260,6 +260,7 @@
         label="Thêm lựa chọn"
         icon="pi pi-plus"
         (click)="addChoice()"
+        [disabled]="newQuestion.question_type === 'true_false'"
         styleClass="p-button-sm p-button-secondary"
       />
     </div>

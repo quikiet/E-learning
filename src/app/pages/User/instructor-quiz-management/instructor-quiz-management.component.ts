@@ -49,12 +49,10 @@ export class InstructorQuizManagementComponent implements OnInit {
     quiz_id: null as number | null,
     title: '',
     question_type: 'multiple_choice',
-    points: 1,
-    sort_order: 0,
     is_visible: true,
     choices: [
-      { content: '', is_correct: false, sort_order: 0 },
-      { content: '', is_correct: false, sort_order: 1 }
+      { content: '', is_correct: false },
+      { content: '', is_correct: false }
     ]
   };
 
@@ -139,12 +137,10 @@ export class InstructorQuizManagementComponent implements OnInit {
       quiz_id: this.selectedQuizId,
       title: '',
       question_type: 'multiple_choice',
-      points: 1,
-      sort_order: 0,
       is_visible: true,
       choices: [
-        { content: '', is_correct: false, sort_order: 0 },
-        { content: '', is_correct: false, sort_order: 1 }
+        { content: '', is_correct: false },
+        { content: '', is_correct: false }
       ]
     };
   }
@@ -153,14 +149,13 @@ export class InstructorQuizManagementComponent implements OnInit {
     this.newQuestion.choices.push({
       content: '',
       is_correct: false,
-      sort_order: this.newQuestion.choices.length
     });
   }
 
   removeChoice(index: number) {
     if (this.newQuestion.choices.length > 2) {
       this.newQuestion.choices.splice(index, 1);
-      this.newQuestion.choices.forEach((choice, i) => choice.sort_order = i);
+      // this.newQuestion.choices.forEach((choice, i) => choice.sort_order = i);
     } else {
       this.messageService.add({
         severity: 'warn',
@@ -172,7 +167,7 @@ export class InstructorQuizManagementComponent implements OnInit {
   }
 
   createQuestion() {
-    if (!this.newQuestion.title || this.newQuestion.points <= 0 ||
+    if (!this.newQuestion.title ||
       this.newQuestion.choices.some(choice => !choice.content)) {
       this.messageService.add({
         severity: 'warn',
@@ -200,8 +195,8 @@ export class InstructorQuizManagementComponent implements OnInit {
         quiz_id: this.newQuestion.quiz_id,
         title: this.newQuestion.title,
         question_type: this.newQuestion.question_type,
-        points: this.newQuestion.points,
-        sort_order: this.newQuestion.sort_order,
+        // points: this.newQuestion.points,
+        // sort_order: this.newQuestion.sort_order,
         is_visible: this.newQuestion.is_visible
       };
 
@@ -214,7 +209,7 @@ export class InstructorQuizManagementComponent implements OnInit {
               question_id: questionId,
               content: choice.content,
               is_correct: choice.is_correct,
-              sort_order: choice.sort_order
+              // sort_order: choice.sort_order
             })
           );
 
@@ -237,11 +232,11 @@ export class InstructorQuizManagementComponent implements OnInit {
             });
           });
         },
-        error: () => {
+        error: (err) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Lỗi',
-            detail: 'Không thể tạo câu hỏi.',
+            detail: err.message,
             life: 3000,
           });
         }
