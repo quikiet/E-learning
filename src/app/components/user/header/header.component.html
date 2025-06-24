@@ -69,41 +69,8 @@
 
         <ul
           [ngClass]="navBarToggle ? 'opacity-100' : 'opacity-0 hidden'"
-          class="lg:opacity-100 lg:z-auto z-50 lg:static ease-in lg:flex lg:justify-between lg:items-center lg:text-start lg:shadow-none shadow-lg w-full bg-white absolute text-center text-sm text-dark font-normal gap-5 lg:ml-5 transition duration-300"
+          class="lg:opacity-100 lg:z-auto z-50 lg:static ease-in lg:flex lg:justify-start lg:items-center lg:text-start lg:shadow-none shadow-lg w-full bg-white absolute text-center text-sm text-dark font-normal gap-5 lg:ml-5 transition duration-300"
         >
-          <!-- <li class="my-5 lg:my-0">
-            <div
-              class="relative rounded inline-block group w-full hover:text-secondary hover:bg-secondary-light p-2 transition-all duration-300"
-            >
-              <a class="overflow-hidden" [routerLink]="['khoa-hoc']">
-                Khám phá
-              </a>
-              <div
-                class="lg:block hidden absolute select-none opacity-0 invisible z-50 group-hover:select-auto group-hover:visible group-hover:opacity-100 top-full transition-all duration-200 ease-out transform group-hover:translate-y-6"
-              >
-                <div
-                  class="w-[70vw] p-2 bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-md border border-white/10 shadow-[0_0_30px_rgba(79,70,229,0.15)]"
-                >
-                  <div
-                    class="flex items-center z-50 text-white min-w-fit mx-auto flex-wrap justify-around"
-                  >
-                    <a
-                      class="p-3 cursor-pointer hover:bg-secondary hover:font-semibold"
-                      *ngFor="let cate of categories"
-                      [routerLink]="['/khoa-hoc']"
-                      [queryParams]="{ categories: cate.id }"
-                    >
-                      {{ cate.name }}
-                    </a>
-                  </div>
-
-                  <div
-                    class="absolute top-0 -translate-y-1 w-3 h-3 bg-gradient-to-br from-gray-900/95 to-gray-800/95 rotate-45 border-r border-b border-white/10"
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </li> -->
           <li class="my-5 lg:my-0">
             <div class="relative inline-block w-full group">
               <a
@@ -159,16 +126,8 @@
               </div>
             </div>
           </li>
-          <li class="hidden lg:block">
-            <p-iconfield>
-              <p-inputicon styleClass="pi pi-search" />
-              <input
-                type="text"
-                class="lg:w-80 !rounded-full !text-xs"
-                pInputText
-                placeholder="Tìm kiếm khoá học của các chuyên gia..."
-              />
-            </p-iconfield>
+          <li class="hidden lg:block w-3xl">
+            <app-custom-autocomplete></app-custom-autocomplete>
           </li>
           <li class="my-5 lg:my-0">
             <a
@@ -198,178 +157,6 @@
             <div
               class="justify-center lg:justify-start flex items-center gap-5"
             >
-              <div class="group inline-block relative">
-                <i class="pi pi-heart" style="font-size: 1.2rem"></i>
-                <div
-                  class="lg:block hidden absolute invisible opacity-0 top-full left-1/2 -translate-x-80 -translate-y-5 z-50 p-4 rounded-t-lg shadow-lg bg-white w-80 mx-auto my-10 lg:group-hover:visible lg:group-hover:opacity-100 transition-all duration-200 ease-out transform"
-                >
-                  <div class="py-2 font-semibold">
-                    <div class="grid grid-cols-1 gap-0">
-                      <div class="col-span-1">
-                        <div class="flex items-start gap-2 justify-between">
-                          <img
-                            alt="Card"
-                            class="w-16 h-16 rounded-xl"
-                            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-                          />
-                          <div class="">
-                            <h6 class="text-sm">
-                              LLM Engineering: Master AI, Large Language
-                            </h6>
-                            <span class="text-gray-400 text-xs"
-                              >Lorem ipsum dolor sit...</span
-                            >
-                            <p class="py-1 font-bold text-sm">
-                              <u>đ</u>399,000
-                            </p>
-                          </div>
-                        </div>
-                        <p-divider />
-                      </div>
-                      <div class="col-span-1">
-                        <div class="flex items-start gap-2 justify-between">
-                          <img
-                            alt="Card"
-                            class="w-16 h-16 rounded-xl"
-                            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-                          />
-                          <div class="">
-                            <h6 class="text-sm">
-                              LLM Engineering: Master AI, Large Language
-                            </h6>
-                            <span class="text-gray-400 text-xs"
-                              >Lorem ipsum dolor sit...</span
-                            >
-                            <p class="py-1 font-bold text-sm">
-                              <u>đ</u>399,000
-                            </p>
-                          </div>
-                        </div>
-                        <p-divider />
-                      </div>
-                      <div class="col-span-1">
-                        <div class="flex items-start gap-2 justify-between">
-                          <img
-                            alt="Card"
-                            class="w-16 h-16 rounded-xl"
-                            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-                          />
-                          <div class="">
-                            <h6 class="text-sm">
-                              LLM Engineering: Master AI, Large Language
-                            </h6>
-                            <span class="text-gray-400 text-xs"
-                              >Lorem ipsum dolor sit...</span
-                            >
-                            <p class="py-1 font-bold text-sm">
-                              <u>đ</u>399,000
-                            </p>
-                          </div>
-                        </div>
-                        <p-divider />
-                      </div>
-                    </div>
-                    <div class="flex flex-col justify-between gap-2">
-                      <p class="py-1 font-bold">Tổng: 399,000<u>đ</u></p>
-                      <button
-                        [routerLink]="['cart']"
-                        class="px-6 py-2 bg-secondary hover:bg-secondary-content text-white rounded-md font-semibold w-full"
-                      >
-                        Chuyển đến giỏ hàng
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="group inline-block relative">
-                <i
-                  [routerLink]="['cart']"
-                  class="pi pi-shopping-cart"
-                  style="font-size: 1.2rem"
-                  pBadge
-                  value="2"
-                ></i>
-                <div
-                  class="lg:block hidden absolute invisible opacity-0 top-full left-1/2 -translate-x-80 -translate-y-5 z-50 p-4 rounded-t-lg shadow-lg bg-white w-80 mx-auto my-10 lg:group-hover:visible lg:group-hover:opacity-100 transition-all duration-200 ease-out transform"
-                >
-                  <div class="py-2 font-semibold">
-                    <div class="grid grid-cols-1 gap-0">
-                      <div class="col-span-1">
-                        <div class="flex items-start gap-2 justify-between">
-                          <img
-                            alt="Card"
-                            class="w-16 h-16 rounded-xl"
-                            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-                          />
-                          <div class="">
-                            <h6 class="text-sm">
-                              LLM Engineering: Master AI, Large Language
-                            </h6>
-                            <span class="text-gray-400 text-xs"
-                              >Lorem ipsum dolor sit...</span
-                            >
-                            <p class="py-1 font-bold text-sm">
-                              <u>đ</u>399,000
-                            </p>
-                          </div>
-                        </div>
-                        <p-divider />
-                      </div>
-                      <div class="col-span-1">
-                        <div class="flex items-start gap-2 justify-between">
-                          <img
-                            alt="Card"
-                            class="w-16 h-16 rounded-xl"
-                            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-                          />
-                          <div class="">
-                            <h6 class="text-sm">
-                              LLM Engineering: Master AI, Large Language
-                            </h6>
-                            <span class="text-gray-400 text-xs"
-                              >Lorem ipsum dolor sit...</span
-                            >
-                            <p class="py-1 font-bold text-sm">
-                              <u>đ</u>399,000
-                            </p>
-                          </div>
-                        </div>
-                        <p-divider />
-                      </div>
-                      <div class="col-span-1">
-                        <div class="flex items-start gap-2 justify-between">
-                          <img
-                            alt="Card"
-                            class="w-16 h-16 rounded-xl"
-                            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-                          />
-                          <div class="">
-                            <h6 class="text-sm">
-                              LLM Engineering: Master AI, Large Language
-                            </h6>
-                            <span class="text-gray-400 text-xs"
-                              >Lorem ipsum dolor sit...</span
-                            >
-                            <p class="py-1 font-bold text-sm">
-                              <u>đ</u>399,000
-                            </p>
-                          </div>
-                        </div>
-                        <p-divider />
-                      </div>
-                    </div>
-                    <div class="flex flex-col justify-between gap-2">
-                      <p class="py-1 font-bold">Tổng: 399,000<u>đ</u></p>
-                      <button
-                        [routerLink]="['cart']"
-                        class="px-6 py-2 bg-secondary hover:bg-secondary-content text-white rounded-md font-semibold w-full"
-                      >
-                        Chuyển đến giỏ hàng
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <div class="group inline-block relative">
                 <i class="pi pi-bell" style="font-size: 1.2rem"></i>
                 <div

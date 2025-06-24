@@ -8,9 +8,16 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { CategoryService } from '../../../services/courses-manage/category.service';
+import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
+import { CoursesService } from '../../../services/courses.service';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { CustomAutocompleteComponent } from "../../both/custom-autocomplete/custom-autocomplete.component";
+
 @Component({
   selector: 'app-header',
-  imports: [BadgeModule, RouterLink, Divider, InputIcon, IconField, InputTextModule, CommonModule],
+  imports: [BadgeModule, RouterLink, Divider, InputIcon, IconField, InputTextModule, CommonModule, AutoCompleteModule, ButtonModule, FormsModule, CustomAutocompleteComponent],
+  providers: [CoursesService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -32,7 +39,6 @@ export class HeaderComponent implements OnInit {
     this.getCurrentUser();
     this.loadCategories();
   }
-
   loadCategories() {
     this.categoryService.getCategory().subscribe({
       next: (res) => {
