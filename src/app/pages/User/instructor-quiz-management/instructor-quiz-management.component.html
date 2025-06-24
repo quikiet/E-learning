@@ -5,8 +5,7 @@
       <div class="text-primary text-lg">Lesson: ID: {{ lessonID }}<br /></div>
       <div>
         <p-button
-          label="Thêm Quiz"
-          icon="pi pi-plus"
+          label="Add Quiz"
           (click)="openAddQuizModal()"
           styleClass="bg-green-600 hover:bg-green-700 mb-4"
         />
@@ -20,12 +19,12 @@
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 5%">ID</th>
-        <th style="width: 25%">Tiêu đề</th>
-        <th style="width: 15%">Số lần thử tối đa</th>
+        <th style="width: 25%">Title</th>
+        <th style="width: 15%">Max attempts</th>
         <th style="width: 15%">Number of Question</th>
-        <th style="width: 15%">Thời gian</th>
-        <th style="width: 10%">Trạng thái</th>
-        <th style="width: 20%">Hành động</th>
+        <th style="width: 15%">Time limit (minutes)</th>
+        <th style="width: 10%">Visible</th>
+        <th style="width: 20%">Action</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-quiz>
@@ -42,28 +41,33 @@
             [rounded]="true"
             class="!text-xs"
           />
+
+          <!-- <i
+            class="pi !text-lg"
+            [ngClass]="
+              quiz.is_visible
+                ? 'pi-eye text-secondary'
+                : 'pi-eye-slash text-primary'
+            "
+          ></i> -->
         </td>
         <td>
           <p-button
-            label="Sửa"
             icon="pi pi-pencil"
             (click)="editQuiz(quiz)"
             styleClass="p-button-sm p-button-warning mr-2"
           />
           <p-button
-            label="Xóa"
             icon="pi pi-trash"
             (click)="deleteQuiz(quiz.quiz_id)"
             styleClass="p-button-sm p-button-danger mr-2"
           />
           <p-button
-            label="Thêm câu hỏi"
             icon="pi pi-plus"
             (click)="openAddQuestionModal(quiz)"
             styleClass="p-button-sm p-button-success mr-2"
           />
           <p-button
-            label="Xem chi tiết"
             icon="pi pi-eye"
             (click)="viewQuizDetail(quiz)"
             styleClass="p-button-sm p-button-info"
@@ -136,7 +140,7 @@
     </div>
     <div class="flex justify-end gap-2">
       <p-button
-        label="Hủy"
+        label="Cancel"
         icon="pi pi-times"
         (click)="showAddQuizModal = false"
         styleClass="p-button-secondary"
@@ -167,7 +171,7 @@
 
 <!-- Add Question Modal -->
 <p-dialog
-  header="Thêm Câu Hỏi"
+  header="Add Question"
   [(visible)]="showAddQuestionModal"
   [modal]="true"
   [style]="{ width: '40rem' }"
@@ -263,7 +267,7 @@
         />
       </div>
       <p-button
-        label="Thêm lựa chọn"
+        label="Add choice"
         icon="pi pi-plus"
         (click)="addChoice()"
         [disabled]="newQuestion.question_type === 'true_false'"
@@ -273,13 +277,13 @@
 
     <div class="flex justify-end gap-2">
       <p-button
-        label="Hủy"
+        label="Cancel"
         icon="pi pi-times"
         (click)="showAddQuestionModal = false"
         styleClass="p-button-secondary"
       />
       <p-button
-        label="Tạo câu hỏi"
+        label="Create"
         icon="pi pi-check"
         (click)="createQuestion()"
         styleClass="p-button-success"

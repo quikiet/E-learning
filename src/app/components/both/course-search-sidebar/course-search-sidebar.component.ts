@@ -44,17 +44,17 @@ export class CourseSearchSidebarComponent implements OnInit {
   categories: any[] = [];
   searchForm: FormGroup;
   difficultyOptions = [
-    { label: 'Tất cả', value: null },
-    { label: 'Người mới', value: 'beginner' },
-    { label: 'Trung bình', value: 'intermediate' },
-    { label: 'Nâng cao', value: 'advanced' }
+    { label: 'All', value: null },
+    { label: 'Beginner', value: 'beginner' },
+    { label: 'Intermediate', value: 'intermediate' },
+    { label: 'Advanced', value: 'advanced' }
   ];
   categoryOptions: any[] = [];
   sortOptions = [
-    { label: 'Đánh giá cao nhất', value: 'course_rating-desc' },
-    { label: 'Giá thấp đến cao', value: 'price-asc' },
-    { label: 'Giá cao đến thấp', value: 'price-desc' },
-    { label: 'Phổ biến nhất', value: 'enrollments-desc' }
+    { label: 'Top Rated', value: 'course_rating-desc' },
+    { label: 'Price low to high', value: 'price-asc' },
+    { label: 'Price higt to low', value: 'price-desc' },
+    { label: 'Most popular', value: 'enrollments-desc' }
   ];
 
   private isInitializing = false; // Flag để tránh gọi API khi đang khởi tạo
@@ -123,7 +123,7 @@ export class CourseSearchSidebarComponent implements OnInit {
   }
 
   loadCategories() {
-    this.categoryService.getCategory().subscribe({
+    this.categoryService.getAllCategory().subscribe({
       next: (res) => {
         this.categories = res;
       },

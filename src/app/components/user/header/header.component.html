@@ -126,7 +126,12 @@
                       *ngFor="let parent of parentCategories"
                       class="relative group/parent px-3 py-2 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-600 transition-all duration-200"
                     >
-                      {{ parent.name }}
+                      <a
+                        [routerLink]="['/khoa-hoc']"
+                        [queryParams]="{ categories: parent.id }"
+                        >{{ parent.name }}</a
+                      >
+
                       <!-- Transparent Bridge for Hover -->
                       <div
                         class="absolute bottom-0 left-0 w-full h-2 bg-transparent group-hover/parent:block hidden"
@@ -139,7 +144,7 @@
                           *ngFor="let child of parent.children"
                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-600 rounded cursor-pointer transition-all duration-200"
                           [routerLink]="['/khoa-hoc']"
-                          [queryParams]="{ category_id: child.id }"
+                          [queryParams]="{ categories: child.id }"
                         >
                           {{ child.name }}
                         </a>

@@ -13,6 +13,10 @@ export class CategoryService {
     return this.http.get<any[]>(`${this.apiUrl}/categories`);
   }
 
+  getAllCategory(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/admin/category`);
+  }
+
   createCategory(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/admin/category'`, data, { withCredentials: true });
   }

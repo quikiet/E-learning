@@ -44,14 +44,12 @@ export class StudentQuizAttemptComponent implements OnInit {
     id: number | null;
     title: string;
     question_type: string;
-    is_visible: boolean;
     choices: { id?: number; content: string; is_correct: boolean }[];
   } = {
       quiz_id: null,
       id: null,
       title: '',
       question_type: 'multiple_choice',
-      is_visible: true,
       choices: [],
     };
   questionTypes = [
@@ -101,7 +99,6 @@ export class StudentQuizAttemptComponent implements OnInit {
                 id: question.id,
                 title: question.title,
                 question_type: question.question_type,
-                is_visible: question.is_visible,
                 choices: question.choices.map((choice: any) => ({
                   id: choice.id,
                   content: choice.content || '',
@@ -134,7 +131,6 @@ export class StudentQuizAttemptComponent implements OnInit {
       id: question.id,
       title: question.title || '',
       question_type: question.question_type || 'multiple_choice',
-      is_visible: question.is_visible ?? true,
       choices: question.choices.map((choice: any) => ({
         id: choice.id,
         content: choice.content || '',
@@ -183,7 +179,6 @@ export class StudentQuizAttemptComponent implements OnInit {
       quiz_id: this.editQuestion.quiz_id,
       title: this.editQuestion.title,
       question_type: this.editQuestion.question_type,
-      is_visible: this.editQuestion.is_visible,
     };
 
     // Cập nhật câu hỏi
@@ -267,7 +262,6 @@ export class StudentQuizAttemptComponent implements OnInit {
       id: null,
       title: '',
       question_type: 'multiple_choice',
-      is_visible: true,
       choices: [],
     };
     this.originalChoices = [];

@@ -125,16 +125,7 @@
         class="w-full"
       />
     </div>
-    <div class="flex items-center gap-2">
-      <label for="isVisible" class="text-sm font-medium text-gray-700"
-        >Hiển thị</label
-      >
-      <p-checkbox
-        [(ngModel)]="editQuestion.is_visible"
-        [binary]="true"
-        inputId="isVisible"
-      />
-    </div>
+
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium text-gray-700">Lựa chọn:</label>
       <div
@@ -163,6 +154,7 @@
       <p-button
         label="Thêm lựa chọn"
         icon="pi pi-plus"
+        [disabled]="editQuestion.question_type === 'true_false'"
         (click)="editQuestion.choices.push({ content: '', is_correct: false })"
         styleClass="p-button-text"
       />
