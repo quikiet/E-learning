@@ -28,7 +28,7 @@ import { QuizService } from '../../../services/lesson/quiz.service';
     CheckboxModule,
     ToastModule,
     InputTextModule,
-    DropdownModule
+    DropdownModule,
   ],
   providers: [MessageService, QuizService],
   templateUrl: './instructor-quiz-management.component.html',
@@ -70,7 +70,7 @@ export class InstructorQuizManagementComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
-    private quizService: QuizService
+    private quizService: QuizService,
   ) { }
 
   ngOnInit() {
@@ -297,14 +297,46 @@ export class InstructorQuizManagementComponent implements OnInit {
     });
   }
 
-  deleteQuiz(quiz: any) {
-    this.quizzes = this.quizzes.filter((q) => q.id !== quiz.id);
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Thành công',
-      detail: `Quiz ${quiz.title} đã được xóa.`,
-      life: 3000,
-    });
+  deleteQuiz(quiz_id: number) {
+    const input = window.prompt('Please enter "OK" to confirm deleting this test:');
+    if (input === null) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Cancel',
+        detail: 'Cancel deleting this test',
+        life: 3000,
+      });
+      return;
+    }
+    if (input.trim().toUpperCase() === 'OK') {
+      this.quizService.deleteQuiz(quiz_id).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: res.message || 'Success deleting this test',
+            life: 3000,
+          });
+          this.loadQuizzes();
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: err.message,
+            life: 3000,
+          });
+          this.loadQuizzes();
+        },
+      });
+    } else {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warn',
+        detail: 'Please enter correct "OK" to delete',
+        life: 3000,
+      });
+    }
   }
 
   viewQuizDetail(quiz: any) {

@@ -22,8 +22,8 @@ export class QuizService {
     return this.http.post(`${this.apiUrl}/instructor/quizzes`, quiz, { withCredentials: true });
   }
 
-  deleteQuiz(quizId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/instructor/quizzes/${quizId}`);
+  deleteQuiz(quizId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/instructor/quizzes/${quizId}`, { withCredentials: true });
   }
 
   createQuestion(question: any): Observable<any> {

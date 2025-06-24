@@ -519,14 +519,9 @@
             id="lesson_duration"
             name="lesson_duration"
             [(ngModel)]="lesson.duration"
-            required
+            [disabled]="true"
             min="1"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            [ngClass]="{
-              'border-red-500':
-                lessonForm.submitted &&
-                lessonForm.controls['lesson_duration']?.invalid
-            }"
+            class="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray/30"
           />
           <div
             *ngIf="
