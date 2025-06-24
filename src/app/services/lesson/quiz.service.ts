@@ -38,8 +38,21 @@ export class QuizService {
     return this.http.post(`${this.apiUrl}/questions`, question, { withCredentials: true });
   }
 
+
+  updateQuestion(question_id: number, question: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/questions/${question_id}`, question, { withCredentials: true });
+  }
+
   createQuestionChoice(choice: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/question-choices`, choice, { withCredentials: true });
+  }
+
+  deleteQuestionChoice(questionChoice_id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/question-choices/${questionChoice_id}`, { withCredentials: true });
+  }
+
+  updateQuestionChoice(questionChoice_id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/question-choices/${questionChoice_id}`, data, { withCredentials: true });
   }
 
   submitQuiz(quizId: number, answers: any): Observable<any> {

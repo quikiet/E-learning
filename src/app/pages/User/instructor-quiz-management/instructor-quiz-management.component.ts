@@ -378,6 +378,6 @@ export class InstructorQuizManagementComponent implements OnInit {
       detail: `Điều hướng đến trang chi tiết Quiz ${quiz.title} (ID: ${quiz.id}).`,
       life: 3000,
     });
-    this.router.navigate([`quiz/${quiz.id}/attempt`]);
+    this.router.navigate([`quiz/${quiz.quiz_id}/attempt`]);
   }
 }

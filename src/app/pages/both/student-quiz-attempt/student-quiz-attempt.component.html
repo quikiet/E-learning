@@ -13,17 +13,24 @@
   <div *ngFor="let question of questions; let i = index" class="mb-6">
     <p-card [header]="'Question ' + (i + 1) + ': ' + question.title">
       <div class="space-y-4">
-        <p class="text-sm text-gray-600">
-          Type:
-          {{
-            question.question_type === "multiple_choice"
-              ? "Multiple Choice"
-              : question.question_type === "true_false"
-              ? "True/False"
-              : "Open Ended"
-          }}
-          | Points: {{ question.points }}
-        </p>
+        <div class="flex items-center justify-between">
+          <p class="text-sm text-gray-600">
+            Type:
+            {{
+              question.question_type === "multiple_choice"
+                ? "Multiple Choice"
+                : "True/False"
+            }}
+          </p>
+          <div>
+            <p-button
+              icon="pi pi-wrench"
+              severity="info"
+              (click)="openEditQuestionModal(question)"
+              styleClass="p-button-rounded p-button-text"
+            />
+          </div>
+        </div>
 
         <!-- Multiple Choice -->
         <div
@@ -69,18 +76,6 @@
             }}</label>
           </div>
         </div>
-
-        <!-- Open Ended -->
-        <div *ngIf="question.question_type === 'open_ended'">
-          <textarea
-            pInputTextarea
-            [(ngModel)]="answers[question.id]"
-            (input)="updateOpenEndedAnswer(question.id, $event)"
-            placeholder="Enter your answer..."
-            class="w-full"
-            rows="4"
-          ></textarea>
-        </div>
       </div>
     </p-card>
   </div>
@@ -95,5 +90,99 @@
     />
   </div>
 </div>
+
+<p-dialog
+  header="Edit Question"
+  [(visible)]="showEditQuestionModal"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+  (onHide)="resetQuestionForm()"
+>
+  <div class="space-y-4">
+    <div class="flex flex-col gap-2">
+      <label for="questionTitle" class="text-sm font-medium text-gray-700"
+        >Tiêu đề câu hỏi:</label
+      >
+      <input
+        id="questionTitle"
+        pInputText
+        [(ngModel)]="editQuestion.title"
+        placeholder="Nhập tiêu đề câu hỏi"
+        class="w-full"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="questionType" class="text-sm font-medium text-gray-700"
+        >Loại câu hỏi:</label
+      >
+      <p-dropdown
+        id="questionType"
+        [options]="questionTypes"
+        [(ngModel)]="editQuestion.question_type"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Chọn loại câu hỏi"
+        class="w-full"
+      />
+    </div>
+    <div class="flex items-center gap-2">
+      <label for="isVisible" class="text-sm font-medium text-gray-700"
+        >Hiển thị</label
+      >
+      <p-checkbox
+        [(ngModel)]="editQuestion.is_visible"
+        [binary]="true"
+        inputId="isVisible"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="text-sm font-medium text-gray-700">Lựa chọn:</label>
+      <div
+        *ngFor="let choice of editQuestion.choices; let j = index"
+        class="flex items-center gap-2 mb-2"
+      >
+        <input
+          pInputText
+          [(ngModel)]="choice.content"
+          placeholder="Nhập nội dung lựa chọn"
+          class="w-full"
+        />
+        <p-checkbox
+          [(ngModel)]="choice.is_correct"
+          [binary]="true"
+          [inputId]="'correct' + j"
+          label="Đúng"
+        />
+        <p-button
+          icon="pi pi-trash"
+          severity="danger"
+          (click)="removeChoice(j)"
+          styleClass="p-button-rounded p-button-text"
+        />
+      </div>
+      <p-button
+        label="Thêm lựa chọn"
+        icon="pi pi-plus"
+        (click)="editQuestion.choices.push({ content: '', is_correct: false })"
+        styleClass="p-button-text"
+      />
+    </div>
+    <div class="flex justify-end gap-2">
+      <p-button
+        label="Hủy"
+        icon="pi pi-times"
+        (click)="showEditQuestionModal = false"
+        styleClass="p-button-secondary"
+      />
+      <p-button
+        label="Cập nhật"
+        icon="pi pi-check"
+        (click)="updateQuestion()"
+        styleClass="p-button-success"
+        [disabled]="isUpdateButtonDisabled()"
+      />
+    </div>
+  </div>
+</p-dialog>
 
 <p-toast />
