@@ -10,8 +10,12 @@ export class QuizService {
 
   constructor(private http: HttpClient) { }
 
-  getQuizzes(courseId: number, page: number = 1, perPage: number = 15): Observable<any> {
+  getAllQuizzes(courseId: number, page: number = 1, perPage: number = 15): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/instructor/courses/${courseId}/quizzes?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  }
+
+  getQuizzesOfLesson(lessonId: number, page: number = 1, perPage: number = 15): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/quizzes/lesson/${lessonId}?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
 
   getQuestions(quizId: number): Observable<any> {
@@ -20,6 +24,10 @@ export class QuizService {
 
   createQuiz(quiz: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/instructor/quizzes`, quiz, { withCredentials: true });
+  }
+
+  updateQuiz(quiz: any, quiz_id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/instructor/quizzes/${quiz_id}`, quiz, { withCredentials: true });
   }
 
   deleteQuiz(quizId: number): Observable<any> {

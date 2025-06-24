@@ -37,7 +37,7 @@ import { QuizService } from '../../../services/lesson/quiz.service';
 export class InstructorQuizManagementComponent implements OnInit {
   showAddQuizModal = false;
   showAddQuestionModal = false;
-  courseId: number | null = null;
+  lessonID: number | null = null;
   selectedQuizId: number | null = null;
   newQuiz = {
     title: '',
@@ -57,10 +57,10 @@ export class InstructorQuizManagementComponent implements OnInit {
   };
 
   questionTypes = [
-    { label: 'Trắc nghiệm', value: 'multiple_choice' },
-    { label: 'Đúng/Sai', value: 'true_false' }
+    { label: 'Multiple choice', value: 'multiple_choice' },
+    { label: 'True/False', value: 'true_false' }
   ];
-
+  isEditting = false;
   quizzes: any[] = [];
   course: any = { id: null, course_name: '' };
 
@@ -73,9 +73,9 @@ export class InstructorQuizManagementComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const id = params.get('courseId');
-      this.courseId = id ? +id : null;
-      if (this.courseId) {
+      const id = params.get('lessonID');
+      this.lessonID = id ? +id : null;
+      if (this.lessonID) {
         this.loadQuizzes();
       } else {
         this.messageService.add({
@@ -90,31 +90,16 @@ export class InstructorQuizManagementComponent implements OnInit {
   }
 
   loadQuizzes() {
-    if (this.courseId) {
-      this.quizService.getQuizzes(this.courseId).subscribe({
+    if (this.lessonID) {
+      this.quizService.getQuizzesOfLesson(this.lessonID).subscribe({
         next: (response) => {
-          if (response.message === 'Quizzes retrieved successfully.') {
-            this.course = {
-              id: response.data.course_id,
-              course_name: response.data.course_name,
-            };
-            this.quizzes = response.data.quizzes.data.map((quiz: any) => ({
-              id: quiz.id,
-              title: quiz.title,
-              max_attempts: quiz.max_attempts,
-              time_limit: quiz.time_limit || 'Không giới hạn',
-              is_visible: quiz.is_visible,
-              lesson_title: quiz.lesson.title,
-              created_at: quiz.created_at,
-              updated_at: quiz.updated_at,
-            }));
-          }
+          this.quizzes = response.data;
         },
-        error: () => {
+        error: (err) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Lỗi',
-            detail: 'Không thể tải danh sách quiz.',
+            summary: 'Error',
+            detail: err.message || 'Failed to fetch Quizzes',
             life: 3000,
           });
         }
@@ -256,22 +241,37 @@ export class InstructorQuizManagementComponent implements OnInit {
     }
 
     const newQuiz = {
-      id: this.quizzes.length + 175 + 1,
+      lesson_id: this.lessonID,
       title: this.newQuiz.title,
       max_attempts: this.newQuiz.max_attempts,
       time_limit: this.newQuiz.time_limit,
       is_visible: this.newQuiz.is_visible,
-      lesson_title: 'Unknown Lesson',
     };
-    this.quizzes.push(newQuiz);
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Thành công',
-      detail: 'Quiz đã được tạo thành công!',
-      life: 3000,
+    console.log(newQuiz);
+
+    this.quizService.createQuiz(newQuiz).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message || 'Create successful',
+          life: 3000,
+        });
+        this.showAddQuizModal = false;
+        this.loadQuizzes();
+        this.resetQuizForm();
+      }, error: (err) => {
+        console.log(err.message);
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.message,
+          life: 3000,
+        });
+      }
     });
-    this.showAddQuizModal = false;
-    this.resetQuizForm();
+
   }
 
   resetQuizForm() {
@@ -284,16 +284,53 @@ export class InstructorQuizManagementComponent implements OnInit {
   }
 
   editQuiz(quiz: any) {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Thông báo',
-      detail: `Chức năng sửa Quiz ${quiz.title} chưa được triển khai.`,
-      life: 3000,
-    });
+    this.isEditting = true;
+    this.showAddQuizModal = true
+    this.newQuiz = {
+      title: quiz.title,
+      max_attempts: quiz.max_attempts,
+      time_limit: quiz.time_limit,
+      is_visible: quiz.is_visible === 1 ? true : false,
+    };
+    this.selectedQuizId = quiz.quiz_id;
+    // this.messageService.add({
+    //   severity: 'info',
+    //   summary: 'Thông báo',
+    //   detail: `Chức năng sửa Quiz ${quiz.title} chưa được triển khai.`,
+    //   life: 3000,
+    // });
+  }
+
+  updateQuiz() {
+    if (this.selectedQuizId) {
+      this.quizService.updateQuiz(this.newQuiz, this.selectedQuizId).subscribe({
+        next: (res) => {
+          this.isEditting = false;
+          this.showAddQuizModal = false;
+          this.resetQuizForm();
+          this.loadQuizzes();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: res.message || `Update successful`,
+            life: 3000,
+          });
+        }, error: (err) => {
+          console.log(err.message);
+
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.message || `Update error`,
+            life: 3000,
+          });
+        }
+      })
+    }
   }
 
   deleteQuiz(quiz_id: number) {
-    const input = window.prompt('Please enter "OK" to confirm deleting this test:');
+    const input = window.prompt('Please enter "OK" to confirm deleting this test: ' + quiz_id);
     if (input === null) {
       this.messageService.add({
         severity: 'info',

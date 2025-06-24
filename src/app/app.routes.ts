@@ -88,7 +88,7 @@ export const routes: Routes = [
         children: [
             { path: 'ho-so', component: ProfileInfoComponent },
             { path: 'danh-sach-khoa-hoc', component: InstructorCoursesComponent },
-            { path: 'danh-sach-bai-tap/:courseId', component: InstructorQuizManagementComponent },
+            { path: 'danh-sach-bai-tap/:lessonID', component: InstructorQuizManagementComponent },
             { path: 'lich-su-thanh-toan', component: StudentPaymentHistoryComponent },
             { path: '**', redirectTo: 'ho-so', pathMatch: 'full' },
         ]
