@@ -2,28 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CoursesService } from '../../../services/courses.service';
+import { Router, RouterLink } from '@angular/router';
 
 interface Course {
   id: number;
   course_name: string;
-  difficulty_level: string;
-  course_rating: number;
   course_url: string;
   image: string;
-  course_description: string;
-  price: number;
-  skills: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
-  instructor_id: number;
+  category: string;
+  instructor_name: string;
 }
 
 @Component({
   selector: 'app-custom-autocomplete',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './custom-autocomplete.component.html',
   styleUrls: ['./custom-autocomplete.component.css'],
 })
@@ -34,7 +27,7 @@ export class CustomAutocompleteComponent implements OnInit {
   query: string = '';
   showDropdown: boolean = false;
 
-  constructor(private courseService: CoursesService) { }
+  constructor(private courseService: CoursesService,) { }
 
   ngOnInit(): void {
     this.courseService.getAllCourses().subscribe({
@@ -60,7 +53,6 @@ export class CustomAutocompleteComponent implements OnInit {
     this.selectedCourse = course;
     this.query = course.course_name;
     this.showDropdown = false;
-    console.log('Selected course:', this.selectedCourse);
   }
 
   onBlur() {

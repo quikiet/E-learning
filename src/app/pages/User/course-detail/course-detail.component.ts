@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
+import { HeaderComponent } from "../../../components/user/header/header.component";
 // Định nghĩa interface cho bài học
 interface Lesson {
   title: string;
@@ -37,7 +38,8 @@ interface Tab {
     AvatarModule,
     TagModule,
     MultiSelectModule,
-    TooltipModule
+    TooltipModule,
+    HeaderComponent
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',

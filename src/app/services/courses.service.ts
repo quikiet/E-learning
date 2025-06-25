@@ -48,7 +48,7 @@ export class CoursesService {
   }
 
   getAllCourses(page: number = 1, perPage: number = 10): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/usercourses`);
+    return this.http.get<any>(`${this.apiUrl}/search/courses`);
   }
 
   getInstructorCourses(page: number = 1, perPage: number = 10): Observable<any> {

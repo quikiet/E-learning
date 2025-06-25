@@ -47,7 +47,6 @@ export const routes: Routes = [
                 component: StudentQuizAttemptComponent
             },
             { path: 'product', component: CourseCardComponent },
-            { path: 'chi-tiet-khoa-hoc/:slug', component: CourseDetailComponent },
             { path: 'cart', component: ShoppingCartComponent },
             { path: 'khoa-hoc', component: CourseSearchComponent },
             { path: 'khoa-hoc-cua-toi', component: StudentPurchasedCoursesComponentComponent },
@@ -57,6 +56,8 @@ export const routes: Routes = [
             { path: 'yeu-cau', component: InstructorRequestComponent },
         ]
     },
+    { path: 'chi-tiet-khoa-hoc/:slug', component: CourseDetailComponent },
+
     { path: 'login', component: LoginComponent },
     {
         path: 'admin', component: AdminComponent,

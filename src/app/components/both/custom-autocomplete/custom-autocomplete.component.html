@@ -1,7 +1,7 @@
 <div class="relative w-full z-50">
   <!-- Input tìm kiếm -->
   <div
-    class="flex items-center border border-gray-200 focus-within:ring-secondary focus-within:border-secondary rounded-full"
+    class="flex items-center border border-gray-300 focus-within:ring-secondary focus-within:border-secondary rounded-full"
   >
     <span class="pl-3 text-gray-500">
       <svg
@@ -33,9 +33,9 @@
     *ngIf="query && filteredCourses.length"
     class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-md max-h-[400px] overflow-hidden py-2"
   >
-    <div
+    <a
       *ngFor="let course of filteredCourses"
-      (click)="selectCourse(course)"
+      [href]="'http://localhost:4200/chi-tiet-khoa-hoc/' + course.course_url"
       class="flex items-start gap-3 p-2 cursor-pointer hover:bg-gray-100"
     >
       <img
@@ -46,10 +46,10 @@
       <div class="flex flex-col justify-between">
         <span class="text-xs font-bold">{{ course.course_name }}</span>
         <span class="text-[10px]"
-          ><span class="font-semibold">Danh mục</span>
-          <span> Tác giả </span></span
+          ><span class="font-semibold">{{ course.category }}</span>
+          <span> {{ course.instructor_name }}</span></span
         >
       </div>
-    </div>
+    </a>
   </div>
 </div>

@@ -9,7 +9,6 @@
   >
     <a
       *ngFor="let enrollment of enrollments"
-      [routerLink]="['/khoa-hoc-cua-toi/hoc-bai/', enrollment.id]"
       class="bg-white overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col md:flex-row"
     >
       <div class="relative flex-shrink-0 w-full md:w-1/2">
@@ -47,13 +46,22 @@
 
       <!-- Nội dung card -->
       <div class="p-4 flex-1 flex flex-col">
-        <!-- Tên khóa học -->
-        <h3
-          class="text-lg font-semibold text-gray-800 mb-2 truncate"
-          [title]="enrollment.course.course_name"
-        >
-          {{ enrollment.course.course_name }}
-        </h3>
+        <div class="flex justify-between items-center">
+          <!-- Tên khóa học -->
+          <h3
+            class="text-lg font-semibold text-gray-800 mb-2 truncate"
+            [title]="enrollment.course.course_name"
+          >
+            {{ enrollment.course.course_name }}
+          </h3>
+          <p-button
+            icon="pi pi-exclamation-triangle"
+            [rounded]="true"
+            severity="danger"
+            [outlined]="true"
+            size="small"
+          />
+        </div>
 
         <!-- Trường đại học -->
         <p
@@ -154,14 +162,14 @@
         </div>
 
         <!-- Nút tiếp tục học -->
-        <!-- <div class="mt-auto">
+        <div class="mt-auto">
           <button
             [routerLink]="['/khoa-hoc-cua-toi/hoc-bai/', enrollment.id]"
             class="w-full bg-secondary-content text-white py-2 px-4 rounded-lg hover:bg-secondary transition duration-200 text-sm font-medium"
           >
             Tiếp tục học
           </button>
-        </div> -->
+        </div>
       </div>
     </a>
   </div>
