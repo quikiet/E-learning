@@ -10,10 +10,13 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { EnrollmentService } from '../../../services/enrollments/enrollment.service';
 import { ProgressBarModule } from 'primeng/progressbar';
-
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-student-purchased-courses-component',
+  standalone: true,
   imports: [
     CommonModule,
     TagModule,
@@ -22,11 +25,14 @@ import { ProgressBarModule } from 'primeng/progressbar';
     DialogModule,
     ButtonModule,
     RouterLink,
-    ProgressBarModule
+    ProgressBarModule,
+    InputTextModule,
+    DropdownModule,
+    FormsModule,
   ],
-  providers: [MessageService],
+  providers: [MessageService, CoursesService],
   templateUrl: './student-purchased-courses-component.component.html',
-  styleUrl: './student-purchased-courses-component.component.css'
+  styleUrls: ['./student-purchased-courses-component.component.css'],
 })
 export class StudentPurchasedCoursesComponentComponent implements OnInit {
   enrollments: any[] = [];
@@ -34,13 +40,23 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
   perPage: number = 10;
   totalRecords: number = 0;
   isLoading: boolean = true;
-  showDetailsDialog: boolean = false;
-  selectedEnrollment: any = null;
+  showReportModal: boolean = false;
   progressData: { [key: number]: any } = {};
+  reportData = {
+    course_id: 0,
+    reason: '',
+    report_type: '',
+  };
+  reportTypes = [
+    { label: 'Nội dung không phù hợp', value: 'inappropriate_content' },
+    { label: 'Vi phạm bản quyền', value: 'copyright_violation' },
+    { label: 'Khác', value: 'other' },
+  ];
 
   constructor(
     private enrollmentService: EnrollmentService,
-    private messageService: MessageService,
+    private coursesService: CoursesService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -57,7 +73,7 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
         this.totalRecords = res.data.total;
         this.isLoading = false;
 
-        this.enrollments.forEach(enrollment => {
+        this.enrollments.forEach((enrollment) => {
           this.loadProgress(enrollment.id);
         });
       },
@@ -70,7 +86,7 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
           detail: 'Không thể tải danh sách khóa học đã mua. Vui lòng thử lại.',
           life: 3000,
         });
-      }
+      },
     });
   }
 
@@ -93,7 +109,7 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
           detail: 'Không thể tải tiến độ học tập. Vui lòng thử lại.',
           life: 3000,
         });
-      }
+      },
     });
   }
 
@@ -103,5 +119,53 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
     if (words.length <= wordLimit) return text;
 
     return words.slice(0, wordLimit).join(' ') + '...';
+  }
+
+  openReportModal(enrollment: any) {
+    this.reportData.course_id = enrollment.course.id;
+    this.showReportModal = true;
+  }
+
+  submitReport() {
+    if (!this.reportData.reason || !this.reportData.report_type) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Cảnh báo',
+        detail: 'Vui lòng điền đầy đủ lý do và loại báo cáo.',
+        life: 3000,
+      });
+      return;
+    }
+    console.log(this.reportData);
+
+    this.coursesService.reportCourse(this.reportData).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Thành công',
+          detail: 'Báo cáo đã được gửi!',
+          life: 3000,
+        });
+        this.showReportModal = false;
+        this.resetReportForm();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: err.message || 'Không thể gửi báo cáo.',
+          life: 3000,
+        });
+      },
+    });
+  }
+
+  resetReportForm() {
+    this.reportData = {
+      course_id: 0,
+      reason: '',
+      report_type: '',
+    };
+    this.showReportModal = false;
   }
 }
