@@ -87,26 +87,25 @@ export class StudentQuizAttemptComponent implements OnInit {
     if (this.quizId) {
       this.quizService.getQuestions(this.quizId).subscribe({
         next: (response) => {
-          if (response.message === 'Questions retrieved successfully') {
-            this.questions = response.data.map((question: any) => {
-              if (
-                question.question_type === 'multiple_choice' ||
-                question.question_type === 'true_false'
-              ) {
-                this.answers[question.id] = this.answers[question.id] || [];
-              }
-              return {
-                id: question.id,
-                title: question.title,
-                question_type: question.question_type,
-                choices: question.choices.map((choice: any) => ({
-                  id: choice.id,
-                  content: choice.content || '',
-                  is_correct: choice.is_correct ?? false,
-                })),
-              };
-            });
-          }
+
+          this.questions = response.data.map((question: any) => {
+            if (
+              question.question_type === 'multiple_choice' ||
+              question.question_type === 'true_false'
+            ) {
+              this.answers[question.id] = this.answers[question.id] || [];
+            }
+            return {
+              id: question.id,
+              title: question.title,
+              question_type: question.question_type,
+              choices: question.choices.map((choice: any) => ({
+                id: choice.id,
+                content: choice.content || '',
+                is_correct: choice.is_correct ?? false,
+              })),
+            };
+          });
         },
         error: () => {
           this.messageService.add({

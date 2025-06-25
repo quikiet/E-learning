@@ -124,6 +124,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
     }
   }
 
+
   updateDisplayedReviews() {
     this.displayedReviews = this.showAll
       ? this.reviews

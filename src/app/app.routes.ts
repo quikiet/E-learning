@@ -36,6 +36,7 @@ import { StudentPurchasedCoursesComponentComponent } from './pages/User/student-
 import { StudentCourseLessonsComponentComponent } from './pages/User/student-course-lessons-component/student-course-lessons-component.component';
 import { InstructorQuizManagementComponent } from './pages/User/instructor-quiz-management/instructor-quiz-management.component';
 import { StudentQuizAttemptComponent } from './pages/both/student-quiz-attempt/student-quiz-attempt.component';
+import { QuizTakingComponent } from './pages/User/quiz-taking/quiz-taking.component';
 
 export const routes: Routes = [
     {
@@ -45,6 +46,10 @@ export const routes: Routes = [
             {
                 path: 'quiz/:quizId/attempt',
                 component: StudentQuizAttemptComponent
+            },
+            {
+                path: 'quiz/:quiz_id',
+                component: QuizTakingComponent
             },
             { path: 'product', component: CourseCardComponent },
             { path: 'cart', component: ShoppingCartComponent },

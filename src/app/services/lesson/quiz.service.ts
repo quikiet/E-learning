@@ -22,6 +22,14 @@ export class QuizService {
     return this.http.get<any>(`${this.apiUrl}/instructor/quizzes/${quizId}/questions`, { withCredentials: true });
   }
 
+  studentGetQuestions(quizId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/quizzes/${quizId}/questions?randomize=true`, { withCredentials: true });
+  }
+
+  studentStartQuiz(quizId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/quizzes/${quizId}/start`, {}, { withCredentials: true });
+  }
+
   createQuiz(quiz: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/instructor/quizzes`, quiz, { withCredentials: true });
   }
@@ -56,6 +64,6 @@ export class QuizService {
   }
 
   submitQuiz(quizId: number, answers: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/quizzes/${quizId}/submit`, answers);
+    return this.http.post(`${this.apiUrl}/quizzes/${quizId}/submit`, answers, { withCredentials: true });
   }
 }
