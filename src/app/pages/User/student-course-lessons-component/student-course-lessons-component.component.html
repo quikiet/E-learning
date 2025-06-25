@@ -55,72 +55,122 @@
     </div>
 
     <!-- Video bài học -->
-    <div class="w-full md:w-2/3 bg-white shadow-lg p-4">
-      <div *ngIf="selectedLesson; else selectLessonPrompt">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">
-          {{ selectedLesson.title }}
-        </h3>
-        <div class="mb-4">
-          <video
-            controls
-            [src]="selectedLesson.video_url"
-            class="w-full h-96"
-            type="video/mp4"
-          >
-            Your browser does not support the video tag.
-          </video>
+    <div class="w-full md:w-2/3">
+      <div class="bg-white shadow-md p-4">
+        <div *ngIf="selectedLesson; else selectLessonPrompt">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">
+            {{ selectedLesson.title }}
+          </h3>
+          <div class="mb-4">
+            <video
+              controls
+              [src]="selectedLesson.video_url"
+              class="w-full h-96"
+              type="video/mp4"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="flex justify-between items-center">
+            <button
+              pButton
+              type="button"
+              label="Bài trước"
+              icon="pi pi-chevron-left"
+              [disabled]="currentLessonIndex === 0"
+              (click)="selectPreviousLesson()"
+              class="p-button-outlined p-button-sm"
+            ></button>
+            <button
+              pButton
+              type="button"
+              [label]="
+                selectedLesson.completed_at
+                  ? 'Đã hoàn thành'
+                  : 'Đánh dấu hoàn thành'
+              "
+              [icon]="
+                selectedLesson.completed_at
+                  ? 'pi pi-check-circle'
+                  : 'pi pi-check'
+              "
+              [disabled]="
+                selectedLesson.completed_at || !canMarkComplete(selectedLesson)
+              "
+              (click)="markLessonComplete()"
+              class="p-button-sm"
+              [ngClass]="{
+                'p-button-success': selectedLesson.completed_at,
+                'p-button-primary': !selectedLesson.completed_at
+              }"
+            ></button>
+            <button
+              pButton
+              type="button"
+              label="Bài sau"
+              icon="pi pi-chevron-right"
+              iconPos="right"
+              [disabled]="
+                currentLessonIndex === lessons.length - 1 ||
+                !selectedLesson.completed_at
+              "
+              (click)="selectNextLesson()"
+              class="p-button-outlined p-button-sm"
+            ></button>
+          </div>
         </div>
-        <div class="flex justify-between items-center">
-          <button
-            pButton
-            type="button"
-            label="Bài trước"
-            icon="pi pi-chevron-left"
-            [disabled]="currentLessonIndex === 0"
-            (click)="selectPreviousLesson()"
-            class="p-button-outlined p-button-sm"
-          ></button>
-          <button
-            pButton
-            type="button"
-            [label]="
-              selectedLesson.completed_at
-                ? 'Đã hoàn thành'
-                : 'Đánh dấu hoàn thành'
-            "
-            [icon]="
-              selectedLesson.completed_at ? 'pi pi-check-circle' : 'pi pi-check'
-            "
-            [disabled]="
-              selectedLesson.completed_at || !canMarkComplete(selectedLesson)
-            "
-            (click)="markLessonComplete()"
-            class="p-button-sm"
-            [ngClass]="{
-              'p-button-success': selectedLesson.completed_at,
-              'p-button-primary': !selectedLesson.completed_at
-            }"
-          ></button>
-          <button
-            pButton
-            type="button"
-            label="Bài sau"
-            icon="pi pi-chevron-right"
-            iconPos="right"
-            [disabled]="
-              currentLessonIndex === lessons.length - 1 ||
-              !selectedLesson.completed_at
-            "
-            (click)="selectNextLesson()"
-            class="p-button-outlined p-button-sm"
-          ></button>
+        <ng-template #selectLessonPrompt>
+          <div class="text-center text-gray-500 py-4">
+            Vui lòng chọn một bài học để bắt đầu học.
+          </div>
+        </ng-template>
+      </div>
+      <div class="py-2">
+        <hr class="mt-2 text-gray" />
+        <p class="text-lg font-semibold w-full text-center py-1">QUIZ</p>
+        <div *ngIf="quizzes.length > 0" class="space-y-4">
+          <div
+            *ngFor="let quiz of quizzes"
+            class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 p-4 flex items-center justify-between"
+          >
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                {{ quiz.title }}
+              </h3>
+              <div class="flex flex-wrap gap-4 text-sm text-gray-600">
+                <p>
+                  <i class="pi pi-question-circle mr-1"></i>
+                  Số câu hỏi: {{ quiz.questions_count }}
+                </p>
+                <p>
+                  <i class="pi pi-refresh mr-1"></i>
+                  Số lần thử: {{ quiz.max_attempts }}
+                </p>
+                <p>
+                  <i class="pi pi-clock mr-1"></i>
+                  Thời gian: {{ quiz.time_limit }} phút
+                </p>
+                <p>
+                  <i class="pi pi-calendar mr-1"></i>
+                  Tạo ngày: {{ quiz.created_at | date : "dd/MM/yyyy" }}
+                </p>
+              </div>
+            </div>
+            <p-button
+              label="Bắt đầu quiz"
+              icon="pi pi-play"
+              styleClass="p-button-sm p-button-success"
+              [routerLink]="['/quiz', quiz.quiz_id]"
+            />
+          </div>
+        </div>
+        <div
+          *ngIf="quizzes.length === 0"
+          class="text-center text-gray-500 py-4"
+        >
+          Không có quiz nào.
         </div>
       </div>
-      <ng-template #selectLessonPrompt>
-        <div class="text-center text-gray-500 py-4">
-          Vui lòng chọn một bài học để bắt đầu học.
-        </div>
-      </ng-template>
     </div>
   </div>
 

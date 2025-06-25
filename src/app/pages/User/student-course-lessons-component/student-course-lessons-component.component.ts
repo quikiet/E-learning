@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CoursesService } from '../../../services/courses.service';
 import { TagModule } from 'primeng/tag';
@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { AuthService } from '../../../services/auth.service';
+import { QuizService } from '../../../services/lesson/quiz.service';
 
 interface Feedback {
   name: string;
@@ -34,6 +35,7 @@ interface Feedback {
     FormsModule,
     SelectModule,
     TextareaModule,
+    RouterLink,
   ],
   providers: [MessageService],
   templateUrl: './student-course-lessons-component.component.html',
@@ -43,6 +45,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   enrollmentId: number = 0;
   course: any = null;
   lessons: any[] = [];
+  quizzes: any[] = [];
   reviews: any[] = [];
   selectedLesson: any = null;
   currentLessonIndex: number = -1;
@@ -58,6 +61,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private quizService: QuizService,
     private enrollmentService: EnrollmentService,
     private messageService: MessageService,
     private authService: AuthService
@@ -141,6 +145,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
     if (this.canAccessLesson(lesson)) {
       this.selectedLesson = lesson;
       this.currentLessonIndex = index;
+      this.loadQuizzes();
     } else {
       this.messageService.add({
         severity: 'warn',
@@ -149,6 +154,16 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
         life: 3000,
       });
     }
+  }
+
+  loadQuizzes() {
+    this.quizService.getQuizzesOfLesson(this.selectedLesson.id).subscribe({
+      next: (res) => {
+        this.quizzes = res.data;
+      }, error: (err) => {
+        console.log(err.message);
+      }
+    })
   }
 
   selectPreviousLesson() {
