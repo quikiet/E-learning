@@ -17,23 +17,20 @@
     <p-card header="Thông tin Người dùng" styleClass="!rounded-none mb-4">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div><strong>ID:</strong> {{ userData.user.id }}</div>
-        <div><strong>Tên người dùng:</strong> {{ userData.user.username }}</div>
-        <div>
-          <strong>UserID_DI:</strong>
-          userData.user.userid_DI
-        </div>
+        <div><strong>User name:</strong> {{ userData.user.username }}</div>
         <div><strong>Email:</strong> {{ userData.user.email }}</div>
-        <div><strong>Trình độ học vấn:</strong> {{ userData.user.LoE_DI }}</div>
-        <div><strong>Năm sinh:</strong> {{ userData.user.birthdate }}</div>
-        <div><strong>Giới tính:</strong> {{ userData.user.gender }}</div>
+        <div>
+          <strong>Birthdate:</strong> {{ userData.user.birthdate | date }}
+        </div>
+        <div><strong>Gender:</strong> {{ userData.user.gender }}</div>
         <div class="flex items-center gap-2">
-          <strong>Vai trò:</strong>
+          <strong>Role:</strong>
 
           <div>
             <p-tag
               *ngIf="userData.user.role === 'admin'"
               severity="danger"
-              value="Quản trị viên"
+              [value]="userData.user.role"
               [rounded]="true"
               class="!text-xs"
             />
@@ -41,14 +38,14 @@
               *ngIf="userData.user.role === 'student'"
               severity="success"
               class="!text-xs"
-              value="Học viên"
+              [value]="userData.user.role"
               [rounded]="true"
             />
             <p-tag
               *ngIf="userData.user.role === 'instructor'"
               severity="info"
               class="!text-xs"
-              value="Giáo viên"
+              [value]="userData.user.role"
               [rounded]="true"
             />
           </div>

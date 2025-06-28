@@ -86,16 +86,7 @@ export class UserManageComponent implements OnInit {
     password: new FormControl('', [
       Validators.minLength(6)
     ]),
-    final_cc_cname_DI: new FormControl('Unknown', [
-      Validators.maxLength(100)
-    ]),
-    LoE_DI: new FormControl('Unknown', [
-      Validators.maxLength(50)
-    ]),
-    YoB: new FormControl(null, [
-      Validators.min(1900),
-      Validators.max(new Date().getFullYear())
-    ]),
+    birthdate: new FormControl(null),
     gender: new FormControl('', [
       Validators.maxLength(20)
     ]),
@@ -156,11 +147,8 @@ export class UserManageComponent implements OnInit {
     });
     this.cols = [
       { field: 'id', header: 'Mã' },
-      { field: 'userid_DI', header: 'ID Người dùng' },
       { field: 'email', header: 'Email' },
-      { field: 'final_cc_cname_DI', header: 'Quốc gia' },
-      { field: 'LoE_DI', header: 'Trình độ học vấn' },
-      { field: 'YoB', header: 'Năm sinh' },
+      { field: 'Birthdate', header: 'Năm sinh' },
       { field: 'gender', header: 'Giới tính' },
       { field: 'role', header: 'Vai trò' },
       { field: 'created_at', header: 'Ngày tạo' },

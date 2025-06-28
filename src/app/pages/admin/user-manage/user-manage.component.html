@@ -55,7 +55,12 @@
   </ng-template>
 
   <ng-template #end>
-    <p-button label="Xuất File" icon="pi pi-upload" severity="info" />
+    <p-button
+      label="Export"
+      (click)="dt.exportCSV()"
+      icon="pi pi-upload"
+      severity="info"
+    />
   </ng-template>
 </p-toolbar>
 
@@ -80,7 +85,7 @@
 >
   <ng-template #caption>
     <div class="flex items-center justify-between">
-      <p class="m-0 lg:text-lg font-semibold">Quản lý Khoá học</p>
+      <p class="m-0 lg:text-lg font-semibold">User management</p>
       <p-iconfield>
         <p-inputicon styleClass="pi pi-search" />
         <input
@@ -95,29 +100,18 @@
   </ng-template>
   <ng-template #header>
     <tr class="text-sm">
-      <th pSortableColumn="id" class="hidden lg:table-cell">
-        <div class="flex items-center">
-          <p-sortIcon field="id" />
-          <span>Mã</span>
-        </div>
+      <th>
+        <span>Mã</span>
       </th>
       <th>Email</th>
-      <th>Trình độ học vấn</th>
-      <th>
-        <div class="flex items-center">
-          Năm sinh
-          <p-sortIcon field="YoB" />
-        </div>
-      </th>
-      <th>Giới tính</th>
+      <th>Gender</th>
+      <th>Birthdate</th>
     </tr>
   </ng-template>
   <ng-template #body let-user>
     <tr class="text-sm" (click)="showUser(user)">
-      <td class="hidden lg:table-cell">
-        <div class="flex items-center justify-center h-full">
-          {{ user.id }}
-        </div>
+      <td>
+        {{ user.id }}
       </td>
       <td>
         <div class="flex items-center gap-1">
@@ -139,7 +133,7 @@
               <p-tag
                 *ngIf="user.role === 'admin'"
                 severity="danger"
-                value="Quản trị viên"
+                [value]="user.role"
                 [rounded]="true"
                 class="!text-xs"
               />
@@ -147,33 +141,26 @@
                 *ngIf="user.role === 'student'"
                 severity="success"
                 class="!text-xs"
-                value="Học viên"
+                [value]="user.role"
                 [rounded]="true"
               />
               <p-tag
                 *ngIf="user.role === 'instructor'"
                 severity="info"
                 class="!text-xs"
-                value="Giáo viên"
+                [value]="user.role"
                 [rounded]="true"
               />
             </div>
           </div>
         </div>
       </td>
-      <!-- <td>
-        <span [pTooltip]="user.final_cc_cname_DI" tooltipPosition="right">{{
-          cutText(user.final_cc_cname_DI, 10)
-        }}</span>
-      </td> -->
-      <td class="text-center align-middle">
-        {{ user.LoE_DI }}
-      </td>
-      <td>
-        {{ user.birthdate | date }}
-      </td>
+
       <td class="text-center align-middle">
         {{ user.gender || "NaN" }}
+      </td>
+      <td>
+        {{ user.created_at | date }}
       </td>
       <!-- <td>
         <div>
