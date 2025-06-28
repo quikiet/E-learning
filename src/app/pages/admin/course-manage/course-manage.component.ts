@@ -115,7 +115,7 @@ export class CourseManageComponent implements OnInit {
     const first = event?.first ?? 0;
     const rows = event?.rows ?? this.rows ?? 10;
     const page = Math.floor(first / rows) + 1;
-    this.courseService.getAllCourses(page, rows
+    this.courseService.getCourses(page, rows
     ).subscribe({
       next: (res) => {
         this.courses = res.data;

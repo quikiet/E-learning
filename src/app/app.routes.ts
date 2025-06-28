@@ -37,6 +37,7 @@ import { StudentCourseLessonsComponentComponent } from './pages/User/student-cou
 import { InstructorQuizManagementComponent } from './pages/User/instructor-quiz-management/instructor-quiz-management.component';
 import { StudentQuizAttemptComponent } from './pages/both/student-quiz-attempt/student-quiz-attempt.component';
 import { QuizTakingComponent } from './pages/User/quiz-taking/quiz-taking.component';
+import { AdminCourseManagementComponent } from './pages/admin/admin-course-management/admin-course-management.component';
 
 export const routes: Routes = [
     {
@@ -74,7 +75,7 @@ export const routes: Routes = [
             { path: 'quan-ly-don-duyet', component: RequestReviewComponent },
             { path: 'nguoi-dung-da-xoa', component: UserDeletedComponent },
             { path: 'quan-ly-nguoi-dung/:id', component: UserDetailComponent },
-            { path: 'quan-ly-khoa-hoc', component: CourseManageComponent },
+            { path: 'quan-ly-khoa-hoc', component: AdminCourseManagementComponent },
             { path: 'quan-ly-khoa-hoc/:courseId/danh-sach-khoa-hoc', component: CoursePendingLessonsComponent },
             { path: 'danh-sach-khoa-hoc-cho', component: PendingCoursesComponent },
             { path: 'quan-ly-danh-muc', component: CategoryManageComponent },

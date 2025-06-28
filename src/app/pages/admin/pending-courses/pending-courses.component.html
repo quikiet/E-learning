@@ -28,10 +28,7 @@
       pButton
       label="Từ chối"
       class="p-button-danger"
-      (click)="
-        openReviewDialog(selectedCourse.id, 'rejected');
-        $event.stopPropagation()
-      "
+      (click)="openReviewDialog(selectedCourse.id, 'rejected')"
     ></button>
     <button
       pButton

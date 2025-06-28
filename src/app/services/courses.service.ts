@@ -95,6 +95,16 @@ export class CoursesService {
     );
   }
 
+  searchCourseAdmin(params: any): Observable<any> {
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      if (params[key] !== null && params[key] !== undefined) {
+        httpParams = httpParams.set(key, params[key].toString());
+      }
+    });
+    return this.http.get<any>(`${this.apiUrl}/admin/courses/search`, { params: httpParams, withCredentials: true });
+  }
+
   enrollCourse(courseId: number, data: { amount: number; method: string; coupon_id: number | null }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/enroll-paid`, data, { withCredentials: true });
   }
