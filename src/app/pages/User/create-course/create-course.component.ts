@@ -6,6 +6,10 @@ import { ToastModule } from 'primeng/toast';
 import { CoursesService } from '../../../services/courses.service';
 import { CategoryService } from '../../../services/courses-manage/category.service';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
 
 interface Category {
   name: string;
@@ -18,7 +22,10 @@ interface Category {
     FormsModule,
     CommonModule,
     ToastModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ButtonModule,
+    DropdownModule,
+    InputTextModule
   ],
   providers: [MessageService],
   templateUrl: './create-course.component.html',
@@ -35,14 +42,33 @@ export class CreateCourseComponent implements OnInit {
     price: 0,
     image: null as File | null,
     category_ids: [] as number[],
+    is_certificate_enabled: false,
   };
   categories: Category[] = [];
   selectedCategories: number[] = [];
+  CertiFormData = new FormData();
+
+  createCertificate = false;
+  showCertificateModal = false;
+  certificateRule = {
+    course_id: null as number | null,
+    lesson_completion_percent: 0,
+    lesson_version_rule: 'latest',
+    quiz_min_score: 0,
+    quiz_version_rule: 'any',
+  };
+
+  versionRuleOptions = [
+    { label: 'Latest', value: 'latest' },
+    { label: 'Any', value: 'any' },
+  ];
+
 
   constructor(
     private coursesService: CoursesService,
     private categoryService: CategoryService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -78,6 +104,15 @@ export class CreateCourseComponent implements OnInit {
     console.log('Selected categories:', this.selectedCategories);
   }
 
+  openCertify() {
+    this.showCertificateModal = !this.showCertificateModal;
+    if (this.showCertificateModal === true) {
+      this.createCertificate = true;
+    } else {
+      this.createCertificate = false;
+    }
+  }
+
   createCourse() {
     if (!this.selectedCategories || this.selectedCategories.length === 0) {
       this.messageService.add({
@@ -97,6 +132,7 @@ export class CreateCourseComponent implements OnInit {
     formData.append('course_description', this.course.course_description || '');
     formData.append('skills', this.course.skills || '');
     formData.append('price', this.course.price.toString());
+    formData.append('is_certificate_enabled', this.course.is_certificate_enabled ? '1' : '0');
     if (this.course.image) {
       formData.append('image', this.course.image);
     }
@@ -108,24 +144,27 @@ export class CreateCourseComponent implements OnInit {
       console.log(`${key}: ${value}`);
     }
 
+
+    this.CertiFormData.append('lesson_completion_percent', this.certificateRule.lesson_completion_percent.toString());
+    this.CertiFormData.append('lesson_version_rule', this.certificateRule.lesson_version_rule);
+    this.CertiFormData.append('quiz_min_score', this.certificateRule.quiz_min_score.toString());
+    this.CertiFormData.append('quiz_version_rule', this.certificateRule.quiz_version_rule);
+
     this.coursesService.createCourse(formData).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',
-          summary: 'Thành công',
-          detail: 'Khóa học đã được gửi để chờ duyệt.',
+          summary: 'Success',
+          detail: res.message,
           life: 3000,
         });
-        this.course = {
-          course_name: '',
-          difficulty_level: 'Beginner',
-          course_description: '',
-          skills: '',
-          price: 0,
-          image: null,
-          category_ids: []
-        };
-        this.selectedCategories = [];
+        this.certificateRule.course_id = res.course.id; // Lấy course_id từ response
+
+        if (this.createCertificate) {
+          this.createCertificateRule();
+        } else {
+          this.router.navigate(['/danh-sach-khoa-hoc']);
+        }
       },
       error: (err) => {
         console.error('Error creating course:', err);
@@ -138,4 +177,67 @@ export class CreateCourseComponent implements OnInit {
       }
     });
   }
+
+  createCertificateRule() {
+    if (!this.certificateRule.course_id) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Thiếu course_id.',
+        life: 3000,
+      });
+      return;
+    }
+
+    this.CertiFormData.append('course_id', this.certificateRule.course_id.toString());
+
+    console.log('Certificate Rule Body:', Object.fromEntries(this.CertiFormData));
+    this.coursesService.createCertifyRule(this.CertiFormData).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message,
+          life: 3000,
+        });
+        this.showCertificateModal = false;
+        this.router.navigate(['/danh-sach-khoa-hoc']);
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: err.error?.message || 'Không thể tạo quy tắc chứng chỉ.',
+          life: 3000,
+        });
+      },
+    });
+  }
+
+  // resetCourseForm() {
+  //   this.course = {
+  //     course_name: '',
+  //     difficulty_level: 'Beginner',
+  //     course_description: '',
+  //     skills: '',
+  //     price: 0,
+  //     image: null,
+  //     category_ids: [],
+  //     is_certificate_enabled: false
+  //   };
+  //   this.selectedCategories = [];
+  //   this.createCertificate = false;
+  // }
+
+  // resetCertificateForm() {
+  //   this.certificateRule = {
+  //     course_id: null,
+  //     lesson_completion_percent: 85,
+  //     lesson_version_rule: 'latest',
+  //     quiz_min_score: 70,
+  //     quiz_version_rule: 'any',
+  //   };
+  //   this.showCertificateModal = false;
+  // }
+
 }

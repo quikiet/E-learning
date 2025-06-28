@@ -1,0 +1,9 @@
+/* Tùy chỉnh PrimeNG components */
+.p-radiobutton,
+.p-checkbox {
+    @apply mr-2;
+}
+
+.p-button-success {
+    @apply bg-green-500 hover:bg-green-600 text-white;
+}

@@ -13,6 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../../../services/lesson/quiz.service';
+import { Tooltip, TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-instructor-quiz-management',
@@ -29,6 +30,7 @@ import { QuizService } from '../../../services/lesson/quiz.service';
     ToastModule,
     InputTextModule,
     DropdownModule,
+    TooltipModule
   ],
   providers: [MessageService, QuizService],
   templateUrl: './instructor-quiz-management.component.html',

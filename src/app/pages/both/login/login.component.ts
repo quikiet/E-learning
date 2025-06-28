@@ -39,11 +39,11 @@ export class LoginComponent implements OnInit {
   LoE: optionSelect[] | undefined;
   gender: optionSelect[] | undefined;
   learningGoals = [
-    { label: 'Thăng tiến sự nghiệp', value: 'Career advancement' },
-    { label: 'Phát triển kỹ năng', value: 'Skill development' },
-    { label: 'Phát triển bản thân', value: 'Personal growth' },
-    { label: 'Cải thiện học tập', value: 'Academic improvement' },
-    { label: 'Lấy chứng chỉ', value: 'Certification' }
+    { label: 'Career advancement', value: 'Career advancement' },
+    { label: 'Skill development', value: 'Skill development' },
+    { label: 'Personal growth', value: 'Personal growth' },
+    { label: 'Academic improvement', value: 'Academic improvement' },
+    { label: 'Certification', value: 'Certification' }
   ];
   categories: any[] = [];
 
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
   });
   currentYear = new Date().getFullYear();
   minYear = 1900;
-  maxYear = this.currentYear - 13;
+  maxYear = this.currentYear - 3;
 
   minDate = new Date(this.minYear, 0);
   maxDate = new Date(this.maxYear, 11);
@@ -74,26 +74,23 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password_confirmation: ['', Validators.required],
-      final_cc_cname_DI: ['VietNam', Validators.maxLength(100)],
       LoE_DI: ['', Validators.maxLength(50)],
-      YoB: [null, [Validators.min(1900), Validators.max(this.currentYear - 13)]],
+      birthdate: [null],
       gender: [''],
       role: ['student', Validators.required], // mặc định là student
       learning_goals: [''],
       category_ids: [[]],
     }, { validators: this.passwordMatchValidator });
     this.LoE = [
-      { name: 'Không rõ', value: 'Unknown' },
-      { name: 'THPT', value: 'High School' },
-      { name: 'Đại học', value: 'Bachelor' },
-      { name: 'Thạc sĩ', value: 'Master' },
-      { name: 'Tiến sĩ', value: 'PhD' }
+      { name: 'All Level', value: 'All Level' },
+      { name: 'Beginner', value: 'Beginner' },
+      { name: 'Intermediate', value: 'Intermediate' },
+      { name: 'Advanced', value: 'Advanced' },
     ];
     this.gender = [
-      { name: 'Không', value: "" },
-      { name: 'Nam', value: 'Male' },
-      { name: 'Nữ', value: 'Female' },
-      { name: 'Không muốn trả lời', value: 'Prefer not to say' },
+      { name: 'Male', value: 'Male' },
+      { name: 'Female', value: 'Female' },
+      { name: 'Prefer not to say', value: 'Prefer not to say' },
     ];
     this.categoryService.getCategory().subscribe({
       next: (res) => {
@@ -112,7 +109,7 @@ export class LoginComponent implements OnInit {
         ...this.registerForm.value,
         LoE_DI: this.registerForm.value.LoE_DI?.value || '',
         gender: this.registerForm.value.gender?.value || '',
-        YoB: this.registerForm.value.YoB ? new Date(this.registerForm.value.YoB).getFullYear() : null,
+        birthdate: this.registerForm.value.birthdate || null,
         category_ids: this.registerForm.value.category_ids || [],
         password_confirmation: this.registerForm.value.password_confirmation,
       };

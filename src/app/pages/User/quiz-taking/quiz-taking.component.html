@@ -1,0 +1,91 @@
+<p-toast></p-toast>
+<div class="max-w-3xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Bài trắc nghiệm</h2>
+  {{ quizStart.time_limit }}
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="text-center text-gray-500 py-4">
+    Đang tải câu hỏi...
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="errorMessage" class="text-center text-red-500 py-4">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Danh sách câu hỏi -->
+  <div
+    *ngIf="!isLoading && !errorMessage && questions.length > 0"
+    class="space-y-6"
+  >
+    <div class="flex justify-between items-center mb-4">
+      <p class="text-sm text-gray-600">
+        Tổng số câu hỏi: {{ pagination?.total || questions.length }}
+      </p>
+      <p class="text-sm text-gray-600">
+        <i class="pi pi-clock mr-1"></i>
+        Thời gian còn lại: {{ minutes }}:{{ seconds | number : "2.0-0" }}
+      </p>
+      <p-button
+        label="Nộp bài"
+        icon="pi pi-check"
+        styleClass="p-button-success"
+        (click)="submitQuiz()"
+        [disabled]="!hasAnswered()"
+      />
+    </div>
+
+    <div
+      *ngFor="let question of questions; let i = index"
+      class="bg-white rounded-lg shadow-sm p-6"
+    >
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        Câu {{ i + 1 }}: {{ question.title }}
+      </h3>
+      <div class="space-y-3">
+        <!-- True/False -->
+        <div
+          *ngIf="question.question_type === 'true_false'"
+          class="flex flex-col gap-2"
+        >
+          <div
+            *ngFor="let choice of question.choices"
+            class="flex items-center gap-2"
+          >
+            <p-radioButton
+              [value]="choice.id"
+              [(ngModel)]="selectedAnswers[question.id]"
+              [name]="'question_' + question.id"
+            />
+            <label class="text-gray-700">{{ choice.content }}</label>
+          </div>
+        </div>
+
+        <!-- Multiple Choice -->
+        <div
+          *ngIf="question.question_type === 'multiple_choice'"
+          class="flex flex-col gap-2"
+        >
+          <div
+            *ngFor="let choice of question.choices"
+            class="flex items-center gap-2"
+          >
+            <p-checkbox
+              [value]="choice.id"
+              [(ngModel)]="selectedAnswers[question.id]"
+              [binary]="false"
+            />
+            <label class="text-gray-700">{{ choice.content }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Không có câu hỏi -->
+  <div
+    *ngIf="!isLoading && !errorMessage && questions.length === 0"
+    class="text-center text-gray-500 py-4"
+  >
+    Không có câu hỏi nào trong bài trắc nghiệm.
+  </div>
+</div>

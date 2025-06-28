@@ -52,26 +52,43 @@
           ></i> -->
         </td>
         <td>
-          <p-button
-            icon="pi pi-pencil"
-            (click)="editQuiz(quiz)"
-            styleClass="p-button-sm p-button-warning mr-2"
-          />
-          <p-button
-            icon="pi pi-trash"
-            (click)="deleteQuiz(quiz.quiz_id)"
-            styleClass="p-button-sm p-button-danger mr-2"
-          />
-          <p-button
-            icon="pi pi-plus"
-            (click)="openAddQuestionModal(quiz)"
-            styleClass="p-button-sm p-button-success mr-2"
-          />
-          <p-button
-            icon="pi pi-eye"
-            (click)="viewQuizDetail(quiz)"
-            styleClass="p-button-sm p-button-info"
-          />
+          <div class="flex gap-1 flex-wrap">
+            <p-button
+              pTooltip="Edit"
+              tooltipPosition="top"
+              icon="pi pi-pencil"
+              (click)="editQuiz(quiz)"
+              styleClass="p-button-sm p-button-warning mr-2"
+            />
+            <p-button
+              pTooltip="Delete"
+              tooltipPosition="top"
+              icon="pi pi-trash"
+              (click)="deleteQuiz(quiz.quiz_id)"
+              styleClass="p-button-sm p-button-danger mr-2"
+            />
+            <p-button
+              pTooltip="Create new"
+              tooltipPosition="top"
+              icon="pi pi-plus"
+              (click)="openAddQuestionModal(quiz)"
+              styleClass="p-button-sm p-button-success mr-2"
+            />
+            <p-button
+              pTooltip="View detail"
+              tooltipPosition="top"
+              icon="pi pi-eye"
+              (click)="viewQuizDetail(quiz)"
+              styleClass="p-button-sm p-button-info mr-2"
+            />
+            <p-button
+              pTooltip="Clone"
+              tooltipPosition="top"
+              icon="pi pi-copy"
+              (click)="viewQuizDetail(quiz)"
+              styleClass="p-button-sm p-button-info mr-2"
+            />
+          </div>
         </td>
       </tr>
     </ng-template>

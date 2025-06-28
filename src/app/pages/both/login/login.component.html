@@ -4,21 +4,18 @@
   <div class="max-w-5xl mx-auto">
     <div
       *ngIf="!isLoading"
-      class="container grid grid-cols-1 lg:grid-cols-12 items-center justify-center p-6 bg-white gap-5"
+      class="container grid grid-cols-1 lg:grid-cols-2 items-start justify-center p-6 gap-5"
       x-data="{ tab: 'signup' }"
     >
-      <div class="hidden lg:block lg:col-span-7 w-full h-full pr-6">
+      <div class="hidden lg:block w-full pr-6">
         <img
           class="rounded-xl w-full h-full object-center"
-          [src]="
-            tab === 'login'
-              ? 'https://socialcadence.io/wp-content/uploads/2021/01/Social-Cadence-H-V2.png'
-              : 'https://assets.metrobi.com/wp-content/uploads/2024/02/631959959-1024x701.jpeg'
-          "
+          src="https://frontends.udemycdn.com/components/auth/desktop-illustration-step-2-x2.webp"
+          lazy="true"
         />
       </div>
-      <div class="col-span-1 lg:col-span-5 lg:m-auto w-full overflow-hidden">
-        <div class="p-0 lg:p-4">
+      <div class="col-span-1 lg:m-auto w-full overflow-hidden bg-white">
+        <div class="p-4">
           <p class="text-center py-4 text-lg text-primary">
             Học tập dễ dàng, bắt đầu ngay hôm nay cùng LearnSmart!
           </p>
@@ -126,15 +123,14 @@
                 </app-form-element>
                 <div class="grid grid-cols-2 gap-5">
                   <app-form-element
-                    [label]="'Năm sinh'"
-                    [control]="registerForm.get('YoB')!"
+                    [label]="'Birthdate'"
+                    [control]="registerForm.get('birthdate')!"
                   >
                     <p-datepicker
-                      formControlName="YoB"
-                      view="year"
+                      formControlName="birthdate"
                       [inputStyleClass]="'!rounded-full w-full'"
-                      dateFormat="yy"
                       [minDate]="minDate"
+                      dateFormat="Y-mm-dd"
                       [maxDate]="maxDate"
                       [yearRange]="minYear + ':' + maxYear"
                     />

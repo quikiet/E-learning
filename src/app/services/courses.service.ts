@@ -109,6 +109,10 @@ export class CoursesService {
     return this.http.post<any>(`${this.apiUrl}/instructor/courses`, data, { withCredentials: true });
   }
 
+  createCertifyRule(data: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/instructor/certificate-rule`, data, { withCredentials: true });
+  }
+
   reportCourse(data: { course_id: number; reason: string; report_type: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/reports`, data, { withCredentials: true });
   }

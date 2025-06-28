@@ -29,6 +29,13 @@
             class="!text-xs"
           />
           <p-tag
+            *ngIf="course.status === 'draft'"
+            severity="secondary"
+            [value]="course.status"
+            [rounded]="true"
+            class="!text-xs"
+          />
+          <p-tag
             *ngIf="course.status === 'pending'"
             severity="warn"
             class="!text-xs"
@@ -174,7 +181,7 @@
                 <i class="pi pi-eye mr-1"></i> Xem trước:
                 {{ lesson.is_preview ? "Có" : "Không" }}
               </p>
-              <p-tag
+              <!-- <p-tag
                 *ngIf="lesson.status === 'approved'"
                 severity="success"
                 value="Đang hoạt động"
@@ -194,7 +201,7 @@
                 class="!text-xs mt-1"
                 value="Đã bị từ chối"
                 [rounded]="true"
-              />
+              /> -->
             </div>
             <p-button
               label="Quản lý bài tập"
