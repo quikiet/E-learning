@@ -12,7 +12,6 @@ import { RouterLink } from '@angular/router';
 })
 export class CategoryCarouselComponent implements OnInit {
   lists: any[] = [];
-
   responsiveOptions: any[] | undefined;
   constructor(private categoryService: CategoryService) { }
   ngOnInit() {

@@ -72,6 +72,8 @@ export class CategoryManageComponent implements OnInit {
     name: new FormControl('', Validators.required)
   });
 
+  expandedRows = {};
+
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
@@ -83,34 +85,28 @@ export class CategoryManageComponent implements OnInit {
     this.loadCategoryData();
   }
 
+  collapseAll() {
+    this.expandedRows = {};
+  }
+
   searchGlobal(event: any) {
     if (this.dt) {
       this.dt.filterGlobal(event.target.value, 'contains');
     }
   }
-
-  clear(table: Table) {
-    table.clear();
-    this.loadCategoryData();
-  }
-
-  exportCSV() {
-    this.dt.exportCSV();
-  }
-
   confirmDelete(event: Event, id: number) {
     this.confirmationService.confirm({
       key: `delete-category-${id}`,
       target: event.target as EventTarget,
-      message: 'Bạn có chắc chắn muốn xoá?',
+      message: 'Are you sure you want to delete??',
       icon: 'pi pi-info-circle',
       rejectButtonProps: {
-        label: 'Huỷ',
+        label: 'Cancel',
         severity: 'secondary',
         outlined: true
       },
       acceptButtonProps: {
-        label: 'Xác nhận',
+        label: 'Accept',
         severity: 'danger'
       },
       accept: () => {
@@ -118,8 +114,8 @@ export class CategoryManageComponent implements OnInit {
           next: (res) => {
             this.messageService.add({
               severity: 'success',
-              summary: 'Thành công',
-              detail: res.message || 'Xoá danh mục thành công',
+              summary: 'Success',
+              detail: res.message,
               life: 3000
             });
             this.loadCategoryData()
@@ -127,7 +123,7 @@ export class CategoryManageComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Thất bại',
-              detail: err.message || 'Không thể xoá danh mục',
+              detail: err.message,
               life: 3000
             });
           }

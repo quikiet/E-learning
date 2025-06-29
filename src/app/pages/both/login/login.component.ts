@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
       { name: 'Female', value: 'Female' },
       { name: 'Prefer not to say', value: 'Prefer not to say' },
     ];
-    this.categoryService.getCategory().subscribe({
+    this.categoryService.getSubCategory().subscribe({
       next: (res) => {
         this.categories = res;
       },

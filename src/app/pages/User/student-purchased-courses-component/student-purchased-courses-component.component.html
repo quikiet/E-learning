@@ -60,12 +60,22 @@
             severity="danger"
             [outlined]="true"
             size="small"
+            *ngIf="!enrollment.has_pending_report"
+            (click)="openReportModal(enrollment)"
+          />
+          <p-button
+            [rounded]="false"
+            severity="info"
+            [outlined]="true"
+            label="Undo"
+            size="small"
+            *ngIf="enrollment.has_pending_report"
             (click)="openReportModal(enrollment)"
           />
         </div>
         <!-- Mức độ khó -->
         <p class="text-sm text-gray-600 mb-1">
-          <i class="pi pi-star mr-1 text-secondary"></i> Mức độ:
+          <i class="pi pi-star mr-1 text-secondary"></i> Level:
           {{ enrollment.course.difficulty_level }}
         </p>
 
@@ -75,26 +85,26 @@
             <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
             {{ enrollment.course.course_rating | number : "1.1-1" }}
           </span>
-          <span class="text-xs text-gray-500">
+          <!-- <span class="text-xs text-gray-500">
             ({{
               enrollment.course.course_rating >= 4
                 ? "Xuất sắc"
                 : enrollment.course.course_rating >= 3
                 ? "Tốt"
-                : "Trung bình"
+                : "Average"
             }})
-          </span>
+          </span> -->
         </div>
 
         <!-- Giá -->
         <p class="text-sm font-medium text-gray-800 mb-1">
           <i class="pi pi-money-bill mr-1"></i>
-          {{ enrollment.course.price | number }} VND
+          {{ enrollment.course.price | number }} $
         </p>
 
         <!-- Kỹ năng -->
         <p class="text-sm text-gray-600 mb-1 truncate">
-          <i class="pi pi-book mr-1"></i> Kỹ năng:
+          <i class="pi pi-book mr-1"></i> Skills:
           {{ enrollment.course.skills }}
         </p>
 
@@ -105,20 +115,20 @@
 
         <!-- Ngày đăng ký -->
         <p class="text-sm text-gray-600 mb-1">
-          <i class="pi pi-calendar mr-1"></i> Đăng ký:
+          <i class="pi pi-calendar mr-1"></i> Purchased:
           {{ enrollment.enrolled_at | date : "dd/MM/yyyy HH:mm" }}
         </p>
 
         <!-- Ngày hết hạn -->
         <p class="text-sm text-gray-600 mb-2">
-          <i class="pi pi-calendar-times mr-1"></i> Hết hạn:
-          {{ enrollment.expires_at | date : "dd/MM/yyyy HH:mm" }}
+          <i class="pi pi-calendar-times mr-1"></i> Expired:
+          {{ enrollment.expires_at || "none" | date : "dd/MM/yyyy HH:mm" }}
         </p>
 
         <!-- Tiến độ học tập -->
         <div *ngIf="progressData[enrollment.id]" class="mb-2">
           <p class="text-sm text-gray-600 mb-1">
-            <i class="pi pi-bookmark mr-1"></i> Tổng số bài học:
+            <i class="pi pi-bookmark mr-1"></i> Total of lessons:
             {{ progressData[enrollment.id].total_lessons }}
           </p>
           <p class="text-sm text-gray-600 mb-1">
@@ -130,7 +140,7 @@
                   : 'text-primary'
               "
             ></i>
-            Đã hoàn thành:
+            Finished:
             {{ progressData[enrollment.id].completed_lessons }}
           </p>
           <div class="w-full bg-gray-200 rounded-full">
@@ -140,7 +150,7 @@
             />
           </div>
           <p class="text-sm text-gray-600 mt-1">
-            Tiến độ:
+            Progress:
             {{
               progressData[enrollment.id].progress_percentage
                 | number : "1.1-1"
@@ -154,7 +164,7 @@
             [routerLink]="['/khoa-hoc-cua-toi/hoc-bai/', enrollment.id]"
             class="w-full bg-secondary-content text-white py-1.5 px-4 hover:bg-secondary transition duration-200 text-sm font-medium"
           >
-            Tiếp tục học
+            Continue
           </button>
         </div>
       </div>
@@ -162,14 +172,15 @@
   </div>
 
   <ng-template *ngIf="enrollments.length === 0">
-    <div class="text-center text-gray-500 py-4">Bạn chưa mua khóa học nào.</div>
+    <div class="text-center text-gray-500 py-4">
+      You have not purchased any courses..
+    </div>
   </ng-template>
 
   <!-- Phân trang -->
   <p-paginator
     [rows]="perPage"
     [totalRecords]="totalRecords"
-    [rowsPerPageOptions]="[10, 20, 30]"
     (onPageChange)="onPageChange($event)"
     [first]="(currentPage - 1) * perPage"
     class="mt-6"
@@ -177,25 +188,13 @@
 </div>
 
 <p-dialog
-  header="Báo cáo khóa học"
+  header="Report Course"
   [(visible)]="showReportModal"
   [modal]="true"
   [style]="{ width: '30rem' }"
   (onHide)="resetReportForm()"
 >
   <div class="space-y-4">
-    <div class="flex flex-col gap-2">
-      <label for="reportReason" class="text-sm font-medium text-gray-700"
-        >Lý do báo cáo:</label
-      >
-      <input
-        id="reportReason"
-        pInputText
-        [(ngModel)]="reportData.reason"
-        placeholder="Nhập lý do báo cáo"
-        class="w-full"
-      />
-    </div>
     <div class="flex flex-col gap-2">
       <label for="reportType" class="text-sm font-medium text-gray-700"
         >Loại báo cáo:</label
@@ -210,15 +209,27 @@
         class="w-full"
       />
     </div>
+    <div class="flex flex-col gap-2">
+      <label for="reportReason" class="text-sm font-medium text-gray-700"
+        >Reason:</label
+      >
+      <input
+        id="reportReason"
+        pInputText
+        [(ngModel)]="reportData.reason"
+        placeholder="bad..."
+        class="w-full"
+      />
+    </div>
     <div class="flex justify-end gap-2">
       <p-button
-        label="Hủy"
+        label="Cancel"
         icon="pi pi-times"
         (click)="showReportModal = false"
         styleClass="p-button-secondary"
       />
       <p-button
-        label="Gửi"
+        label="Send"
         icon="pi pi-check"
         (click)="submitReport()"
         styleClass="p-button-success"

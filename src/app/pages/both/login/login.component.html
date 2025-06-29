@@ -110,7 +110,7 @@
               />
             </app-form-element>
 
-            <p-fieldset legend="Thông tin" [toggleable]="true">
+            <p-fieldset legend="More infomation" [toggleable]="true">
               <div>
                 <app-form-element [label]="'Trình độ học vấn'">
                   <p-select
@@ -148,7 +148,7 @@
                     />
                   </app-form-element>
                 </div>
-                <app-form-element [label]="'Mục tiêu học tập'">
+                <app-form-element [label]="'Learning goal'">
                   <div class="flex flex-wrap gap-4">
                     <div
                       class="flex items-center"
@@ -160,7 +160,7 @@
                         [value]="goal.value"
                         formControlName="learning_goals"
                       />
-                      <label class="ml-2 text-sm" [for]="'goal' + i">{{
+                      <label class="ml-2 text-xs" [for]="'goal' + i">{{
                         goal.label
                       }}</label>
                     </div>
@@ -168,8 +168,8 @@
                 </app-form-element>
                 <p-divider />
 
-                <app-form-element [label]="'Danh mục bạn quan tâm'">
-                  <div class="flex flex-wrap gap-3">
+                <app-form-element [label]="'Favorite categories'">
+                  <div class="flex flex-wrap gap-3 text-xs">
                     <div *ngFor="let cat of categories">
                       <p-checkbox
                         [inputId]="'cat' + cat.id"

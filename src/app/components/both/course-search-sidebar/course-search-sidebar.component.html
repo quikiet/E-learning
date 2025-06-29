@@ -39,7 +39,7 @@
               />
               <label [for]="'cat' + cat.id" class="ml-2 text-xs">
                 <span class="text-black">{{ cat.name }}</span>
-                <span> (10)</span>
+                <span> ({{ cat.courses_count }})</span>
               </label>
               <!-- Danh mục con -->
               <!-- <div *ngIf="cat.children?.length" class="flex flex-wrap gap-3">
