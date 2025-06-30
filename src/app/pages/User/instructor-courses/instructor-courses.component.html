@@ -115,7 +115,7 @@
 
         <!-- Số lượng bài học -->
         <p class="text-sm text-gray-600 mb-2">
-          <i class="pi pi-book mr-1"></i> Số bài học:
+          <i class="pi pi-book mr-1"></i> Total lesson:
           {{ course.lessonCount || 0 }}
         </p>
 
@@ -125,13 +125,13 @@
             (click)="navigateToAddLesson(course.id)"
             class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 text-sm font-medium"
           >
-            Thêm bài học
+            Add lesson
           </button>
           <button
             (click)="showLessons(course.id)"
             class="w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200 text-sm font-medium"
           >
-            Xem chi tiết bài học
+            View detail
           </button>
         </div>
       </div>
@@ -153,7 +153,7 @@
 <p-dialog
   [(visible)]="showLessonsDialog"
   [style]="{ width: '700px' }"
-  header="Danh sách bài học"
+  header="Lesson list"
   [modal]="true"
   class="rounded-lg shadow-lg"
 >

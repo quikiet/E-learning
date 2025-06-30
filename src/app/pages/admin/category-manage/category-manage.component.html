@@ -6,7 +6,7 @@
   [columns]="cols"
   [rows]="10"
   [paginator]="true"
-  [globalFilterFields]="['name']"
+  [globalFilterFields]="['name', 'children.name']"
   [(selection)]="selectedCategories"
   [rowHover]="false"
   dataKey="id"
@@ -19,6 +19,15 @@
     <div class="flex items-center gap-5 justify-between">
       <p class="m-0 lg:text-lg font-semibold">Category management</p>
       <div>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            (input)="searchGlobal($event)"
+            placeholder="Tìm kiếm danh mục..."
+          />
+        </p-iconfield>
         <p-button
           class="mr-2"
           label="Collapse All"

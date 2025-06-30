@@ -30,6 +30,10 @@ export class QuizService {
     return this.http.post<any>(`${this.apiUrl}/quizzes/${quizId}/start`, {}, { withCredentials: true });
   }
 
+  cloneQuiz(quizId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/instructor/quizzes/${quizId}/clone`, {}, { withCredentials: true });
+  }
+
   createQuiz(quiz: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/instructor/quizzes`, quiz, { withCredentials: true });
   }

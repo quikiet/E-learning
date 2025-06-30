@@ -57,6 +57,7 @@ export class InstructorQuizManagementComponent implements OnInit {
       { content: '', is_correct: false }
     ]
   };
+  isLoading = true;
 
   questionTypes = [
     { label: 'Multiple choice', value: 'multiple_choice' },
@@ -91,6 +92,7 @@ export class InstructorQuizManagementComponent implements OnInit {
     });
   }
 
+
   loadQuizzes() {
     if (this.lessonID) {
       this.quizService.getQuizzesOfLesson(this.lessonID).subscribe({
@@ -107,6 +109,29 @@ export class InstructorQuizManagementComponent implements OnInit {
         }
       });
     }
+  }
+
+  cloneQuiz(quiz: any) {
+    this.isLoading = true;
+    this.quizService.cloneQuiz(quiz.quiz_id).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message,
+          life: 3000,
+        });
+        this.loadQuizzes();
+        this.isLoading = false;
+      }, error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.message,
+          life: 3000,
+        });
+      }
+    })
   }
 
   openAddQuizModal() {

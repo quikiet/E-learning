@@ -119,6 +119,7 @@ export class StudentQuizAttemptComponent implements OnInit {
     }
   }
 
+
   openEditQuestionModal(question: any) {
     this.originalChoices = question.choices.map((choice: any) => ({
       id: choice.id,

@@ -1,8 +1,19 @@
 <div class="p-4 space-y-6">
-  <p-card header="Take Quiz" styleClass="mb-6">
-    <div class="text-gray-600">
-      Quiz ID: {{ quizId }}<br />
-      Please answer all questions before submitting.
+  <p-card header="Take Quiz" styleClass="mb-6 ">
+    <div class="flex item-center justify-between gap-5">
+      <div class="text-gray-600">
+        Quiz ID: {{ quizId }}<br />
+        Please answer all questions before submitting.
+      </div>
+      <div>
+        <p-button
+          icon="pi pi-sign-out !text-xs"
+          size="small"
+          [rounded]="true"
+          severity="danger"
+          [outlined]="true"
+        />
+      </div>
     </div>
   </p-card>
 
@@ -25,6 +36,7 @@
           <div>
             <p-button
               icon="pi pi-wrench"
+              size="small"
               severity="info"
               (click)="openEditQuestionModal(question)"
               styleClass="p-button-rounded p-button-text"
