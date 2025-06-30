@@ -36,13 +36,10 @@
           </div>
         </th>
         <th>
-          <div class="flex items-center">Tên người dùng</div>
+          <div class="flex items-center">Username</div>
         </th>
         <th>
           <div class="flex items-center">Email</div>
-        </th>
-        <th>
-          <div class="flex items-center">Quốc gia</div>
         </th>
         <th>
           <div class="flex items-center">Trình độ học vấn</div>
@@ -80,12 +77,11 @@
         <td>
           {{ user.email }}
         </td>
-        <td>{{ user.final_cc_cname_DI }}</td>
         <td class="text-center align-middle">
-          {{ user.LoE_DI }}
+          {{ user.LoE_DI || "NaN" }}
         </td>
         <td>
-          {{ user.YoB }}
+          {{ user.birthdate | date }}
         </td>
         <td class="text-center align-middle">
           {{ user.gender }}
@@ -95,7 +91,7 @@
             <p-tag
               *ngIf="user.role === 'admin'"
               severity="danger"
-              value="Quản trị viên"
+              [value]="user.role"
               [rounded]="true"
               class="!text-xs"
             />
@@ -103,14 +99,14 @@
               *ngIf="user.role === 'student'"
               severity="success"
               class="!text-xs"
-              value="Học viên"
+              [value]="user.role"
               [rounded]="true"
             />
             <p-tag
               *ngIf="user.role === 'instructor'"
               severity="info"
               class="!text-xs"
-              value="Giáo viên"
+              [value]="user.role"
               [rounded]="true"
             />
           </div>

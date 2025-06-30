@@ -109,54 +109,68 @@
                 placeholder="Nhập lại mật khẩu"
               />
             </app-form-element>
-
-            <p-fieldset legend="More infomation" [toggleable]="true">
-              <div>
+            <div class="grid grid-cols-2 gap-5">
+              <app-form-element
+                [label]="'Birthdate'"
+                [control]="registerForm.get('birthdate')!"
+              >
+                <p-datepicker
+                  formControlName="birthdate"
+                  dateFormat="yy-mm-dd"
+                  name="birthdate"
+                  (onSelect)="onDateSelect($event)"
+                  [inputStyleClass]="'!rounded-full w-full'"
+                  placeholder="Chọn ngày sinh"
+                />
+              </app-form-element>
+              <app-form-element
+                [label]="'Giới tính'"
+                [control]="registerForm.get('gender')!"
+              >
+                <p-select
+                  [options]="gender"
+                  formControlName="gender"
+                  name="gender"
+                  optionLabel="name"
+                  optionValue="value"
+                  placeholder="Không"
+                  class="!rounded-full w-full"
+                />
+              </app-form-element>
+            </div>
+            <app-form-element [label]="'Role'">
+              <p-select
+                [options]="role"
+                formControlName="role"
+                name="role"
+                optionLabel="name"
+                optionValue="value"
+                class="!rounded-full w-full"
+              />
+            </app-form-element>
+            <p-fieldset legend="More information" [toggleable]="true">
+              <!-- Student-specific fields -->
+              <div *ngIf="registerForm.get('role')?.value === 'student'">
                 <app-form-element [label]="'Trình độ học vấn'">
                   <p-select
                     [options]="LoE"
                     formControlName="LoE_DI"
                     optionLabel="name"
+                    optionValue="value"
                     placeholder="Trình độ"
+                    name="LoE_DI"
                     class="!rounded-full w-full"
                   />
                 </app-form-element>
-                <div class="grid grid-cols-2 gap-5">
-                  <app-form-element
-                    [label]="'Birthdate'"
-                    [control]="registerForm.get('birthdate')!"
-                  >
-                    <p-datepicker
-                      formControlName="birthdate"
-                      [inputStyleClass]="'!rounded-full w-full'"
-                      [minDate]="minDate"
-                      dateFormat="Y-mm-dd"
-                      [maxDate]="maxDate"
-                      [yearRange]="minYear + ':' + maxYear"
-                    />
-                  </app-form-element>
-                  <app-form-element
-                    [label]="'Giới tính'"
-                    [control]="registerForm.get('gender')!"
-                  >
-                    <p-select
-                      [options]="gender"
-                      formControlName="gender"
-                      optionLabel="name"
-                      placeholder="Không"
-                      class="!rounded-full w-full"
-                    />
-                  </app-form-element>
-                </div>
-                <app-form-element [label]="'Learning goal'">
+                <app-form-element [label]="'Mục tiêu học tập'">
                   <div class="flex flex-wrap gap-4">
                     <div
                       class="flex items-center"
                       *ngFor="let goal of learningGoals; let i = index"
                     >
                       <p-radiobutton
-                        [name]="'learning_goals'"
                         [inputId]="'goal' + i"
+                        name="learning_goals"
                         [value]="goal.value"
                         formControlName="learning_goals"
                       />
@@ -167,20 +181,55 @@
                   </div>
                 </app-form-element>
                 <p-divider />
-
-                <app-form-element [label]="'Favorite categories'">
+                <app-form-element [label]="'Danh mục yêu thích'">
                   <div class="flex flex-wrap gap-3 text-xs">
                     <div *ngFor="let cat of categories">
                       <p-checkbox
                         [inputId]="'cat' + cat.id"
+                        name="category_ids"
                         [value]="cat.id"
                         formControlName="category_ids"
                       />
-                      <label for="{{ 'cat' + cat.id }}" class="ml-2">
-                        {{ cat.name }}
-                      </label>
+                      <label for="{{ 'cat' + cat.id }}" class="ml-2">{{
+                        cat.name
+                      }}</label>
                     </div>
                   </div>
+                </app-form-element>
+              </div>
+
+              <!-- Instructor-specific fields -->
+              <div *ngIf="registerForm.get('role')?.value === 'instructor'">
+                <app-form-element [label]="'Name'">
+                  <input
+                    pInputText
+                    class="!rounded-full w-full"
+                    placeholder="Your Name"
+                    name="name"
+                    formControlName="name"
+                  />
+                </app-form-element>
+                <app-form-element>
+                  <p-floatlabel variant="on">
+                    <textarea
+                      pInputTextarea
+                      [ariaLabel]="'Bio'"
+                      class="w-full rounded-md"
+                      formControlName="bio"
+                      name="bio"
+                      rows="4"
+                    ></textarea>
+                    <label for="on_label">On Label</label>
+                  </p-floatlabel>
+                </app-form-element>
+                <app-form-element [label]="'Organization'">
+                  <input
+                    pInputText
+                    class="!rounded-full w-full"
+                    placeholder="Your Organization"
+                    name="organization"
+                    formControlName="organization"
+                  />
                 </app-form-element>
               </div>
             </p-fieldset>

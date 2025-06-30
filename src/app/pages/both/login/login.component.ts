@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { InputIcon } from 'primeng/inputicon';
 import { IconField } from 'primeng/iconfield';
@@ -15,7 +15,8 @@ import { RadioButton } from 'primeng/radiobutton';
 import { Divider } from 'primeng/divider';
 import { CategoryService } from '../../../services/courses-manage/category.service';
 import { CheckboxModule } from 'primeng/checkbox';
-
+import { TextareaModule } from 'primeng/textarea';
+import { FloatLabel } from 'primeng/floatlabel';
 
 
 
@@ -31,12 +32,13 @@ interface optionSelect {
 
 @Component({
   selector: 'app-login',
-  imports: [CheckboxModule, Divider, RadioButton, FieldsetModule, DatePicker, Select, ReactiveFormsModule, CommonModule, InputIcon, IconField, InputTextModule, FormsModule, PasswordModule, FormElementComponent],
+  imports: [FloatLabel, TextareaModule, CheckboxModule, Divider, RadioButton, FieldsetModule, DatePicker, Select, ReactiveFormsModule, CommonModule, InputIcon, IconField, InputTextModule, FormsModule, PasswordModule, FormElementComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
   LoE: optionSelect[] | undefined;
+  role: optionSelect[] | undefined;
   gender: optionSelect[] | undefined;
   learningGoals = [
     { label: 'Career advancement', value: 'Career advancement' },
@@ -53,19 +55,13 @@ export class LoginComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
-  currentYear = new Date().getFullYear();
-  minYear = 1900;
-  maxYear = this.currentYear - 3;
-
-  minDate = new Date(this.minYear, 0);
-  maxDate = new Date(this.maxYear, 11);
   registerForm!: FormGroup;
   isLoading = false;
   constructor(
     private authService: AuthService,
     private categoryService: CategoryService,
     private route: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
@@ -76,7 +72,10 @@ export class LoginComponent implements OnInit {
       password_confirmation: ['', Validators.required],
       LoE_DI: ['', Validators.maxLength(50)],
       birthdate: [null],
+      name: ['',],
       gender: [''],
+      bio: [''],
+      organization: [''],
       role: ['student', Validators.required], // mặc định là student
       learning_goals: [''],
       category_ids: [[]],
@@ -87,10 +86,15 @@ export class LoginComponent implements OnInit {
       { name: 'Intermediate', value: 'Intermediate' },
       { name: 'Advanced', value: 'Advanced' },
     ];
+
+    this.role = [
+      { name: 'Student', value: 'student' },
+      { name: 'Instructor', value: 'instructor' },
+    ];
     this.gender = [
       { name: 'Male', value: 'Male' },
       { name: 'Female', value: 'Female' },
-      { name: 'Prefer not to say', value: 'Prefer not to say' },
+      { name: 'Other', value: 'other' },
     ];
     this.categoryService.getSubCategory().subscribe({
       next: (res) => {
@@ -100,18 +104,44 @@ export class LoginComponent implements OnInit {
         alert('Không thể tải danh mục' + error.message);
       }
     });
-
   }
+
+  dateValidator() {
+    return (control: AbstractControl) => {
+      const value = control.value;
+      if (!value) return null;
+      let dateString = value instanceof Date
+        ? `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}`
+        : value;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return { invalidDateFormat: true };
+      return null;
+    };
+  }
+
+  onDateSelect(event: Date) {
+    const formattedDate = event
+      ? `${event.getFullYear()}-${String(event.getMonth() + 1).padStart(2, '0')}-${String(event.getDate()).padStart(2, '0')}`
+      : null;
+    console.log('Selected date:', formattedDate);
+    this.registerForm.patchValue({ birthdate: formattedDate });
+  }
+
   onSubmitRegister() {
+    console.log('Form value:', this.registerForm.value); // Log giá trị form
+    console.log('Form valid:', this.registerForm.valid); // Log trạng thái hợp lệ
+    console.log('Form errors:', this.registerForm.errors);
     this.isLoading = true;
     if (this.registerForm.valid) {
       const data = {
         ...this.registerForm.value,
         LoE_DI: this.registerForm.value.LoE_DI?.value || '',
+        learning_goals: this.registerForm.value.learning_goals?.value || '',
         gender: this.registerForm.value.gender?.value || '',
         birthdate: this.registerForm.value.birthdate || null,
         category_ids: this.registerForm.value.category_ids || [],
         password_confirmation: this.registerForm.value.password_confirmation,
+        bio: this.registerForm.value.role === 'instructor' ? this.registerForm.value.bio : null,
+        organization: this.registerForm.value.role === 'instructor' ? this.registerForm.value.organization : null
       };
       console.log(data);
 
@@ -122,7 +152,7 @@ export class LoginComponent implements OnInit {
           this.isLoading = false;
         }, error: (err) => {
           console.error('Registration Error:', err);
-          alert('Đăng ký thất bại');
+          alert(err.error.message);
           this.isLoading = false;
         }, complete: () => {
           this.registerForm.reset();
@@ -130,8 +160,9 @@ export class LoginComponent implements OnInit {
         }
       });
     } else {
-      this.registerForm.markAllAsTouched();
+      console.log('Form không hợp lệ, lỗi:', this.registerForm.errors);
       this.isLoading = false;
+      this.registerForm.markAllAsTouched();
     }
   }
 

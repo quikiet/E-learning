@@ -63,6 +63,14 @@ export class CourseCardComponent implements OnInit {
     });
   }
 
+  getStarArray(rating: number): string[] {
+    const stars = Array(5).fill('☆');
+    for (let i = 0; i < rating; i++) {
+      stars[i] = '★';
+    }
+    return stars;
+  }
+
   onCarouselPageChange(event: any): void {
     this.currentPage = event.page;
     this.numVisible = event.numVisible || 5;

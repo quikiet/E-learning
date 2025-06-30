@@ -70,21 +70,10 @@ export class CourseManageComponent implements OnInit {
     min_rating: null,
     min_price: null,
     max_price: null,
-    sort_by: 'course_rating',
+    sort_by: null,
     sort_order: 'desc',
     per_page: 10
   };
-  courseForm = new FormGroup({
-    id: new FormControl(''),
-    course_name: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-    university: new FormControl('', [Validators.maxLength(255)]),
-    difficulty_level: new FormControl('', [Validators.maxLength(50)]),
-    course_rating: new FormControl(0, [Validators.min(0), Validators.max(5)]),
-    course_url: new FormControl(''),
-    course_description: new FormControl(''),
-    price: new FormControl(0),
-    status: new FormControl('pending'),
-  });
 
   constructor(
     private courseService: CoursesService,
