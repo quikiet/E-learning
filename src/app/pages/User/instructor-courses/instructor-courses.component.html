@@ -2,20 +2,54 @@
 <div>
   <h2 class="text-2xl font-bold text-gray-800 mb-6">Khóa học của bạn</h2>
 
+  <!-- Tìm kiếm và lọc -->
+  <div class="flex items-center justify-between mb-6">
+    <div class="flex gap-2">
+      <p-iconfield>
+        <p-inputicon styleClass="pi pi-search" />
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="searchKeyword"
+          (input)="filterCourses()"
+          placeholder="Tìm kiếm khóa học..."
+          class="p-2 border border-gray-300 rounded-md"
+        />
+      </p-iconfield>
+      <p-dropdown
+        [options]="categories"
+        [(ngModel)]="selectedCategory"
+        placeholder="Chọn danh mục"
+        optionLabel="name"
+        optionValue="id"
+        (onChange)="filterCourses()"
+        styleClass="w-[200px]"
+      ></p-dropdown>
+    </div>
+    <button
+      pButton
+      label="Xóa bộ lọc"
+      icon="pi pi-times"
+      class="p-button-secondary"
+      (click)="clearFilters()"
+    ></button>
+  </div>
+
   <!-- Grid layout cho các card khóa học -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
+  <div
+    *ngIf="filteredCourses.length > 0; else noCourses"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10"
+  >
     <div
-      *ngFor="let course of courses"
+      *ngFor="let course of filteredCourses"
       class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200"
     >
       <div class="relative">
-        <!-- Hình ảnh khóa học -->
         <img
           [src]="course.image || 'https://via.placeholder.com/300x150'"
           alt="{{ course.course_name }}"
           class="w-full h-40 object-cover"
         />
-        <!-- Trạng thái -->
         <div
           class="absolute top-5 right-5"
           pTooltip="{{ getNotes(course.coursereview) }}"
@@ -65,32 +99,23 @@
           ></span>
         </div>
       </div>
-
-      <!-- Nội dung card -->
       <div class="p-4">
-        <!-- Tên khóa học -->
         <h3
           class="text-lg font-semibold text-gray-800 mb-2 truncate"
           [title]="course.course_name"
         >
           {{ course.course_name }}
         </h3>
-
-        <!-- Trường đại học -->
         <p
           class="text-sm text-gray-600 mb-1 truncate"
           [title]="course.university"
         >
           <i class="pi pi-building mr-1"></i> {{ course.university }}
         </p>
-
-        <!-- Mức độ khó -->
         <p class="text-sm text-gray-600 mb-1">
           <i class="pi pi-star mr-1"></i> Mức độ:
           {{ course.difficulty_level }}
         </p>
-
-        <!-- Đánh giá -->
         <div class="flex items-center mb-1">
           <span class="text-sm text-gray-600 mr-1">
             <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
@@ -106,39 +131,35 @@
             }})</span
           >
         </div>
-
-        <!-- Giá -->
         <p class="text-sm font-medium text-gray-800 mb-1">
           <i class="pi pi-money-bill mr-1"></i>
           {{ course.price | number }} VND
         </p>
-
-        <!-- Số lượng bài học -->
         <p class="text-sm text-gray-600 mb-2">
-          <i class="pi pi-book mr-1"></i> Total lesson:
+          <i class="pi pi-book mr-1"></i> Tổng bài học:
           {{ course.lessonCount || 0 }}
         </p>
-
-        <!-- Nút thêm bài học và xem chi tiết bài học -->
         <div class="flex gap-2">
           <button
             (click)="navigateToAddLesson(course.id)"
             class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 text-sm font-medium"
           >
-            Add lesson
+            Thêm bài học
           </button>
           <button
             (click)="showLessons(course.id)"
             class="w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200 text-sm font-medium"
           >
-            View detail
+            Xem chi tiết
           </button>
         </div>
       </div>
     </div>
   </div>
+  <ng-template #noCourses>
+    <p class="text-center text-gray-500 py-4">Không tìm thấy khóa học nào.</p>
+  </ng-template>
 
-  <!-- Phân trang -->
   <p-paginator
     [rows]="perPage"
     [totalRecords]="totalRecords"
@@ -153,11 +174,11 @@
 <p-dialog
   [(visible)]="showLessonsDialog"
   [style]="{ width: '700px' }"
-  header="Lesson list"
+  header="Danh sách bài học"
   [modal]="true"
   class="rounded-lg shadow-lg"
 >
-  <ng-template #content>
+  <ng-template pTemplate="content">
     <div *ngIf="selectedCourseLessons.length > 0; else noLessons">
       <div class="max-h-[400px] overflow-y-auto">
         <div
@@ -181,61 +202,29 @@
                 <i class="pi pi-eye mr-1"></i> Xem trước:
                 {{ lesson.is_preview ? "Có" : "Không" }}
               </p>
-              <!-- <p-tag
-                *ngIf="lesson.status === 'approved'"
-                severity="success"
-                value="Đang hoạt động"
-                [rounded]="true"
-                class="!text-xs mt-1"
-              />
-              <p-tag
-                *ngIf="lesson.status === 'pending'"
-                severity="warn"
-                class="!text-xs mt-1"
-                value="Đang chờ duyệt"
-                [rounded]="true"
-              />
-              <p-tag
-                *ngIf="lesson.status === 'rejected'"
-                severity="danger"
-                class="!text-xs mt-1"
-                value="Đã bị từ chối"
-                [rounded]="true"
-              /> -->
             </div>
-            <p-button
-              label="Quản lý bài tập"
-              severity="success"
-              [routerLink]="['/danh-sach-bai-tap', lesson.id]"
-            />
-            <div>
-              <video
-                class="w-52 h-32"
-                controls
-                [src]="lesson.video_url"
-                type="video/mp4"
-              >
-                Your browser does not support the video tag.
-              </video>
-              <div class="flex gap-2 justify-center items-center">
-                <p-button
-                  (click)="deleteLesson(lesson.id)"
-                  icon="pi pi-trash"
-                  label="Xoá"
-                  severity="danger"
-                />
-                <p-button
-                  (click)="openEditLessonDialog(lesson)"
-                  icon="pi pi-file-edit"
-                  label="Chỉnh sửa"
-                  severity="info"
-                />
-              </div>
+            <div class="flex gap-2 justify-center items-center">
+              <p-button
+                label="Quản lý bài tập"
+                severity="success"
+                [routerLink]="['/danh-sach-bai-tap', lesson.id]"
+              />
+              <p-button
+                (click)="deleteLesson(lesson.id)"
+                icon="pi pi-trash"
+                label="Xóa"
+                severity="danger"
+              />
+              <p-button
+                (click)="openEditLessonDialog(lesson)"
+                icon="pi pi-file-edit"
+                label="Chỉnh sửa"
+                severity="info"
+              />
             </div>
           </div>
         </div>
       </div>
-      <!-- Phân trang cho danh sách bài học -->
       <p-paginator
         [rows]="lessonsPerPage"
         [totalRecords]="lessonsTotalRecords"
@@ -251,8 +240,7 @@
       </p>
     </ng-template>
   </ng-template>
-
-  <ng-template #footer>
+  <ng-template pTemplate="footer">
     <button
       pButton
       type="button"
@@ -264,7 +252,7 @@
   </ng-template>
 </p-dialog>
 
-<!-- Dialog chỉnh sửa khoá học -->
+<!-- Dialog chỉnh sửa khóa học -->
 <p-dialog
   [(visible)]="showEditDialog"
   [style]="{ width: '600px' }"
@@ -275,7 +263,6 @@
   <ng-template pTemplate="content">
     <form (ngSubmit)="updateCourse()" #courseForm="ngForm">
       <div class="p-4 grid grid-cols-1 gap-4">
-        <!-- Tên khóa học -->
         <div class="mb-4">
           <label
             for="course_name"
@@ -305,8 +292,6 @@
             Vui lòng nhập tên khóa học.
           </div>
         </div>
-
-        <!-- Trường đại học -->
         <div class="mb-4">
           <label
             for="university"
@@ -321,8 +306,6 @@
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
-
-        <!-- Mức độ khó -->
         <div class="mb-4">
           <label
             for="difficulty_level"
@@ -330,19 +313,16 @@
           >
             Mức độ khó
           </label>
-          <select
+          <p-dropdown
             id="difficulty_level"
             name="difficulty_level"
             [(ngModel)]="course.difficulty_level"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          >
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-          </select>
+            [options]="difficultyLevels"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          ></p-dropdown>
         </div>
-
-        <!-- Mô tả khóa học -->
         <div class="mb-4">
           <label
             for="course_description"
@@ -358,8 +338,6 @@
             rows="4"
           ></textarea>
         </div>
-
-        <!-- Kỹ năng -->
         <div class="mb-4">
           <label for="skills" class="block text-sm font-medium text-gray-700">
             Kỹ năng
@@ -371,8 +349,6 @@
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
-
-        <!-- Giá -->
         <div class="mb-4">
           <label for="price" class="block text-sm font-medium text-gray-700">
             Giá khóa học (VND) <span class="text-red-500">*</span>
@@ -399,8 +375,6 @@
             Vui lòng nhập giá khóa học.
           </div>
         </div>
-
-        <!-- Hình ảnh -->
         <div class="mb-4">
           <label for="image" class="block text-sm font-medium text-gray-700">
             Ảnh đại diện
@@ -422,8 +396,6 @@
             />
           </div>
         </div>
-
-        <!-- Danh mục -->
         <div class="mb-4">
           <label
             for="category_ids"
@@ -439,7 +411,7 @@
             optionLabel="name"
             optionValue="id"
             placeholder="Chọn danh mục"
-            class="w-full md:w-56"
+            class="w-full"
             required
             #categoryIds="ngModel"
           ></p-multiSelect>
@@ -482,7 +454,6 @@
   <ng-template pTemplate="content">
     <form (ngSubmit)="updateLesson()" #lessonForm="ngForm">
       <div class="p-4 grid grid-cols-1 gap-4">
-        <!-- Tiêu đề bài học -->
         <div class="mb-4">
           <label
             for="lesson_title"
@@ -512,8 +483,6 @@
             Vui lòng nhập tiêu đề bài học.
           </div>
         </div>
-
-        <!-- Thời lượng -->
         <div class="mb-4">
           <label
             for="lesson_duration"
@@ -540,8 +509,6 @@
             Vui lòng nhập thời lượng hợp lệ.
           </div>
         </div>
-
-        <!-- Xem trước -->
         <div class="mb-4">
           <label class="flex items-center text-sm font-medium text-gray-700">
             <input
@@ -554,8 +521,6 @@
             Cho phép xem trước
           </label>
         </div>
-
-        <!-- Video -->
         <div class="mb-4">
           <label for="video" class="block text-sm font-medium text-gray-700">
             Video bài học
@@ -568,7 +533,6 @@
             accept="video/*"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           />
-          <!-- Progress bar -->
           <div *ngIf="uploadProgress > 0 && isSubmittingLesson" class="mt-2">
             <div class="w-full bg-gray-200 rounded-full h-2.5">
               <div

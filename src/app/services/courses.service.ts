@@ -125,6 +125,10 @@ export class CoursesService {
     return this.http.post<any>(`${this.apiUrl}/reports`, data, { withCredentials: true });
   }
 
+  deleteReportCourse(courseId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/reports/${courseId}/cancel`, { withCredentials: true });
+  }
+
   reviewCourse(courseId: number, data: { notes: string | null }): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/courses/${courseId}/approve`, data, { withCredentials: true });
   }

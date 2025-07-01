@@ -23,7 +23,7 @@ export class QuizService {
   }
 
   studentGetQuestions(quizId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/quizzes/${quizId}/questions?randomize=true`, { withCredentials: true });
+    return this.http.get<any>(`${this.apiUrl}/quizzes/${quizId}/questions`, { withCredentials: true });
   }
 
   studentStartQuiz(quizId: number): Observable<any> {

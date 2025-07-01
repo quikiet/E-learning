@@ -93,11 +93,8 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
         this.checkIfUserHasReviewed();
         this.isLoading = false;
 
-        // Chọn bài học đầu tiên chưa hoàn thành
-        const firstIncompleteLessonIndex = this.lessons.findIndex(lesson => !lesson.completed_at);
-        if (firstIncompleteLessonIndex !== -1) {
-          this.selectLesson(this.lessons[firstIncompleteLessonIndex], firstIncompleteLessonIndex);
-        } else if (this.lessons.length > 0) {
+        // Chọn bài học đầu tiên nếu có
+        if (this.lessons.length > 0) {
           this.selectLesson(this.lessons[0], 0);
         }
       },
@@ -107,7 +104,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể tải danh sách bài học. Vui lòng thử lại.',
+          detail: err.error?.message,
           life: 3000,
         });
       }
@@ -123,7 +120,6 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
       this.hasReviewed = false;
     }
   }
-
 
   updateDisplayedReviews() {
     this.displayedReviews = this.showAll
@@ -141,20 +137,10 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
     return [1, 2, 3, 4, 5];
   }
 
-
   selectLesson(lesson: any, index: number) {
-    if (this.canAccessLesson(lesson)) {
-      this.selectedLesson = lesson;
-      this.currentLessonIndex = index;
-      this.loadQuizzes();
-    } else {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Cảnh báo',
-        detail: 'Bạn cần hoàn thành bài học trước đó để truy cập bài học này.',
-        life: 3000,
-      });
-    }
+    this.selectedLesson = lesson;
+    this.currentLessonIndex = index;
+    this.loadQuizzes();
   }
 
   loadQuizzes() {
@@ -177,20 +163,6 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
     if (this.currentLessonIndex < this.lessons.length - 1) {
       this.selectLesson(this.lessons[this.currentLessonIndex + 1], this.currentLessonIndex + 1);
     }
-  }
-
-  canAccessLesson(lesson: any): boolean {
-    if (lesson.is_preview) return true;
-
-    const lessonIndex = this.lessons.findIndex(l => l.id === lesson.id);
-    if (lessonIndex === 0) return true;
-
-    const previousLesson = this.lessons[lessonIndex - 1];
-    return previousLesson.completed_at !== null;
-  }
-
-  canMarkComplete(lesson: any): boolean {
-    return this.canAccessLesson(lesson);
   }
 
   markLessonComplete() {

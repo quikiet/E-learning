@@ -70,7 +70,7 @@
             label="Undo"
             size="small"
             *ngIf="enrollment.has_pending_report"
-            (click)="openReportModal(enrollment)"
+            (click)="undoReport(enrollment.pending_report_id)"
           />
         </div>
         <!-- Mức độ khó -->

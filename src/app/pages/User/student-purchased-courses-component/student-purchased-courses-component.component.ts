@@ -147,6 +147,7 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
           life: 3000,
         });
         this.showReportModal = false;
+        this.loadEnrollments();
         this.resetReportForm();
       },
       error: (err) => {
@@ -158,6 +159,28 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
         });
       },
     });
+  }
+
+  undoReport(reportId: number) {
+    this.coursesService.deleteReportCourse(reportId).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message,
+          life: 3000,
+        });
+        this.loadEnrollments();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.message,
+          life: 3000,
+        });
+      },
+    })
   }
 
   resetReportForm() {

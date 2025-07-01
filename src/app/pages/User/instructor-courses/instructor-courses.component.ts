@@ -14,10 +14,14 @@ import { CategoryService } from '../../../services/courses-manage/category.servi
 import { DropdownModule } from 'primeng/dropdown';
 import { HttpEventType } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+
 interface Category {
   name: string;
   id: number;
 }
+
 @Component({
   selector: 'app-instructor-courses',
   imports: [
@@ -31,7 +35,9 @@ interface Category {
     MultiSelectModule,
     DropdownModule,
     ButtonModule,
-    RouterLink
+    RouterLink,
+    InputIconModule,
+    IconFieldModule
   ],
   providers: [MessageService],
   templateUrl: './instructor-courses.component.html',
@@ -39,11 +45,13 @@ interface Category {
 })
 export class InstructorCoursesComponent implements OnInit {
   courses: any[] = [];
+  filteredCourses: any[] = [];
   currentPage: number = 1;
   perPage: number = 10;
   totalRecords: number = 0;
+  searchKeyword: string = '';
+  selectedCategory: number | null = null;
 
-  // Biến cho dialog bài học
   showLessonsDialog: boolean = false;
   selectedCourseLessons: any[] = [];
   selectedCourseId: number = 0;
@@ -51,11 +59,10 @@ export class InstructorCoursesComponent implements OnInit {
   lessonsPerPage: number = 10;
   lessonsTotalRecords: number = 0;
 
-  // Biến cho dialog chỉnh sửa
   showEditDialog: boolean = false;
   selectedCourse: any = null;
   course = {
-    course_name: 'hehe',
+    course_name: '',
     university: '',
     difficulty_level: 'Beginner',
     course_description: '',
@@ -75,7 +82,6 @@ export class InstructorCoursesComponent implements OnInit {
   isSubmitting: boolean = false;
   selectedImage: File | null = null;
 
-  // Biến cho dialog chỉnh sửa bài học
   showEditLessonDialog: boolean = false;
   selectedLesson: any = null;
   lesson = {
@@ -92,9 +98,8 @@ export class InstructorCoursesComponent implements OnInit {
     private coursesService: CoursesService,
     private categoryService: CategoryService,
     private router: Router,
-    private messageService: MessageService,
-  ) {
-  }
+    private messageService: MessageService
+  ) { }
 
   ngOnInit() {
     this.loadCourses();
@@ -112,28 +117,21 @@ export class InstructorCoursesComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
-          detail: 'Không thể tải danh sách danh mục. Vui lòng thử lại.',
+          detail: 'Không thể tải danh sách danh mục.',
           life: 3000,
         });
       }
     });
   }
 
-  getNotes(coursereview: any[]): string {
-    if (!coursereview || coursereview.length === 0) return 'Không có ghi chú';
-    return coursereview.map(note => note.notes).join('\n'); // Nối các ghi chú, mỗi ghi chú 1 dòng
-  }
-
   loadCourses() {
     this.coursesService.getInstructorCourses(this.currentPage, this.perPage).subscribe({
       next: (res) => {
         this.courses = res.data;
+        this.filteredCourses = [...this.courses]; // Khởi tạo filteredCourses
         this.currentPage = res.current_page;
         this.perPage = res.per_page;
         this.totalRecords = res.total;
-        console.log(this.courses);
-
-        // Lấy số lượng bài học cho từng khóa học
         this.courses.forEach(course => {
           this.loadLessonCount(course.id, course);
         });
@@ -143,7 +141,7 @@ export class InstructorCoursesComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
-          detail: 'Không thể tải danh sách khóa học. Vui lòng thử lại.',
+          detail: 'Không thể tải danh sách khóa học.',
           life: 3000,
         });
       }
@@ -153,13 +151,45 @@ export class InstructorCoursesComponent implements OnInit {
   loadLessonCount(courseId: number, course: any) {
     this.coursesService.getLessonsForCourse(courseId, 1, 10).subscribe({
       next: (res) => {
-        course.lessonCount = res.total; // Lấy tổng số bài học
+        course.lessonCount = res.total;
       },
       error: (err) => {
         console.error('Error loading lesson count:', err);
         course.lessonCount = 0;
       }
     });
+  }
+
+  filterCourses() {
+    let filtered = [...this.courses];
+
+    // Lọc theo từ khóa
+    if (this.searchKeyword) {
+      const keyword = this.searchKeyword.toLowerCase().trim();
+      filtered = filtered.filter(course =>
+        course.course_name.toLowerCase().includes(keyword) ||
+        course.skills?.toLowerCase().includes(keyword)
+      );
+    }
+
+    // Lọc theo danh mục
+    if (this.selectedCategory) {
+      filtered = filtered.filter(course =>
+        course.categories?.some((cat: Category) => cat.id === this.selectedCategory)
+      );
+    }
+
+    this.filteredCourses = filtered;
+    this.totalRecords = filtered.length; // Cập nhật totalRecords cho paginator
+    this.currentPage = 1; // Reset về trang đầu
+  }
+
+  clearFilters() {
+    this.searchKeyword = '';
+    this.selectedCategory = null;
+    this.filteredCourses = [...this.courses];
+    this.totalRecords = this.courses.length;
+    this.currentPage = 1;
   }
 
   onPageChange(event: any) {
@@ -171,7 +201,6 @@ export class InstructorCoursesComponent implements OnInit {
   navigateToAddLesson(courseId: number) {
     this.router.navigate([`/them-bai-hoc/${courseId}`]);
   }
-
 
   showLessons(courseId: number) {
     this.selectedCourseId = courseId;
@@ -187,15 +216,13 @@ export class InstructorCoursesComponent implements OnInit {
         this.lessonsCurrentPage = res.current_page;
         this.lessonsPerPage = res.per_page;
         this.lessonsTotalRecords = res.total;
-        console.log(this.selectedCourseLessons);
-
       },
       error: (err) => {
         console.error('Error loading lessons:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
-          detail: 'Không thể tải danh sách bài học. Vui lòng thử lại.',
+          detail: 'Không thể tải danh sách bài học.',
           life: 3000,
         });
         this.selectedCourseLessons = [];
@@ -209,28 +236,8 @@ export class InstructorCoursesComponent implements OnInit {
     this.loadLessons();
   }
 
-  // Nếu cần hiển thị chi tiết bài học
-  // showLessonDetails(lessonId: number) {
-  //   this.coursesService.getLessonDetails(this.selectedCourseId, lessonId).subscribe({
-  //     next: (res) => {
-  //       // Xử lý hiển thị chi tiết bài học nếu cần
-  //       console.log('Lesson details:', res);
-  //     },
-  //     error: (err) => {
-  //       console.error('Error loading lesson details:', err);
-  //       this.messageService.add({
-  //         severity: 'error',
-  //         summary: 'Lỗi',
-  //         detail: 'Không thể tải chi tiết bài học. Vui lòng thử lại.',
-  //         life: 3000,
-  //       });
-  //     }
-  //   });
-  // }
-
   openEditDialog(course: any) {
     this.selectedCourse = course;
-
     this.course = {
       course_name: course.course_name,
       university: course.university,
@@ -238,11 +245,10 @@ export class InstructorCoursesComponent implements OnInit {
       course_description: course.course_description,
       skills: course.skills,
       price: course.price,
-      category_ids: course.categories ? course.categories.map((cat: any) => cat.id) : [],
+      category_ids: course.categories ? course.categories.map((cat: Category) => cat.id) : [],
       image: null
     };
     this.selectedCategories = [...this.course.category_ids];
-    // Nếu categories chưa được tải, gọi lại loadCategories
     if (!this.categories || this.categories.length === 0) {
       this.loadCategories();
     }
@@ -266,7 +272,6 @@ export class InstructorCoursesComponent implements OnInit {
       });
       return;
     }
-
     if (!this.course.price || this.course.price < 0) {
       this.messageService.add({
         severity: 'error',
@@ -276,7 +281,6 @@ export class InstructorCoursesComponent implements OnInit {
       });
       return;
     }
-
     if (!this.course.difficulty_level || !['Beginner', 'Intermediate', 'Advanced'].includes(this.course.difficulty_level)) {
       this.messageService.add({
         severity: 'error',
@@ -286,7 +290,6 @@ export class InstructorCoursesComponent implements OnInit {
       });
       return;
     }
-
     if (!this.selectedCategories || this.selectedCategories.length === 0) {
       this.messageService.add({
         severity: 'error',
@@ -299,28 +302,18 @@ export class InstructorCoursesComponent implements OnInit {
 
     this.isSubmitting = true;
     const formData = new FormData();
-    console.log('course_name before append:', this.course.course_name);
     formData.append('course_name', this.course.course_name || '');
     formData.append('university', this.course.university ?? '');
     formData.append('difficulty_level', this.course.difficulty_level);
     formData.append('course_description', this.course.course_description ?? '');
     formData.append('skills', this.course.skills ?? '');
     formData.append('price', this.course.price.toString());
-
-    // Thêm _method để giả lập PUT
     formData.append('_method', 'PUT');
-
     this.selectedCategories.forEach((id, index) => {
       formData.append(`category_ids[${index}]`, id.toString());
     });
-
     if (this.course.image) {
       formData.append('image', this.course.image);
-    }
-
-    // Debug payload
-    for (const [key, value] of (formData as any).entries()) {
-      console.log(`${key}: ${value}`);
     }
 
     this.coursesService.instructorUpdateCourse(this.selectedCourse.id, formData).subscribe({
@@ -337,12 +330,11 @@ export class InstructorCoursesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error updating course:', err);
-        console.error('Error response:', err.error);
         this.isSubmitting = false;
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể cập nhật khóa học. Vui lòng thử lại.',
+          detail: err.error?.message || 'Không thể cập nhật khóa học.',
           life: 3000,
         });
       }
@@ -358,7 +350,7 @@ export class InstructorCoursesComponent implements OnInit {
       video: null,
     };
     this.selectedVideo = null;
-    this.uploadProgress = 0; // Reset tiến trình upload
+    this.uploadProgress = 0;
     this.showEditLessonDialog = true;
   }
 
@@ -380,7 +372,6 @@ export class InstructorCoursesComponent implements OnInit {
       });
       return;
     }
-
     if (!this.lesson.duration || this.lesson.duration <= 0) {
       this.messageService.add({
         severity: 'error',
@@ -397,18 +388,10 @@ export class InstructorCoursesComponent implements OnInit {
     formData.append('title', this.lesson.title.trim());
     formData.append('duration', this.lesson.duration.toString());
     formData.append('is_preview', this.lesson.is_preview ? '1' : '0');
-
     if (this.selectedVideo) {
       formData.append('video', this.selectedVideo);
     }
 
-    // Debug payload
-    for (const [key, value] of (formData as any).entries()) {
-      console.log(`${key}: ${value}`);
-    }
-    console.log('courseID: ' + this.selectedCourseId);
-
-    // Gọi API với chunk upload
     this.coursesService.updateLesson(this.selectedCourseId, this.selectedLesson.id, formData).subscribe({
       next: (event: any) => {
         if (event.type === HttpEventType.UploadProgress && event.total) {
@@ -423,18 +406,17 @@ export class InstructorCoursesComponent implements OnInit {
             detail: 'Bài học đã được cập nhật thành công.',
             life: 3000,
           });
-          this.loadLessons(); // Reload danh sách bài học
+          this.loadLessons();
         }
       },
       error: (err) => {
         console.error('Error updating lesson:', err);
-        console.error('Error response:', err.error);
         this.isSubmittingLesson = false;
         this.uploadProgress = 0;
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể cập nhật bài học. Vui lòng thử lại.',
+          detail: err.error?.message || 'Không thể cập nhật bài học.',
           life: 3000,
         });
       }
@@ -450,15 +432,16 @@ export class InstructorCoursesComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Thành công',
-          detail: 'Bài học đã được xoá thành công.',
+          detail: 'Bài học đã được xóa thành công.',
           life: 3000,
         });
         this.loadLessons();
-      }, error: (err) => {
+      },
+      error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể xoá bài học. Vui lòng thử lại.',
+          detail: err.error?.message || 'Không thể xóa bài học.',
           life: 3000,
         });
         this.loadLessons();
@@ -466,11 +449,15 @@ export class InstructorCoursesComponent implements OnInit {
     });
   }
 
+  getNotes(coursereview: any[]): string {
+    if (!coursereview || coursereview.length === 0) return 'Không có ghi chú';
+    return coursereview.map(note => note.notes).join('\n');
+  }
+
   cutText(text: string, wordLimit: number = 50): string {
     if (!text) return '';
     const words = text.split(' ');
     if (words.length <= wordLimit) return text;
-
     return words.slice(0, wordLimit).join(' ') + '...';
   }
 }

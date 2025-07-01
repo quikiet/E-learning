@@ -65,14 +65,15 @@ export class CourseDetailComponent implements OnInit {
   ngOnInit() {
     this.lessons = [];
     this.reviews = [];
+    this.loadCourse();
 
-    this.authService.getCurrentUser().subscribe({
-      next: (res) => {
-        this.currentUserId = res?.user.id;
-        // console.log('Current user ID:', this.currentUserId);
-        this.loadCourse();
-      }
-    });
+    // this.authService.getCurrentUser().subscribe({
+    //   next: (res) => {
+    //     this.currentUserId = res?.user.id;
+    //     // console.log('Current user ID:', this.currentUserId);
+    //     this.loadCourse();
+    //   }
+    // });
 
   }
 
