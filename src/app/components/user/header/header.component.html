@@ -1,4 +1,4 @@
-<div class="lg:h-10 bg-dark text-white">
+<div class="lg:h-10 bg-dark text-white hidden lg:block">
   <div
     class="lg:max-w-7xl max-w-5xl h-full mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center"
   >
@@ -47,7 +47,8 @@
                 src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
                 width="32"
               />
-              <span class="font-semibold text-2xl text-secondary select-none"
+              <span
+                class="font-semibold hidden md:flex md:text-lg lg:text-2xl text-secondary select-none"
                 >SmartLearn</span
               >
             </a>
@@ -148,7 +149,7 @@
           <li class="my-5 lg:my-0">
             <a
               class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
-              [routerLink]="['/khoa-hoc-cua-toi']"
+              [routerLink]="['/my-course']"
             >
               Học tập
             </a>

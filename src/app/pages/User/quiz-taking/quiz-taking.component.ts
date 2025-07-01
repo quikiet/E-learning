@@ -57,7 +57,7 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
   pagination: Pagination | null = null;
   quizStart: any;
   timeLeft: number = 0;
-  minutes: number = 12;
+  minutes: number = 0;
   seconds: number = 0;
   private timer: any;
 
@@ -84,17 +84,20 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
     this.quizService.studentStartQuiz(this.quizId).subscribe({
       next: (res) => {
         this.quizStart = res.data;
-        this.timeLeft = this.quizStart.time_limit * 60; // Chuyển phút thành giây
+        console.log('hihi' + this.quizStart);
+
+        this.timeLeft = this.quizStart.time_limit * 60;
+
         this.updateTimeDisplay();
         this.startTimer();
       }, error: (err) => {
-        console.log(err.message);
+        alert(err.error.message);
+        this.router.navigate(['']);
       }
     })
   }
 
   startTimer() {
-    console.log('Starting timer with timeLeft:', this.timeLeft);
     this.timer = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
@@ -172,7 +175,7 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
       answers,
     };
 
-    console.log('Submitting quiz with body:', JSON.stringify(body, null, 2));
+    // console.log('Submitting quiz with body:', JSON.stringify(body, null, 2));
     this.quizService.submitQuiz(this.quizId, body).subscribe({
       next: () => {
         this.messageService.add({

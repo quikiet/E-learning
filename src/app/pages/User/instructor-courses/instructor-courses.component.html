@@ -3,7 +3,7 @@
   <h2 class="text-2xl font-bold text-gray-800 mb-6">Khóa học của bạn</h2>
 
   <!-- Tìm kiếm và lọc -->
-  <div class="flex items-center justify-between mb-6">
+  <!-- <div class="flex items-center justify-between mb-6">
     <div class="flex gap-2">
       <p-iconfield>
         <p-inputicon styleClass="pi pi-search" />
@@ -33,15 +33,15 @@
       class="p-button-secondary"
       (click)="clearFilters()"
     ></button>
-  </div>
+  </div> -->
 
   <!-- Grid layout cho các card khóa học -->
   <div
-    *ngIf="filteredCourses.length > 0; else noCourses"
+    *ngIf="courses.length > 0; else noCourses"
     class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10"
   >
     <div
-      *ngFor="let course of filteredCourses"
+      *ngFor="let course of courses"
       class="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-200"
     >
       <div class="relative">
@@ -137,7 +137,7 @@
         </p>
         <p class="text-sm text-gray-600 mb-2">
           <i class="pi pi-book mr-1"></i> Tổng bài học:
-          {{ course.lessonCount || 0 }}
+          {{ course.lessons_count }}
         </p>
         <div class="flex gap-2">
           <button
@@ -163,7 +163,6 @@
   <p-paginator
     [rows]="perPage"
     [totalRecords]="totalRecords"
-    [rowsPerPageOptions]="[10, 20, 30]"
     (onPageChange)="onPageChange($event)"
     [first]="(currentPage - 1) * perPage"
     class="mt-6"
@@ -195,12 +194,15 @@
                 {{ cutText(lesson.title, 5) }}
               </h4>
               <p class="text-sm text-gray-600">
-                <i class="pi pi-clock mr-1"></i> Thời lượng:
-                {{ lesson.duration }} phút
+                <i class="pi pi-clock mr-1"></i> Duration:
+                {{ lesson.duration }} minutes
               </p>
               <p class="text-sm text-gray-600">
-                <i class="pi pi-eye mr-1"></i> Xem trước:
-                {{ lesson.is_preview ? "Có" : "Không" }}
+                <i class="pi pi-eye mr-1"></i> Preview:
+                {{ lesson.is_preview ? "Yes" : "No" }}
+              </p>
+              <p class="text-sm text-gray-600">
+                <i class="pi pi-tag mr-1"></i> Version: {{ lesson.version }}
               </p>
             </div>
             <div class="flex gap-2 justify-center items-center">
@@ -209,18 +211,31 @@
                 severity="success"
                 [routerLink]="['/danh-sach-bai-tap', lesson.id]"
               />
-              <p-button
-                (click)="deleteLesson(lesson.id)"
-                icon="pi pi-trash"
-                label="Xóa"
-                severity="danger"
-              />
-              <p-button
-                (click)="openEditLessonDialog(lesson)"
-                icon="pi pi-file-edit"
-                label="Chỉnh sửa"
-                severity="info"
-              />
+            </div>
+            <div class="flex flex-col">
+              <video
+                controls
+                [src]="lesson.video_url"
+                class="w-48 h-28"
+                type="video/mp4"
+              >
+                Your browser does not support the video tag.
+              </video>
+              <div>
+                <p-button
+                  (click)="deleteLesson(lesson.id)"
+                  icon="pi pi-trash"
+                  label="Delete"
+                  severity="danger"
+                />
+                <p-button
+                  (click)="openEditLessonDialog(lesson)"
+                  icon="pi pi-file-edit"
+                  label="Edit"
+                  severity="info"
+                  [disabled]="lesson.origin_id && lesson.version === 1"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -228,7 +243,6 @@
       <p-paginator
         [rows]="lessonsPerPage"
         [totalRecords]="lessonsTotalRecords"
-        [rowsPerPageOptions]="[10, 20, 30]"
         (onPageChange)="onLessonsPageChange($event)"
         [first]="(lessonsCurrentPage - 1) * lessonsPerPage"
         class="mt-4"

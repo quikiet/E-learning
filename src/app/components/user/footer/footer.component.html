@@ -1,16 +1,9 @@
-<div
-  style="
-    background-image: url('Footer.png');
-    background-size: cover;
-    background-position: center;
-  "
-  class="text-white footer-section"
->
+<div class="text-white footer-section bg-gray-900">
   <!-- Header Section -->
   <header class="flex justify-center items-center border-b-2 border-gray-700">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+    <div class="grid grid-cols-1 md:grid-cols-3 md:gap-8 w-full lg:max-w-6xl">
       <div
-        class="footer-head flex items-center gap-5 py-10 justify-start border-gray-700"
+        class="footer-head flex items-center gap-5 py-10 justify-center md:justify-start border-gray-700"
       >
         <i
           class="pi pi-map-marker p-3 border rounded-full border-gray-500 bg-gray-800"
@@ -48,10 +41,14 @@
 
   <!-- Main Section -->
   <main class="flex justify-center py-10">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 w-full max-w-6xl">
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 text-center md:text-left gap-8 w-full max-w-6xl"
+    >
       <!-- Logo and Description -->
       <div class="space-y-4 footer-item">
-        <div class="flex items-center space-x-2">
+        <div
+          class="flex items-center space-x-2 justify-center md:justify-start"
+        >
           <svg
             class="w-8 h-8 text-blue-500"
             fill="currentColor"
@@ -66,7 +63,7 @@
           odit aperiam voluptatem voluptatum omnis cumque consequuntur nesciunt
           modi animi!
         </p>
-        <div class="flex space-x-4">
+        <div class="flex space-x-4 justify-center md:justify-start">
           <p-button
             icon="pi pi-facebook"
             [rounded]="true"
@@ -145,7 +142,7 @@
       </div>
 
       <!-- Subscribe -->
-      <div class="footer-item">
+      <div class="footer-item p-6 md:p-0">
         <h2 class="text-lg font-semibold mb-4">Đăng ký nhận thông báo</h2>
         <input
           type="email"

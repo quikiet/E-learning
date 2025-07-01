@@ -55,7 +55,7 @@ export const routes: Routes = [
             { path: 'product', component: CourseCardComponent },
             { path: 'cart', component: ShoppingCartComponent },
             { path: 'khoa-hoc', component: CourseSearchComponent },
-            { path: 'khoa-hoc-cua-toi', component: StudentPurchasedCoursesComponentComponent },
+            { path: 'my-course', component: StudentPurchasedCoursesComponentComponent },
             { path: 'khoa-hoc-cua-toi/hoc-bai/:id', component: StudentCourseLessonsComponentComponent },
             { path: 'tao-khoa-hoc', component: CreateCourseComponent },
             { path: 'them-bai-hoc/:courseId', component: AddLessonsComponent },

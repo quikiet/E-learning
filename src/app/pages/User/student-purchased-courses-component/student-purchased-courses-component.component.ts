@@ -13,6 +13,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
+import { CardSkeletonComponent } from "../../../components/both/card-skeleton/card-skeleton.component";
 
 @Component({
   selector: 'app-student-purchased-courses-component',
@@ -29,6 +30,7 @@ import { FormsModule } from '@angular/forms';
     InputTextModule,
     DropdownModule,
     FormsModule,
+    CardSkeletonComponent
   ],
   providers: [MessageService, CoursesService],
   templateUrl: './student-purchased-courses-component.component.html',

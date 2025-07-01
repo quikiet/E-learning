@@ -115,54 +115,117 @@
         </div>
         <ng-template #selectLessonPrompt>
           <div class="text-center text-gray-500 py-4">
-            Vui lòng chọn một bài học để bắt đầu học.
+            Please choose a lesson to start learning.
           </div>
         </ng-template>
       </div>
       <div class="py-2">
         <hr class="mt-2 text-gray" />
-        <p class="text-lg font-semibold w-full text-center py-1">QUIZ</p>
+        <p class="text-lg font-semibold w-full text-center">QUIZ</p>
+        <hr class="my-2 text-gray" />
         <div *ngIf="quizzes.length > 0" class="space-y-4">
-          <div
-            *ngFor="let quiz of quizzes"
-            class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 p-4 flex items-center justify-between"
+          <p-accordion
+            [activeIndex]="0"
+            *ngFor="let quiz of quizzes; let i = index"
           >
-            <div class="flex-1">
-              <h3 class="text-lg font-semibold text-gray-800 mb-1">
-                {{ quiz.title }}
-              </h3>
-              <div class="flex flex-wrap gap-4 text-sm text-gray-600">
-                <p>
-                  <i class="pi pi-question-circle mr-1"></i> Số câu hỏi:
-                  {{ quiz.questions_count }}
-                </p>
-                <p>
-                  <i class="pi pi-refresh mr-1"></i> Số lần thử:
-                  {{ quiz.max_attempts }}
-                </p>
-                <p>
-                  <i class="pi pi-clock mr-1"></i> Thời gian:
-                  {{ quiz.time_limit }} phút
-                </p>
-                <p>
-                  <i class="pi pi-calendar mr-1"></i> Tạo ngày:
-                  {{ quiz.created_at | date : "dd/MM/yyyy" }}
-                </p>
-              </div>
-            </div>
-            <p-button
-              label="Bắt đầu quiz"
-              icon="pi pi-play"
-              styleClass="p-button-sm p-button-success"
-              [routerLink]="['/quiz', quiz.quiz_id]"
-            />
-          </div>
+            <p-accordion-panel value="0">
+              <p-accordion-header>
+                <div class="pr-4 flex items-center justify-between">
+                  <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-1">
+                      {{ quiz.title }}
+                    </h3>
+                    <div class="flex flex-wrap gap-4 text-sm text-gray-600">
+                      <p>
+                        <i class="pi pi-question-circle mr-1"></i> Questions:
+                        {{ quiz.questions_count }}
+                      </p>
+                      <p>
+                        <i class="pi pi-refresh mr-1"></i> Max attempts:
+                        {{ quiz.max_attempts }}
+                      </p>
+                      <p>
+                        <i class="pi pi-refresh mr-1"></i> Remaining:
+                        {{ quiz.remaining_attempts }}
+                      </p>
+                      <p>
+                        <i class="pi pi-clock mr-1"></i> Time:
+                        {{ quiz.time_limit }} minutes
+                      </p>
+                      <p>
+                        <i class="pi pi-calendar mr-1"></i> Created at:
+                        {{ quiz.created_at | date : "dd/MM/yyyy" }}
+                      </p>
+                    </div>
+                  </div>
+                  <p-button
+                    label="Start quiz"
+                    icon="pi pi-play"
+                    styleClass="p-button-sm p-button-success"
+                    [routerLink]="['/quiz', quiz.quiz_id]"
+                  />
+                </div>
+              </p-accordion-header>
+              <p-accordion-content *ngIf="quiz.results?.length > 0">
+                <div class="space-y-4">
+                  <div
+                    *ngFor="let result of quiz.results"
+                    class="bg-white rounded-lg shadow-sm p-4"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <p class="text-sm font-semibold text-gray-800">
+                          <i class="pi pi-check-circle mr-1 text-green-500"></i>
+                          Attempt {{ result.attempt_number }}
+                        </p>
+                        <p class="text-sm text-gray-600">
+                          <i class="pi pi-star-fill mr-1 text-yellow-500"></i>
+                          Point: {{ result.score | number : "1.2-2" }} / 100
+                        </p>
+                        <p class="text-sm text-gray-600">
+                          <i class="pi pi-clock mr-1"></i>
+                          Started at:
+                          {{ result.started_at | date : "dd/MM/yyyy HH:mm" }}
+                        </p>
+                        <p
+                          class="text-sm text-gray-600"
+                          *ngIf="result.completed_at"
+                        >
+                          <i class="pi pi-calendar mr-1"></i>
+                          Completed at:
+                          {{ result.completed_at | date : "dd/MM/yyyy HH:mm" }}
+                        </p>
+                      </div>
+                      <p-tag
+                        [severity]="
+                          result.score >= 80
+                            ? 'success'
+                            : result.score >= 50
+                            ? 'warning'
+                            : 'danger'
+                        "
+                        [value]="
+                          result.score >= 80
+                            ? 'Xuất sắc'
+                            : result.score >= 50
+                            ? 'Đạt'
+                            : 'Chưa đạt'
+                        "
+                        [rounded]="true"
+                        class="!text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </p-accordion-content>
+            </p-accordion-panel>
+          </p-accordion>
         </div>
         <div
           *ngIf="quizzes.length === 0"
           class="text-center text-gray-500 py-4"
         >
-          Không có quiz nào.
+          Please select No quizzes available.
         </div>
       </div>
     </div>
@@ -206,7 +269,7 @@
             class="w-full md:w-56"
           />
           <label class="text-sm font-medium text-gray-700"
-            >Chọn số sao đánh giá:</label
+            >Choose the star rating:</label
           >
           <div class="flex items-center gap-2">
             <p-rating
@@ -221,20 +284,20 @@
         </div>
         <div class="flex flex-col gap-2">
           <label for="comment" class="text-sm font-medium text-gray-700"
-            >Nhận xét của bạn:</label
+            >Your comment:</label
           >
           <textarea
             id="comment"
             pInputTextarea
             [(ngModel)]="newComment"
-            placeholder="Chia sẻ trải nghiệm của bạn về khóa học này..."
+            placeholder="Share your experience about this course..."
             [rows]="4"
             class="w-full resize-none"
           ></textarea>
         </div>
         <div class="flex justify-end">
           <p-button
-            label="Gửi đánh giá"
+            label="Send"
             icon="pi pi-send"
             (onClick)="submitReview()"
             [disabled]="newRating === 0"
@@ -243,7 +306,7 @@
         </div>
       </div>
     </p-card>
-    <p class="text-black font-bold text-lg mb-4">Đánh giá</p>
+    <p class="text-black font-bold text-lg mb-4">Reviews</p>
     <div *ngFor="let review of displayedReviews">
       <div class="flex items-start gap-3">
         <p-avatar
@@ -279,7 +342,7 @@
       <p-divider />
     </div>
     <div *ngIf="!reviews?.length" class="text-gray text-sm">
-      Chưa có đánh giá nào cho khóa học này.
+      No reviews yet for this course.
     </div>
     <div *ngIf="reviews.length > 1" class="mt-8 flex justify-center">
       <button

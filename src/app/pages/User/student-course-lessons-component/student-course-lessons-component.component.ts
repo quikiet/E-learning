@@ -16,6 +16,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { AuthService } from '../../../services/auth.service';
 import { QuizService } from '../../../services/lesson/quiz.service';
+import { AccordionModule } from 'primeng/accordion';
 
 interface Feedback {
   name: string;
@@ -36,6 +37,7 @@ interface Feedback {
     SelectModule,
     TextareaModule,
     RouterLink,
+    AccordionModule
   ],
   providers: [MessageService],
   templateUrl: './student-course-lessons-component.component.html',
