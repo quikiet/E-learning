@@ -59,6 +59,7 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
   timeLeft: number = 0;
   minutes: number = 0;
   seconds: number = 0;
+  quizResult: any;
   private timer: any;
 
   constructor(
@@ -177,7 +178,7 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
 
     // console.log('Submitting quiz with body:', JSON.stringify(body, null, 2));
     this.quizService.submitQuiz(this.quizId, body).subscribe({
-      next: () => {
+      next: (res) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Thành công',
@@ -185,6 +186,7 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
           life: 3000,
         });
         clearInterval(this.timer);
+        this.quizResult = res.data;
       },
       error: (err) => {
         console.error('Submit quiz error:', err);
