@@ -203,6 +203,7 @@ export class InstructorCoursesComponent implements OnInit {
   // }
 
   cloneCourse(courseId: number) {
+    this.isLoading = true;
     this.coursesService.cloneCourses(courseId).subscribe({
       next: (res) => {
         this.loadCourses();
@@ -212,6 +213,7 @@ export class InstructorCoursesComponent implements OnInit {
           detail: res.message,
           life: 3000,
         });
+        this.isLoading = false;
       }, error: (error) => {
         this.messageService.add({
           severity: 'error',
@@ -219,6 +221,7 @@ export class InstructorCoursesComponent implements OnInit {
           detail: error.error.message,
           life: 3000,
         });
+        this.isLoading = false;
       }
     })
   }
@@ -461,6 +464,7 @@ export class InstructorCoursesComponent implements OnInit {
   }
 
   deleteLesson(lessonId: number) {
+    this.isLoading = true;
     if (!lessonId) {
       return;
     }
@@ -472,6 +476,7 @@ export class InstructorCoursesComponent implements OnInit {
           detail: 'Lesson deleted successfully.',
           life: 3000,
         });
+        this.isLoading = false;
         this.loadLessons();
       },
       error: (err) => {
@@ -481,7 +486,38 @@ export class InstructorCoursesComponent implements OnInit {
           detail: err.error?.message || 'Unable to delete lesson.',
           life: 3000,
         });
+        this.isLoading = false;
         this.loadLessons();
+      }
+    });
+  }
+
+  deleteCourse(courseId: number) {
+    this.isLoading = true;
+    if (!courseId) {
+      return;
+    }
+    this.coursesService.instructorDeleteCourse(courseId).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message,
+          life: 3000,
+        });
+        this.loadCourses();
+        this.isLoading = false;
+
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error?.message,
+          life: 3000,
+        });
+        this.isLoading = false;
+        this.loadCourses();
       }
     });
   }

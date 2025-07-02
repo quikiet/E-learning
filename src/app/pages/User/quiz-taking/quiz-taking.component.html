@@ -1,32 +1,38 @@
 <p-toast></p-toast>
 <div class="max-w-3xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
-  <h2 class="text-2xl font-bold text-gray-800 mb-6">Bài trắc nghiệm</h2>
-  <!-- {{ quizStart.time_limit }} -->
+  <!-- Quiz Title -->
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Quiz</h2>
+
   <!-- Loading state -->
-  <div *ngIf="isLoading" class="text-center text-gray-500 py-4">
-    Đang tải câu hỏi...
+  <div *ngIf="isLoading && !showResults" class="text-center text-gray-500 py-4">
+    Loading questions...
   </div>
 
   <!-- Error state -->
-  <div *ngIf="errorMessage" class="text-center text-red-500 py-4">
+  <div
+    *ngIf="errorMessage && !showResults"
+    class="text-center text-red-500 py-4"
+  >
     {{ errorMessage }}
   </div>
 
-  <!-- Danh sách câu hỏi -->
+  <!-- Quiz Questions -->
   <div
-    *ngIf="!isLoading && !errorMessage && questions.length > 0"
+    *ngIf="!isLoading && !errorMessage && questions.length > 0 && !showResults"
     class="space-y-6"
   >
-    <div class="flex justify-between items-center mb-4">
+    <div
+      class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4"
+    >
       <p class="text-sm text-gray-600">
-        Tổng số câu hỏi: {{ pagination?.total || questions.length }}
+        Total Questions: {{ pagination?.total || questions.length }}
       </p>
       <p class="text-sm text-gray-600">
         <i class="pi pi-clock mr-1"></i>
-        Thời gian còn lại: {{ minutes }}:{{ seconds | number : "2.0-0" }}
+        Time Remaining: {{ minutes }}:{{ seconds | number : "2.0-0" }}
       </p>
       <p-button
-        label="Nộp bài"
+        label="Submit"
         icon="pi pi-check"
         styleClass="p-button-success"
         (click)="submitQuiz()"
@@ -39,7 +45,7 @@
       class="bg-white rounded-lg shadow-sm p-6"
     >
       <h3 class="text-lg font-semibold text-gray-800 mb-4">
-        Câu {{ i + 1 }}: {{ question.title }}
+        Question {{ i + 1 }}: {{ question.title }}
       </h3>
       <div class="space-y-3">
         <!-- True/False -->
@@ -55,6 +61,7 @@
               [value]="choice.id"
               [(ngModel)]="selectedAnswers[question.id]"
               [name]="'question_' + question.id"
+              (ngModelChange)="logSelection(question.id, $event)"
             />
             <label class="text-gray-700">{{ choice.content }}</label>
           </div>
@@ -73,6 +80,7 @@
               [value]="choice.id"
               [(ngModel)]="selectedAnswers[question.id]"
               [binary]="false"
+              (ngModelChange)="logSelection(question.id, $event)"
             />
             <label class="text-gray-700">{{ choice.content }}</label>
           </div>
@@ -81,118 +89,113 @@
     </div>
   </div>
 
-  <!-- Không có câu hỏi -->
-  <div
-    *ngIf="!isLoading && !errorMessage && questions.length === 0"
-    class="text-center text-gray-500 py-4"
-  >
-    Không có câu hỏi nào trong bài trắc nghiệm.
-  </div>
-  <div *ngIf="!quizResult" class="py-2 text-center">
-    <p-button label="View result" severity="info" />
-    <div>
-      <!-- Quiz Results -->
-      <!-- Summary -->
-      <div class="bg-white rounded-lg shadow-sm p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Quiz Results</h3>
-        <div class="space-y-2 text-sm text-gray-600">
-          <p><strong>Title:</strong> {{ quizResult.quiz_info.title }}</p>
-          <p>
-            <strong>Total Questions:</strong>
-            {{ quizResult.summary.total_questions }}
-          </p>
-          <p>
-            <strong>Correct Answers:</strong>
-            <span class="text-secondary">
-              {{ quizResult.summary.correct_answers }}
-            </span>
-          </p>
-          <p>
-            <strong>Incorrect Answers:</strong>
-            <span class="text-primary">
-              {{ quizResult.summary.incorrect_answers }}
-            </span>
-          </p>
-          <p>
-            <strong>Percentage:</strong> {{ quizResult.summary.percentage }}%
-          </p>
-          <p><strong>Status:</strong> {{ quizResult.summary.status }}</p>
-          <p><strong>Message:</strong> {{ quizResult.summary.message }}</p>
-          <p>
-            <strong>Attempt Number:</strong>
-            {{ quizResult.quiz_info.attempt_number }}
-          </p>
-          <p>
-            <strong>Time Taken:</strong>
-            {{ quizResult.quiz_info.time_taken | number : "1.4-4" }} minutes
-          </p>
-          <p>
-            <strong>Completed At:</strong>
-            {{ quizResult.quiz_info.completed_at | date : "dd/MM/yyyy HH:mm" }}
-          </p>
-        </div>
-        <div class="mt-4">
-          <p-button
-            label="Back to Lessons"
-            icon="pi pi-arrow-left"
-            styleClass="p-button-outlined"
-          />
-          <p-button
-            label="Try Again"
-            icon="pi pi-refresh"
-            styleClass="p-button-outlined ml-2"
-            *ngIf="quizStart?.current_attempt < quizStart?.max_attempts"
-          />
-        </div>
+  <!-- Quiz Results -->
+  <div *ngIf="showResults && quizResult" class="space-y-6">
+    <!-- Summary -->
+    <div class="bg-white rounded-lg shadow-sm p-6">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">Quiz Results</h3>
+      <div class="space-y-2 text-sm text-gray-600">
+        <p><strong>Title:</strong> {{ quizResult.quiz_info.title }}</p>
+        <p>
+          <strong>Total Questions:</strong>
+          {{ quizResult.summary.total_questions }}
+        </p>
+        <p>
+          <strong>Correct Answers:</strong>
+          {{ quizResult.summary.correct_answers }}
+        </p>
+        <p>
+          <strong>Incorrect Answers:</strong>
+          {{ quizResult.summary.incorrect_answers }}
+        </p>
+        <p><strong>Percentage:</strong> {{ quizResult.summary.percentage }}%</p>
+        <p><strong>Status:</strong> {{ quizResult.summary.status }}</p>
+        <p><strong>Message:</strong> {{ quizResult.summary.message }}</p>
+        <p>
+          <strong>Attempt Number:</strong>
+          {{ quizResult.quiz_info.attempt_number }}
+        </p>
+        <p>
+          <strong>Time Taken:</strong>
+          {{ quizResult.quiz_info.time_taken | number : "1.4-4" }} minutes
+        </p>
+        <p>
+          <strong>Completed At:</strong>
+          {{ quizResult.quiz_info.completed_at | date : "dd/MM/yyyy HH:mm" }}
+        </p>
       </div>
-
-      <!-- Per Question Results -->
-      <div
-        *ngFor="let result of quizResult.results"
-        class="bg-white rounded-lg shadow-sm p-6"
-      >
-        <h4 class="text-md font-semibold text-gray-800 mb-2">
-          Question: {{ result.question_title }}
-        </h4>
-        <div class="space-y-2 text-sm">
-          <p>
-            <strong>Your Answer:</strong>
-            <span
-              *ngIf="result.selected_choices.length === 0"
-              class="text-gray-500"
-            >
-              No answer selected
-            </span>
-            <span
-              *ngFor="let choice of result.selected_choices; let isLast = last"
-              [ngClass]="result.is_correct ? 'text-secondary' : 'text-primary'"
-            >
-              {{ choice.content }}{{ isLast ? "" : ", " }}
-            </span>
-          </p>
-          <p>
-            <strong>Correct Answer:</strong>
-            <span
-              *ngFor="let choice of result.correct_choices; let isLast = last"
-              class="text-secondary"
-            >
-              {{ choice.content }}{{ isLast ? "" : ", " }}
-            </span>
-          </p>
-          <p>
-            <strong>Status:</strong>
-            <span
-              [ngClass]="result.is_correct ? 'text-secondary' : 'text-primary'"
-            >
-              {{ result.is_correct ? "Correct" : "Incorrect" }}
-            </span>
-          </p>
-          <p *ngIf="result.explanation">
-            <strong>Explanation:</strong>
-            <span class="text-secondary">{{ result.explanation }}</span>
-          </p>
-        </div>
+      <div class="mt-4">
+        <p-button
+          label="Back to Lessons"
+          icon="pi pi-arrow-left"
+          styleClass="p-button-outlined"
+          (click)="goBack()"
+        />
+        <p-button
+          label="Try Again"
+          icon="pi pi-refresh"
+          styleClass="p-button-outlined ml-2"
+          (click)="retryQuiz()"
+          *ngIf="quizStart?.current_attempt < quizStart?.max_attempts"
+        />
       </div>
     </div>
+
+    <!-- Per Question Results -->
+    <div
+      *ngFor="let result of quizResult.results"
+      class="bg-white rounded-lg shadow-sm p-6"
+    >
+      <h4 class="text-md font-semibold text-gray-800 mb-2">
+        Question: {{ result.question_title }}
+      </h4>
+      <div class="space-y-2 text-sm">
+        <p>
+          <strong>Your Answer:</strong>
+          <span
+            *ngIf="result.selected_choices.length === 0"
+            class="text-gray-500"
+          >
+            No answer selected
+          </span>
+          <span
+            *ngFor="let choice of result.selected_choices; let isLast = last"
+            [ngClass]="result.is_correct ? 'text-green-500' : 'text-red-500'"
+          >
+            {{ choice.content }}{{ isLast ? "" : ", " }}
+          </span>
+        </p>
+        <p>
+          <strong>Correct Answer:</strong>
+          <span
+            *ngFor="let choice of result.correct_choices; let isLast = last"
+            class="text-green-500"
+          >
+            {{ choice.content }}{{ isLast ? "" : ", " }}
+          </span>
+        </p>
+        <p>
+          <strong>Status:</strong>
+          <span
+            [ngClass]="result.is_correct ? 'text-green-500' : 'text-red-500'"
+          >
+            {{ result.is_correct ? "Correct" : "Incorrect" }}
+          </span>
+        </p>
+        <p *ngIf="result.explanation">
+          <strong>Explanation:</strong> {{ result.explanation }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Questions -->
+  <div
+    *ngIf="
+      !isLoading && !errorMessage && questions.length === 0 && !showResults
+    "
+    class="text-center text-gray-500 py-4"
+  >
+    No questions in this quiz.
   </div>
 </div>

@@ -139,8 +139,10 @@ export class InstructorQuizManagementComponent implements OnInit {
   }
 
   openAddQuestionModal(quiz: any) {
-    this.selectedQuizId = quiz.id;
-    this.newQuestion.quiz_id = quiz.id;
+    this.selectedQuizId = quiz.quiz_id;
+    this.newQuestion.quiz_id = quiz.quiz_id;
+    console.log(this.newQuestion.quiz_id);
+
     this.showAddQuestionModal = true;
   }
 
@@ -179,6 +181,8 @@ export class InstructorQuizManagementComponent implements OnInit {
   }
 
   createQuestion() {
+    console.log(1);
+
     if (!this.newQuestion.title ||
       this.newQuestion.choices.some(choice => !choice.content)) {
       this.messageService.add({
@@ -211,6 +215,7 @@ export class InstructorQuizManagementComponent implements OnInit {
         // sort_order: this.newQuestion.sort_order,
         is_visible: this.newQuestion.is_visible
       };
+      console.log(questionData);
 
       this.quizService.createQuestion(questionData).subscribe({
         next: (questionResponse) => {
