@@ -1,18 +1,32 @@
 <app-header></app-header>
-<div class="max-w-7xl mx-auto my-10 grid grid-cols-12 gap-5 h-full">
-  <div class="col-span-8 mb-6">
+<div
+  class="max-w-7xl mx-auto my-10 grid grid-cols-1 lg:grid-cols-12 gap-5 h-full lg:p-10 p-6"
+>
+  <div class="lg:col-span-8 mb-6">
     <!-- Video Preview -->
-    <video class="rounded-3xl w-full" controls [poster]="course?.image">
+    <video
+      *ngIf="previewVideoUrl"
+      class="w-full h-auto aspect-video object-cover"
+      controls
+      [poster]="course?.image"
+    >
       <source [src]="previewVideoUrl" type="video/mp4" />
-      Your browser does not support the video tag.
     </video>
+    <img
+      *ngIf="!previewVideoUrl"
+      [src]="course?.image || 'assets/default-image.jpg'"
+      [alt]="course?.course_name || 'Course Thumbnail'"
+      class="w-full h-auto rounded-3xl aspect-video object-cover"
+    />
     <!-- <img [src]="course.image" [alt]="course.course_name" /> -->
     <!-- <video class="w-full" controls [src]="currentVideoUrl" type="video/mp4">
       Your browser does not support the video tag.
     </video> -->
     <!-- Top: Studio Info & Stats -->
     <div class="my-6">
-      <h5 class="text-black font-bold text-2xl leading-tight mb-4">
+      <h5
+        class="text-black md:font-bold font-semibold text-lg md:text-2xl leading-tight mb-4"
+      >
         {{ course?.course_name || "..." }}
       </h5>
       <div class="flex items-center gap-4">
@@ -42,7 +56,7 @@
 
     <!-- Course Description -->
     <div class="course-description mb-4">
-      <p class="text-black font-bold text-lg mb-2">Chi tiết khóa học</p>
+      <p class="text-black font-bold md:text-lg mb-2">Chi tiết khóa học</p>
       <p class="text-[#3a3f44] text-sm">
         {{ course?.course_description }}
       </p>
@@ -51,7 +65,7 @@
 
     <!-- Review List -->
     <div class="space-y-5">
-      <p class="text-black font-bold text-lg mb-2">Reviews</p>
+      <p class="text-black font-bold md:text-lg mb-2">Reviews</p>
       <div *ngFor="let review of reviews" class="flex items-start gap-3">
         <p-avatar
           [image]="review.user?.avatar"
@@ -82,7 +96,7 @@
     </div>
   </div>
 
-  <div class="col-span-4 h-full">
+  <div class="lg:col-span-4 h-full">
     <div
       class="sticky top-10 px-0 py-0 flex-col shadow border-l border-gray-100 h-fit"
     >
@@ -112,36 +126,7 @@
           Free
         </p>
       </div>
-      <!-- Coupon Section -->
-      <div *ngIf="course?.price > 0" class="px-4 py-2">
-        <div class="flex items-center gap-2 sm:gap-4">
-          <!-- <input
-            type="text"
-            [(ngModel)]="couponCode"
-            placeholder="Enter coupon code"
-            class="w-full p-2 text-sm sm:text-base border border-gray-300 rounded-md"
-          />
-          <button
-            (click)="applyCoupon()"
-            class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300 text-sm sm:text-base"
-            [disabled]="isLoading"
-          >
-            Apply
-          </button> -->
-        </div>
-        <div *ngIf="discountedPrice !== null" class="mt-2 text-sm">
-          <p class="text-gray-600">
-            Original Price:
-            <span class="line-through">{{ course?.price | number }} $</span>
-          </p>
-          <p class="text-green-500">
-            You Save: {{ course?.price - discountedPrice | number }} $
-          </p>
-        </div>
-        <p *ngIf="couponError" class="text-red-500 text-sm mt-2">
-          {{ couponError }}
-        </p>
-      </div>
+
       <button
         *ngIf="!isUserEnrolled && course?.price > 0"
         (click)="enrollCourse()"
@@ -205,11 +190,7 @@
                 </video> -->
 
                     <a
-                      *ngIf="
-                        lesson.is_preview &&
-                        lesson.video_url &&
-                        lesson.status === 'approved'
-                      "
+                      *ngIf="lesson.is_preview && lesson.video_url"
                       (click)="
                         playVideo(lesson.video_url); $event.preventDefault()
                       "

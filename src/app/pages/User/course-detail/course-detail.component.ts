@@ -69,18 +69,16 @@ export class CourseDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.lessons = [];
-    this.reviews = [];
-    this.loadCourse();
-
-    // this.authService.getCurrentUser().subscribe({
-    //   next: (res) => {
-    //     this.currentUserId = res?.user.id;
-    //     // console.log('Current user ID:', this.currentUserId);
-    //     this.loadCourse();
-    //   }
-    // });
-
+    this.authService.getCurrentUser().subscribe({
+      next: (res) => {
+        this.currentUserId = res?.user.id;
+        this.loadCourse();
+      },
+      error: (err) => {
+        console.error('Error getting current user:', err);
+        this.loadCourse(); // Still load course even if user fetch fails
+      }
+    });
   }
 
   loadCourse() {
@@ -90,30 +88,46 @@ export class CourseDetailComponent implements OnInit {
       this.coursesService.getCourseBySlug(slug).subscribe({
         next: (res) => {
           this.course = res;
-          this.reviews = res.reviews || [];
           this.lessons = res.lessons || [];
-
-          // Kiểm tra trạng thái đăng ký của người dùng
+          this.reviews = res.reviews || [];
           this.isUserEnrolled = this.checkUserEnrollment(res.enrollments);
 
-          // Tìm video preview
+          // Find the first lesson with is_preview: true
           const previewLesson = this.lessons.find(lesson => lesson.is_preview === true);
-          this.previewVideoUrl = previewLesson?.video_url;
+          this.previewVideoUrl = previewLesson ? previewLesson.video_url : null;
 
-          // Tạo tabs từ danh sách bài học
+          console.log('Course:', this.course);
+          console.log('Preview Video URL:', this.previewVideoUrl);
           this.isLoading = false;
-
         },
         error: (err) => {
-          console.error('Error loading course:', err.message);
+          console.error('Error loading course:', err);
+          this.course = null;
           this.lessons = [];
           this.reviews = [];
           this.previewVideoUrl = '';
           this.isLoading = false;
-        }, complete: () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.error?.message || 'Unable to load course details.',
+            life: 3000
+          });
+          this.router.navigate(['/']);
+        },
+        complete: () => {
           this.isLoading = false;
         }
       });
+    } else {
+      this.isLoading = false;
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Invalid course slug.',
+        life: 3000
+      });
+      this.router.navigate(['/']);
     }
   }
 
