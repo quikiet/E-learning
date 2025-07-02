@@ -62,6 +62,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   selectedFeedback = 'content_quality';
   hasReviewed: boolean = false; // Track if user has reviewed
   currentUserId: number | null = null;
+  hasMarkedComplete: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -146,6 +147,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   selectLesson(lesson: any, index: number) {
     this.selectedLesson = lesson;
     this.currentLessonIndex = index;
+    this.hasMarkedComplete = false; // Reset when selecting new lesson
     this.loadQuizzes();
   }
 
@@ -171,28 +173,42 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
     }
   }
 
+  onVideoTimeUpdate(event: Event) {
+    if (!this.selectedLesson || this.selectedLesson.completed_at || this.hasMarkedComplete) {
+      return;
+    }
+
+    const video = event.target as HTMLVideoElement;
+    const progress = (video.currentTime / video.duration) * 100;
+
+    if (progress >= 90) {
+      this.hasMarkedComplete = true;
+      this.markLessonComplete();
+    }
+  }
+
   markLessonComplete() {
     this.enrollmentService.markLessonComplete(this.selectedLesson.id, 'completed').subscribe({
       next: (res) => {
         this.selectedLesson.completed_at = res.progress.completed_at;
         this.messageService.add({
           severity: 'success',
-          summary: 'Thành công',
-          detail: 'Bài học đã được đánh dấu hoàn thành.',
+          summary: 'Success',
+          detail: res.message,
           life: 3000,
         });
 
         // Tự động chuyển sang bài học tiếp theo nếu có
-        if (this.currentLessonIndex < this.lessons.length - 1) {
-          this.selectNextLesson();
-        }
+        // if (this.currentLessonIndex < this.lessons.length - 1) {
+        //   this.selectNextLesson();
+        // }
       },
       error: (err) => {
         console.error('Error marking lesson complete:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể đánh dấu bài học hoàn thành. Vui lòng thử lại.',
+          summary: 'Error',
+          detail: err.error?.message,
           life: 3000,
         });
       }

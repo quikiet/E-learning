@@ -1,5 +1,4 @@
 <p-toast></p-toast>
-
 <div class="max-w-7xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
   <app-loading [isLoading]="isLoading"></app-loading>
 
@@ -7,21 +6,19 @@
     *ngIf="lessons.length > 0; else noLessons"
     class="flex flex-col md:flex-row gap-6 items-start"
   >
-    <!-- Danh sách bài học -->
+    <!-- Lesson List -->
     <div class="w-full md:w-1/3 bg-white shadow p-4">
-      <h3 class="text-lg font-semibold text-gray-800 mb-4">
-        Danh sách bài học
-      </h3>
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Lesson List</h3>
       <div
         *ngIf="!isLoading"
-        class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto no-scrollbar"
+        class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto"
       >
         <div
           *ngFor="let lesson of lessons; let i = index"
           class="flex items-center justify-between p-3 cursor-pointer transition-colors"
           [ngClass]="{
-            'bg-secondary-light': selectedLesson?.id === lesson.id,
-            'hover:bg-dark-light': selectedLesson?.id !== lesson.id
+            'bg-blue-100': selectedLesson?.id === lesson.id,
+            'hover:bg-gray-100': selectedLesson?.id !== lesson.id
           }"
           (click)="selectLesson(lesson, i)"
         >
@@ -30,19 +27,22 @@
               {{ lesson.title }}
             </p>
             <p class="text-xs text-gray-600">
-              <i class="pi pi-clock mr-1"></i> {{ lesson.duration }} phút
+              <i class="pi pi-clock mr-1"></i> {{ lesson.duration }} minutes
             </p>
             <p class="text-xs text-gray-600">
               <i class="pi pi-eye mr-1"></i>
-              {{ lesson.is_preview ? "Xem trước" : "Không xem trước" }}
+              {{ lesson.is_preview ? "Preview" : "No Preview" }}
             </p>
             <p-tag
               [severity]="lesson.completed_at ? 'success' : 'danger'"
-              [value]="lesson.completed_at ? 'Hoàn thành' : 'Chưa hoàn thành'"
+              [value]="lesson.completed_at ? 'Completed' : 'Not Completed'"
               [rounded]="true"
               class="!text-xs mt-1"
             />
-            <span class="text-xs ml-2 text-gray" *ngIf="lesson.completed_at">
+            <span
+              class="text-xs ml-2 text-gray-500"
+              *ngIf="lesson.completed_at"
+            >
               {{ lesson.completed_at | date : "dd/MM/yyyy HH:mm" }}
             </span>
           </div>
@@ -68,8 +68,9 @@
             <video
               controls
               [src]="selectedLesson.video_url"
-              class="w-full h-96"
+              class="w-full max-h-96"
               type="video/mp4"
+              (timeupdate)="onVideoTimeUpdate($event)"
             >
               Your browser does not support the video tag.
             </video>
@@ -78,7 +79,7 @@
             <button
               pButton
               type="button"
-              label="Bài trước"
+              label="Previous"
               icon="pi pi-chevron-left"
               [disabled]="currentLessonIndex === 0"
               (click)="selectPreviousLesson()"
@@ -87,28 +88,7 @@
             <button
               pButton
               type="button"
-              [label]="
-                selectedLesson.completed_at
-                  ? 'Đã hoàn thành'
-                  : 'Đánh dấu hoàn thành'
-              "
-              [icon]="
-                selectedLesson.completed_at
-                  ? 'pi pi-check-circle'
-                  : 'pi pi-check'
-              "
-              [disabled]="selectedLesson.completed_at"
-              (click)="markLessonComplete()"
-              class="p-button-sm"
-              [ngClass]="{
-                'p-button-success': selectedLesson.completed_at,
-                'p-button-primary': !selectedLesson.completed_at
-              }"
-            ></button>
-            <button
-              pButton
-              type="button"
-              label="Bài sau"
+              label="Next"
               icon="pi pi-chevron-right"
               iconPos="right"
               [disabled]="currentLessonIndex === lessons.length - 1"
@@ -124,9 +104,9 @@
         </ng-template>
       </div>
       <div class="py-2">
-        <hr class="mt-2 text-gray" />
-        <p class="text-lg font-semibold w-full text-center">QUIZ</p>
-        <hr class="my-2 text-gray" />
+        <hr class="mt-2 text-gray-300" />
+        <p class="text-lg font-semibold w-full text-center">Quiz</p>
+        <hr class="my-2 text-gray-300" />
         <div *ngIf="quizzes.length > 0" class="space-y-4">
           <p-accordion
             [activeIndex]="0"
@@ -163,7 +143,7 @@
                     </div>
                   </div>
                   <p-button
-                    label="Start quiz"
+                    label="Start Quiz"
                     icon="pi pi-play"
                     styleClass="p-button-sm p-button-success"
                     [routerLink]="['/quiz', quiz.quiz_id]"
@@ -210,10 +190,10 @@
                         "
                         [value]="
                           result.score >= 80
-                            ? 'Xuất sắc'
+                            ? 'Excellent'
                             : result.score >= 50
-                            ? 'Đạt'
-                            : 'Chưa đạt'
+                            ? 'Pass'
+                            : 'Fail'
                         "
                         [rounded]="true"
                         class="!text-xs"
@@ -229,19 +209,19 @@
           *ngIf="quizzes.length === 0"
           class="text-center text-gray-500 py-4"
         >
-          Please select No quizzes available.
+          No quizzes available.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Thông tin khóa học -->
+  <!-- Course Information -->
   <div *ngIf="course" class="my-8">
     <h2 class="text-2xl font-bold text-gray-800 mb-2">
       {{ course.course_name }}
     </h2>
     <p class="text-sm text-gray-600 mb-1">
-      <i class="pi pi-star mr-1"></i> Mức độ: {{ course.difficulty_level }}
+      <i class="pi pi-star mr-1"></i> Level: {{ course.difficulty_level }}
     </p>
     <div class="flex items-center mb-1">
       <span class="text-sm text-gray-600 mr-1">
@@ -258,7 +238,7 @@
   <!-- Review List -->
   <div class="space-y-5">
     <p-card
-      header="Viết đánh giá của bạn"
+      header="Write Your Review"
       styleClass="mb-6"
       *ngIf="!hasReviewed && currentUserId"
     >
@@ -269,7 +249,7 @@
             [(ngModel)]="selectedFeedback"
             optionValue="name"
             optionLabel="name"
-            placeholder="Chọn kiểu đánh giá"
+            placeholder="Select Feedback Type"
             class="w-full md:w-56"
           />
           <label class="text-sm font-medium text-gray-700"
@@ -288,7 +268,7 @@
         </div>
         <div class="flex flex-col gap-2">
           <label for="comment" class="text-sm font-medium text-gray-700"
-            >Your comment:</label
+            >Your Comment:</label
           >
           <textarea
             id="comment"
@@ -301,7 +281,7 @@
         </div>
         <div class="flex justify-end">
           <p-button
-            label="Send"
+            label="Submit"
             icon="pi pi-send"
             (onClick)="submitReview()"
             [disabled]="newRating === 0"
@@ -323,7 +303,7 @@
           <span class="font-bold">{{
             review.user?.username || review.user?.email
           }}</span>
-          <div class="text-gray text-sm flex gap-1">
+          <div class="text-gray-500 text-sm flex gap-1">
             <span *ngFor="let star of getStars(); let i = index">
               <i
                 class="pi pi-star-fill !text-xs"
@@ -334,7 +314,7 @@
               review.created_at | date : "dd/MM/yyyy"
             }}</span>
           </div>
-          <div class="text-sm mt-3 font-thin">{{ review.comment }}</div>
+          <div class="text-sm mt-3 font-light">{{ review.comment }}</div>
           <p-tag
             severity="secondary"
             [value]="review.feedback_type"
@@ -345,7 +325,7 @@
       </div>
       <p-divider />
     </div>
-    <div *ngIf="!reviews?.length" class="text-gray text-sm">
+    <div *ngIf="!reviews?.length" class="text-gray-500 text-sm">
       No reviews yet for this course.
     </div>
     <div *ngIf="reviews.length > 1" class="mt-8 flex justify-center">
@@ -353,14 +333,14 @@
         class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
         (click)="toggleShowMore()"
       >
-        {{ showAll ? "Thu gọn" : "Xem thêm" }}
+        {{ showAll ? "Show Less" : "Show More" }}
       </button>
     </div>
   </div>
 
   <ng-template #noLessons>
     <div class="text-center text-gray-500 py-4">
-      Khóa học này chưa có bài học nào.
+      This course has no lessons yet.
     </div>
   </ng-template>
 </div>

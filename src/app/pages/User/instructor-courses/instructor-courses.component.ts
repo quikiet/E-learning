@@ -37,7 +37,8 @@ interface Category {
     ButtonModule,
     RouterLink,
     InputIconModule,
-    IconFieldModule
+    IconFieldModule,
+    TooltipModule
   ],
   providers: [MessageService],
   templateUrl: './instructor-courses.component.html',
@@ -200,6 +201,27 @@ export class InstructorCoursesComponent implements OnInit {
   //   this.totalRecords = this.courses.length;
   //   this.currentPage = 1;
   // }
+
+  cloneCourse(courseId: number) {
+    this.coursesService.cloneCourses(courseId).subscribe({
+      next: (res) => {
+        this.loadCourses();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message,
+          life: 3000,
+        });
+      }, error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.message,
+          life: 3000,
+        });
+      }
+    })
+  }
 
   onPageChange(event: any) {
     this.currentPage = event.page + 1;

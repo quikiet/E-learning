@@ -48,7 +48,7 @@
       <th pSortableColumn="sort_order">
         Thứ tự sắp xếp<p-sortIcon field="sort_order" />
       </th>
-      <th>Trạng thái</th>
+      <th>Visible</th>
       <th>Hành động</th>
     </tr>
   </ng-template>
@@ -78,23 +78,8 @@
       <td class="text-gray-800">{{ lesson.sort_order }}</td>
       <td class="">
         <p-tag
-          *ngIf="lesson.status === 'pending'"
-          severity="warn"
-          value="Đang chờ duyệt"
-          [rounded]="true"
-          class="!text-xs"
-        />
-        <p-tag
-          *ngIf="lesson.status === 'approved'"
-          severity="success"
-          value="Đã duyệt"
-          [rounded]="true"
-          class="!text-xs"
-        />
-        <p-tag
-          *ngIf="lesson.status === 'rejected'"
-          severity="danger"
-          value="Đã từ chối"
+          [severity]="lesson.is_visible ? 'success' : 'contrast'"
+          [value]="lesson.is_visible ? 'Yes' : 'No'"
           [rounded]="true"
           class="!text-xs"
         />
