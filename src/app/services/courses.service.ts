@@ -59,6 +59,14 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/instructor/allcourses?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
 
+  instructorPublicCourses(course_id: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/instructor/courses/${course_id}/status/pending`, {}, { withCredentials: true });
+  }
+
+  instructorGetUserProgessCourses(course_id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/instructor/courses/${course_id}/progress`, { withCredentials: true });
+  }
+
   // Lấy danh sách bài học của khóa học
   getLessonsForCourse(courseId: number, page: number = 1, perPage: number = 10): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons?page=${page}&perPage=${perPage}`, { withCredentials: true });
@@ -116,8 +124,6 @@ export class CoursesService {
   enrollFreeCourse(courseId: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/enroll-free`, {}, { withCredentials: true });
   }
-
-
 
   createCourse(data: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/instructor/courses`, data, { withCredentials: true });

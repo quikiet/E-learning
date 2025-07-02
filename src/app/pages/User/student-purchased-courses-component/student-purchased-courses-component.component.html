@@ -174,11 +174,12 @@
     </a>
   </div>
 
-  <ng-template *ngIf="enrollments.length === 0">
-    <div class="text-center text-gray-500 py-4">
-      You have not purchased any courses..
-    </div>
-  </ng-template>
+  <div
+    class="text-center text-gray-500 py-4 md:pb-20"
+    *ngIf="!isLoading && enrollments.length === 0"
+  >
+    You have not purchased any courses..
+  </div>
 
   <!-- Phân trang -->
   <p-paginator
@@ -187,6 +188,7 @@
     (onPageChange)="onPageChange($event)"
     [first]="(currentPage - 1) * perPage"
     class="mt-6"
+    *ngIf="enrollments.length > 0"
   ></p-paginator>
 </div>
 

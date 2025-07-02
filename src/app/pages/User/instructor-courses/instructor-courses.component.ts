@@ -226,6 +226,32 @@ export class InstructorCoursesComponent implements OnInit {
     })
   }
 
+  publicCourse(courseId: number) {
+    this.isLoading = true;
+    this.coursesService.instructorPublicCourses(courseId).subscribe({
+      next: (res) => {
+        this.loadCourses();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message,
+          life: 3000,
+        });
+        this.isLoading = false;
+      }, error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.message,
+          life: 3000,
+        });
+        console.log(error.message);
+
+        this.isLoading = false;
+      }
+    })
+  }
+
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
     this.perPage = event.rows;

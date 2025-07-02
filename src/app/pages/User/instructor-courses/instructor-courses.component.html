@@ -1,6 +1,8 @@
 <p-toast></p-toast>
 <div>
-  <h2 class="text-2xl font-bold text-gray-800 mb-6">Your course is on sale</h2>
+  <h2 class="lg:text-xl text-lg font-semibold lg:font-bold text-gray-800 mb-6">
+    Your course is on sale
+  </h2>
 
   <!-- Tìm kiếm và lọc -->
   <!-- <div class="flex items-center justify-between mb-6">
@@ -38,7 +40,7 @@
   <!-- Grid layout cho các card khóa học -->
   <div
     *ngIf="courses.length > 0; else noCourses"
-    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 my-6"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 my-6"
   >
     <div
       *ngFor="let course of courses"
@@ -58,7 +60,7 @@
           <p-tag
             *ngIf="course.status === 'approved'"
             severity="success"
-            value="Đang bán"
+            [value]="course.status"
             [rounded]="true"
             class="!text-xs"
           />
@@ -73,21 +75,21 @@
             *ngIf="course.status === 'pending'"
             severity="warn"
             class="!text-xs"
-            value="Đang chờ"
+            [value]="course.status"
             [rounded]="true"
           />
           <p-tag
             *ngIf="course.status === 'rejected'"
             severity="danger"
             class="!text-xs"
-            value="Bị từ chối"
+            [value]="course.status"
             [rounded]="true"
           />
           <p-tag
             *ngIf="course.status === 'unavailable'"
             severity="secondary"
             class="!text-xs"
-            value="Đã ẩn"
+            [value]="course.status"
             [rounded]="true"
           />
         </div>
@@ -99,10 +101,10 @@
           ></span>
         </div>
       </div>
-      <div class="p-4">
+      <div class="md:p-4 p-2">
         <div class="flex justify-between items-center">
           <h3
-            class="text-lg font-semibold text-gray-800 mb-2 truncate"
+            class="md:text-lg font-semibold text-gray-800 mb-2 truncate"
             [title]="course.course_name"
           >
             {{ course.course_name }}
@@ -119,6 +121,17 @@
               tooltipPosition="top"
             />
             <p-button
+              icon="pi pi-cloud-upload !text-xs"
+              (onClick)="publicCourse(course.id)"
+              [rounded]="true"
+              severity="success"
+              size="small"
+              [outlined]="true"
+              *ngIf="course.status === 'draft'"
+              pTooltip="Send to request"
+              tooltipPosition="top"
+            />
+            <p-button
               icon="pi pi-trash !text-xs"
               (onClick)="deleteCourse(course.id)"
               [rounded]="true"
@@ -130,12 +143,12 @@
             />
           </div>
         </div>
-        <p class="text-sm text-gray-600 mb-1">
+        <p class="text-xs md:text-sm text-gray-600 mb-1">
           <i class="pi pi-star mr-1"></i> Mức độ:
           {{ course.difficulty_level }}
         </p>
         <div class="flex items-center mb-1">
-          <span class="text-sm text-gray-600 mr-1">
+          <span class="text-xs md:text-sm text-gray-600 mr-1">
             <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
             {{ course.course_rating | number : "1.1-1" }}
           </span>
@@ -149,24 +162,24 @@
             }})</span
           >
         </div>
-        <p class="text-sm font-medium text-gray-800 mb-1">
+        <p class="text-xs md:text-sm font-medium text-gray-800 mb-1">
           <i class="pi pi-money-bill mr-1"></i>
           {{ course.price | number }} $
         </p>
-        <p class="text-sm text-gray-600 mb-2">
+        <p class="text-xs md:text-sm text-gray-600 mb-2">
           <i class="pi pi-book mr-1"></i> Tổng bài học:
           {{ course.lessons_count }}
         </p>
-        <div class="flex gap-2">
+        <div class="flex gap-2 md:justify-start justify-center">
           <button
             (click)="navigateToAddLesson(course.id)"
-            class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 text-sm font-medium"
+            class="md:w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 md:text-sm text-xs md:font-medium"
           >
             Add lesson
           </button>
           <button
             (click)="showLessons(course.id)"
-            class="w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200 text-sm font-medium"
+            class="md:w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200 md:text-sm text-xs md:font-medium"
           >
             View detail lesson
           </button>
