@@ -1,12 +1,16 @@
 <div class="intructor bg-[#FFF8F0] min-h-[90vh]">
   <div class="w-full">
     <div class="z-1">
-      <div class="max-w-7xl mx-auto relative z-10 p-10">
-        <div class="flex items-center justify-between w-full m-3">
+      <div class="max-w-7xl mx-auto relative z-10 md:p-10 p-4">
+        <div
+          class="flex items-center justify-between md:gap-0 gap-5 w-full m-3"
+        >
           <div class="flex items-start gap-2 flex-col pt-4">
             <p class="text-orange-600">Giáo viên</p>
-            <h3 class="font-bold text-3xl text-black">
-              Những giáo viên nổi bật của chúng tôi
+            <h3
+              class="md:font-bold font-semibold text-lg md:text-xl lg:text-3xl text-black"
+            >
+              Our outstanding instructors
             </h3>
           </div>
           <div class="mr-10">
@@ -35,7 +39,7 @@
           [numScroll]="4"
           [circular]="true"
           [showIndicators]="false"
-          contentClass=" pt-6"
+          contentClass="pt-2 md:pt-6"
           [responsiveOptions]="responsiveOptions"
           (onPage)="onCarouselPageChange($event)"
           [showNavigators]="false"

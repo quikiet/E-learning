@@ -1,5 +1,9 @@
 <div class="my-10 max-w-7xl mx-auto overflow-hidden">
-  <h3 class="text-2xl font-bold my-2 mb-6">Lĩnh vực sẽ học tiếp theo</h3>
+  <h3
+    class="font-semibold text-lg md:text-xl lg:text-2xl lg:font-bold my-2 mb-6 text-center md:text-left"
+  >
+    The field to study next
+  </h3>
   <div class="card">
     <p-carousel
       [value]="lists"
@@ -14,16 +18,20 @@
         <div
           [routerLink]="['/khoa-hoc']"
           [queryParams]="{ categories: list.id }"
-          class="cursor-pointer border hover:bg-surface-100 transition-all border-surface-300 m-2 p-4 text-center duration-300"
+          class="cursor-pointer border hover:bg-surface-100 transition-all border-surface-300 m-2 p-2 md:p-4 text-center duration-300"
         >
           <a class="font-medium text-center w-full"
-            ><span class="select-none">{{ list.name }}</span></a
+            ><span class="select-none text-sm md:text-lg">{{
+              list.name
+            }}</span></a
           >
         </div>
       </ng-template>
     </p-carousel>
   </div>
-  <h3 class="text-2xl font-bold pt-5">Các khóa học hàng đầu về Tiếng Việt</h3>
+  <h3 class="text-lg md:text-2xl font-bold pt-5">
+    Các khóa học hàng đầu về Tiếng Việt
+  </h3>
   <div class="grid grid-cols-5 gap-5 my-5 py-6">
     <div class="">
       <div class="flex gap-2 items-start">

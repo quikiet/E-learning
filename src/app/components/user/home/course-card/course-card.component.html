@@ -1,6 +1,10 @@
 <div class="my-10 max-w-7xl mx-auto">
-  <h3 class="text-2xl font-bold my-2">Lĩnh vực sẽ học tiếp theo</h3>
-  <h5 class="text-xl font-bold mb-2">Được đề xuất cho bạn</h5>
+  <h3 class="md:text-2xl text-lg lg:text-left text-center font-bold my-2">
+    The field to study next
+  </h3>
+  <h5 class="md:text-xl font-bold mb-2 lg:text-left text-center">
+    Recommended for you
+  </h5>
   <div>
     <p-carousel
       #carousel
@@ -9,7 +13,7 @@
       [numScroll]="numScroll"
       [circular]="true"
       [showIndicators]="false"
-      contentClass="mt-16"
+      contentClass="mt-6 md:mt-10 lg:mt-16"
       [responsiveOptions]="responsiveOptions"
       (onPage)="onCarouselPageChange($event)"
     >
