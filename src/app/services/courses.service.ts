@@ -15,6 +15,12 @@ export class CoursesService {
         params: { page: page.toString(), perPage: perPage.toString() }
       });
   }
+
+
+  cloneCourses(courseId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/instructor/course/${courseId}/clone`, {}, { withCredentials: true });
+  }
+
   // Thêm bài học mới (dùng chunk file upload)
   addLesson(courseId: number, data: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons`, data, {

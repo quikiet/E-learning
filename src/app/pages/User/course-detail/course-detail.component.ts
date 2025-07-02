@@ -5,12 +5,13 @@ import { AccordionModule } from 'primeng/accordion';
 import { CommonModule } from '@angular/common';
 import { Tag, TagModule } from 'primeng/tag';
 import { CoursesService } from '../../../services/courses.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { HeaderComponent } from "../../../components/user/header/header.component";
+import { LoadingComponent } from '../../../components/both/loading/loading.component';
 // Định nghĩa interface cho bài học
 interface Lesson {
   title: string;
@@ -39,7 +40,7 @@ interface Tab {
     TagModule,
     MultiSelectModule,
     TooltipModule,
-    HeaderComponent
+    HeaderComponent,
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',
@@ -54,11 +55,16 @@ export class CourseDetailComponent implements OnInit {
   isUserEnrolled: boolean = false;
   currentVideoUrl: string | null = null;
   currentUserId: number | null = null;
+  isLoading: boolean = false;
+  couponCode: string = '';
+  discountedPrice: number | null = null;
+  couponError: string | null = null;
 
   constructor(
     private coursesService: CoursesService,
     private route: ActivatedRoute,
     private authService: AuthService,
+    private router: Router,
     private messageService: MessageService
   ) { }
 
@@ -78,8 +84,8 @@ export class CourseDetailComponent implements OnInit {
   }
 
   loadCourse() {
+    this.isLoading = true;
     const slug = this.route.snapshot.paramMap.get('slug');
-    console.log(slug);
     if (slug) {
       this.coursesService.getCourseBySlug(slug).subscribe({
         next: (res) => {
@@ -95,13 +101,17 @@ export class CourseDetailComponent implements OnInit {
           this.previewVideoUrl = previewLesson?.video_url;
 
           // Tạo tabs từ danh sách bài học
-          this.tabs = this.createTabsFromLessons(this.lessons);
+          this.isLoading = false;
+
         },
         error: (err) => {
           console.error('Error loading course:', err.message);
           this.lessons = [];
           this.reviews = [];
           this.previewVideoUrl = '';
+          this.isLoading = false;
+        }, complete: () => {
+          this.isLoading = false;
         }
       });
     }
@@ -112,42 +122,6 @@ export class CourseDetailComponent implements OnInit {
 
     // Kiểm tra xem user_id của người dùng hiện tại có trong danh sách enrollments không
     return enrollments.some(enrollment => enrollment.user_id === this.currentUserId);
-  }
-
-  createTabsFromLessons(lessons: any[]): Tab[] {
-    const tabs: Tab[] = [];
-    let chapterIndex = 1;
-    const lessonsPerChapter = 3;
-
-    for (let i = 0; i < lessons.length; i += lessonsPerChapter) {
-      const chapterLessons = lessons.slice(i, i + lessonsPerChapter);
-      const content: { [key: number]: Lesson } = {};
-      chapterLessons.forEach((lesson: any, index: number) => {
-        content[index + 1] = {
-          title: lesson.title,
-          video_url: lesson.video_url,
-          duration: lesson.duration,
-          is_preview: lesson.is_preview,
-          status: lesson.status
-        };
-      });
-
-      tabs.push({
-        title: `Chương ${chapterIndex}: ${chapterLessons[0]?.title?.split(':')[0] || 'Không'}`,
-        content: content,
-        contentLength: chapterLessons.length,
-        totalDuration: this.getTotalDuration(chapterLessons),
-        value: chapterIndex.toString()
-      });
-
-      chapterIndex++;
-    }
-
-    return tabs;
-  }
-
-  formatPrice(price: number): string {
-    return price ? price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) : '0 đ';
   }
 
   getTotalDuration(lessons: any[]): number {
@@ -186,23 +160,20 @@ export class CourseDetailComponent implements OnInit {
           // Điều hướng người dùng đến URL thanh toán
           window.location.href = res.order.data;
         } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Lỗi',
-            detail: 'Không thể khởi tạo thanh toán',
-            life: 3000,
-          });
+          this.router.navigate(['login']);
         }
       },
       error: (err) => {
-        console.error('Error enrolling course:', err);
-        const errorMessage = err.error?.message || 'Không thể mua khóa học. Vui lòng thử lại.';
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Lỗi',
-          detail: errorMessage,
-          life: 3000,
-        });
+        this.router.navigate(['login']);
+
+        // console.error('Error enrolling course:', err);
+        // const errorMessage = err.error?.message;
+        // this.messageService.add({
+        //   severity: 'error',
+        //   summary: 'Lỗi',
+        //   detail: 'errorMessage',
+        //   life: 3000,
+        // });
       }
     });
   }

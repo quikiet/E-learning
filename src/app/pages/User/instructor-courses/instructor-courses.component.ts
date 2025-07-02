@@ -63,7 +63,6 @@ export class InstructorCoursesComponent implements OnInit {
   selectedCourse: any = null;
   course = {
     course_name: '',
-    university: '',
     difficulty_level: 'Beginner',
     course_description: '',
     skills: '',
@@ -88,12 +87,13 @@ export class InstructorCoursesComponent implements OnInit {
     title: '',
     duration: 0,
     is_preview: false,
+    is_visible: false,
     video: null as File | null,
   };
   isSubmittingLesson: boolean = false;
   selectedVideo: File | null = null;
   uploadProgress: number = 0;
-
+  isLoading = true;
   constructor(
     private coursesService: CoursesService,
     private categoryService: CategoryService,
@@ -125,6 +125,7 @@ export class InstructorCoursesComponent implements OnInit {
   }
 
   loadCourses() {
+    this.isLoading = true;
     this.coursesService.getInstructorCourses(this.currentPage, this.perPage).subscribe({
       next: (res) => {
         this.courses = res.data;
@@ -132,14 +133,16 @@ export class InstructorCoursesComponent implements OnInit {
         this.currentPage = res.current_page;
         this.perPage = res.per_page;
         this.totalRecords = res.total;
-        this.courses.forEach(course => {
-          if (!course.lessonCount) {
-            this.loadLessonCount(course.id, course);
-          }
-        });
+        // this.courses.forEach(course => {
+        //   if (!course.lessonCount) {
+        //     this.loadLessonCount(course.id, course);
+        //   }
+        // });
+        this.isLoading = false;
         // this.filterCourses(); // Áp dụng bộ lọc ngay sau khi tải
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error loading courses:', err);
         this.messageService.add({
           severity: 'error',
@@ -147,22 +150,24 @@ export class InstructorCoursesComponent implements OnInit {
           detail: 'Unable to load courses.',
           life: 3000,
         });
+      }, complete: () => {
+        this.isLoading = false;
       }
     });
   }
 
-  loadLessonCount(courseId: number, course: any) {
-    this.coursesService.getLessonsForCourse(courseId, 1, 10).subscribe({
-      next: (res) => {
-        // course.lessonCount = res.total;
-        // this.filterCourses(); // Cập nhật lại filteredCourses để đảm bảo lessonCount
-      },
-      error: (err) => {
-        console.error('Error loading lesson count:', err);
-        course.lessonCount = 0;
-      }
-    });
-  }
+  // loadLessonCount(courseId: number, course: any) {
+  //   this.coursesService.getLessonsForCourse(courseId, 1, 10).subscribe({
+  //     next: (res) => {
+  //       // course.lessonCount = res.total;
+  //       // this.filterCourses(); // Cập nhật lại filteredCourses để đảm bảo lessonCount
+  //     },
+  //     error: (err) => {
+  //       console.error('Error loading lesson count:', err);
+  //       course.lessonCount = 0;
+  //     }
+  //   });
+  // }
 
   // filterCourses() {
   //   let filtered = [...this.courses];
@@ -215,12 +220,14 @@ export class InstructorCoursesComponent implements OnInit {
   }
 
   loadLessons() {
+    this.isLoading = true;
     this.coursesService.getLessonsForCourse(this.selectedCourseId, this.lessonsCurrentPage, this.lessonsPerPage).subscribe({
       next: (res) => {
         this.selectedCourseLessons = res.data;
         this.lessonsCurrentPage = res.current_page;
         this.lessonsPerPage = res.per_page;
         this.lessonsTotalRecords = res.total;
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error loading lessons:', err);
@@ -231,6 +238,9 @@ export class InstructorCoursesComponent implements OnInit {
           life: 3000,
         });
         this.selectedCourseLessons = [];
+        this.isLoading = false;
+      }, complete: () => {
+        this.isLoading = false;
       }
     });
   }
@@ -245,7 +255,6 @@ export class InstructorCoursesComponent implements OnInit {
     this.selectedCourse = course;
     this.course = {
       course_name: course.course_name,
-      university: course.university,
       difficulty_level: course.difficulty_level,
       course_description: course.course_description,
       skills: course.skills,
@@ -308,7 +317,6 @@ export class InstructorCoursesComponent implements OnInit {
     this.isSubmitting = true;
     const formData = new FormData();
     formData.append('course_name', this.course.course_name || '');
-    formData.append('university', this.course.university ?? '');
     formData.append('difficulty_level', this.course.difficulty_level);
     formData.append('course_description', this.course.course_description ?? '');
     formData.append('skills', this.course.skills ?? '');
@@ -352,6 +360,7 @@ export class InstructorCoursesComponent implements OnInit {
       title: lesson.title,
       duration: lesson.duration,
       is_preview: lesson.is_preview,
+      is_visible: lesson.is_visible,
       video: null,
     };
     this.selectedVideo = null;
@@ -393,6 +402,7 @@ export class InstructorCoursesComponent implements OnInit {
     formData.append('title', this.lesson.title.trim());
     formData.append('duration', this.lesson.duration.toString());
     formData.append('is_preview', this.lesson.is_preview ? '1' : '0');
+    formData.append('is_visible', this.lesson.is_visible ? '1' : '0');
     if (this.selectedVideo) {
       formData.append('video', this.selectedVideo);
     }

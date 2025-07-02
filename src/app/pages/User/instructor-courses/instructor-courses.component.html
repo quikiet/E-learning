@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 <div>
-  <h2 class="text-2xl font-bold text-gray-800 mb-6">Khóa học của bạn</h2>
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Your course is on sale</h2>
 
   <!-- Tìm kiếm và lọc -->
   <!-- <div class="flex items-center justify-between mb-6">
@@ -106,12 +106,6 @@
         >
           {{ course.course_name }}
         </h3>
-        <p
-          class="text-sm text-gray-600 mb-1 truncate"
-          [title]="course.university"
-        >
-          <i class="pi pi-building mr-1"></i> {{ course.university }}
-        </p>
         <p class="text-sm text-gray-600 mb-1">
           <i class="pi pi-star mr-1"></i> Mức độ:
           {{ course.difficulty_level }}
@@ -144,13 +138,13 @@
             (click)="navigateToAddLesson(course.id)"
             class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 text-sm font-medium"
           >
-            Thêm bài học
+            Add lesson
           </button>
           <button
             (click)="showLessons(course.id)"
             class="w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200 text-sm font-medium"
           >
-            Xem chi tiết
+            View detail lesson
           </button>
         </div>
       </div>
@@ -173,7 +167,7 @@
 <p-dialog
   [(visible)]="showLessonsDialog"
   [style]="{ width: '700px' }"
-  header="Danh sách bài học"
+  header="Lessons list"
   [modal]="true"
   class="rounded-lg shadow-lg"
 >
@@ -270,7 +264,7 @@
 <p-dialog
   [(visible)]="showEditDialog"
   [style]="{ width: '600px' }"
-  header="Chỉnh sửa khóa học"
+  header="Update course"
   [modal]="true"
   class="rounded-lg shadow-lg"
 >
@@ -282,7 +276,7 @@
             for="course_name"
             class="block text-sm font-medium text-gray-700"
           >
-            Tên khóa học <span class="text-red-500">*</span>
+            Course name <span class="text-red-500">*</span>
           </label>
           <input
             id="course_name"
@@ -303,29 +297,15 @@
             "
             class="text-red-500 text-sm mt-1"
           >
-            Vui lòng nhập tên khóa học.
+            Please enter the course name.
           </div>
-        </div>
-        <div class="mb-4">
-          <label
-            for="university"
-            class="block text-sm font-medium text-gray-700"
-          >
-            Đại học
-          </label>
-          <input
-            id="university"
-            name="university"
-            [(ngModel)]="course.university"
-            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          />
         </div>
         <div class="mb-4">
           <label
             for="difficulty_level"
             class="block text-sm font-medium text-gray-700"
           >
-            Mức độ khó
+            Difficult level
           </label>
           <p-dropdown
             id="difficulty_level"
@@ -342,7 +322,7 @@
             for="course_description"
             class="block text-sm font-medium text-gray-700"
           >
-            Mô tả khóa học
+            Description
           </label>
           <textarea
             id="course_description"
@@ -354,7 +334,7 @@
         </div>
         <div class="mb-4">
           <label for="skills" class="block text-sm font-medium text-gray-700">
-            Kỹ năng
+            Skills
           </label>
           <input
             id="skills"
@@ -365,7 +345,7 @@
         </div>
         <div class="mb-4">
           <label for="price" class="block text-sm font-medium text-gray-700">
-            Giá khóa học (VND) <span class="text-red-500">*</span>
+            Price ($) <span class="text-primary">*</span>
           </label>
           <input
             type="number"
@@ -386,12 +366,12 @@
             "
             class="text-red-500 text-sm mt-1"
           >
-            Vui lòng nhập giá khóa học.
+            Please fill course price.
           </div>
         </div>
         <div class="mb-4">
           <label for="image" class="block text-sm font-medium text-gray-700">
-            Ảnh đại diện
+            Thumbnail
           </label>
           <input
             type="file"
@@ -402,7 +382,7 @@
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
           />
           <div *ngIf="selectedCourse?.image" class="mt-2">
-            <p>Hình ảnh hiện tại:</p>
+            <p>Current thumbnail:</p>
             <img
               [src]="selectedCourse.image"
               alt="Course Image"
@@ -415,7 +395,7 @@
             for="category_ids"
             class="block text-sm font-medium text-gray-700"
           >
-            Danh mục <span class="text-red-500">*</span>
+            Categories <span class="text-red-500">*</span>
           </label>
           <p-multiSelect
             id="category_ids"
@@ -424,7 +404,7 @@
             [options]="categories"
             optionLabel="name"
             optionValue="id"
-            placeholder="Chọn danh mục"
+            placeholder="Select categories"
             class="w-full"
             required
             #categoryIds="ngModel"
@@ -433,7 +413,7 @@
             *ngIf="courseForm.submitted && categoryIds.invalid"
             class="text-red-500 text-sm mt-1"
           >
-            Vui lòng chọn ít nhất một danh mục.
+            Please select at least one category.
           </div>
         </div>
       </div>
@@ -450,7 +430,7 @@
           [disabled]="courseForm.invalid || isSubmitting"
           class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          {{ isSubmitting ? "Đang cập nhật..." : "Cập nhật" }}
+          {{ isSubmitting ? "Updating..." : "Submit" }}
         </button>
       </div>
     </form>

@@ -1,5 +1,8 @@
 <p-toast></p-toast>
+
 <div class="max-w-7xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
+  <app-loading [isLoading]="isLoading"></app-loading>
+
   <div
     *ngIf="lessons.length > 0; else noLessons"
     class="flex flex-col md:flex-row gap-6 items-start"
@@ -10,6 +13,7 @@
         Danh sách bài học
       </h3>
       <div
+        *ngIf="!isLoading"
         class="space-y-2 max-h-[calc(100vh-200px)] overflow-y-auto no-scrollbar"
       >
         <div

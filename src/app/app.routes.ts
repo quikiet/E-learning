@@ -58,7 +58,7 @@ export const routes: Routes = [
             { path: 'my-course', component: StudentPurchasedCoursesComponentComponent },
             { path: 'khoa-hoc-cua-toi/hoc-bai/:id', component: StudentCourseLessonsComponentComponent },
             { path: 'tao-khoa-hoc', component: CreateCourseComponent },
-            { path: 'them-bai-hoc/:courseId', component: AddLessonsComponent },
+            { path: 'add-lesson/:courseId', component: AddLessonsComponent },
             { path: 'yeu-cau', component: InstructorRequestComponent },
         ]
     },

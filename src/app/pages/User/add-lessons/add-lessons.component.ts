@@ -80,8 +80,8 @@ export class AddLessonsComponent implements OnInit {
           this.uploadProgress = 0;
           this.messageService.add({
             severity: 'success',
-            summary: 'Thành công',
-            detail: 'Bài học đã được tạo và đang chờ duyệt.',
+            summary: 'Success',
+            detail: 'Add successful',
             life: 3000,
           });
 

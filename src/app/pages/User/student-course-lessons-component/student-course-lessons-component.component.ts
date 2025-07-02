@@ -17,6 +17,7 @@ import { SelectModule } from 'primeng/select';
 import { AuthService } from '../../../services/auth.service';
 import { QuizService } from '../../../services/lesson/quiz.service';
 import { AccordionModule } from 'primeng/accordion';
+import { LoadingComponent } from "../../../components/both/loading/loading.component";
 
 interface Feedback {
   name: string;
@@ -37,7 +38,8 @@ interface Feedback {
     SelectModule,
     TextareaModule,
     RouterLink,
-    AccordionModule
+    AccordionModule,
+    LoadingComponent
   ],
   providers: [MessageService],
   templateUrl: './student-course-lessons-component.component.html',
@@ -109,6 +111,8 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
           detail: err.error?.message,
           life: 3000,
         });
+      }, complete: () => {
+        this.isLoading = false;
       }
     });
   }
