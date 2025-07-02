@@ -16,6 +16,8 @@ import { HttpEventType } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
+import { PopoverModule } from 'primeng/popover';
+import { DividerModule } from 'primeng/divider';
 
 interface Category {
   name: string;
@@ -38,7 +40,9 @@ interface Category {
     RouterLink,
     InputIconModule,
     IconFieldModule,
-    TooltipModule
+    TooltipModule,
+    PopoverModule,
+    DividerModule
   ],
   providers: [MessageService],
   templateUrl: './instructor-courses.component.html',
@@ -95,6 +99,7 @@ export class InstructorCoursesComponent implements OnInit {
   selectedVideo: File | null = null;
   uploadProgress: number = 0;
   isLoading = true;
+  deletedCourses: any;
   constructor(
     private coursesService: CoursesService,
     private categoryService: CategoryService,
@@ -105,6 +110,7 @@ export class InstructorCoursesComponent implements OnInit {
   ngOnInit() {
     this.loadCategories();
     this.loadCourses();
+    this.loadDeletedCourses();
   }
 
   loadCategories() {
@@ -151,6 +157,29 @@ export class InstructorCoursesComponent implements OnInit {
           detail: 'Unable to load courses.',
           life: 3000,
         });
+      }, complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  loadDeletedCourses() {
+    this.isLoading = true;
+    this.coursesService.instructorViewDeletedCourse().subscribe({
+      next: (res) => {
+        this.deletedCourses = res;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Error loading courses:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Unable to load courses.',
+          life: 3000,
+        });
+        this.isLoading = false;
       }, complete: () => {
         this.isLoading = false;
       }

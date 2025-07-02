@@ -157,8 +157,8 @@ export class CoursesService {
     return this.http.delete<any>(`${this.apiUrl}/instructor/courses/${courseId}`, { withCredentials: true });
   }
 
-  instructorViewDeletedCourse(page: number = 1, perPage: number = 10): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/instructor/deleted-courses?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  instructorViewDeletedCourse(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/instructor/deleted-courses`, { withCredentials: true });
   }
 
   getQuizOfCourse(courseId: number, page: number = 1, perPage: number = 10): Observable<any> {
