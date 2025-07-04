@@ -167,6 +167,32 @@
           </h3>
           <div class="flex items-center gap-2">
             <p-button
+              [icon]="
+                course?.status === 'unavailable'
+                  ? 'pi pi-eye'
+                  : course?.status === 'approved'
+                  ? 'pi pi-eye-slash'
+                  : ''
+              "
+              (onClick)="toggleAvailableCourse(course.id, course.status)"
+              [rounded]="true"
+              severity="info"
+              size="small"
+              [outlined]="true"
+              *ngIf="
+                course?.status === 'approved' ||
+                course?.status === 'unavailable'
+              "
+              [pTooltip]="
+                course?.status === 'unavailable'
+                  ? 'Available course'
+                  : course?.status === 'approved'
+                  ? 'Unavailable course'
+                  : ''
+              "
+              tooltipPosition="top"
+            />
+            <p-button
               icon="pi pi-copy !text-xs"
               (onClick)="cloneCourse(course.id)"
               [rounded]="true"

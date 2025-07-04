@@ -161,10 +161,19 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/instructor/deleted-courses`, { withCredentials: true });
   }
 
+  instructorRestoreCourse(courseId: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/instructor/${courseId}/restore`, {}, { withCredentials: true });
+  }
+
+  instructorUnavailableCourse(courseId: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/instructor/courses/unavailable/${courseId}`, {}, { withCredentials: true });
+  }
+
+  instructorAvailableCourse(courseId: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/instructor/courses/available/${courseId}`, {}, { withCredentials: true });
+  }
+
   getQuizOfCourse(courseId: number, page: number = 1, perPage: number = 10): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/instructor/courses/${courseId}/quizzes?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
-
-
-
 }

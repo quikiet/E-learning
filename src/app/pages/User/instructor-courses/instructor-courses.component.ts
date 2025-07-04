@@ -231,6 +231,77 @@ export class InstructorCoursesComponent implements OnInit {
   //   this.currentPage = 1;
   // }
 
+  restoreCourse(courseId: number) {
+    this.isLoading = true;
+    this.coursesService.instructorRestoreCourse(courseId).subscribe({
+      next: (res) => {
+        this.loadCourses();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message,
+          life: 3000,
+        });
+        this.isLoading = false;
+      }, error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.error.message,
+          life: 3000,
+        });
+        this.isLoading = false;
+      }
+    })
+  }
+
+  toggleAvailableCourse(courseId: number, status: string) {
+    this.isLoading = true;
+    if (status === 'approved') {
+      this.coursesService.instructorUnavailableCourse(courseId).subscribe({
+        next: (res) => {
+          this.loadCourses();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: res.message,
+            life: 3000,
+          });
+          this.isLoading = false;
+        }, error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: error.error.message,
+            life: 3000,
+          });
+          this.isLoading = false;
+        }
+      })
+    } else if (status === 'unavailable') {
+      this.coursesService.instructorAvailableCourse(courseId).subscribe({
+        next: (res) => {
+          this.loadCourses();
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: res.message,
+            life: 3000,
+          });
+          this.isLoading = false;
+        }, error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: error.error.message,
+            life: 3000,
+          });
+          this.isLoading = false;
+        }
+      })
+    }
+  }
+
   cloneCourse(courseId: number) {
     this.isLoading = true;
     this.coursesService.cloneCourses(courseId).subscribe({
