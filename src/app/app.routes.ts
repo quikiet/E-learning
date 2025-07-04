@@ -38,6 +38,7 @@ import { InstructorQuizManagementComponent } from './pages/User/instructor-quiz-
 import { StudentQuizAttemptComponent } from './pages/both/student-quiz-attempt/student-quiz-attempt.component';
 import { QuizTakingComponent } from './pages/User/quiz-taking/quiz-taking.component';
 import { AdminCourseManagementComponent } from './pages/admin/admin-course-management/admin-course-management.component';
+import { CourseProgressComponent } from './pages/User/course-progress/course-progress.component';
 
 export const routes: Routes = [
     {
@@ -57,7 +58,6 @@ export const routes: Routes = [
             { path: 'khoa-hoc', component: CourseSearchComponent },
             { path: 'my-course', component: StudentPurchasedCoursesComponentComponent },
             { path: 'khoa-hoc-cua-toi/hoc-bai/:id', component: StudentCourseLessonsComponentComponent },
-            { path: 'tao-khoa-hoc', component: CreateCourseComponent },
             { path: 'add-lesson/:courseId', component: AddLessonsComponent },
             { path: 'yeu-cau', component: InstructorRequestComponent },
         ]
@@ -68,7 +68,7 @@ export const routes: Routes = [
     {
         path: 'admin', component: AdminComponent,
         children: [
-            { path: 'ho-so', component: ProfileInfoComponent },
+            { path: 'profile', component: ProfileInfoComponent },
             { path: 'thong-ke', component: DashboardComponent },
             { path: 'quan-ly-nguoi-dung', component: UserManageComponent },
             { path: 'quan-ly-giang-vien', component: InstructorManageComponent },
@@ -93,10 +93,12 @@ export const routes: Routes = [
         path: '',
         component: ProfileComponent,
         children: [
-            { path: 'ho-so', component: ProfileInfoComponent },
-            { path: 'danh-sach-khoa-hoc', component: InstructorCoursesComponent },
-            { path: 'danh-sach-bai-tap/:lessonID', component: InstructorQuizManagementComponent },
+            { path: 'profile', component: ProfileInfoComponent },
+            { path: 'instructor-course', component: InstructorCoursesComponent },
+            { path: 'create-course', component: CreateCourseComponent },
+            { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent },
             { path: 'lich-su-thanh-toan', component: StudentPaymentHistoryComponent },
+            { path: 'course/:course_id/user-progress', component: CourseProgressComponent },
             { path: '**', redirectTo: 'ho-so', pathMatch: 'full' },
         ]
     },

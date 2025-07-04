@@ -11,7 +11,7 @@
       </div>
       <div class="flex items-center gap-2">
         <i class="pi pi-lightbulb text-primary !text-xs"></i>
-        <span class="text-xs"> Học mọi lúc, mọi nơi – Truy cập 24/7 </span>
+        <span class="text-xs"> Learn anytime, anywhere – Access 24/7</span>
       </div>
     </div>
     <div class="flex items-center gap-5">
@@ -78,7 +78,7 @@
                 class="block px-4 py-2 rounded-lg hover:bg-blue-100 hover:text-blue-600 transition-all duration-300"
                 [routerLink]="['/khoa-hoc']"
               >
-                Khám phá
+                Explore
               </a>
               <div
                 class="lg:block hidden absolute select-none opacity-0 invisible z-50 group-hover:select-auto group-hover:visible group-hover:opacity-100 top-full transition-all duration-200 ease-out transform group-hover:translate-y-6"
@@ -141,9 +141,9 @@
             <a
               *ngIf="userRole === 'instructor'"
               class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
-              [routerLink]="['/tao-khoa-hoc']"
+              [routerLink]="['/create-course']"
             >
-              Đăng khoá học
+              Create course
             </a>
           </li>
           <li class="my-5 lg:my-0">
@@ -271,7 +271,7 @@
                   >
                     <li *ngIf="userRole !== 'admin'">
                       <a
-                        [routerLink]="['/ho-so']"
+                        [routerLink]="['/profile']"
                         class="group flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
                       >
                         <svg
@@ -312,12 +312,12 @@
                             fill=""
                           ></path>
                         </svg>
-                        Trang quản trị
+                        Dashboard
                       </a>
                     </li>
                     <li *ngIf="userRole === 'instructor'">
                       <a
-                        [routerLink]="['/danh-sach-khoa-hoc']"
+                        [routerLink]="['/instructor-course']"
                         class="group flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
                       >
                         <svg
@@ -335,7 +335,7 @@
                             fill=""
                           ></path>
                         </svg>
-                        Danh sách khoá học
+                        Instructor courses
                       </a>
                     </li>
                   </ul>
@@ -344,7 +344,7 @@
                     class="cursor-pointer group mt-3 flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
                   >
                     <i class="pi pi-sign-out"></i>
-                    Đăng xuất
+                    Log out
                   </button>
                 </div>
                 <!-- Dropdown End -->

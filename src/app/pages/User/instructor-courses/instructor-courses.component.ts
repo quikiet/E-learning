@@ -364,6 +364,10 @@ export class InstructorCoursesComponent implements OnInit {
     this.router.navigate([`/add-lesson/${courseId}`]);
   }
 
+  navigateToUserProgress(courseId: number) {
+    this.router.navigate([`/course/${courseId}/user-progress`]);
+  }
+
   showLessons(courseId: number) {
     this.selectedCourseId = courseId;
     // this.lessonsCurrentPage = 1;
@@ -589,13 +593,30 @@ export class InstructorCoursesComponent implements OnInit {
       }
     });
   }
-
   deleteLesson(lessonId: number) {
-    this.isLoading = true;
     if (!lessonId) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Invalid lesson ID.',
+        life: 3000,
+      });
       return;
     }
-    this.coursesService.instructorDeleteLesson(this.selectedCourseId, lessonId).subscribe({
+
+    const userInput = prompt('Are you sure you want to delete this lesson? Please type "OK" to confirm.');
+    if (userInput !== 'OK') {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Cancelled',
+        detail: 'Lesson deletion cancelled.',
+        life: 3000,
+      });
+      return;
+    }
+
+    this.isLoading = true;
+    this.coursesService.instructorDeleteLesson(this.selectedCourseId!, lessonId).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -620,27 +641,44 @@ export class InstructorCoursesComponent implements OnInit {
   }
 
   deleteCourse(courseId: number) {
-    this.isLoading = true;
     if (!courseId) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Invalid course ID.',
+        life: 3000,
+      });
       return;
     }
+
+    const userInput = prompt('Are you sure you want to delete this course? Please type "OK" to confirm.');
+    if (userInput !== 'OK') {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Cancelled',
+        detail: 'Course deletion cancelled.',
+        life: 3000,
+      });
+      return;
+    }
+
+    this.isLoading = true;
     this.coursesService.instructorDeleteCourse(courseId).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: res.message,
+          detail: res.message || 'Course deleted successfully.',
           life: 3000,
         });
-        this.loadCourses();
         this.isLoading = false;
-
+        this.loadCourses();
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: err.error?.message,
+          detail: err.error?.message || 'Unable to delete course.',
           life: 3000,
         });
         this.isLoading = false;

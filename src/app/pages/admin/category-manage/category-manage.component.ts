@@ -72,7 +72,6 @@ export class CategoryManageComponent implements OnInit {
     name: new FormControl('', Validators.required)
   });
 
-  expandedRows = {};
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -84,6 +83,8 @@ export class CategoryManageComponent implements OnInit {
   ngOnInit(): void {
     this.loadCategoryData();
   }
+
+  expandedRows = {};
 
   collapseAll() {
     this.expandedRows = {};

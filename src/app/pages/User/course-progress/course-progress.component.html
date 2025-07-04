@@ -1,0 +1,104 @@
+<app-loading [isLoading]="isLoading"></app-loading>
+<div class="min-h-screen">
+  <!-- Course Information -->
+  <div class="mb-6 flex items-center justify-between gap-3">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900">
+        {{ courseProgress?.course_name }}
+      </h2>
+      <p class="text-sm text-gray-500">Course ID: {{ courseId }}</p>
+    </div>
+    <p-button
+      icon="pi pi-times"
+      [rounded]="true"
+      severity="danger"
+      [outlined]="true"
+      (onClick)="backListCourse()"
+    />
+  </div>
+
+  <!-- Global Filter and Table -->
+  <div class="bg-white shadow-md rounded-lg p-4">
+    <div class="mb-4">
+      <input
+        type="text"
+        pInputText
+        class="w-full sm:w-64 p-2 border rounded-md"
+        placeholder="Search by username or email..."
+        [(ngModel)]="globalFilter"
+        (input)="onGlobalFilter($event)"
+      />
+    </div>
+    <p-table
+      #dt
+      [value]="courseProgress?.users || []"
+      [globalFilterFields]="['username', 'email']"
+      [paginator]="true"
+      [rows]="10"
+      [showCurrentPageReport]="true"
+      [responsive]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Lesson Progress</th>
+          <th>Completed Lessons</th>
+          <th>Certificate Eligibility</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <div class="flex items-center gap-2">
+              <p-progressBar
+                [value]="user.lesson_completion_percent"
+                [showValue]="false"
+                class="!rounded-full w-24"
+              />
+
+              <span>{{ user.lesson_completion_percent }}%</span>
+            </div>
+          </td>
+          <td>{{ user.completed_lessons }} / {{ user.total_lessons }}</td>
+          <td>
+            <p-tag
+              [value]="user.is_eligible_for_certificate"
+              [severity]="
+                user.is_eligible_for_certificate ? 'success' : 'danger'
+              "
+            />
+          </td>
+          <td>
+            <button
+              pButton
+              type="button"
+              [label]="user.is_eligible_for_certificate ? 'Revoke' : 'Grant'"
+              [pTooltip]="
+                user.is_eligible_for_certificate
+                  ? 'Revoke certificate eligibility'
+                  : 'Grant certificate eligibility'
+              "
+              tooltipPosition="top"
+              [ngClass]="{
+                'p-button-success': !user.is_eligible_for_certificate,
+                'p-button-danger': user.is_eligible_for_certificate
+              }"
+              [disabled]="!user.is_eligible_for_certificate"
+              (click)="toggleCertificateEligibility(user.user_id)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center text-gray-500">No users found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

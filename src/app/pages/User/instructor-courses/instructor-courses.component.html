@@ -1,9 +1,7 @@
 <p-toast></p-toast>
 <div>
   <div class="flex gap-5 items-center">
-    <h2
-      class="lg:text-xl text-lg font-semibold lg:font-bold text-gray-800 mb-6"
-    >
+    <h2 class="lg:text-xl text-lg font-semibold lg:font-bold text-black">
       Your course is on sale
     </h2>
     <p-button
@@ -58,7 +56,7 @@
             </li>
 
             <li class="text-xs" *ngIf="!deletedCourses">
-              Không có Khoá học nào đã bị xoá trước đó
+              No courses have been deleted previously.
             </li>
           </ul>
         </div>
@@ -199,7 +197,7 @@
               tooltipPosition="top"
             />
             <p-button
-              icon="pi pi-copy !text-xs"
+              icon="pi pi-clone !text-xs"
               (onClick)="cloneCourse(course.id)"
               [rounded]="true"
               severity="info"
@@ -232,7 +230,7 @@
           </div>
         </div>
         <p class="text-xs md:text-sm text-gray-600 mb-1">
-          <i class="pi pi-star mr-1"></i> Mức độ:
+          <i class="pi pi-star mr-1"></i> Level:
           {{ course.difficulty_level }}
         </p>
         <div class="flex items-center mb-1">
@@ -243,10 +241,10 @@
           <span class="text-xs text-gray-500"
             >({{
               course.course_rating >= 4
-                ? "Xuất sắc"
+                ? "Excellent"
                 : course.course_rating >= 3
-                ? "Tốt"
-                : "Trung bình"
+                ? "Good"
+                : "Average"
             }})</span
           >
         </div>
@@ -255,28 +253,34 @@
           {{ course.price | number }} $
         </p>
         <p class="text-xs md:text-sm text-gray-600 mb-2">
-          <i class="pi pi-book mr-1"></i> Tổng bài học:
+          <i class="pi pi-book mr-1"></i> Total of lesson:
           {{ course.lessons_count }}
         </p>
         <div class="flex gap-2 md:justify-start justify-center">
           <button
+            (click)="navigateToUserProgress(course.id)"
+            class="md:w-full bg-secondary text-white px-4 rounded-md hover:bg-secondary-content transition duration-200 md:text-sm text-xs md:font-medium"
+          >
+            User progress
+          </button>
+          <button
             (click)="navigateToAddLesson(course.id)"
-            class="md:w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 md:text-sm text-xs md:font-medium"
+            class="md:w-full bg-blue-500 text-white px-4 rounded-md hover:bg-blue-600 transition duration-200 md:text-sm text-xs md:font-medium"
           >
             Add lesson
           </button>
           <button
             (click)="showLessons(course.id)"
-            class="md:w-full bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200 md:text-sm text-xs md:font-medium"
+            class="md:w-full bg-primary/90 text-white px-4 rounded-md hover:bg-primary transition duration-200 md:text-sm text-xs md:font-medium"
           >
-            View detail lesson
+            Lessons
           </button>
         </div>
       </div>
     </div>
   </div>
   <ng-template #noCourses>
-    <p class="text-center text-gray-500 py-4">Không tìm thấy khóa học nào.</p>
+    <p class="text-center text-gray-500 py-4">No courses found.</p>
   </ng-template>
 
   <p-paginator
@@ -303,59 +307,65 @@
           *ngFor="let lesson of selectedCourseLessons"
           class="border-b border-gray-200 py-3"
         >
-          <div class="flex items-center justify-between">
-            <div>
-              <h4
-                class="text-md font-semibold text-gray-800"
-                [pTooltip]="lesson.title"
-                tooltipPosition="right"
-              >
-                {{ cutText(lesson.title, 5) }}
-              </h4>
-              <p class="text-sm text-gray-600">
-                <i class="pi pi-clock mr-1"></i> Duration:
-                {{ lesson.duration }} minutes
-              </p>
-              <p class="text-sm text-gray-600">
-                <i class="pi pi-eye mr-1"></i> Preview:
-                {{ lesson.is_preview ? "Yes" : "No" }}
-              </p>
-              <p class="text-sm text-gray-600">
-                <i class="pi pi-eye mr-1"></i> Visible:
-                {{ lesson.is_visible ? "Yes" : "No" }}
-              </p>
-              <p class="text-sm text-gray-600">
-                <i class="pi pi-tag mr-1"></i> Version: {{ lesson.version }}
-              </p>
-            </div>
-            <div class="flex gap-2 justify-center items-center">
+          <div class="flex items-center gap-2 justify-between">
+            <div class="flex items-center flex-col">
+              <div>
+                <h4
+                  class="text-md font-semibold text-gray-800"
+                  [pTooltip]="lesson.title"
+                  tooltipPosition="right"
+                >
+                  {{ cutText(lesson.title, 5) }}
+                </h4>
+                <p class="text-sm text-gray-600">
+                  <i class="pi pi-clock mr-1"></i> Duration:
+                  {{ lesson.duration }} minutes
+                </p>
+                <p class="text-sm text-gray-600">
+                  <i class="pi pi-eye mr-1"></i> Preview:
+                  {{ lesson.is_preview ? "Yes" : "No" }}
+                </p>
+                <p class="text-sm text-gray-600">
+                  <i class="pi pi-eye mr-1"></i> Visible:
+                  {{ lesson.is_visible ? "Yes" : "No" }}
+                </p>
+                <p class="text-sm text-gray-600">
+                  <i class="pi pi-tag mr-1"></i> Version: {{ lesson.version }}
+                </p>
+              </div>
               <p-button
-                label="Quản lý bài tập"
+                label="Quiz management"
                 severity="success"
-                [routerLink]="['/danh-sach-bai-tap', lesson.id]"
+                [routerLink]="['/quiz-management', lesson.id]"
               />
             </div>
-            <div class="flex flex-col">
+            <div class="flex gap-2">
               <video
                 controls
                 [src]="lesson.video_url"
-                class="w-48 h-28"
+                class="w-52 h-36"
                 type="video/mp4"
               >
                 Your browser does not support the video tag.
               </video>
-              <div>
+              <div class="flex flex-col items-center justify-center gap-2 py-2">
                 <p-button
                   (click)="deleteLesson(lesson.id)"
                   icon="pi pi-trash"
-                  label="Delete"
                   severity="danger"
+                  [rounded]="true"
+                  [text]="true"
+                  pTooltip="Delete"
+                  tooltipPosition="top"
                 />
                 <p-button
                   (click)="openEditLessonDialog(lesson)"
                   icon="pi pi-file-edit"
-                  label="Edit"
+                  pTooltip="Edit"
+                  tooltipPosition="bottom"
                   severity="info"
+                  [rounded]="true"
+                  [text]="true"
                   [disabled]="lesson.origin_id && lesson.version === 1"
                 />
               </div>
@@ -381,7 +391,7 @@
     <button
       pButton
       type="button"
-      label="Đóng"
+      label="Close"
       icon="pi pi-times"
       class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
       (click)="showLessonsDialog = false"
@@ -570,7 +580,7 @@
 <p-dialog
   [(visible)]="showEditLessonDialog"
   [style]="{ width: '600px' }"
-  header="Chỉnh sửa bài học"
+  header="Edit lesson"
   [modal]="true"
   class="rounded-lg shadow-lg"
 >
@@ -582,7 +592,7 @@
             for="lesson_title"
             class="block text-sm font-medium text-gray-700"
           >
-            Tiêu đề bài học <span class="text-red-500">*</span>
+            Lesson title <span class="text-red-500">*</span>
           </label>
           <input
             id="lesson_title"
@@ -603,7 +613,7 @@
             "
             class="text-red-500 text-sm mt-1"
           >
-            Vui lòng nhập tiêu đề bài học.
+            Please enter the lesson title.
           </div>
         </div>
         <div class="mb-4">
@@ -611,7 +621,7 @@
             for="lesson_duration"
             class="block text-sm font-medium text-gray-700"
           >
-            Thời lượng (phút) <span class="text-red-500">*</span>
+            Duration (minutes)<span class="text-red-500">*</span>
           </label>
           <input
             type="number"
@@ -622,15 +632,6 @@
             min="1"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray/30"
           />
-          <div
-            *ngIf="
-              lessonForm.submitted &&
-              lessonForm.controls['lesson_duration']?.invalid
-            "
-            class="text-red-500 text-sm mt-1"
-          >
-            Vui lòng nhập thời lượng hợp lệ.
-          </div>
         </div>
         <div class="mb-4">
           <label class="flex items-center text-sm font-medium text-gray-700">
@@ -641,12 +642,12 @@
               [(ngModel)]="lesson.is_preview"
               class="mr-2"
             />
-            Cho phép xem trước
+            Allow preview
           </label>
         </div>
         <div class="mb-4">
           <label for="video" class="block text-sm font-medium text-gray-700">
-            Video bài học
+            Lesson video
           </label>
           <input
             type="file"
@@ -664,11 +665,11 @@
               ></div>
             </div>
             <p class="text-sm text-gray-600 mt-1">
-              Đang upload: {{ uploadProgress }}%
+              Uploading: {{ uploadProgress }}%
             </p>
           </div>
           <div *ngIf="selectedLesson?.video_url" class="mt-2">
-            <p>Video hiện tại:</p>
+            <p>Current video:</p>
             <video
               class="w-52 h-32"
               controls
@@ -686,14 +687,14 @@
           (click)="showEditLessonDialog = false"
           class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
         >
-          Hủy
+          Cancel
         </button>
         <button
           type="submit"
           [disabled]="lessonForm.invalid || isSubmittingLesson"
           class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
-          {{ isSubmittingLesson ? "Đang cập nhật..." : "Cập nhật" }}
+          {{ isSubmittingLesson ? "Updating..." : "Update" }}
         </button>
       </div>
     </form>

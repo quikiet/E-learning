@@ -89,16 +89,14 @@
             }}</span></span
           >
         </div>
-        <p class="text-sm font-thin py-2">
-          Tổng {{ activeCard.total_time }} giờ học
-        </p>
+        <p class="text-sm font-thin py-2">{{ activeCard.total_time }} hours</p>
         <div>
           {{ cutText(activeCard.course_description, 25) }}
         </div>
         <ul class="list-disc ml-4 text-sm py-2">
-          <li>Độ khó: {{ activeCard.difficulty_level }}</li>
-          <li>Kỹ năng học được: {{ activeCard.skills }}</li>
-          <li>Số bài học: {{ activeCard.total_lessons }}</li>
+          <li>Level: {{ activeCard.difficulty_level }}</li>
+          <li>Learned skills: {{ activeCard.skills }}</li>
+          <li>Lessons: {{ activeCard.total_lessons }}</li>
         </ul>
         <div class="flex justify-between items-center gap-5 pt-5">
           <button

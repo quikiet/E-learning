@@ -67,6 +67,11 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/instructor/courses/${course_id}/progress`, { withCredentials: true });
   }
 
+  instructorIssueCertificate(course_id: number, user_id: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/instructor/issue-certificate-manual`, { course_id, user_id }, { withCredentials: true });
+
+  }
+
   // Lấy danh sách bài học của khóa học
   getLessonsForCourse(courseId: number, page: number = 1, perPage: number = 10): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons?page=${page}&perPage=${perPage}`, { withCredentials: true });

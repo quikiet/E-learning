@@ -3,7 +3,7 @@
     <div class="card flex justify-center">
       <div class="flex flex-col h-full">
         <div class="flex items-center justify-between pt-4 shrink-0">
-          <a class="flex items-center space-x-2" href="#">
+          <a class="flex items-center space-x-2" href="">
             <img
               alt="Edunity logo, green hexagonal shape with stacked layers"
               class="w-8 h-8"
@@ -24,27 +24,38 @@
               <ul class="list-none p-0 m-0 overflow-hidden">
                 <li class="mb-2">
                   <a
-                    [routerLink]="['/ho-so']"
+                    [routerLink]="['/profile']"
                     routerLinkActive="bg-secondary-content text-white"
                     pRipple
                     class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                   >
                     <i class="pi pi-user mr-2"></i>
+                    <span class="font-medium hidden lg:block">Profile</span>
+                  </a>
+                </li>
+                <li class="mb-2" *ngIf="user && user.role === 'instructor'">
+                  <a
+                    [routerLink]="['/create-course']"
+                    routerLinkActive="bg-secondary-content text-white"
+                    pRipple
+                    class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-calendar-plus mr-2"></i>
                     <span class="font-medium hidden lg:block"
-                      >Thông tin cá nhân</span
+                      >Create course</span
                     >
                   </a>
                 </li>
                 <li class="mb-2" *ngIf="user && user.role === 'instructor'">
                   <a
-                    [routerLink]="['/danh-sach-khoa-hoc']"
+                    [routerLink]="['/instructor-course']"
                     routerLinkActive="bg-secondary-content text-white"
                     pRipple
                     class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                   >
-                    <i class="pi pi-list mr-2"></i>
+                    <i class="pi pi-book mr-2"></i>
                     <span class="font-medium hidden lg:block"
-                      >Danh sách khoá học</span
+                      >Instructor courses</span
                     >
                   </a>
                 </li>
