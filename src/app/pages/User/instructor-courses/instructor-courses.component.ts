@@ -236,6 +236,7 @@ export class InstructorCoursesComponent implements OnInit {
     this.coursesService.instructorRestoreCourse(courseId).subscribe({
       next: (res) => {
         this.loadCourses();
+        this.loadDeletedCourses();
         this.messageService.add({
           severity: 'success',
           summary: 'Success',

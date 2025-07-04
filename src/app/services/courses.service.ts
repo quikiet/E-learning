@@ -162,7 +162,7 @@ export class CoursesService {
   }
 
   instructorRestoreCourse(courseId: number): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/instructor/${courseId}/restore`, {}, { withCredentials: true });
+    return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/restore`, {}, { withCredentials: true });
   }
 
   instructorUnavailableCourse(courseId: number): Observable<any> {
