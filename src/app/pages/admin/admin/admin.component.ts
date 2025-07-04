@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { BadgeModule } from 'primeng/badge';
 
@@ -25,9 +25,23 @@ export class AdminComponent implements OnInit {
   userRole: string = '';
   currentUser: any = {};
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+    private router: Router
+  ) { }
   ngOnInit(): void {
     this.loadCurrentAdmin();
+  }
+
+  logOut() {
+    this.authService.logout().subscribe({
+      next: (res) => {
+        localStorage.removeItem('user');
+        this.router.navigate(['/login']);
+        console.log(res.message);
+      }, error: (error) => {
+        console.log(error.message);
+      }
+    })
   }
 
   loadCurrentAdmin() {

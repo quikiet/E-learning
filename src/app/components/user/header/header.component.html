@@ -76,7 +76,7 @@
             <div class="relative inline-block w-full group">
               <a
                 class="block px-4 py-2 rounded-lg hover:bg-blue-100 hover:text-blue-600 transition-all duration-300"
-                [routerLink]="['/khoa-hoc']"
+                [routerLink]="['/course']"
               >
                 Explore
               </a>
@@ -95,7 +95,7 @@
                       class="relative group/parent px-3 py-2 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-600 transition-all duration-200"
                     >
                       <a
-                        [routerLink]="['/khoa-hoc']"
+                        [routerLink]="['/course']"
                         [queryParams]="{ categories: parent.id }"
                         >{{ parent.name }}</a
                       >
@@ -111,7 +111,7 @@
                         <a
                           *ngFor="let child of parent.children"
                           class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-blue-600 rounded cursor-pointer transition-all duration-200"
-                          [routerLink]="['/khoa-hoc']"
+                          [routerLink]="['/course']"
                           [queryParams]="{ categories: child.id }"
                         >
                           {{ child.name }}

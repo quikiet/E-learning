@@ -213,7 +213,7 @@
           <p-tag
             *ngIf="user.role === 'admin'"
             severity="danger"
-            value="Quản trị viên"
+            [value]="user.role"
             [rounded]="true"
             class="!text-xs"
           />
@@ -221,14 +221,14 @@
             *ngIf="user.role === 'student'"
             severity="success"
             class="!text-xs"
-            value="Học viên"
+            [value]="user.role"
             [rounded]="true"
           />
           <p-tag
             *ngIf="user.role === 'instructor'"
             severity="info"
             class="!text-xs"
-            value="Giáo viên"
+            [value]="user.role"
             [rounded]="true"
           /></div
       ></span>
@@ -250,28 +250,28 @@
         <div class="flex h-full w-full flex-col justify-between gap-5">
           <div class="flex items-center gap-5 justify-between w-full pr-5">
             <div>
-              <label class="text-sm block">Họ và tên</label>
+              <label class="text-sm block">Email</label>
               <span class="text-sm text-secondary">{{ user.email }}</span>
             </div>
             <div>
-              <label class="text-sm block">Giới tính</label>
+              <label class="text-sm block">Gender</label>
               <span class="text-sm text-secondary">{{ user.gender }}</span>
             </div>
           </div>
           <div class="flex items-center gap-5 justify-between w-full pr-5">
             <div>
-              <label class="text-sm block">Địa chỉ email</label>
-              <span class="text-sm text-secondary">{{ user.email }}</span>
+              <label class="text-sm block">Username</label>
+              <span class="text-sm text-secondary">{{ user.username }}</span>
             </div>
           </div>
         </div>
       </div>
       <div>
-        <strong>Ngày tạo:</strong>
+        <strong>Created at:</strong>
         {{ user.created_at | date : "dd/MM/yyyy HH:mm" }}
       </div>
       <div>
-        <strong>Ngày cập nhật:</strong>
+        <strong>Updated at:</strong>
         {{ user.updated_at | date : "dd/MM/yyyy HH:mm" }}
       </div>
       <div class="flex flex-wrap gap-5">
@@ -280,7 +280,7 @@
           <span class="text-sm text-secondary">{{ user.LoE_DI }}</span>
         </div>
         <div>
-          <label class="block font-semibold mb-2">Năm sinh</label>
+          <label class="block font-semibold mb-2">Birthdate</label>
           <span class="text-sm text-secondary">{{
             user.birthdate | date
           }}</span>
@@ -292,7 +292,7 @@
     <div class="flex justify-center">
       <p-button
         (onClick)="deleteUser(user.id)"
-        label="Xoá người dùng"
+        label="Delete"
         icon="pi pi-trash"
         [disabled]="true"
         severity="danger"

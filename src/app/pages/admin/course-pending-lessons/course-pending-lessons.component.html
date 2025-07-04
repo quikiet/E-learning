@@ -1,4 +1,4 @@
-<!-- Bảng hiển thị bài học -->
+<!-- Lessons Table -->
 <p-table
   class="w-full bg-white shadow-lg rounded-lg border border-gray-100"
   [value]="lessons"
@@ -12,7 +12,7 @@
     <div class="flex items-center justify-between py-2">
       <div class="flex gap-5 items-center">
         <p class="m-0 lg:text-lg font-semibold text-gray-800">
-          Danh sách bài học của khoá học có id: {{ courseId }}
+          List of lessons for course ID: {{ courseId }}
         </p>
         <p-iconfield iconPosition="left" class="ml-auto">
           <p-inputicon>
@@ -23,14 +23,14 @@
             type="text"
             class="lg:w-96"
             (input)="onFilter($event, dt)"
-            placeholder="Nhập tiêu đề bài học"
+            placeholder="Enter lesson title"
           />
         </p-iconfield>
       </div>
       <button>
-        <a [routerLink]="['/admin/quan-ly-khoa-hoc']"
-          ><i class="pi pi-times mr-10"></i
-        ></a>
+        <a [routerLink]="['/admin/course-management']">
+          <i class="pi pi-times mr-10"></i>
+        </a>
       </button>
     </div>
   </ng-template>
@@ -40,16 +40,16 @@
         ID
         <p-sortIcon field="id" />
       </th>
-      <th>Tiêu đề</th>
+      <th>Title</th>
       <th pSortableColumn="duration">
-        Thời lượng (phút)<p-sortIcon field="duration" />
+        Duration (minutes)<p-sortIcon field="duration" />
       </th>
-      <th>Xem trước</th>
+      <th>Preview</th>
       <th pSortableColumn="sort_order">
-        Thứ tự sắp xếp<p-sortIcon field="sort_order" />
+        Sort Order<p-sortIcon field="sort_order" />
       </th>
       <th>Visible</th>
-      <th>Hành động</th>
+      <th>Actions</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-lesson>
@@ -113,24 +113,24 @@
   <ng-template pTemplate="emptymessage">
     <tr>
       <td colspan="8" class="text-center text-gray-500 py-4">
-        Không có bài học nào đang chờ duyệt.
+        No lessons awaiting approval.
       </td>
     </tr>
   </ng-template>
 </p-table>
 
-<!-- Dialog xem video -->
+<!-- Video Preview Dialog -->
 <p-dialog
   [(visible)]="showVideoDialog"
   [style]="{ width: '800px' }"
-  header="Xem video bài học"
+  header="View Lesson Video"
   [modal]="true"
   class="rounded-lg shadow-lg"
 >
   <ng-template pTemplate="content">
     <div class="p-4">
       <video controls class="w-full h-auto rounded-lg" [src]="selectedVideoUrl">
-        Trình duyệt của bạn không hỗ trợ video.
+        Your browser does not support video.
       </video>
     </div>
   </ng-template>
@@ -138,7 +138,7 @@
     <button
       pButton
       type="button"
-      label="Đóng"
+      label="Close"
       icon="pi pi-times"
       class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
       (click)="showVideoDialog = false"

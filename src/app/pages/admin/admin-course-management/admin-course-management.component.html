@@ -6,21 +6,21 @@
     <form #filterForm="ngForm" class="grid grid-cols-1 md:grid-cols-4 gap-4">
       <div class="flex flex-col">
         <label for="searchQuery" class="text-sm font-medium text-gray-700"
-          >Tìm kiếm</label
+          >Filter</label
         >
         <input
           id="searchQuery"
           pInputText
           [(ngModel)]="filters.q"
           name="q"
-          placeholder="Nhập tên khóa học, mô tả, giảng viên, danh mục"
+          placeholder="Enter course name, description, instructor, category"
           class="mt-1 p-2 border border-gray-300 rounded-md"
           (ngModelChange)="applyFilters()"
         />
       </div>
       <div class="flex flex-col">
         <label for="status" class="text-sm font-medium text-gray-700"
-          >Trạng thái</label
+          >Status</label
         >
         <p-dropdown
           id="status"
@@ -29,14 +29,14 @@
           optionLabel="label"
           optionValue="value"
           name="status"
-          placeholder="Chọn trạng thái"
+          placeholder="Choice status"
           class="mt-1"
           (onChange)="applyFilters()"
         />
       </div>
       <div class="flex flex-col">
         <label for="difficultyLevel" class="text-sm font-medium text-gray-700"
-          >Mức độ khó</label
+          >Level</label
         >
         <p-dropdown
           id="difficultyLevel"
@@ -45,7 +45,7 @@
           optionLabel="label"
           optionValue="value"
           name="difficulty_level"
-          placeholder="Chọn mức độ"
+          placeholder="Choice level"
           class="mt-1"
           (onChange)="applyFilters()"
         />
@@ -54,7 +54,7 @@
         <label
           for="certificateEnabled"
           class="text-sm font-medium text-gray-700"
-          >Chứng chỉ</label
+          >CCertificate</label
         >
         <p-dropdown
           id="certificateEnabled"
@@ -63,14 +63,13 @@
           optionLabel="label"
           optionValue="value"
           name="is_certificate_enabled"
-          placeholder="Chọn trạng thái chứng chỉ"
           class="mt-1"
           (onChange)="applyFilters()"
         />
       </div>
       <div class="flex flex-col">
         <label for="priceMin" class="text-sm font-medium text-gray-700"
-          >Giá tối thiểu (VND)</label
+          >Min price</label
         >
         <input
           id="priceMin"
@@ -78,7 +77,7 @@
           pInputText
           [(ngModel)]="filters.price_min"
           name="price_min"
-          placeholder="Nhập giá tối thiểu"
+          placeholder="Enter min price"
           class="mt-1 p-2 border border-gray-300 rounded-md"
           min="0"
           (ngModelChange)="applyFilters()"
@@ -86,7 +85,7 @@
       </div>
       <div class="flex flex-col">
         <label for="priceMax" class="text-sm font-medium text-gray-700"
-          >Giá tối đa (VND)</label
+          >Max price</label
         >
         <input
           id="priceMax"
@@ -94,7 +93,7 @@
           pInputText
           [(ngModel)]="filters.price_max"
           name="price_max"
-          placeholder="Nhập giá tối đa"
+          placeholder="Enter max price"
           class="mt-1 p-2 border border-gray-300 rounded-md"
           min="0"
           (ngModelChange)="applyFilters()"
@@ -102,7 +101,7 @@
       </div>
       <div class="flex items-end">
         <p-button
-          label="Xóa bộ lọc"
+          label="CLear"
           icon="pi pi-times"
           (click)="resetFilters()"
           styleClass="p-button-secondary"
@@ -242,9 +241,7 @@
             [rounded]="true"
             [raised]="true"
             severity="help"
-            routerLink="/admin/quan-ly-khoa-hoc/{{
-              course.id
-            }}/danh-sach-khoa-hoc"
+            [routerLink]="[course.id]"
           />
           <p-button
             icon="pi pi-check"

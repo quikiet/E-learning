@@ -2,32 +2,19 @@
 <div>
   <p-tabView>
     <!-- Tab 1: Danh sách giảng viên -->
-    <p-tabPanel header="Danh sách giảng viên">
+    <p-tabPanel header="Instructor list">
       <p-table
         [value]="instructors"
         [tableStyle]="{ 'min-width': '50rem' }"
         [loading]="isLoading"
       >
-        <ng-template #caption>
-          <div class="flex items-center justify-between">
-            <p class="m-0 lg:text-lg font-semibold">
-              Danh sách yêu cầu trở thành giảng viên
-              <p-button
-                type="button"
-                icon="pi pi-refresh"
-                (click)="loadInstructors()"
-                text
-              />
-            </p>
-          </div>
-        </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th>Tên</th>
+            <th>Name</th>
             <th>Avatar</th>
-            <th>Tiểu sử</th>
-            <th>Tổ chức</th>
-            <th>Ngày tạo</th>
+            <th>Bio</th>
+            <th>Organization</th>
+            <th>Created at</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-instructor>

@@ -39,6 +39,7 @@ import { StudentQuizAttemptComponent } from './pages/both/student-quiz-attempt/s
 import { QuizTakingComponent } from './pages/User/quiz-taking/quiz-taking.component';
 import { AdminCourseManagementComponent } from './pages/admin/admin-course-management/admin-course-management.component';
 import { CourseProgressComponent } from './pages/User/course-progress/course-progress.component';
+import { AuthCallbackComponent } from './pages/User/auth-callback/auth-callback.component';
 
 export const routes: Routes = [
     {
@@ -53,32 +54,30 @@ export const routes: Routes = [
                 path: 'quiz/:quiz_id',
                 component: QuizTakingComponent
             },
-            { path: 'product', component: CourseCardComponent },
-            { path: 'cart', component: ShoppingCartComponent },
-            { path: 'khoa-hoc', component: CourseSearchComponent },
+            { path: 'course', component: CourseSearchComponent },
             { path: 'my-course', component: StudentPurchasedCoursesComponentComponent },
-            { path: 'khoa-hoc-cua-toi/hoc-bai/:id', component: StudentCourseLessonsComponentComponent },
+            { path: 'my-course/:id', component: StudentCourseLessonsComponentComponent },
             { path: 'add-lesson/:courseId', component: AddLessonsComponent },
-            { path: 'yeu-cau', component: InstructorRequestComponent },
         ]
     },
-    { path: 'chi-tiet-khoa-hoc/:slug', component: CourseDetailComponent },
+    { path: 'course-detail/:slug', component: CourseDetailComponent },
 
     { path: 'login', component: LoginComponent },
+    { path: 'auth/google/callback', component: AuthCallbackComponent },
     {
         path: 'admin', component: AdminComponent,
         children: [
             { path: 'profile', component: ProfileInfoComponent },
-            { path: 'thong-ke', component: DashboardComponent },
-            { path: 'quan-ly-nguoi-dung', component: UserManageComponent },
-            { path: 'quan-ly-giang-vien', component: InstructorManageComponent },
+            { path: 'dashboard', component: DashboardComponent },
+            { path: 'user-manage', component: UserManageComponent },
+            { path: 'instructor-manage', component: InstructorManageComponent },
             { path: 'quan-ly-don-duyet', component: RequestReviewComponent },
-            { path: 'nguoi-dung-da-xoa', component: UserDeletedComponent },
-            { path: 'quan-ly-nguoi-dung/:id', component: UserDetailComponent },
-            { path: 'quan-ly-khoa-hoc', component: AdminCourseManagementComponent },
-            { path: 'quan-ly-khoa-hoc/:courseId/danh-sach-khoa-hoc', component: CoursePendingLessonsComponent },
-            { path: 'danh-sach-khoa-hoc-cho', component: PendingCoursesComponent },
-            { path: 'quan-ly-danh-muc', component: CategoryManageComponent },
+            { path: 'deleted-user', component: UserDeletedComponent },
+            { path: 'user-manage/:id', component: UserDetailComponent },
+            { path: 'course-manage', component: AdminCourseManagementComponent },
+            { path: 'course-manage/:courseId', component: CoursePendingLessonsComponent },
+            { path: 'pending-course', component: PendingCoursesComponent },
+            { path: 'category-manage', component: CategoryManageComponent },
             { path: 'quan-ly-bai-hoc', component: LessonManageComponent },
             { path: 'quan-ly-quiz', component: QuizManageComponent },
             { path: 'quan-ly-danh-gia', component: ReviewManageComponent },
@@ -97,7 +96,7 @@ export const routes: Routes = [
             { path: 'instructor-course', component: InstructorCoursesComponent },
             { path: 'create-course', component: CreateCourseComponent },
             { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent },
-            { path: 'lich-su-thanh-toan', component: StudentPaymentHistoryComponent },
+            { path: 'payment-history', component: StudentPaymentHistoryComponent },
             { path: 'course/:course_id/user-progress', component: CourseProgressComponent },
             { path: '**', redirectTo: 'ho-so', pathMatch: 'full' },
         ]

@@ -303,7 +303,11 @@
           >
             <i class="fab fa-facebook-f mr-2"></i> Facebook
           </button> -->
-              <button class="btn-165">
+              <button
+                class="btn-165"
+                (click)="loginWithGoogle()"
+                [disabled]="isLoading"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 262">
                   <path
                     fill="#4285F4"

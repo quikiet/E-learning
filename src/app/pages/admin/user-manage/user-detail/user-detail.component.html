@@ -1,9 +1,9 @@
 <div class="">
   <div class="flex justify-between gap-2">
-    <h6 class="text-xl font-bold mb-4">Chi tiết Người dùng</h6>
-    <a [routerLink]="['/admin/quan-ly-nguoi-dung']"
-      ><i class="pi pi-window-minimize"></i
-    ></a>
+    <h6 class="text-xl font-bold mb-4">User Details</h6>
+    <a [routerLink]="['/admin/user-management']">
+      <i class="pi pi-window-minimize"></i>
+    </a>
   </div>
 
   <p-progressSpinner
@@ -11,13 +11,13 @@
     class="flex justify-center"
   ></p-progressSpinner>
 
-  <!-- Dữ liệu người dùng -->
+  <!-- User Data -->
   <div *ngIf="userData && !isLoading">
-    <!-- Thông tin người dùng -->
-    <p-card header="Thông tin Người dùng" styleClass="!rounded-none mb-4">
+    <!-- User Information -->
+    <p-card header="User Information" styleClass="!rounded-none mb-4">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div><strong>ID:</strong> {{ userData.user.id }}</div>
-        <div><strong>User name:</strong> {{ userData.user.username }}</div>
+        <div><strong>Username:</strong> {{ userData.user.username }}</div>
         <div><strong>Email:</strong> {{ userData.user.email }}</div>
         <div>
           <strong>Birthdate:</strong> {{ userData.user.birthdate | date }}
@@ -25,7 +25,6 @@
         <div><strong>Gender:</strong> {{ userData.user.gender }}</div>
         <div class="flex items-center gap-2">
           <strong>Role:</strong>
-
           <div>
             <p-tag
               *ngIf="userData.user.role === 'admin'"
@@ -51,13 +50,13 @@
           </div>
         </div>
         <div>
-          <strong>Ngày tạo: </strong>
+          <strong>Created At:</strong>
           <span class="text-sm">{{
             userData.user.created_at | date : "dd/MM/yyyy HH:mm"
           }}</span>
         </div>
         <div>
-          <strong>Ngày cập nhật: </strong>
+          <strong>Updated At:</strong>
           <span class="text-sm">{{
             userData.user.updated_at | date : "dd/MM/yyyy HH:mm"
           }}</span>
@@ -65,40 +64,40 @@
       </div>
     </p-card>
 
-    <!-- Thông tin học viên -->
+    <!-- Student Information -->
     <p-card
       *ngIf="userData.user.role === 'student'"
-      header="Thông tin Học viên"
+      header="Student Information"
       styleClass="!rounded-none mb-4"
     >
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div><strong>ID:</strong> {{ userData.user.student.id }}</div>
         <div>
-          <strong>Mục tiêu học tập:</strong>
+          <strong>Learning Goals:</strong>
           {{ userData.user.student.learning_goals }}
         </div>
         <div>
-          <strong>Tổng số khóa học đã hoàn thành:</strong>
+          <strong>Total Courses Completed:</strong>
           {{ userData.user.student.total_courses_completed }}
         </div>
         <div>
-          <strong>Ngày tạo:</strong>
+          <strong>Created At:</strong>
           {{ userData.user.student.created_at | date : "dd/MM/yyyy HH:mm" }}
         </div>
         <div>
-          <strong>Ngày cập nhật:</strong>
+          <strong>Updated At:</strong>
           {{ userData.user.student.updated_at | date : "dd/MM/yyyy HH:mm" }}
         </div>
       </div>
 
       <div class="mt-4">
         <div class="flex gap-2 items-center">
-          <strong>Danh mục quan tâm:</strong>
+          <strong>Categories of Interest:</strong>
           <div
             *ngIf="userData.user.student.categories.length === 0"
             class="text-gray-500"
           >
-            Không có danh mục nào.
+            No categories.
           </div>
           <div
             *ngIf="userData.user.student.categories.length > 0"
@@ -116,20 +115,20 @@
       </div>
     </p-card>
 
-    <!-- Đăng ký khóa học -->
+    <!-- Course Enrollments -->
     <p-card
       *ngIf="userData.user.role !== 'admin'"
-      header="Đăng ký Khóa học"
+      header="Course Enrollments"
       styleClass="!rounded-none mb-4"
     >
       <p-table [value]="userData.user.enrollments" [rowHover]="true">
         <ng-template pTemplate="header">
           <tr>
             <th>ID</th>
-            <th>ID Khóa học</th>
-            <th>Trạng thái</th>
-            <th>Ngày đăng ký</th>
-            <th>Ngày hoàn thành</th>
+            <th>Course ID</th>
+            <th>Status</th>
+            <th>Enrolled At</th>
+            <th>Completed At</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-enrollment>
@@ -142,52 +141,50 @@
               {{
                 enrollment.completed_at
                   ? (enrollment.completed_at | date : "dd/MM/yyyy HH:mm")
-                  : "Chưa hoàn thành"
+                  : "Not Completed"
               }}
             </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="5" class="text-center">
-              Không tìm thấy khóa học đã đăng ký.
-            </td>
+            <td colspan="5" class="text-center">No enrolled courses found.</td>
           </tr>
         </ng-template>
       </p-table>
     </p-card>
 
-    <!-- Thanh toán -->
+    <!-- Payments -->
     <p-card
       *ngIf="userData.user.role !== 'admin'"
-      header="Thanh toán"
+      header="Payments"
       styleClass="!rounded-none mb-4"
     >
       <div *ngIf="userData.user.payments.length === 0" class="text-center">
-        Chưa có thanh toán nào.
+        No payments found.
       </div>
       <p-table
         *ngIf="userData.user.payments.length > 0"
         [value]="userData.user.payments"
         [rowHover]="true"
       >
-        <!-- Thêm tiêu đề và nội dung bảng nếu cần -->
+        <!-- Add table headers and content if needed -->
       </p-table>
     </p-card>
 
-    <!-- Tiến độ bài học -->
+    <!-- Lesson Progress -->
     <p-card
       *ngIf="userData.user.role !== 'admin'"
-      header="Tiến độ Bài học"
+      header="Lesson Progress"
       styleClass="!rounded-none mb-4"
     >
       <p-table [value]="userData.user.lesson_progress" [rowHover]="true">
         <ng-template pTemplate="header">
           <tr>
             <th>ID</th>
-            <th>ID Bài học</th>
-            <th>Trạng thái</th>
-            <th>Ngày hoàn thành</th>
+            <th>Lesson ID</th>
+            <th>Status</th>
+            <th>Completed At</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-progress>
@@ -199,7 +196,7 @@
                 <p-tag
                   *ngIf="progress.status === 'not_started'"
                   severity="warn"
-                  value="Chưa bắt đầu"
+                  value="Not Started"
                   [rounded]="true"
                   class="!text-xs"
                 />
@@ -207,14 +204,14 @@
                   *ngIf="progress.status === 'in_progress'"
                   severity="info"
                   class="!text-xs"
-                  value="Đang trong quá trình"
+                  value="In Progress"
                   [rounded]="true"
                 />
                 <p-tag
                   *ngIf="progress.status === 'completed'"
                   severity="success"
                   class="!text-xs"
-                  value="Hoàn thành"
+                  value="Completed"
                   [rounded]="true"
                 />
               </div>
@@ -223,33 +220,31 @@
               {{
                 progress.completed_at
                   ? (progress.completed_at | date : "dd/MM/yyyy HH:mm")
-                  : "Chưa hoàn thành"
+                  : "Not Completed"
               }}
             </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="4" class="text-center">
-              Không tìm thấy tiến độ bài học.
-            </td>
+            <td colspan="4" class="text-center">No lesson progress found.</td>
           </tr>
         </ng-template>
       </p-table>
     </p-card>
 
-    <!-- Đánh giá -->
+    <!-- Reviews -->
     <p-card
       *ngIf="userData.user.role !== 'admin'"
-      header="Đánh giá"
+      header="Reviews"
       styleClass="!rounded-none mb-4"
     >
       <p-table [value]="userData.user.reviews" [rowHover]="true">
         <ng-template pTemplate="header">
           <tr>
             <th>ID</th>
-            <th>ID Khóa học</th>
-            <th>Xếp hạng</th>
+            <th>Course ID</th>
+            <th>Rating</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-review>
@@ -261,25 +256,25 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="3" class="text-center">Không tìm thấy đánh giá.</td>
+            <td colspan="3" class="text-center">No reviews found.</td>
           </tr>
         </ng-template>
       </p-table>
     </p-card>
 
-    <!-- Kết quả bài kiểm tra -->
+    <!-- Quiz Results -->
     <p-card
       *ngIf="userData.user.role !== 'admin'"
-      header="Kết quả Bài kiểm tra"
+      header="Quiz Results"
       styleClass="!rounded-none mb-4"
     >
       <p-table [value]="userData.user.quiz_results" [rowHover]="true">
         <ng-template pTemplate="header">
           <tr>
             <th>ID</th>
-            <th>ID Bài kiểm tra</th>
-            <th>Điểm số</th>
-            <th>Số lần thử</th>
+            <th>Quiz ID</th>
+            <th>Score</th>
+            <th>Attempt Number</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-quiz>
@@ -323,55 +318,53 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="4" class="text-center">
-              Không tìm thấy kết quả bài kiểm tra.
-            </td>
+            <td colspan="4" class="text-center">No quiz results found.</td>
           </tr>
         </ng-template>
       </p-table>
     </p-card>
 
-    <!-- Phân tích -->
+    <!-- Analytics -->
     <p-card
       *ngIf="userData.user.role !== 'admin'"
-      header="Phân tích"
+      header="Analytics"
       styleClass="!rounded-none mb-4"
     >
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <strong>Tổng số khóa học đã đăng ký:</strong>
+          <strong>Total Courses Enrolled:</strong>
           {{ userData.analytics.total_courses_enrolled }}
         </div>
         <div>
-          <strong>Khóa học đã hoàn thành:</strong>
+          <strong>Courses Completed:</strong>
           {{ userData.analytics.courses_completed }}
         </div>
         <div>
-          <strong>Chứng chỉ đã đạt được:</strong>
+          <strong>Certificates Earned:</strong>
           {{ userData.analytics.certificates_earned }}
         </div>
         <div>
-          <strong>Tổng số tiền thanh toán:</strong>
+          <strong>Total Payments Made:</strong>
           {{ userData.analytics.total_payments_made }}
         </div>
         <div>
-          <strong>Xếp hạng trung bình đã đưa ra:</strong>
+          <strong>Average Rating Given:</strong>
           {{ userData.analytics.average_rating_given }}
         </div>
         <div>
-          <strong>Tỷ lệ hoàn thành bài học:</strong>
+          <strong>Lesson Completion Rate:</strong>
           {{ userData.analytics.lesson_completion_rate }}%
         </div>
         <div>
-          <strong>Điểm kiểm tra trung bình:</strong>
+          <strong>Average Quiz Score:</strong>
           {{ userData.analytics.average_quiz_score }}
         </div>
         <div>
-          <strong>Tổng số bài đăng diễn đàn:</strong>
+          <strong>Total Forum Posts:</strong>
           {{ userData.analytics.forum_engagement.total_posts }}
         </div>
         <div>
-          <strong>Bài đăng bị đánh dấu:</strong>
+          <strong>Flagged Posts:</strong>
           {{ userData.analytics.forum_engagement.flagged_posts }}
         </div>
       </div>
