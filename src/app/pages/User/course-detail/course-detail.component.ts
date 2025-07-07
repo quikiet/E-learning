@@ -12,6 +12,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { HeaderComponent } from "../../../components/user/header/header.component";
 import { LoadingComponent } from '../../../components/both/loading/loading.component';
+import { CardSkeletonComponent } from "../../../components/both/card-skeleton/card-skeleton.component";
+import { FormsModule } from '@angular/forms';
 // Định nghĩa interface cho bài học
 interface Lesson {
   title: string;
@@ -41,6 +43,8 @@ interface Tab {
     MultiSelectModule,
     TooltipModule,
     HeaderComponent,
+    LoadingComponent,
+    FormsModule
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',
@@ -53,6 +57,7 @@ export class CourseDetailComponent implements OnInit {
   reviews: any[] = [];
   previewVideoUrl: string = '';
   isUserEnrolled: boolean = false;
+  isAuthor: boolean = false;
   currentVideoUrl: string | null = null;
   currentUserId: number | null = null;
   isLoading: boolean = false;
@@ -91,7 +96,7 @@ export class CourseDetailComponent implements OnInit {
           this.lessons = res.lessons || [];
           this.reviews = res.reviews || [];
           this.isUserEnrolled = this.checkUserEnrollment(res.enrollments);
-
+          this.isAuthor = this.checkAuthor(res.instructors);
           // Find the first lesson with is_preview: true
           const previewLesson = this.lessons.find(lesson => lesson.is_preview === true);
           this.previewVideoUrl = previewLesson ? previewLesson.video_url : null;
@@ -136,6 +141,20 @@ export class CourseDetailComponent implements OnInit {
 
     // Kiểm tra xem user_id của người dùng hiện tại có trong danh sách enrollments không
     return enrollments.some(enrollment => enrollment.user_id === this.currentUserId);
+  }
+
+  checkAuthor(instructors: any) {
+    if (!this.currentUserId) return false;
+
+    return instructors.user_id === this.currentUserId;
+  }
+
+  navigateToCourseManage(course_id: number) {
+    this.router.navigate([`/course/${course_id}/user-progress`]);
+  }
+
+  navigateToLearnCourse(course_id: number) {
+    this.router.navigate([`/my-course/${course_id}`]);
   }
 
   getTotalDuration(lessons: any[]): number {

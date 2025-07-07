@@ -18,6 +18,10 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { PopoverModule } from 'primeng/popover';
 import { DividerModule } from 'primeng/divider';
+import { HeaderComponent } from '../../../components/user/header/header.component';
+import { LoadingComponent } from '../../../components/both/loading/loading.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { DrawerModule } from 'primeng/drawer';
 
 interface Category {
   name: string;
@@ -26,6 +30,7 @@ interface Category {
 
 @Component({
   selector: 'app-instructor-courses',
+  standalone: true,
   imports: [
     CommonModule,
     TagModule,
@@ -39,23 +44,29 @@ interface Category {
     ButtonModule,
     RouterLink,
     InputIconModule,
+    InputTextModule,
     IconFieldModule,
-    TooltipModule,
     PopoverModule,
-    DividerModule
+    DividerModule,
+    PopoverModule,
+    LoadingComponent,
+    DrawerModule
   ],
-  providers: [MessageService],
+  providers: [MessageService, CategoryService, CoursesService],
   templateUrl: './instructor-courses.component.html',
-  styleUrl: './instructor-courses.component.css'
+  styleUrls: ['./instructor-courses.component.css']
 })
 export class InstructorCoursesComponent implements OnInit {
+  allCourses: any[] = [];
   courses: any[] = [];
-  filteredCourses: any[] = [];
+  deletedCourses: any[] = [];
   currentPage: number = 1;
   perPage: number = 10;
   totalRecords: number = 0;
   searchKeyword: string = '';
   selectedCategory: number | null = null;
+  selectedStatus: string | null = null;
+  selectedDifficultyLevel: string | null = null;
 
   showLessonsDialog: boolean = false;
   selectedCourseLessons: any[] = [];
@@ -63,7 +74,7 @@ export class InstructorCoursesComponent implements OnInit {
   lessonsCurrentPage: number = 1;
   lessonsPerPage: number = 10;
   lessonsTotalRecords: number = 0;
-
+  openFilter = false;
   showEditDialog: boolean = false;
   selectedCourse: any = null;
   course = {
@@ -77,12 +88,19 @@ export class InstructorCoursesComponent implements OnInit {
   };
   categories: Category[] = [];
   selectedCategories: number[] = [];
-
   difficultyLevels = [
     { label: 'Beginner', value: 'Beginner' },
     { label: 'Intermediate', value: 'Intermediate' },
     { label: 'Advanced', value: 'Advanced' }
   ];
+  statusOptions = [
+    { label: 'Pending', value: 'pending' },
+    { label: 'Approved', value: 'approved' },
+    { label: 'Rejected', value: 'rejected' },
+    { label: 'Unavailable', value: 'unavailable' },
+    { label: 'Draft', value: 'draft' }
+  ];
+
   isSubmitting: boolean = false;
   selectedImage: File | null = null;
 
@@ -99,7 +117,7 @@ export class InstructorCoursesComponent implements OnInit {
   selectedVideo: File | null = null;
   uploadProgress: number = 0;
   isLoading = true;
-  deletedCourses: any;
+
   constructor(
     private coursesService: CoursesService,
     private categoryService: CategoryService,
@@ -114,13 +132,13 @@ export class InstructorCoursesComponent implements OnInit {
   }
 
   loadCategories() {
-    this.categoryService.getCategory().subscribe({
+    this.categoryService.getAllCategory().subscribe({
       next: (res) => {
         this.categories = res;
         console.log('Loaded categories:', this.categories);
       },
       error: (err) => {
-        console.log('Error loading categories:', err.message);
+        console.error('Error loading categories:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -133,20 +151,12 @@ export class InstructorCoursesComponent implements OnInit {
 
   loadCourses() {
     this.isLoading = true;
-    this.coursesService.getInstructorCourses(this.currentPage, this.perPage).subscribe({
+    this.coursesService.getInstructorCourses().subscribe({
       next: (res) => {
-        this.courses = res.data;
-        this.filteredCourses = [...this.courses];
-        this.currentPage = res.current_page;
-        this.perPage = res.per_page;
-        this.totalRecords = res.total;
-        // this.courses.forEach(course => {
-        //   if (!course.lessonCount) {
-        //     this.loadLessonCount(course.id, course);
-        //   }
-        // });
+        this.allCourses = res;
+        this.filterCourses();
         this.isLoading = false;
-        // this.filterCourses(); // Áp dụng bộ lọc ngay sau khi tải
+        console.log('Loaded courses:', this.allCourses);
       },
       error: (err) => {
         this.isLoading = false;
@@ -154,10 +164,11 @@ export class InstructorCoursesComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Unable to load courses.',
+          detail: err.error?.message || 'Unable to load courses.',
           life: 3000,
         });
-      }, complete: () => {
+      },
+      complete: () => {
         this.isLoading = false;
       }
     });
@@ -172,64 +183,88 @@ export class InstructorCoursesComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Error loading courses:', err);
+        console.error('Error loading deleted courses:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Unable to load courses.',
+          detail: err.error?.message || 'Unable to load deleted courses.',
           life: 3000,
         });
-        this.isLoading = false;
-      }, complete: () => {
+      },
+      complete: () => {
         this.isLoading = false;
       }
     });
   }
 
-  // loadLessonCount(courseId: number, course: any) {
-  //   this.coursesService.getLessonsForCourse(courseId, 1, 10).subscribe({
-  //     next: (res) => {
-  //       // course.lessonCount = res.total;
-  //       // this.filterCourses(); // Cập nhật lại filteredCourses để đảm bảo lessonCount
-  //     },
-  //     error: (err) => {
-  //       console.error('Error loading lesson count:', err);
-  //       course.lessonCount = 0;
-  //     }
-  //   });
-  // }
+  filterCourses() {
+    let filtered = [...this.allCourses];
 
-  // filterCourses() {
-  //   let filtered = [...this.courses];
+    // Filter by search keyword
+    if (this.searchKeyword) {
+      const keyword = this.searchKeyword.toLowerCase().trim();
+      filtered = filtered.filter(course =>
+        course.course_name?.toLowerCase().includes(keyword) ||
+        course.skills?.toLowerCase().includes(keyword)
+      );
+    }
 
-  //   // Lọc theo từ khóa
-  //   if (this.searchKeyword) {
-  //     const keyword = this.searchKeyword.toLowerCase().trim();
-  //     filtered = filtered.filter(course =>
-  //       course.course_name?.toLowerCase().includes(keyword) ||
-  //       course.skills?.toLowerCase().includes(keyword)
-  //     );
-  //   }
+    // Filter by category
+    if (this.selectedCategory) {
+      filtered = filtered.filter(course =>
+        course.categories?.some((cat: Category) => cat.id === this.selectedCategory)
+      );
+    }
 
-  //   // Lọc theo danh mục
-  //   if (this.selectedCategory) {
-  //     filtered = filtered.filter(course =>
-  //       course.categories?.some((cat: Category) => cat.id === this.selectedCategory)
-  //     );
-  //   }
+    // Filter by status
+    if (this.selectedStatus) {
+      filtered = filtered.filter(course => course.status === this.selectedStatus);
+    }
 
-  //   this.filteredCourses = filtered;
-  //   this.totalRecords = filtered.length;
-  //   this.currentPage = 1; // Reset về trang đầu
-  // }
+    // Filter by difficulty level
+    if (this.selectedDifficultyLevel) {
+      filtered = filtered.filter(course => course.difficulty_level === this.selectedDifficultyLevel);
+    }
+    this.totalRecords = filtered.length;
+    this.currentPage = 1; // Reset to first page on filter change
+    this.courses = filtered.slice(0, this.perPage);
+  }
 
-  // clearFilters() {
-  //   this.searchKeyword = '';
-  //   this.selectedCategory = null;
-  //   this.filteredCourses = [...this.courses];
-  //   this.totalRecords = this.courses.length;
-  //   this.currentPage = 1;
-  // }
+  clearFilters() {
+    this.searchKeyword = '';
+    this.selectedCategory = null;
+    this.selectedStatus = null;
+    this.selectedDifficultyLevel = null;
+    this.currentPage = 1;
+    this.filterCourses();
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event.page + 1;
+    this.perPage = event.rows;
+    const start = (this.currentPage - 1) * this.perPage;
+    const end = start + this.perPage;
+
+    let filtered = [...this.allCourses];
+
+    // Apply filters
+    if (this.searchKeyword) {
+      const keyword = this.searchKeyword.toLowerCase().trim();
+      filtered = filtered.filter(course =>
+        course.course_name?.toLowerCase().includes(keyword) ||
+        course.skills?.toLowerCase().includes(keyword)
+      );
+    }
+
+    if (this.selectedCategory) {
+      filtered = filtered.filter(course =>
+        course.categories?.some((cat: Category) => cat.id === this.selectedCategory)
+      );
+    }
+
+    this.totalRecords = filtered.length;
+    this.courses = filtered.slice(start, end);
+  }
 
   restoreCourse(courseId: number) {
     this.isLoading = true;
@@ -240,67 +275,49 @@ export class InstructorCoursesComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: res.message,
+          detail: res.message || 'Course restored successfully.',
           life: 3000,
         });
         this.isLoading = false;
-      }, error: (error) => {
+      },
+      error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: error.error.message,
+          detail: err.error?.message || 'Unable to restore course.',
           life: 3000,
         });
         this.isLoading = false;
       }
-    })
+    });
   }
 
   toggleAvailableCourse(courseId: number, status: string) {
     this.isLoading = true;
-    if (status === 'approved') {
-      this.coursesService.instructorUnavailableCourse(courseId).subscribe({
-        next: (res) => {
-          this.loadCourses();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: res.message,
-            life: 3000,
-          });
-          this.isLoading = false;
-        }, error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: error.error.message,
-            life: 3000,
-          });
-          this.isLoading = false;
-        }
-      })
-    } else if (status === 'unavailable') {
-      this.coursesService.instructorAvailableCourse(courseId).subscribe({
-        next: (res) => {
-          this.loadCourses();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: res.message,
-            life: 3000,
-          });
-          this.isLoading = false;
-        }, error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: error.error.message,
-            life: 3000,
-          });
-          this.isLoading = false;
-        }
-      })
-    }
+    const request = status === 'approved'
+      ? this.coursesService.instructorUnavailableCourse(courseId)
+      : this.coursesService.instructorAvailableCourse(courseId);
+    request.subscribe({
+      next: (res) => {
+        this.loadCourses();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message || 'Course availability updated.',
+          life: 3000,
+        });
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error?.message || 'Unable to update course availability.',
+          life: 3000,
+        });
+        this.isLoading = false;
+      }
+    });
   }
 
   cloneCourse(courseId: number) {
@@ -311,20 +328,21 @@ export class InstructorCoursesComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: res.message,
+          detail: res.message || 'Course cloned successfully.',
           life: 3000,
         });
         this.isLoading = false;
-      }, error: (error) => {
+      },
+      error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: error.error.message,
+          detail: err.error?.message || 'Unable to clone course.',
           life: 3000,
         });
         this.isLoading = false;
       }
-    })
+    });
   }
 
   publicCourse(courseId: number) {
@@ -335,29 +353,21 @@ export class InstructorCoursesComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: res.message,
+          detail: res.message || 'Course submitted for approval.',
           life: 3000,
         });
         this.isLoading = false;
-      }, error: (error) => {
+      },
+      error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: error.message,
+          detail: err.error?.message || 'Unable to submit course.',
           life: 3000,
         });
-        console.log(error.message);
-
         this.isLoading = false;
       }
-    })
-  }
-
-  onPageChange(event: any) {
-    this.currentPage = event.page + 1;
-    this.perPage = event.rows;
-    this.loadCourses();
-    // Không gọi loadCourses() để giữ filteredCourses
+    });
   }
 
   navigateToAddLesson(courseId: number) {
@@ -370,7 +380,7 @@ export class InstructorCoursesComponent implements OnInit {
 
   showLessons(courseId: number) {
     this.selectedCourseId = courseId;
-    // this.lessonsCurrentPage = 1;
+    this.lessonsCurrentPage = 1;
     this.showLessonsDialog = true;
     this.loadLessons();
   }
@@ -390,12 +400,13 @@ export class InstructorCoursesComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Unable to load lessons.',
+          detail: err.error?.message || 'Unable to load lessons.',
           life: 3000,
         });
         this.selectedCourseLessons = [];
         this.isLoading = false;
-      }, complete: () => {
+      },
+      complete: () => {
         this.isLoading = false;
       }
     });
@@ -438,15 +449,6 @@ export class InstructorCoursesComponent implements OnInit {
         severity: 'error',
         summary: 'Error',
         detail: 'Please enter the course name.',
-        life: 3000,
-      });
-      return;
-    }
-    if (!this.course.price || this.course.price < 0) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Please enter a valid course price.',
         life: 3000,
       });
       return;
@@ -593,6 +595,7 @@ export class InstructorCoursesComponent implements OnInit {
       }
     });
   }
+
   deleteLesson(lessonId: number) {
     if (!lessonId) {
       this.messageService.add({
@@ -616,7 +619,7 @@ export class InstructorCoursesComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.coursesService.instructorDeleteLesson(this.selectedCourseId!, lessonId).subscribe({
+    this.coursesService.instructorDeleteLesson(this.selectedCourseId, lessonId).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -673,6 +676,7 @@ export class InstructorCoursesComponent implements OnInit {
         });
         this.isLoading = false;
         this.loadCourses();
+        this.loadDeletedCourses();
       },
       error: (err) => {
         this.messageService.add({
@@ -683,6 +687,7 @@ export class InstructorCoursesComponent implements OnInit {
         });
         this.isLoading = false;
         this.loadCourses();
+        this.loadDeletedCourses();
       }
     });
   }

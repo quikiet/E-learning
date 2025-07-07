@@ -8,10 +8,11 @@ import { Carousel, CarouselPageEvent } from 'primeng/carousel';
 import { TabsModule } from 'primeng/tabs';
 import { CoursesService } from '../../../../services/courses.service';
 import { RouterLink } from '@angular/router';
+import { CardSkeletonComponent } from "../../../both/card-skeleton/card-skeleton.component";
 
 @Component({
   selector: 'app-course-card',
-  imports: [RouterLink, TabsModule, Carousel, DividerModule, ButtonModule, CardModule, Tag, CommonModule, FormsModule],
+  imports: [RouterLink, TabsModule, Carousel, DividerModule, ButtonModule, CardModule, Tag, CommonModule, FormsModule, CardSkeletonComponent],
   templateUrl: './course-card.component.html',
   styleUrl: './course-card.component.css'
 })
@@ -26,6 +27,7 @@ export class CourseCardComponent implements OnInit {
   activeCard: any = null; // Quản lý card đang hover
   cardDetail: any = null;
   currentIndex = 0;
+  isLoading = false;
   cardHoverPosition: any = {};
   responsiveOptions: any[] = [
     { breakpoint: '1400px', numVisible: 5, numScroll: 5 },
@@ -50,14 +52,16 @@ export class CourseCardComponent implements OnInit {
   }
 
   loadCourses() {
+    this.isLoading = true;
     this.courseService.getCourses(1, 10).subscribe({
       next: (res) => {
         this.courses = res.data;
-        console.log('Full API Response:', this.courses);
-
-        console.log('Courses loaded:', this.courses);
+        // console.log('Full API Response:', this.courses);
+        this.isLoading = false;
+        // console.log('Courses loaded:', this.courses);
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error loading courses:', err);
       }
     });

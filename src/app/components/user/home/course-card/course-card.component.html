@@ -5,8 +5,10 @@
   <h5 class="md:text-xl font-bold mb-2 lg:text-left text-center">
     Recommended for you
   </h5>
+  <app-card-skeleton *ngIf="isLoading"></app-card-skeleton>
   <div>
     <p-carousel
+      *ngIf="!isLoading"
       #carousel
       [value]="courses"
       [numVisible]="numVisible"

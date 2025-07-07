@@ -55,8 +55,8 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/search/courses`);
   }
 
-  getInstructorCourses(page: number = 1, perPage: number = 10): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/instructor/allcourses?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  getInstructorCourses(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/instructor/allcourses`, { withCredentials: true });
   }
 
   instructorPublicCourses(course_id: number): Observable<any> {
@@ -69,7 +69,6 @@ export class CoursesService {
 
   instructorIssueCertificate(course_id: number, user_id: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/instructor/issue-certificate-manual`, { course_id, user_id }, { withCredentials: true });
-
   }
 
   // Lấy danh sách bài học của khóa học
@@ -181,4 +180,10 @@ export class CoursesService {
   getQuizOfCourse(courseId: number, page: number = 1, perPage: number = 10): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/instructor/courses/${courseId}/quizzes?page=${page}&perPage=${perPage}`, { withCredentials: true });
   }
+
+  getInstructorReport(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/instructor/GetAllreports`, { withCredentials: true });
+  }
+
+
 }

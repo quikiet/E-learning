@@ -40,6 +40,7 @@ import { QuizTakingComponent } from './pages/User/quiz-taking/quiz-taking.compon
 import { AdminCourseManagementComponent } from './pages/admin/admin-course-management/admin-course-management.component';
 import { CourseProgressComponent } from './pages/User/course-progress/course-progress.component';
 import { AuthCallbackComponent } from './pages/User/auth-callback/auth-callback.component';
+import { InstructorReportsComponent } from './pages/User/instructor-reports/instructor-reports.component';
 
 export const routes: Routes = [
     {
@@ -97,6 +98,7 @@ export const routes: Routes = [
             { path: 'create-course', component: CreateCourseComponent },
             { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent },
             { path: 'payment-history', component: StudentPaymentHistoryComponent },
+            { path: 'reports', component: InstructorReportsComponent },
             { path: 'course/:course_id/user-progress', component: CourseProgressComponent },
             { path: '**', redirectTo: 'ho-so', pathMatch: 'full' },
         ]

@@ -99,6 +99,7 @@
   <div class="lg:col-span-4 h-full">
     <div
       class="sticky top-10 px-0 py-0 flex-col shadow border-l border-gray-100 h-fit"
+      *ngIf="!isLoading"
     >
       <div class="flex items-center gap-1 px-4 py-2 select-none">
         <span class="font-bold text-red-500">
@@ -128,7 +129,7 @@
       </div>
 
       <button
-        *ngIf="!isUserEnrolled && course?.price > 0"
+        *ngIf="!isUserEnrolled && course?.price > 0 && !isAuthor"
         (click)="enrollCourse()"
         class="px-6 py-3 mb-3 bg-blue-500 hover:bg-blue-600 transition duration-300 text-white font-semibold w-full cursor-pointer"
         [disabled]="isLoading"
@@ -136,25 +137,36 @@
         Buy Now
       </button>
       <button
-        *ngIf="!isUserEnrolled && course?.price === 0"
+        *ngIf="isAuthor"
+        class="px-6 py-3 mb-3 bg-blue-500 hover:bg-blue-600 transition duration-300 text-white font-semibold w-full cursor-pointer"
+        [disabled]="isLoading"
+        (click)="navigateToCourseManage(course.id)"
+      >
+        Course Manage
+      </button>
+      <button
+        *ngIf="!isUserEnrolled && course?.price === 0 && !isAuthor"
         (click)="enrollFreeCourse()"
         class="px-6 py-3 bg-green-500 hover:bg-green-600 transition duration-300 text-white font-semibold w-full cursor-pointer"
         [disabled]="isLoading"
       >
         Get Free Course
       </button>
-      <p
+      <button
         *ngIf="isUserEnrolled"
-        class="text-blue-500 text-sm w-full text-center py-2"
+        (click)="enrollFreeCourse()"
+        class="px-6 py-3 bg-secondary hover:bg-secondary-content transition duration-300 text-white font-semibold w-full cursor-pointer"
+        [disabled]="isLoading"
       >
-        You have enrolled in this course.
-      </p>
+        Learn Now
+      </button>
+
       <p-accordion [value]="0" [multiple]="true" class="!rounded-none">
         <!-- Chỉ có 1 tab duy nhất với tiêu đề "Bài học" -->
         <p-accordion-panel [value]="0">
           <p-accordion-header class="!bg-gray/30 !rounded-none">
             <div class="w-full justify-between flex items-center mr-5">
-              Bài học
+              Lessons
               <span class="text-xs font-normal ml-2 text-end">
                 {{ lessons.length || 0 }}/{{ lessons.length || 0 }} Videos •
                 {{ getTotalDuration(lessons) }} phút
@@ -235,5 +247,6 @@
         </p-accordion-panel>
       </p-accordion>
     </div>
+    <app-loading [isLoading]="isLoading"></app-loading>
   </div>
 </div>
