@@ -64,10 +64,9 @@
                     <h3 class="font-semibold text-lg">
                       {{ course.course_name }}
                     </h3>
-                    <b class="" *ngIf="course.price > 0">{{
-                      course.price
-                        | currency : "VND" : "symbol-narrow" : "1.0-0"
-                    }}</b>
+                    <b class="text-sm text-primary" *ngIf="course.price > 0"
+                      >{{ course.price | number }} USD</b
+                    >
                     <b class="text-secondary" *ngIf="course.price === 0"
                       >Free</b
                     >

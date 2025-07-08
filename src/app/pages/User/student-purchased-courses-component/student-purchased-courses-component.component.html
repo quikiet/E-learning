@@ -24,23 +24,14 @@
         <!-- Trạng thái đăng ký -->
         <div class="absolute top-5 right-5">
           <p-tag
-            *ngIf="enrollment.status === 'active'"
-            severity="success"
-            value="Đang học"
-            [rounded]="true"
-            class="!text-xs"
-          />
-          <p-tag
-            *ngIf="enrollment.status === 'expired'"
-            severity="danger"
-            value="Hết hạn"
-            [rounded]="true"
-            class="!text-xs"
-          />
-          <p-tag
-            *ngIf="enrollment.status === 'completed'"
-            severity="info"
-            value="Hoàn thành"
+            [severity]="
+              enrollment.status === 'expired'
+                ? 'danger'
+                : enrollment.status === 'active'
+                ? 'info'
+                : 'success'
+            "
+            [value]="enrollment.status"
             [rounded]="true"
             class="!text-xs"
           />
@@ -56,7 +47,7 @@
             [pTooltip]="enrollment.course.course_name"
             tooltipPosition="top"
           >
-            {{ cutText(enrollment.course.course_name, 2) }}
+            {{ cutText(enrollment.course.course_name, 3) }}
           </h3>
           <p-button
             icon="pi pi-exclamation-triangle"
@@ -124,10 +115,10 @@
         </p>
 
         <!-- Ngày hết hạn -->
-        <p class="text-sm text-gray-600 mb-2">
+        <!-- <p class="text-sm text-gray-600 mb-2">
           <i class="pi pi-calendar-times mr-1"></i> Expired:
           {{ enrollment.expires_at || "none" | date : "dd/MM/yyyy HH:mm" }}
-        </p>
+        </p> -->
 
         <!-- Tiến độ học tập -->
         <div *ngIf="progressData[enrollment.id]" class="mb-2">
@@ -203,7 +194,7 @@
   <div class="space-y-4">
     <div class="flex flex-col gap-2">
       <label for="reportType" class="text-sm font-medium text-gray-700"
-        >Loại báo cáo:</label
+        >Report Type</label
       >
       <p-dropdown
         id="reportType"

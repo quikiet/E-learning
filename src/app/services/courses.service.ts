@@ -185,5 +185,20 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/instructor/GetAllreports`, { withCredentials: true });
   }
 
+  adminGetReport(page: number = 1): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/admin/reports?page=${page}`, { withCredentials: true });
+  }
+
+
+  // Resolve a report (assumed endpoint)
+  resolveReport(reportId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/admin/reports/${reportId}/resolve`, {}).pipe(
+      catchError((error) => {
+        console.error('Error resolving report:', error);
+        return throwError(() => new Error('Unable to resolve report'));
+      })
+    );
+  }
+
 
 }

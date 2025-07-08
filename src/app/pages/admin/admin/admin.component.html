@@ -21,10 +21,17 @@
           class="logo"
         >
           <div class="flex items-center gap-5">
-            <img
+            <!-- <img
               class="w-14 h-14 lg:block hidden"
               src="thumb-boy.png"
               alt="Logo"
+            /> -->
+            <img
+              alt="Edunity logo, green hexagonal shape with stacked layers"
+              class="w-14 h-14 lg:block hidden"
+              height="32"
+              src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
+              width="32"
             />
             <span class="text-secondary font-semibold text-2xl"
               >LearnSmart</span
@@ -32,11 +39,19 @@
           </div>
         </div>
 
-        <img
+        <!-- <img
           [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:block' : 'hidden'"
           class="logo-icon hidden w-12 h-12"
           src="thumb-boy.png"
           alt="Logo"
+        /> -->
+        <img
+          alt="Edunity logo, green hexagonal shape with stacked layers"
+          [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:block' : 'hidden'"
+          class="logo-icon hidden w-12 h-12"
+          height="32"
+          src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
+          width="32"
         />
       </a>
     </div>
@@ -54,7 +69,7 @@
               [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''"
               class="menu-group-title"
             >
-              Quản lý
+              Menu
             </span>
             <svg
               [ngClass]="

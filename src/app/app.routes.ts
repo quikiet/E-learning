@@ -41,6 +41,8 @@ import { AdminCourseManagementComponent } from './pages/admin/admin-course-manag
 import { CourseProgressComponent } from './pages/User/course-progress/course-progress.component';
 import { AuthCallbackComponent } from './pages/User/auth-callback/auth-callback.component';
 import { InstructorReportsComponent } from './pages/User/instructor-reports/instructor-reports.component';
+import { ReportManageComponent } from './pages/admin/report-manage/report-manage.component';
+import { DetailInstructorComponent } from './pages/User/detail-instructor/detail-instructor.component';
 
 export const routes: Routes = [
     {
@@ -55,6 +57,7 @@ export const routes: Routes = [
             { path: 'course', component: CourseSearchComponent },
             { path: 'my-course', component: StudentPurchasedCoursesComponentComponent },
             { path: 'my-course/:id', component: StudentCourseLessonsComponentComponent },
+            { path: 'user', component: DetailInstructorComponent },
         ]
     },
     { path: 'course-detail/:slug', component: CourseDetailComponent },
@@ -80,12 +83,12 @@ export const routes: Routes = [
             { path: 'category-manage', component: CategoryManageComponent },
             { path: 'quan-ly-bai-hoc', component: LessonManageComponent },
             { path: 'quan-ly-quiz', component: QuizManageComponent },
-            { path: 'quan-ly-danh-gia', component: ReviewManageComponent },
+            { path: 'quan-ly-danh-gia', component: ReportManageComponent },
             { path: 'quan-ly-thanh-toan', component: PaymentManageComponent },
             { path: 'quan-ly-ma-giam-gia', component: CouponManageComponent },
             { path: 'quan-ly-tien-do', component: ProgressManageComponent },
             { path: 'quan-ly-chung-chi', component: CertificateManageComponent },
-            { path: '**', redirectTo: 'thong-ke', pathMatch: 'full' },
+            { path: '**', redirectTo: 'dashboard', pathMatch: 'full' },
         ]
     },
     {
@@ -100,7 +103,7 @@ export const routes: Routes = [
             { path: 'add-lesson/:courseId', component: AddLessonsComponent },
             { path: 'reports', component: InstructorReportsComponent },
             { path: 'course/:course_id/user-progress', component: CourseProgressComponent },
-            { path: '**', redirectTo: 'ho-so', pathMatch: 'full' },
+            { path: '**', redirectTo: 'profile', pathMatch: 'full' },
         ]
     },
 

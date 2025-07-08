@@ -72,7 +72,7 @@
                     </a>
                   </li>
                 </div>
-                <li class="mb-2" *ngIf="user && user.role === 'student'">
+                <li class="mb-2" *ngIf="user && user.role !== 'admin'">
                   <a
                     [routerLink]="['/payment-history']"
                     routerLinkActive="bg-secondary-content text-white"

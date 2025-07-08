@@ -106,14 +106,15 @@
               pInputText
               type="number"
               class="w-full"
-              placeholder="Từ"
+              placeholder="From"
+              min="0"
               formControlName="min_price"
             />
             <input
               pInputText
               type="number"
               class="w-full"
-              placeholder="Đến"
+              placeholder="To"
               formControlName="max_price"
             /></div
         ></p-accordion-content>
@@ -124,7 +125,7 @@
     <button
       pButton
       type="button"
-      label="Đặt lại bộ lọc"
+      label="Reset filter"
       class="bg-secondary w-full mt-4"
       (click)="resetFilters()"
     ></button>
