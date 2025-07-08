@@ -71,7 +71,11 @@ export class AuthService {
   }
 
 
-  instructorRequest(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/instructor/request `, data, { withCredentials: true });
+  instructorRequestToBuyCourse(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/updateProfile/student/profile `, data, { withCredentials: true });
+  }
+
+  studentRequestToInstructor(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/updateProfile/instructor/profile `, data, { withCredentials: true });
   }
 }

@@ -20,7 +20,17 @@
       <p class="left-section text-xs md:text-sm text-[#4a4a4a] font-normal">
         100,000+ Students - Learn quickly, remember long
       </p>
-      <form class="mt-4 w-full max-w-md">
+
+      <div class="left-section">
+        <input
+          type="button"
+          value="Browse Courses"
+          [routerLink]="['/course']"
+          class="p-2 px-4 bg-primary w-fit rounded-full text-white transition-all duration-200 hover:border border-secondary"
+        />
+      </div>
+
+      <!-- <form class="mt-4 w-full max-w-md">  
         <label class="left-section sr-only" for="search"> Search course </label>
         <div class="left-section relative">
           <input
@@ -37,7 +47,7 @@
             <i class="pi pi-search"></i>
           </button>
         </div>
-      </form>
+      </form> -->
     </section>
     <!-- Right images and badges -->
     <section

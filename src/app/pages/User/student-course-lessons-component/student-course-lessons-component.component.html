@@ -36,8 +36,14 @@
                 {{ lesson.is_preview ? "Preview" : "No Preview" }}
               </p>
               <p-tag
-                [severity]="lesson.completed_at ? 'success' : 'danger'"
-                [value]="lesson.completed_at ? 'Completed' : 'Not Completed'"
+                [severity]="
+                  lesson.progress === 'completed'
+                    ? 'success'
+                    : lesson.progress === 'in_progress'
+                    ? 'info'
+                    : 'danger'
+                "
+                [value]="lesson.progress"
                 [rounded]="true"
                 class="!text-xs mt-1"
               />

@@ -146,6 +146,9 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
 
   selectLesson(lesson: any, index: number) {
     this.selectedLesson = lesson;
+    if (this.selectedLesson.progress === 'not_started') {
+      this.markLessonInProgress();
+    }
     this.currentLessonIndex = index;
     this.hasMarkedComplete = false; // Reset when selecting new lesson
     this.loadQuizzes();
@@ -197,7 +200,8 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
           detail: res.message,
           life: 3000,
         });
-
+        // this.loadCourseLessons();
+        this.selectedLesson.progress = 'completed';
         // Tự động chuyển sang bài học tiếp theo nếu có
         // if (this.currentLessonIndex < this.lessons.length - 1) {
         //   this.selectNextLesson();
@@ -205,6 +209,33 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error marking lesson complete:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error?.message,
+          life: 3000,
+        });
+      }
+    });
+  }
+
+  markLessonInProgress() {
+    this.enrollmentService.markLessonComplete(this.selectedLesson.id, 'in_progress').subscribe({
+      next: (res) => {
+        // this.messageService.add({
+        //   severity: 'success',
+        //   summary: 'Success',
+        //   detail: res.message,
+        //   life: 3000,
+        // });
+        this.selectedLesson.progress = 'in_progress';
+
+        // Tự động chuyển sang bài học tiếp theo nếu có
+        // if (this.currentLessonIndex < this.lessons.length - 1) {
+        //   this.selectNextLesson();
+        // }
+      },
+      error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

@@ -61,27 +61,27 @@ export class InstructorRequestComponent implements OnInit {
     this.isSubmitting = true;
     const formValue = this.instructorForm.value;
 
-    this.authService.instructorRequest(formValue).subscribe({
-      next: (response: any) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Thành công',
-          detail: response.message || 'Yêu cầu trở thành giảng viên đã được gửi.',
-          life: 3000,
-        });
-        this.resetForm();
-        this.isSubmitting = false;
-      },
-      error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Lỗi',
-          detail: error.error?.error || 'Không thể gửi yêu cầu. Vui lòng thử lại.',
-          life: 3000,
-        });
-        this.isSubmitting = false;
-      },
-    });
+    // this.authService.instructorRequest(formValue).subscribe({
+    //   next: (response: any) => {
+    //     this.messageService.add({
+    //       severity: 'success',
+    //       summary: 'Thành công',
+    //       detail: response.message || 'Yêu cầu trở thành giảng viên đã được gửi.',
+    //       life: 3000,
+    //     });
+    //     this.resetForm();
+    //     this.isSubmitting = false;
+    //   },
+    //   error: (error) => {
+    //     this.messageService.add({
+    //       severity: 'error',
+    //       summary: 'Lỗi',
+    //       detail: error.error?.error || 'Không thể gửi yêu cầu. Vui lòng thử lại.',
+    //       life: 3000,
+    //     });
+    //     this.isSubmitting = false;
+    //   },
+    // });
   }
 
   resetForm() {

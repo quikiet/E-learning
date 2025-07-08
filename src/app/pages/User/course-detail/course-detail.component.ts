@@ -13,9 +13,17 @@ import { TooltipModule } from 'primeng/tooltip';
 import { HeaderComponent } from "../../../components/user/header/header.component";
 import { LoadingComponent } from '../../../components/both/loading/loading.component';
 import { CardSkeletonComponent } from "../../../components/both/card-skeleton/card-skeleton.component";
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormControlName, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
+import { SelectModule } from 'primeng/select';
+import { CheckboxModule } from 'primeng/checkbox';
+import { CategoryService } from '../../../services/courses-manage/category.service';
 // Định nghĩa interface cho bài học
 interface Lesson {
   title: string;
@@ -34,6 +42,12 @@ interface Tab {
   value: string;
 }
 
+
+interface optionSelect {
+  name: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-course-detail',
   imports: [
@@ -48,12 +62,21 @@ interface Tab {
     LoadingComponent,
     FormsModule,
     DropdownModule,
-    RadioButtonModule
+    RadioButtonModule,
+    ToastModule,
+    DialogModule,
+    ButtonModule,
+    InputTextModule,
+    FormElementComponent,
+    SelectModule,
+    ReactiveFormsModule,
+    CheckboxModule,
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',
   styleUrl: './course-detail.component.css'
 })
+
 export class CourseDetailComponent implements OnInit {
   course: any = null;
   tabs: Tab[] = [];
@@ -73,12 +96,27 @@ export class CourseDetailComponent implements OnInit {
     { label: 'VNPay', value: 'vnpay' },
     { label: 'PayPal', value: 'paypal' }
   ];
+  studentDialog = false;
+  studentForm!: FormGroup;
+  LoE: optionSelect[] | undefined;
+  learningGoals = [
+    { label: 'Career advancement', value: 'Career advancement' },
+    { label: 'Skill development', value: 'Skill development' },
+    { label: 'Personal growth', value: 'Personal growth' },
+    { label: 'Academic improvement', value: 'Academic improvement' },
+    { label: 'Certification', value: 'Certification' }
+  ];
+  categories: any[] = [];
+  selectedLoE: optionSelect | undefined;
+
   constructor(
     private coursesService: CoursesService,
     private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private categoryService: CategoryService,
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit() {
@@ -92,6 +130,18 @@ export class CourseDetailComponent implements OnInit {
         this.loadCourse(); // Still load course even if user fetch fails
       }
     });
+
+    this.studentForm = this.fb.group({
+      LoE_DI: ['', Validators.maxLength(50)],
+      learning_goals: [''],
+      category_ids: [[]],
+    });
+    this.LoE = [
+      { name: 'All Level', value: 'All Level' },
+      { name: 'Beginner', value: 'Beginner' },
+      { name: 'Intermediate', value: 'Intermediate' },
+      { name: 'Advanced', value: 'Advanced' },
+    ];
   }
 
   loadCourse() {
@@ -141,6 +191,45 @@ export class CourseDetailComponent implements OnInit {
         life: 3000
       });
       this.router.navigate(['/']);
+    }
+  }
+
+  onSubmitForm() {
+    this.isLoading = true;
+    if (this.studentForm.valid) {
+      const data = {
+        ...this.studentForm.value,
+        learning_goals: this.studentForm.value.learning_goals?.value,
+        category_ids: this.studentForm.value.category_ids,
+      };
+      console.log(data);
+
+      this.authService.instructorRequestToBuyCourse(data).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: res.message,
+            life: 3000
+          });
+          this.isLoading = false;
+        }, error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.error.message,
+            life: 3000
+          });
+        }, complete: () => {
+          this.studentForm.reset();
+          this.isLoading = false;
+          this.studentDialog = false;
+        }
+      });
+    } else {
+      console.log('Form không hợp lệ, lỗi:', this.studentForm.errors);
+      this.isLoading = false;
+      this.studentForm.markAllAsTouched();
     }
   }
 
@@ -195,7 +284,13 @@ export class CourseDetailComponent implements OnInit {
     };
     this.coursesService.enrollCourse(this.course.id, paymentData).subscribe({
       next: (res) => {
-        console.log('Enroll course response:', res);
+        // console.log('Enroll course response:', res);
+        // this.messageService.add({
+        //   severity: 'error',
+        //   summary: 'Error',
+        //   detail: res.message,
+        //   life: 3000
+        // });
         if (res.order) {
           if (this.selectedPaymentMethod === 'vnpay' && res.order.data) {
             window.location.href = res.order.data;
@@ -205,19 +300,27 @@ export class CourseDetailComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'Unable to initiate payment.',
+              detail: res.message,
               life: 3000
             });
-            this.router.navigate(['login']);
           }
+        } else if (res.message === 'Student profile not found. Please complete your profile.') {
+          this.studentDialog = true;
+          this.categoryService.getSubCategory().subscribe({
+            next: (res) => {
+              this.categories = res;
+            },
+            error: (error) => {
+              alert('Không thể tải danh mục' + error.message);
+            }
+          });
         } else {
           this.messageService.add({
-            severity: 'error',
+            severity: 'info',
             summary: 'Error',
-            detail: 'Unable to initiate payment.',
+            detail: res.message,
             life: 3000
           });
-          this.router.navigate(['login']);
         }
       },
       error: (err) => {
@@ -225,10 +328,9 @@ export class CourseDetailComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: err.error?.message || 'Unable to enroll in course. Please try again.',
+          detail: err.error?.message,
           life: 3000
         });
-        this.router.navigate(['login']);
       }
     });
   }
