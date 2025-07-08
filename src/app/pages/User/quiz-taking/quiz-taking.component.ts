@@ -150,7 +150,8 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
         this.updateTimeDisplay();
       } else {
         clearInterval(this.timer);
-        this.submitQuiz();
+        alert('Bạn đã quá thời gian làm bài!');
+        this.router.navigate(['my-course']);
       }
     }, 1000);
   }

@@ -147,9 +147,15 @@
                     </div>
                   </div>
                   <p-button
-                    label="Start Quiz"
+                    [label]="
+                      quiz.remaining_attempts > 0 ? 'Start Quiz' : 'End of turn'
+                    "
+                    [disabled]="quiz.remaining_attempts === 0"
+                    [severity]="
+                      quiz.remaining_attempts === 0 ? 'danger' : 'success'
+                    "
                     icon="pi pi-play"
-                    styleClass="p-button-sm p-button-success"
+                    styleClass="p-button-sm"
                     [routerLink]="['/quiz', quiz.quiz_id]"
                   />
                 </div>

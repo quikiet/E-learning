@@ -67,7 +67,7 @@ export class AuthService {
   }
 
   changePassword(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/api/password/reset`, data, { withCredentials: true });
+    return this.http.post(`${this.apiUrl}/api/change-password`, data, { withCredentials: true });
   }
 
 

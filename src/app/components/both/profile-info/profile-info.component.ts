@@ -65,7 +65,7 @@ export class ProfileInfoComponent implements OnInit {
   genderOptions = [
     { label: 'Male', value: 'Male' },
     { label: 'Female', value: 'Female' },
-    { label: 'Other', value: 'Other' }
+    { label: 'Other', value: 'other' }
   ];
   LoE: OptionSelect[] = [
     { name: 'Unknown', value: 'Unknown' },
@@ -104,10 +104,10 @@ export class ProfileInfoComponent implements OnInit {
     });
 
     this.passwordForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      password_confirmation: ['', Validators.required]
-    }, { validators: this.confirmedValidator('password', 'password_confirmation') });
+      old_password: ['', [Validators.required, Validators.minLength(6)]],
+      new_password: ['', [Validators.required, Validators.minLength(6)]],
+      repeat_password: ['', Validators.required]
+    }, { validators: this.confirmedValidator('new_password', 'repeat_password') });
   }
 
   confirmedValidator(controlName: string, matchingControlName: string) {

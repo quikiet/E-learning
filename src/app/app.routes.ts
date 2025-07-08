@@ -51,17 +51,17 @@ export const routes: Routes = [
                 path: 'quiz/:quizId/attempt',
                 component: StudentQuizAttemptComponent
             },
-            {
-                path: 'quiz/:quiz_id',
-                component: QuizTakingComponent
-            },
+
             { path: 'course', component: CourseSearchComponent },
             { path: 'my-course', component: StudentPurchasedCoursesComponentComponent },
             { path: 'my-course/:id', component: StudentCourseLessonsComponentComponent },
         ]
     },
     { path: 'course-detail/:slug', component: CourseDetailComponent },
-
+    {
+        path: 'quiz/:quiz_id',
+        component: QuizTakingComponent
+    },
     { path: 'login', component: LoginComponent },
     { path: 'auth/google/callback', component: AuthCallbackComponent },
     {

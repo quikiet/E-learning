@@ -68,7 +68,10 @@
           </div>
         </div>
         <div class="flex justify-between w-full gap-10">
-          <div class="flex flex-col gap-2 w-full py-2">
+          <div
+            class="flex flex-col gap-2 w-full py-2"
+            *ngIf="user?.role !== 'admin'"
+          >
             <app-form-element [label]="'Educational background'">
               <p-select
                 [options]="LoE"
@@ -182,6 +185,7 @@
             <p-password
               [toggleMask]="true"
               [feedback]="false"
+              formControlName="old_password"
               placeholder="Enter password"
             />
           </app-form-element>
@@ -192,6 +196,7 @@
               [toggleMask]="true"
               placeholder="Enter new password"
               promptLabel="Enter new password"
+              formControlName="new_password"
               weakLabel="Weak security"
               mediumLabel="Normal"
               strongLabel="Good"
@@ -199,11 +204,12 @@
           </app-form-element>
         </div>
         <div class="flex flex-col gap-2 w-full py-2">
-          <app-form-element [label]="'New password'" [required]="true">
+          <app-form-element [label]="'Repeat password'" [required]="true">
             <p-password
               [toggleMask]="true"
-              placeholder="Enter new password"
-              promptLabel="Enter new password"
+              placeholder="Repeat password"
+              promptLabel="Repeat password"
+              formControlName="repeat_password"
               weakLabel="Weak security"
               mediumLabel="Normal"
               strongLabel="Good"
