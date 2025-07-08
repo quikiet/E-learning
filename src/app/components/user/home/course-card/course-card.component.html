@@ -21,7 +21,7 @@
     >
       <ng-template let-course #item>
         <div
-          [routerLink]="['/chi-tiet-khoa-hoc', course.course_url]"
+          [routerLink]="['/course-detail', course.course_url]"
           class="m-2 relative group"
           (mouseenter)="showCardHover($event, course)"
           (mouseleave)="hideCardHover()"
@@ -102,7 +102,7 @@
         </ul>
         <div class="flex justify-between items-center gap-5 pt-5">
           <button
-            disabled="true"
+            [routerLink]="['/course-detail', activeCard.course_url]"
             class="px-6 py-3 bg-violet-600 text-white rounded-md font-semibold w-full"
           >
             View detail

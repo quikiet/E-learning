@@ -14,6 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CardSkeletonComponent } from "../../../components/both/card-skeleton/card-skeleton.component";
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-student-purchased-courses-component',
@@ -30,7 +31,8 @@ import { CardSkeletonComponent } from "../../../components/both/card-skeleton/ca
     InputTextModule,
     DropdownModule,
     FormsModule,
-    CardSkeletonComponent
+    CardSkeletonComponent,
+    TooltipModule
   ],
   providers: [MessageService, CoursesService],
   templateUrl: './student-purchased-courses-component.component.html',
@@ -193,4 +195,5 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
     };
     this.showReportModal = false;
   }
+
 }

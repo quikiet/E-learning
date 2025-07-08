@@ -127,7 +127,38 @@
           Free
         </p>
       </div>
-
+      <div class="flex flex-col md:flex-row gap-4 mb-3">
+        <label
+          class="flex items-center gap-2 cursor-pointer bg-gray-100 p-3 rounded-md hover:bg-gray-200 transition duration-200 w-full"
+        >
+          <p-radioButton
+            name="paymentMethod"
+            value="vnpay"
+            [(ngModel)]="selectedPaymentMethod"
+          ></p-radioButton>
+          <img
+            src="https://cdn.haitrieu.com/wp-content/uploads/2022/10/Icon-VNPAY-QR.png"
+            alt="VNPay"
+            class="w-8 h-8"
+          />
+          <span class="font-semibold text-sm">Pay with VNPay</span>
+        </label>
+        <label
+          class="flex items-center gap-2 cursor-pointer bg-gray-100 p-3 rounded-md hover:bg-gray-200 transition duration-200 w-full"
+        >
+          <p-radioButton
+            name="paymentMethod"
+            value="paypal"
+            [(ngModel)]="selectedPaymentMethod"
+          ></p-radioButton>
+          <img
+            src="https://icon2.cleanpng.com/20180917/fvk/kisspng-logo-paypal-europe-services-ltd-vector-graphics-br-1713939922605.webp"
+            alt="PayPal"
+            class="w-8 h-8"
+          />
+          <span class="font-semibold text-sm">Pay with PayPal</span>
+        </label>
+      </div>
       <button
         *ngIf="!isUserEnrolled && course?.price > 0 && !isAuthor"
         (click)="enrollCourse()"

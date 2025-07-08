@@ -58,7 +58,6 @@ export const routes: Routes = [
             { path: 'course', component: CourseSearchComponent },
             { path: 'my-course', component: StudentPurchasedCoursesComponentComponent },
             { path: 'my-course/:id', component: StudentCourseLessonsComponentComponent },
-            { path: 'add-lesson/:courseId', component: AddLessonsComponent },
         ]
     },
     { path: 'course-detail/:slug', component: CourseDetailComponent },
@@ -98,6 +97,7 @@ export const routes: Routes = [
             { path: 'create-course', component: CreateCourseComponent },
             { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent },
             { path: 'payment-history', component: StudentPaymentHistoryComponent },
+            { path: 'add-lesson/:courseId', component: AddLessonsComponent },
             { path: 'reports', component: InstructorReportsComponent },
             { path: 'course/:course_id/user-progress', component: CourseProgressComponent },
             { path: '**', redirectTo: 'ho-so', pathMatch: 'full' },

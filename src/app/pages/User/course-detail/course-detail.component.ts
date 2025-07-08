@@ -14,6 +14,8 @@ import { HeaderComponent } from "../../../components/user/header/header.componen
 import { LoadingComponent } from '../../../components/both/loading/loading.component';
 import { CardSkeletonComponent } from "../../../components/both/card-skeleton/card-skeleton.component";
 import { FormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
+import { RadioButtonModule } from 'primeng/radiobutton';
 // Định nghĩa interface cho bài học
 interface Lesson {
   title: string;
@@ -44,7 +46,9 @@ interface Tab {
     TooltipModule,
     HeaderComponent,
     LoadingComponent,
-    FormsModule
+    FormsModule,
+    DropdownModule,
+    RadioButtonModule
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',
@@ -64,7 +68,11 @@ export class CourseDetailComponent implements OnInit {
   couponCode: string = '';
   discountedPrice: number | null = null;
   couponError: string | null = null;
-
+  selectedPaymentMethod: string | null = null;
+  paymentMethods = [
+    { label: 'VNPay', value: 'vnpay' },
+    { label: 'PayPal', value: 'paypal' }
+  ];
   constructor(
     private coursesService: CoursesService,
     private route: ActivatedRoute,
@@ -179,34 +187,48 @@ export class CourseDetailComponent implements OnInit {
   }
 
   enrollCourse() {
-    if (!this.course) return;
+    if (!this.course || !this.selectedPaymentMethod) return;
     const paymentData = {
       amount: this.course.price,
-      method: 'vnpay',
+      method: this.selectedPaymentMethod,
       coupon_id: null
     };
-
     this.coursesService.enrollCourse(this.course.id, paymentData).subscribe({
       next: (res) => {
         console.log('Enroll course response:', res);
-        if (res.order?.data) {
-          // Điều hướng người dùng đến URL thanh toán
-          window.location.href = res.order.data;
+        if (res.order) {
+          if (this.selectedPaymentMethod === 'vnpay' && res.order.data) {
+            window.location.href = res.order.data;
+          } else if (this.selectedPaymentMethod === 'paypal' && res.order.approval_url) {
+            window.location.href = res.order.approval_url;
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Unable to initiate payment.',
+              life: 3000
+            });
+            this.router.navigate(['login']);
+          }
         } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Unable to initiate payment.',
+            life: 3000
+          });
           this.router.navigate(['login']);
         }
       },
       error: (err) => {
+        console.error('Error enrolling course:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error?.message || 'Unable to enroll in course. Please try again.',
+          life: 3000
+        });
         this.router.navigate(['login']);
-
-        // console.error('Error enrolling course:', err);
-        // const errorMessage = err.error?.message;
-        // this.messageService.add({
-        //   severity: 'error',
-        //   summary: 'Lỗi',
-        //   detail: 'errorMessage',
-        //   life: 3000,
-        // });
       }
     });
   }

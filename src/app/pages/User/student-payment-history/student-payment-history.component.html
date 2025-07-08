@@ -11,20 +11,20 @@
   <ng-template pTemplate="caption">
     <div class="flex items-center justify-between p-4 bg-gray-50 rounded-t-lg">
       <p class="m-0 lg:text-lg font-semibold text-gray-800">
-        Lịch sử giao dịch
+        Allow transaction history
       </p>
     </div>
   </ng-template>
   <ng-template pTemplate="header">
     <tr class="text-sm bg-gray-100 text-gray-700">
-      <th class="p-3">ID Giao dịch</th>
-      <th class="p-3">Tên Khóa học</th>
-      <th class="p-3">Số tiền</th>
-      <th class="p-3">Phương thức</th>
-      <th class="p-3">Mã giao dịch</th>
-      <th class="p-3">Trạng thái</th>
-      <th class="p-3">Ngày thanh toán</th>
-      <th class="p-3">Hành động</th>
+      <th class="p-3">ID transaction</th>
+      <th class="p-3">Course name</th>
+      <th class="p-3">Price</th>
+      <th class="p-3">Method</th>
+      <th class="p-3">Transaction code</th>
+      <th class="p-3">Status</th>
+      <th class="p-3">Payment date</th>
+      <th class="p-3">Action</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-payment>
@@ -36,28 +36,28 @@
       >
         {{ payment.course?.course_name || "N/A" }}
       </td>
-      <td class="p-3 text-gray-800">{{ payment.amount | number }} VND</td>
+      <td class="p-3 text-gray-800">{{ payment.amount | number }} $</td>
       <td class="p-3 text-gray-800">{{ payment.method }}</td>
       <td class="p-3 text-gray-800">{{ payment.transaction_code }}</td>
       <td class="p-3">
         <p-tag
           *ngIf="payment.status === 'completed'"
           severity="success"
-          value="Hoàn tất"
+          [value]="payment.status"
           [rounded]="true"
           class="!text-xs"
         />
         <p-tag
           *ngIf="payment.status === 'pending'"
           severity="warn"
-          value="Đang chờ"
+          [value]="payment.status"
           [rounded]="true"
           class="!text-xs"
         />
         <p-tag
           *ngIf="payment.status === 'failed'"
           severity="danger"
-          value="Thất bại"
+          [value]="payment.status"
           [rounded]="true"
           class="!text-xs"
         />
@@ -70,7 +70,7 @@
           (click)="viewPaymentDetails(payment.id)"
           class="bg-blue-500 text-white py-1 px-3 rounded-lg hover:bg-blue-600 transition duration-200 text-sm"
         >
-          Xem chi tiết
+          View detail
         </button>
       </td>
     </tr>
@@ -78,7 +78,7 @@
   <ng-template pTemplate="emptymessage">
     <tr>
       <td colspan="8" class="text-center text-gray-500 py-4">
-        Bạn chưa mua khóa học nào.
+        You have not purchased any courses.
       </td>
     </tr>
   </ng-template>
