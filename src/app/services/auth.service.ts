@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   register(data: any): Observable<any[]> {
-    return this.http.post<any[]>(`${this.apiUrl}/register`, data);
+    return this.http.post<any[]>(`${this.apiUrl}/api/register`, data);
   }
 
   login(data: LoginRequest): Observable<{ message: string; token: string; user: any }> {

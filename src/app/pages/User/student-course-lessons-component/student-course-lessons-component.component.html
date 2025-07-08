@@ -15,44 +15,60 @@
       >
         <div
           *ngFor="let lesson of lessons; let i = index"
-          class="flex items-center justify-between p-3 cursor-pointer transition-colors"
           [ngClass]="{
             'bg-blue-100': selectedLesson?.id === lesson.id,
             'hover:bg-gray-100': selectedLesson?.id !== lesson.id
           }"
-          (click)="selectLesson(lesson, i)"
         >
-          <div class="flex-1">
-            <p class="text-sm font-medium text-gray-800 truncate">
-              {{ lesson.title }}
-            </p>
-            <p class="text-xs text-gray-600">
-              <i class="pi pi-clock mr-1"></i> {{ lesson.duration }} minutes
-            </p>
-            <p class="text-xs text-gray-600">
-              <i class="pi pi-eye mr-1"></i>
-              {{ lesson.is_preview ? "Preview" : "No Preview" }}
-            </p>
-            <p-tag
-              [severity]="lesson.completed_at ? 'success' : 'danger'"
-              [value]="lesson.completed_at ? 'Completed' : 'Not Completed'"
-              [rounded]="true"
-              class="!text-xs mt-1"
-            />
-            <span
-              class="text-xs ml-2 text-gray-500"
-              *ngIf="lesson.completed_at"
-            >
-              {{ lesson.completed_at | date : "dd/MM/yyyy HH:mm" }}
-            </span>
+          <div
+            class="flex items-center justify-between p-3 cursor-pointer transition-colors"
+          >
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-800 truncate">
+                {{ lesson.title }}
+              </p>
+
+              <p class="text-xs text-gray-600">
+                <i class="pi pi-clock mr-1"></i> {{ lesson.duration }} minutes
+              </p>
+              <p class="text-xs text-gray-600">
+                <i class="pi pi-eye mr-1"></i>
+                {{ lesson.is_preview ? "Preview" : "No Preview" }}
+              </p>
+              <p-tag
+                [severity]="lesson.completed_at ? 'success' : 'danger'"
+                [value]="lesson.completed_at ? 'Completed' : 'Not Completed'"
+                [rounded]="true"
+                class="!text-xs mt-1"
+              />
+              <span
+                class="text-xs ml-2 text-gray-500"
+                *ngIf="lesson.completed_at"
+              >
+                {{ lesson.completed_at | date : "dd/MM/yyyy HH:mm" }}
+              </span>
+            </div>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-play"
+              class="p-button-text p-button-sm"
+              (click)="selectLesson(lesson, i)"
+            ></button>
           </div>
-          <button
-            pButton
-            type="button"
-            icon="pi pi-play"
-            class="p-button-text p-button-sm"
-            (click)="selectLesson(lesson, i)"
-          ></button>
+          <div *ngIf="lesson?.versions.length > 0">
+            <div
+              *ngFor="let version of lesson?.versions; let i = index"
+              class="flex items-center gap-2"
+            >
+              <a
+                (click)="selectLesson(version, i)"
+                class="text-xs text-primary hover:text-secondary transition duration-200 underline p-2"
+                >Version {{ i + 1 }}</a
+              >
+            </div>
+          </div>
+          <hr />
         </div>
       </div>
     </div>

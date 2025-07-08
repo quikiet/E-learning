@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
       password_confirmation: ['', Validators.required],
       LoE_DI: ['', Validators.maxLength(50)],
       birthdate: [null],
-      name: ['',],
+      fullname: ['',],
       gender: [''],
       bio: [''],
       organization: [''],
