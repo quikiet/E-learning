@@ -18,17 +18,19 @@
 >
   <ng-template #caption>
     <div class="flex items-center gap-5 justify-between">
-      <p class="m-0 lg:text-lg font-semibold">Category management</p>
-      <div>
+      <div class="flex items-center gap-2">
+        <p class="m-0 lg:text-lg font-semibold">Category management</p>
         <p-iconfield>
           <p-inputicon styleClass="pi pi-search" />
           <input
             pInputText
             type="text"
             (input)="searchGlobal($event)"
-            placeholder="Tìm kiếm danh mục..."
+            placeholder="Searching..."
           />
         </p-iconfield>
+      </div>
+      <div>
         <p-button
           class="mr-2"
           label="Collapse All"
@@ -207,7 +209,7 @@
 <p-dialog
   [(visible)]="categoryDialog"
   [style]="{ width: '450px' }"
-  header="{{ !isEditting ? 'Thêm Danh mục' : 'Sửa Danh mục' }}"
+  header="{{ !isEditting ? 'Add category' : 'Update category' }}"
   [modal]="true"
 >
   <ng-template #content>
@@ -216,11 +218,29 @@
         [formGroup]="categoryForm"
         (ngSubmit)="!isEditting ? addCategory() : updateCategory()"
       >
-        <div class="flex flex-col gap-6">
-          <app-form-element [label]="'Tên danh mục'" [required]="true">
+        <div class="flex flex-col gap-2">
+          <app-form-element
+            [label]="'Name'"
+            [required]="true"
+            [control]="categoryForm.get('name')!"
+          >
             <input
-              class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200 bg-dark-light"
-              placeholder="Kinh doanh"
+              pInputText
+              class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200"
+              placeholder="IT"
+              formControlName="name"
+              type="text"
+              id="unique-input"
+            />
+          </app-form-element>
+          <app-form-element
+            [label]="'Children of'"
+            [control]="categoryForm.get('name')!"
+          >
+            <input
+              pInputText
+              class="text-sm custom-input w-full px-4 py-3 rounded-md focus:outline-gray-200"
+              placeholder="IT"
               formControlName="name"
               type="text"
               id="unique-input"

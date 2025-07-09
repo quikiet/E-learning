@@ -98,7 +98,30 @@
   </main>
 </div>
 
-<app-course-card></app-course-card>
+<app-course-card
+  title="Top Rated Courses"
+  subtitle="Explore our highest-rated courses"
+  apiEndpoint="/title_high_rated/courses/high-rated"
+></app-course-card>
+
+<app-course-card
+  title="Top Lastest Courses"
+  subtitle="Explore our lastest courses"
+  apiEndpoint="/title_latest/courses"
+></app-course-card>
+
+<app-course-card
+  title="Other users are learning"
+  subtitle="Explore the courses that are already being taken by learners."
+  apiEndpoint="/title_active_course/courses/active"
+></app-course-card>
+
+<app-course-card
+  title="Top Popular Courses"
+  subtitle="Explore our popular courses"
+  apiEndpoint="/title_popular/courses/popular"
+></app-course-card>
+
 <app-category-carousel></app-category-carousel>
 <app-instructor></app-instructor>
 

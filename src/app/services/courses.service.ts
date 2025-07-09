@@ -16,6 +16,14 @@ export class CoursesService {
       });
   }
 
+  getCoursesByEndpoint(endpoint: string, page: number, perPage: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}${endpoint}?page=${page}&per_page=${perPage}`).pipe(
+      catchError((error) => {
+        console.error(`Error fetching courses from ${endpoint}:`, error);
+        return throwError(() => new Error('Unable to fetch courses'));
+      })
+    );
+  }
 
   cloneCourses(courseId: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/instructor/course/${courseId}/clone`, {}, { withCredentials: true });

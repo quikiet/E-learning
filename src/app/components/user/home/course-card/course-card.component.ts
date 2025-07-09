@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { Tag } from 'primeng/tag'; import { DividerModule } from 'primeng/divider';
@@ -20,6 +20,11 @@ export class CourseCardComponent implements OnInit {
   @ViewChild('carousel') carousel!: Carousel;
   @ViewChild('cardHover') cardHover!: ElementRef;
 
+  @Input() apiEndpoint: string = '/courses'; // Default endpoint
+  @Input() title: string = 'The field to study next'; // Tiêu đề mặc định
+  @Input() subtitle: string = 'Recommended for you'; // Phụ đề mặc định
+
+
   courses: any[] = [];
   currentPage: number = 0; // Trang hiện tại của carousel
   numVisible: number = 5; // Số item hiển thị (mặc định là 5)
@@ -31,7 +36,7 @@ export class CourseCardComponent implements OnInit {
   cardHoverPosition: any = {};
   responsiveOptions: any[] = [
     { breakpoint: '1400px', numVisible: 5, numScroll: 5 },
-    { breakpoint: '1199px', numVisible: 5, numScroll: 5 },
+    { breakpoint: '1199px', numVisible: 3, numScroll: 1 },
     { breakpoint: '767px', numVisible: 2, numScroll: 1 },
     { breakpoint: '575px', numVisible: 1, numScroll: 1 }
   ];
@@ -53,16 +58,15 @@ export class CourseCardComponent implements OnInit {
 
   loadCourses() {
     this.isLoading = true;
-    this.courseService.getCourses(1, 10).subscribe({
+    this.courseService.getCoursesByEndpoint(this.apiEndpoint, 1, 10).subscribe({
       next: (res) => {
         this.courses = res.data;
-        // console.log('Full API Response:', this.courses);
         this.isLoading = false;
-        // console.log('Courses loaded:', this.courses);
+        console.log(`Courses loaded from ${this.apiEndpoint}:`, this.courses.length);
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Error loading courses:', err);
+        console.error(`Error loading courses from ${this.apiEndpoint}:`, err);
       }
     });
   }
@@ -109,8 +113,6 @@ export class CourseCardComponent implements OnInit {
   }
 
   showCardHover(event: MouseEvent, list: any): void {
-    console.log(1);
-
     this.activeCard = list;
     this.cardDetail = list;
     const target = event.currentTarget as HTMLElement;
