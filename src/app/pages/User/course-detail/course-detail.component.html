@@ -1,7 +1,7 @@
 <app-header></app-header>
 <p-toast />
 <div
-  class="max-w-7xl mx-auto my-10 grid grid-cols-1 lg:grid-cols-12 gap-5 h-full lg:p-10 p-6"
+  class="max-w-7xl mx-auto mt-2 mb-10 grid grid-cols-1 lg:grid-cols-12 gap-5 h-full lg:p-10 p-6"
 >
   <div class="lg:col-span-8 mb-6">
     <!-- Video Preview -->
@@ -64,6 +64,38 @@
       <p-divider />
     </div>
 
+    <!-- Learner also -->
+    <div class="container mx-auto">
+      <h2 class="text-lg font-bold mb-4">The learner also buys</h2>
+
+      <div
+        *ngFor="let recommend of recommendCourse"
+        ngIf="recommendCourse.length > 0"
+      >
+        <div class="p-4 mb-4 flex items-start">
+          <img
+            [src]="recommend.url"
+            [alt]="recommend.course_title"
+            class="w-12 h-12 mr-4"
+          />
+          <div class="flex items-start justify-between text-xs w-full">
+            <div>
+              <h3 class="font-semibold text-sm">
+                {{ recommend.course_title }}
+              </h3>
+              <div class="flex items-center mt-1">
+                <span class="text-gray-500">• 163</span>
+                <span class="text-gray-500">• Tổng số 3 giờ</span>
+                <p class="text-gray-500">Đã cập nhật 8/2024</p>
+              </div>
+            </div>
+            <span class="text-yellow-500">4,7 ★</span>
+            <span class="text-xs font-bold">1.299.000 ₫</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Review List -->
     <div class="space-y-5">
       <p class="text-black font-bold md:text-lg mb-2">Reviews</p>
@@ -99,7 +131,7 @@
 
   <div class="lg:col-span-4 h-full">
     <div
-      class="sticky top-10 px-0 py-0 flex-col shadow border-l border-gray-100 bg-white !p-4 h-fit"
+      class="sticky top-4 px-0 py-0 flex-col shadow border-l border-gray-100 bg-white !p-4 h-fit"
       *ngIf="!isLoading"
     >
       <div class="flex items-center gap-1 px-4 py-2 select-none">
@@ -112,10 +144,15 @@
           }}</span>
         </span>
         |
-        <p class="text-lg font-semibold">
-          {{ course.certificates_count }} Certificates
-        </p>
-        |
+        <div *ngIf="course.is_certificate_enabled">
+          <p-tag severity="success">
+            <div class="flex items-center gap-2 px-1">
+              <i class="pi pi-trophy"></i>
+              <span class="text-base"> Certificates </span>
+            </div>
+          </p-tag>
+          |
+        </div>
         <p class="text-xl font-bold text-primary" *ngIf="course.price > 0">
           {{
             discountedPrice !== null
@@ -160,6 +197,7 @@
           <span class="font-semibold text-sm">Pay with PayPal</span>
         </label>
       </div>
+
       <button
         *ngIf="!isUserEnrolled && course?.price > 0 && !isAuthor"
         (click)="enrollCourse()"
@@ -179,7 +217,7 @@
       <button
         *ngIf="!isUserEnrolled && course?.price === 0 && !isAuthor"
         (click)="enrollFreeCourse()"
-        class="px-6 py-3 bg-secondary/90 hover:bg-secondary transition duration-300 text-white font-semibold w-full cursor-pointer"
+        class="px-6 py-3 mb-3 bg-secondary/90 hover:bg-secondary transition duration-300 text-white font-semibold w-full cursor-pointer"
         [disabled]="isLoading"
       >
         Get Free Course
@@ -187,7 +225,7 @@
       <button
         *ngIf="isUserEnrolled"
         (click)="enrollFreeCourse()"
-        class="px-6 py-3 bg-secondary/90 hover:bg-secondary transition duration-300 text-white font-semibold w-full cursor-pointer"
+        class="px-6 py-3 mb-3 bg-secondary/90 hover:bg-secondary transition duration-300 text-white font-semibold w-full cursor-pointer"
         [disabled]="isLoading"
       >
         Learn Now

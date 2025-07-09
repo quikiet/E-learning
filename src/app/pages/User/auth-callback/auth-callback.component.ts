@@ -4,17 +4,18 @@ import { AuthService } from '../../../services/auth.service';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../../components/both/loading/loading.component';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-auth-callback',
   standalone: true,
-  imports: [CommonModule, LoadingComponent],
+  imports: [CommonModule, LoadingComponent, ToastModule],
   providers: [MessageService],
   templateUrl: './auth-callback.component.html',
   styleUrls: ['./auth-callback.component.css']
 })
 export class AuthCallbackComponent implements OnInit {
-  isLoading: boolean = true;
+  isLoading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,28 +25,53 @@ export class AuthCallbackComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const token = this.route.snapshot.queryParamMap.get('token');
-    const requireRole = this.route.snapshot.queryParamMap.get('require_role_selection') === 'true';
+    this.route.queryParams.subscribe(params => {
+      let token = this.authService.getCookie('jwt_token') || params['token'];
+      console.log('Query params token:', params['token']);
+      console.log('Cookie jwt_token:', this.authService.getCookie('jwt_token'));
+      console.log('Token used:', token);
+      const requireRole = params['require_role'] === 'true';
 
-    if (token) {
-      this.authService.storeToken(token);
-      this.isLoading = false;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Logged in successfully.',
-        life: 3000
-      });
-      this.router.navigate([requireRole ? '/select-role' : '/']);
-    } else {
-      this.isLoading = false;
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Google login failed: No token received.',
-        life: 3000
-      });
-      this.router.navigate(['/login']);
-    }
+      if (token) {
+        console.log('Token received:', token);
+        this.authService.storeToken(token);
+        this.authService.getCurrentUser().subscribe({
+          next: (user) => {
+            this.authService.setUser(user);
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Thành công', // Success
+              detail: `Chào mừng !`,
+              life: 3000
+            });
+            const redirectTo = requireRole ? '/select-role' : '/';
+            this.router.navigate([redirectTo]);
+          },
+          error: (err) => {
+            console.error('Error fetching user:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Lỗi', // Error
+              detail: 'Không thể lấy thông tin người dùng. Vui lòng thử lại.', // Unable to fetch user info
+              life: 3000
+            });
+            this.router.navigate(['/']);
+          },
+          complete: () => {
+            this.isLoading = false;
+          }
+        });
+      } else {
+        console.error('No token found in query params or cookie');
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi', // Error
+          detail: 'Không tìm thấy token đăng nhập.', // No login token found
+          life: 3000
+        });
+        this.isLoading = false;
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

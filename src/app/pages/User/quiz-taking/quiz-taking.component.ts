@@ -24,6 +24,7 @@ interface Question {
   quiz_id: number;
   title: string;
   question_type: 'true_false' | 'multiple_choice';
+  is_multiple_correct: boolean;
   created_at: string;
   updated_at: string;
   choices: Choice[];
@@ -150,7 +151,7 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
         this.updateTimeDisplay();
       } else {
         clearInterval(this.timer);
-        alert('Bạn đã quá thời gian làm bài!');
+        alert('You have exceeded the time to complete the assignment!');
         this.router.navigate(['my-course']);
       }
     }, 1000);
@@ -289,6 +290,6 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['/student/course', this.quizStart?.enrollment_id || '']);
+    this.router.navigate(['/my-course', this.quizStart?.course_id || '']);
   }
 }

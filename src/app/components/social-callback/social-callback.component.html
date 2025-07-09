@@ -1,0 +1,7 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <p-toast></p-toast>
+  <div class="text-center p-6 bg-white rounded-lg shadow-lg">
+    <p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
+    <p *ngIf="!isLoading">Đang xử lý đăng nhập...</p>
+  </div>
+</div>

@@ -119,10 +119,10 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
 
   cutText(text: string, wordLimit: number = 50): string {
     if (!text) return '';
-    const words = text.split(' ');
+    const words = text.split('');
     if (words.length <= wordLimit) return text;
 
-    return words.slice(0, wordLimit).join(' ') + '...';
+    return words.slice(0, wordLimit).join('') + '...';
   }
 
   openReportModal(enrollment: any) {

@@ -21,22 +21,40 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     const token = this.getToken();
-    if (token) {
-      this.currentUserSubject.next({ id: 0, username: '', email: '', role: null });
+    const userData = localStorage.getItem('auth_user');
+    if (token && userData) {
+      this.currentUserSubject.next(JSON.parse(userData));
     }
   }
 
-  initiateGoogleLogin() {
-    window.location.href = `${this.apiUrl}/auth/google`;
+  loginWithGoogle() {
+    return this.http.get<any>(`${this.apiUrl}/auth/google`);
   }
 
   storeToken(token: string) {
     localStorage.setItem('jwt_token', token);
-    this.currentUserSubject.next({ id: 0, username: '', email: '', role: null });
+    localStorage.setItem('token_expiry', (new Date().getTime() + 60 * 60 * 1000).toString()); // 60 phút
+  }
+
+  setUser(user: User) {
+    this.currentUserSubject.next(user);
+    localStorage.setItem('auth_user', JSON.stringify(user));
   }
 
   getToken(): string | null {
+    const expiry = localStorage.getItem('token_expiry');
+    if (expiry && new Date().getTime() > parseInt(expiry)) {
+      this.logout();
+      return null;
+    }
     return localStorage.getItem('jwt_token');
+  }
+
+  getCookie(name: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null;
   }
 
   register(data: any): Observable<any[]> {
@@ -54,13 +72,25 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('auth_user');
+    localStorage.removeItem('token_expiry');
+    this.currentUserSubject.next(null);
     return this.http.post(`${this.apiUrl}/api/logout`, {}, { withCredentials: true });
   }
 
   getCurrentUser(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/currentStudent `, { withCredentials: true });
+    const token = this.getToken();
+    console.log('Sending Authorization header:', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/api/currentStudent`, {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      }),
+      withCredentials: true
+    }).pipe(
+      tap(user => this.setUser(user))
+    );
   }
-
 
   updateUser(data: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/api/user/profile/update`, data, { withCredentials: true });

@@ -46,7 +46,7 @@ interface Feedback {
   styleUrl: './student-course-lessons-component.component.css'
 })
 export class StudentCourseLessonsComponentComponent implements OnInit {
-  enrollmentId: number = 0;
+  courseId: number = 0;
   course: any = null;
   lessons: any[] = [];
   quizzes: any[] = [];
@@ -73,7 +73,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.enrollmentId = +this.route.snapshot.paramMap.get('id')!;
+    this.courseId = +this.route.snapshot.paramMap.get('id')!;
     this.authService.getCurrentUser().subscribe(res => {
       this.currentUserId = res.user.id;
       this.loadCourseLessons();
@@ -89,7 +89,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
 
   loadCourseLessons() {
     this.isLoading = true;
-    this.enrollmentService.getCourseLessons(this.enrollmentId).subscribe({
+    this.enrollmentService.getCourseLessons(this.courseId).subscribe({
       next: (res) => {
         this.course = res.data.course;
         this.lessons = res.data.lessons;
@@ -264,12 +264,12 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
 
     // Gửi API request
     console.log('Submitting review:', reviewData);
-    this.enrollmentService.reviewCourse(this.enrollmentId, reviewData).subscribe({
+    this.enrollmentService.reviewCourse(this.courseId, reviewData).subscribe({
       next: (res) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Thành công',
-          detail: res.message || 'Đánh giá của bạn đã được gửi thành công!'
+          detail: res.message
         });
 
         // Reset form
@@ -284,7 +284,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Thất bại',
-          detail: err.message || 'Đánh giá của bạn không được gửi!'
+          detail: err.error.message
         });
       }
     })
@@ -292,7 +292,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   }
 
   getRatingLabel(rating: number): string {
-    const labels = ['', 'Rất tệ', 'Tệ', 'Bình thường', 'Tốt', 'Rất tốt'];
+    const labels = [''];
     return labels[rating] || '';
   }
 }

@@ -16,6 +16,10 @@ export class CoursesService {
       });
   }
 
+  getCoursesByRecommend(course_title: string): Observable<any> {
+    return this.http.get(`https://recommendapi.onrender.com/recommend-similar?course_title=${course_title}&num_recommendations=10`);
+  }
+
   getCoursesByEndpoint(endpoint: string, page: number, perPage: number): Observable<any> {
     return this.http.get(`${this.apiUrl}${endpoint}?page=${page}&per_page=${perPage}`).pipe(
       catchError((error) => {

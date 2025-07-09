@@ -108,7 +108,7 @@ export class CourseDetailComponent implements OnInit {
   ];
   categories: any[] = [];
   selectedLoE: optionSelect | undefined;
-
+  recommendCourse: any = [];
   constructor(
     private coursesService: CoursesService,
     private route: ActivatedRoute,
@@ -151,6 +151,11 @@ export class CourseDetailComponent implements OnInit {
       this.coursesService.getCourseBySlug(slug).subscribe({
         next: (res) => {
           this.course = res;
+          // console.log('course: ' + this.course?.course_name);
+
+          if (this.course && this.course?.course_name) {
+            this.loadCourseRecommendByTilte(this.course?.course_name);
+          }
           this.lessons = res.lessons || [];
           this.reviews = res.reviews || [];
           this.isUserEnrolled = this.checkUserEnrollment(res.enrollments);
@@ -159,8 +164,8 @@ export class CourseDetailComponent implements OnInit {
           const previewLesson = this.lessons.find(lesson => lesson.is_preview === true);
           this.previewVideoUrl = previewLesson ? previewLesson.video_url : null;
 
-          console.log('Course:', this.course);
-          console.log('Preview Video URL:', this.previewVideoUrl);
+          // console.log('Course:', this.course);
+          // console.log('Preview Video URL:', this.previewVideoUrl);
           this.isLoading = false;
         },
         error: (err) => {
@@ -192,6 +197,18 @@ export class CourseDetailComponent implements OnInit {
       });
       this.router.navigate(['/']);
     }
+  }
+
+  loadCourseRecommendByTilte(course_title: string) {
+    this.coursesService.getCoursesByRecommend(course_title).subscribe({
+      next: (res) => {
+        this.recommendCourse = res.recommendations;
+        console.log(this.recommendCourse.length + 'hehe');
+
+      }, error: (err) => {
+        console.log(err.message);
+      }
+    })
   }
 
   onSubmitForm() {

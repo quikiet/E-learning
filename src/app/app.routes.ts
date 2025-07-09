@@ -43,6 +43,8 @@ import { AuthCallbackComponent } from './pages/User/auth-callback/auth-callback.
 import { InstructorReportsComponent } from './pages/User/instructor-reports/instructor-reports.component';
 import { ReportManageComponent } from './pages/admin/report-manage/report-manage.component';
 import { DetailInstructorComponent } from './pages/User/detail-instructor/detail-instructor.component';
+import { SocialCallbackComponent } from './components/social-callback/social-callback.component';
+import { SelectRoleComponent } from './components/select-role/select-role.component';
 
 export const routes: Routes = [
     {
@@ -66,6 +68,8 @@ export const routes: Routes = [
         component: QuizTakingComponent
     },
     { path: 'login', component: LoginComponent },
+    { path: 'social-callback', component: SocialCallbackComponent }, // Route cho callback Google OAuth
+    { path: 'select-role', component: SelectRoleComponent },
     { path: 'auth/google/callback', component: AuthCallbackComponent },
     {
         path: 'admin', component: AdminComponent,

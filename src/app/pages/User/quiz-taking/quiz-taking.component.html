@@ -2,10 +2,12 @@
 <div class="max-w-screen">
   <div class="max-w-5xl mx-auto my-10 px-4 sm:px-6 lg:px-8 pb-16">
     <!-- Quiz Title -->
-    <h2 class="text-2xl font-bold text-gray-800">Quiz</h2>
-    <p class="mb-6 text-gray-500">
-      Please select all answers before submitting the exam.
-    </p>
+    <div *ngIf="!showResults && !quizResult">
+      <h2 class="text-2xl font-bold text-gray-800">Quiz</h2>
+      <p class="mb-6 text-gray-500">
+        Please select all answers before submitting the exam.
+      </p>
+    </div>
     <!-- Bài kiểm tra -->
 
     <!-- Loading state -->
@@ -20,7 +22,7 @@
     <!-- Error state -->
     <div
       *ngIf="errorMessage && !showResults"
-      class="text-center text-red-500 py-4"
+      class="text-center text-primary py-4"
     >
       {{ errorMessage }}
     </div>
@@ -60,9 +62,12 @@
             </div>
           </div>
 
-          <!-- Multiple Choice -->
+          <!-- Multiple Choice (>1 choice)-->
           <div
-            *ngIf="question.question_type === 'multiple_choice'"
+            *ngIf="
+              question.question_type === 'multiple_choice' &&
+              question.is_multiple_correct
+            "
             class="flex flex-col gap-2"
           >
             <div
@@ -72,6 +77,29 @@
               <p-checkbox
                 [value]="choice.id"
                 [(ngModel)]="selectedAnswers[question.id]"
+                [binary]="false"
+                (ngModelChange)="logSelection(question.id, $event)"
+              />
+              <label class="text-gray-700">{{ choice.content }}</label>
+            </div>
+          </div>
+
+          <!-- Multiple Choice (1 choice) -->
+          <div
+            *ngIf="
+              question.question_type === 'multiple_choice' &&
+              !question.is_multiple_correct
+            "
+            class="flex flex-col gap-2"
+          >
+            <div
+              *ngFor="let choice of question.choices"
+              class="flex items-center gap-2"
+            >
+              <p-radioButton
+                [value]="choice.id"
+                [(ngModel)]="selectedAnswers[question.id]"
+                [name]="'question_' + question.id"
                 [binary]="false"
                 (ngModelChange)="logSelection(question.id, $event)"
               />
@@ -149,6 +177,7 @@
       <div
         *ngFor="let result of quizResult.results"
         class="bg-white rounded-lg shadow-sm p-6"
+        [ngClass]="result.is_correct ? 'shadow-secondary' : 'shadow-primary'"
       >
         <h4 class="text-md font-semibold text-gray-800 mb-2">
           Question: {{ result.question_title }}
@@ -167,7 +196,7 @@
             </span>
             <span
               *ngFor="let choice of result.selected_choices; let isLast = last"
-              [ngClass]="result.is_correct ? 'text-green-500' : 'text-red-500'"
+              [ngClass]="result.is_correct ? 'text-secondary' : 'text-primary'"
             >
               {{ choice.content }}{{ isLast ? "" : ", " }}
             </span>
@@ -177,7 +206,7 @@
             <!-- Câu trả lời đúng -->
             <span
               *ngFor="let choice of result.correct_choices; let isLast = last"
-              class="text-green-500"
+              class="text-secondary"
             >
               {{ choice.content }}{{ isLast ? "" : ", " }}
             </span>
@@ -185,7 +214,7 @@
           <p>
             <strong>Status:</strong>
             <span
-              [ngClass]="result.is_correct ? 'text-green-500' : 'text-red-500'"
+              [ngClass]="result.is_correct ? 'text-secondary' : 'text-primary'"
             >
               {{ result.is_correct ? "Correct" : "Incorrect" }}
               <!-- Đúng/Sai -->

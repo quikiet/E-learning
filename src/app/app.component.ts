@@ -3,9 +3,11 @@ import { Router, RouterOutlet } from '@angular/router';
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AuthService } from './services/auth.service';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
+  providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

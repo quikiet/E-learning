@@ -191,8 +191,14 @@ export class LoginComponent implements OnInit {
   }
 
   loginWithGoogle() {
-    this.isLoading = true;
-    this.authService.initiateGoogleLogin();
+    this.authService.loginWithGoogle().subscribe({
+      next: (res) => {
+        window.location.href = res.url;
+        console.log(res);
+      }, error: (err) => {
+        console.log(err);
+      }
+    });
   }
 
 }
