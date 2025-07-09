@@ -37,9 +37,11 @@
                     : 'https://primefaces.org/cdn/primeng/images/card-ng.jpg'
                 "
               />
-              <p class="font-semibold py-1.5">{{ course.course_name }}</p>
-              <span class="text-gray-400 text-sm">{{
-                course.instructor.name
+              <p class="font-semibold text-sm py-1.5">
+                {{ cutText(course.course_name, 8) }}
+              </p>
+              <span class="text-gray-400 text-xs">{{
+                course.user.fullname
               }}</span>
               <div class="flex items-center gap-1 text-xs">
                 <span class="font-bold text-red-500">
@@ -55,7 +57,7 @@
                   ({{ course.number_of_ratings }})
                 </span>
               </div>
-              <p class="py-1 text-xs font-semibold">{{ course.price }}$</p>
+              <p class="py-1 text-xs font-bold">{{ course.price | number }}$</p>
               <p-tag
                 severity="success"
                 value="Best seller"

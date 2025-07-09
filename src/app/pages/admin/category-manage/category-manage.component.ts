@@ -42,7 +42,7 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-category-manage',
-  imports: [FormsModule, ConfirmPopupModule, ReactiveFormsModule, ToastModule, TooltipModule, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  imports: [DropdownModule, FormsModule, ConfirmPopupModule, ReactiveFormsModule, ToastModule, TooltipModule, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
   providers: [ConfirmationService, MessageService],
   templateUrl: './category-manage.component.html',
   styleUrl: './category-manage.component.css'
@@ -57,6 +57,7 @@ export class CategoryManageComponent implements OnInit {
   category!: any;
   isEditting = false;
   selectedCategories: any[] = [];
+  parentCategories: { label: string, value: number | null }[] = [];
   submitted: boolean = false;
   isLoading = true;
   visibleDrawer: boolean = false;
@@ -69,7 +70,8 @@ export class CategoryManageComponent implements OnInit {
 
   categoryForm = new FormGroup({
     id: new FormControl(''),
-    name: new FormControl('', Validators.required)
+    name: new FormControl('', Validators.required),
+    parent_id: new FormControl<number | null>(null)
   });
 
 
@@ -82,6 +84,15 @@ export class CategoryManageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategoryData();
+    this.cols = [
+      { field: 'id', header: 'ID' }, // Mã
+      { field: 'name', header: 'Name' }, // Tên
+    ];
+    this.exportColumns = this.cols.map((col) => ({
+      title: col.header,
+      dataKey: col.field
+    }));
+
   }
 
   expandedRows = {};
@@ -123,7 +134,7 @@ export class CategoryManageComponent implements OnInit {
           }, error: (err) => {
             this.messageService.add({
               severity: 'error',
-              summary: 'Thất bại',
+              summary: 'error',
               detail: err.message,
               life: 3000
             });
@@ -136,30 +147,30 @@ export class CategoryManageComponent implements OnInit {
   }
 
   loadCategoryData() {
+    this.isLoading = true;
     this.categoryService.getCategory().subscribe({
       next: (res) => {
         this.categories = res;
+        this.parentCategories = [
+          { label: 'None', value: null }, // Không có danh mục cha
+          ...res.map((cat: any) => ({ label: cat.name, value: cat.id }))
+        ];
         this.cd.markForCheck();
         this.isLoading = false;
+        this.totalRecords = res.length;
       },
       error: (err) => {
         console.error('Lỗi tải dữ liệu', err);
         this.isLoading = false;
       }
     });
-    this.cols = [
-      { field: 'id', header: 'Mã' },
-      { field: 'name', header: 'Tên' },
-    ];
-    this.exportColumns = this.cols.map((col) => ({
-      title: col.header,
-      dataKey: col.field
-    }));
   }
 
   openNew() {
     this.category = {};
     this.submitted = false;
+    this.isEditting = false;
+    this.categoryForm.reset();
     this.categoryDialog = true;
   }
 
@@ -173,17 +184,28 @@ export class CategoryManageComponent implements OnInit {
 
   addCategory() {
     if (this.categoryForm.valid) {
+      this.isLoading = true;
       this.categoryService.createCategory(this.categoryForm.value).subscribe({
         next: (res) => {
-          this.messageService.add({ severity: 'success', summary: 'Thành công', detail: res.message, life: 3000 });
-        }, error: (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Thất bại', detail: error.message, life: 3000 });
-        }, complete: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: res.message || 'Category created successfully', // Thêm danh mục thành công
+            life: 3000
+          });
           this.loadCategoryData();
-          this.categoryDialog = false;
+          this.hideDialog();
+        }, error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: error.error?.message || 'Unable to create category', // Không thể thêm danh mục
+            life: 3000
+          });
+          this.isLoading = false;
         }
       })
-      console.log('Form submmitted: ', this.categoryForm.value);
+      // console.log('Form submmitted: ', this.categoryForm.value);
     } else {
       this.categoryForm.markAllAsTouched();
     }
@@ -194,7 +216,8 @@ export class CategoryManageComponent implements OnInit {
     this.submitted = false;
     this.categoryForm.patchValue({
       id: category.id,
-      name: category.name
+      name: category.name,
+      parent_id: category.parent_id || null
     });
     this.categoryDialog = true;
   }
@@ -208,8 +231,8 @@ export class CategoryManageComponent implements OnInit {
       if (id === null || isNaN(id)) {
         this.messageService.add({
           severity: 'error',
-          summary: 'Thất bại',
-          detail: 'ID danh mục không hợp lệ',
+          summary: 'Error',
+          detail: 'Invalid category ID', // ID danh mục không hợp lệ
           life: 3000
         });
         this.isLoading = false;
@@ -219,22 +242,21 @@ export class CategoryManageComponent implements OnInit {
         next: (res) => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Thành công',
-            detail: res.message || 'Cập nhật danh mục thành công',
+            summary: 'Success',
+            detail: res.message || 'Category updated successfully', // Cập nhật danh mục thành công
             life: 3000
           });
           this.loadCategoryData();
+          this.hideDialog();
         },
         error: (error) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Thất bại',
-            detail: error.message || 'Không thể cập nhật danh mục',
+            summary: 'Error',
+            detail: error.error?.message || 'Unable to update category', // Không thể cập nhật danh mục
             life: 3000
           });
-        },
-        complete: () => {
-          this.hideDialog();
+          this.isLoading = false;
         }
       });
     } else {

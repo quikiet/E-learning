@@ -22,18 +22,18 @@ export class CategoryService {
   }
 
   createCategory(data: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/admin/category'`, data, { withCredentials: true });
+    return this.http.post<any>(`${this.apiUrl}/admin/category`, data, { withCredentials: true });
   }
 
   deleteCategory(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/admin/category'/${id}`, { withCredentials: true });
+    return this.http.delete<any>(`${this.apiUrl}/admin/category/${id}`, { withCredentials: true });
   }
 
   showCategory(id: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/admin/category'/${id}`, { withCredentials: true });
+    return this.http.post<any>(`${this.apiUrl}/admin/category/${id}`, { withCredentials: true });
   }
 
   updateCategory(id: number, data: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/admin/category'/${id}`, data, { withCredentials: true });
+    return this.http.put<any>(`${this.apiUrl}/admin/category/${id}`, data, { withCredentials: true });
   }
 }
