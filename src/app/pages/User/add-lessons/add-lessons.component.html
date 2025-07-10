@@ -1,7 +1,44 @@
 <p-toast></p-toast>
 <div
-  class="max-w-3xl mx-auto my-10 p-6 bg-white shadow-lg rounded-lg border border-gray-100"
+  class="max-w-7xl mx-auto my-6 p-6 bg-white shadow-lg rounded-lg border border-gray-100"
 >
+  <!-- Policy Section -->
+  <div class="mb-8">
+    <div
+      class="bg-gray-50 p-4 rounded-lg text-sm text-gray-700 leading-relaxed"
+    >
+      <h2 class="text-2xl font-bold text-primary mb-4">
+        Lesson Upload Policies
+      </h2>
+      <p class="font-semibold mb-2">
+        To ensure high-quality educational content, please adhere to the
+        following policies:
+      </p>
+      <ul class="list-disc pl-5 space-y-2">
+        <li>
+          <strong>Content Quality</strong>: Lessons must be original,
+          educational, and free from offensive or copyrighted material.
+        </li>
+        <li>
+          <strong>Video Requirements</strong>: Upload videos in MP4, AVI, or MOV
+          format, with a maximum file size of 2GB and duration of 60 minutes.
+        </li>
+        <li>
+          <strong>Moderation</strong>: All lessons are subject to admin review
+          and approval before being published.
+        </li>
+        <li>
+          <strong>Compliance</strong>: Content must comply with our platform's
+          terms of service and community guidelines.
+        </li>
+        <li>
+          <strong>Preview</strong>: Enabling preview allows unenrolled users to
+          view the lesson for free.
+        </li>
+      </ul>
+    </div>
+  </div>
+
   <h2 class="text-2xl font-bold text-secondary mb-6">
     Create new lesson for Course ID:
     <span class="text-primary">{{ lesson.course_id }}</span>
