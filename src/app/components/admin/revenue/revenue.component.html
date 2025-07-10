@@ -1,0 +1,91 @@
+<div class="max-w-7xl mx-auto my-6">
+  <p-toast></p-toast>
+  <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold">Revenue Sessions</h2>
+      <p-button
+        label="Create New Session"
+        icon="pi pi-plus"
+        (onClick)="createSession()"
+        [loading]="isCreating"
+      ></p-button>
+    </div>
+    <p-table
+      [value]="sessions"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [paginator]="true"
+      [rows]="10"
+      [sortField]="'created_at'"
+      [sortOrder]="-1"
+      class="!text-xs"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="session_id">
+            ID <p-sortIcon field="session_id"></p-sortIcon>
+          </th>
+          <th pSortableColumn="month">
+            Month <p-sortIcon field="month"></p-sortIcon>
+          </th>
+          <th pSortableColumn="year">
+            Year <p-sortIcon field="year"></p-sortIcon>
+          </th>
+          <th pSortableColumn="total_revenue">
+            Total Revenue <p-sortIcon field="total_revenue"></p-sortIcon>
+          </th>
+          <th pSortableColumn="admin_share">
+            Admin Share <p-sortIcon field="admin_share"></p-sortIcon>
+          </th>
+          <th pSortableColumn="instructor_share">
+            Instructor Share <p-sortIcon field="instructor_share"></p-sortIcon>
+          </th>
+          <th>Status</th>
+          <th pSortableColumn="need_distribution">
+            Need Distribution
+            <p-sortIcon field="need_distribution"></p-sortIcon>
+          </th>
+          <th pSortableColumn="created_at">
+            Created At <p-sortIcon field="created_at"></p-sortIcon>
+          </th>
+          <th pSortableColumn="updated_at">
+            Updated At <p-sortIcon field="updated_at"></p-sortIcon>
+          </th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-session>
+        <tr>
+          <td>{{ session.session_id }}</td>
+          <td>{{ session.month }}</td>
+          <td>{{ session.year }}</td>
+          <td>{{ session.total_revenue | currency : "USD" }}</td>
+          <td>{{ session.admin_share | currency : "USD" }}</td>
+          <td>{{ session.instructor_share | currency : "USD" }}</td>
+          <td>{{ session.status | titlecase }}</td>
+          <td>{{ session.need_distribution ? "Yes" : "No" }}</td>
+          <td>{{ session.created_at | date }}</td>
+          <td>{{ session.updated_at | date }}</td>
+          <td>
+            <p-button
+              *ngIf="session.need_distribution"
+              label="Distribute"
+              icon="pi pi-money-bill"
+              severity="success"
+              (onClick)="distributeSession(session.session_id)"
+              [loading]="distributingSessions.includes(session.session_id)"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-xl font-bold mb-4">Revenue Chart</h2>
+    <p-chart
+      class="!text-sm"
+      type="bar"
+      [data]="barChartData"
+      [options]="barChartOptions"
+    ></p-chart>
+  </div>
+</div>

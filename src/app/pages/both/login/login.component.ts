@@ -212,10 +212,16 @@ export class LoginComponent implements OnInit {
           // console.log('Form submitted:', this.loginForm.value);
           // console.log(res.message);
           localStorage.setItem('user', JSON.stringify(res.user));
-          console.log('Đăng nhập thành công!');
-          this.route.navigate(['/']);
+          // console.log('Đăng nhập thành công!');
+          if (res.user) {
+            if (res.user.role === 'admin') {
+              this.route.navigate(['/admin']);
+            } else {
+              this.route.navigate(['/']);
+            }
+          }
         }, error: (err) => {
-          console.log('Đăng nhập thất bại!: ' + err.message);
+          console.log('Login error: ' + err.message);
         }
       });
     } else {

@@ -14,4 +14,16 @@ export class AnalystService {
     return this.http.get(`${this.apiUrl}/admin/statistics`, { withCredentials: true });
   }
 
+  getRevenueSession(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/admin/getAllrevenuesession`, { withCredentials: true });
+  }
+
+  createNewSession(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/admin/revenue-sessions`, {}, { withCredentials: true });
+  }
+
+  distributeSession(sessionId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/admin/revenue-sessions/${sessionId}/distribute`, {}, { withCredentials: true });
+  }
+
 }

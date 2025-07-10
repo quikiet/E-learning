@@ -6,10 +6,11 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { AnalystService } from '../../../services/analyst.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { RevenueComponentimplements } from "../../../components/admin/revenue/revenue.component";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, CardModule, ChartModule, ToastModule, ProgressSpinnerModule],
+  imports: [CommonModule, CardModule, ChartModule, ToastModule, ProgressSpinnerModule, RevenueComponentimplements],
   providers: [MessageService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -56,14 +57,24 @@ export class DashboardComponent implements OnInit {
   prepareChartData() {
     if (!this.analystData) return;
 
+    // Define color mapping for statuses
+    const statusColorMap: { [key: string]: string } = {
+      approved: '#2ECC71',    // Green
+      banned: '#E74C3C',      // Red
+      draft: '#F1C40F',       // Yellow
+      pending: '#3498DB',     // Blue
+      rejected: '#7F8C8D',    // Gray
+      unavailable: '#9B59B6'  // Purple
+    };
+
     // Pie Chart: Courses by Status
     this.pieChartData = {
       labels: this.analystData.courses_by_status.map((item: any) => item.status.charAt(0).toUpperCase() + item.status.slice(1)),
       datasets: [
         {
           data: this.analystData.courses_by_status.map((item: any) => item.total),
-          backgroundColor: ['#FF6384', '#36A2EB'],
-          hoverBackgroundColor: ['#FF6384', '#36A2EB']
+          backgroundColor: this.analystData.courses_by_status.map((item: any) => statusColorMap[item.status.toLowerCase()] || '#95A5A6'), // Fallback gray
+          hoverBackgroundColor: this.analystData.courses_by_status.map((item: any) => statusColorMap[item.status.toLowerCase()] || '#95A5A6')
         }
       ]
     };
@@ -75,8 +86,8 @@ export class DashboardComponent implements OnInit {
         {
           label: 'Courses',
           data: this.analystData.courses_by_category.map((item: any) => item.total),
-          backgroundColor: '2FC7A1',
-          borderColor: '#2FC7A1',
+          backgroundColor: '#1ABC9C', // Teal
+          borderColor: '#1ABC9C',
           borderWidth: 1
         }
       ]
