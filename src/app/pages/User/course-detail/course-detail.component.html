@@ -15,7 +15,7 @@
     </video>
     <img
       *ngIf="!previewVideoUrl"
-      [src]="course?.image || 'assets/default-image.jpg'"
+      [src]="course?.image"
       [alt]="course?.course_name || 'Course Thumbnail'"
       class="w-full h-auto rounded-3xl aspect-video object-cover"
     />
@@ -136,15 +136,15 @@
     >
       <div class="flex items-center gap-1 px-4 py-2 select-none">
         <span class="font-bold text-red-500">
-          {{ course.course_rating | number : "1.1-1" }}
+          {{ course?.course_rating | number : "1.1-1" }}
         </span>
         <span class="text-red-500">
-          <span *ngFor="let star of getStarArray(course.course_rating)">{{
+          <span *ngFor="let star of getStarArray(course?.course_rating)">{{
             star
           }}</span>
         </span>
         |
-        <div *ngIf="course.is_certificate_enabled">
+        <div *ngIf="course && course?.is_certificate_enabled">
           <p-tag severity="success">
             <div class="flex items-center gap-2 px-1">
               <i class="pi pi-trophy"></i>
@@ -153,21 +153,23 @@
           </p-tag>
           |
         </div>
-        <p class="text-xl font-bold text-primary" *ngIf="course.price > 0">
-          {{
-            discountedPrice !== null
-              ? (discountedPrice | number)
-              : (course?.price | number)
-          }}
+        <p
+          class="text-xl font-bold text-primary"
+          *ngIf="course && course.price > 0"
+        >
+          {{ course?.price | number }}
           $
         </p>
-        <p class="text-xl font-bold text-green-500" *ngIf="course?.price === 0">
+        <p
+          class="text-xl font-bold text-green-500"
+          *ngIf="course && course?.price === 0"
+        >
           Free
         </p>
       </div>
       <div
         class="flex flex-col md:flex-row gap-4 mb-3"
-        *ngIf="course?.price > 0 || isUserEnrolled"
+        *ngIf="!isUserEnrolled || course?.price > 0"
       >
         <label
           class="flex items-center gap-2 cursor-pointer bg-gray-100 p-3 hover:bg-gray-200 transition duration-200 w-full"

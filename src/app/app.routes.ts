@@ -47,6 +47,7 @@ import { SelectRoleComponent } from './components/select-role/select-role.compon
 import { InstructorRequestComponent } from './pages/User/instructor-request/instructor-request.component';
 import { ResetPasswordComponent } from './pages/User/reset-password/reset-password.component';
 import { CourseCommentStatsComponent } from './pages/User/course-comment-stats/course-comment-stats.component';
+import { InstructorRevenueComponent } from './pages/User/instructor-revenue/instructor-revenue.component';
 
 export const routes: Routes = [
     {
@@ -106,6 +107,7 @@ export const routes: Routes = [
             { path: 'instructor-course', component: InstructorCoursesComponent },
             { path: 'instructor-course/:id', component: CourseCommentStatsComponent },
             { path: 'instructor-request', component: InstructorRequestComponent },
+            { path: 'my-revenue-instructor', component: InstructorRevenueComponent },
             { path: 'create-course', component: CreateCourseComponent },
             { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent },
             { path: 'payment-history', component: StudentPaymentHistoryComponent },

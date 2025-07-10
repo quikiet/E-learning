@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -23,6 +23,13 @@ export class InstructorsService {
 
   getInstructorInfo(instructorId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/instructor/InfoFull/${instructorId}/courses`, { withCredentials: true });
+  }
+
+  getInstructorDetail(month?: number | null, year?: number | null): Observable<any> {
+    let params = new HttpParams();
+    if (month) params = params.set('month', month.toString());
+    if (year) params = params.set('year', year.toString());
+    return this.http.get(`${this.apiUrl}/instructor/eachinstructors/details`, { params, withCredentials: true });
   }
 
   // Xóa mềm giảng viên

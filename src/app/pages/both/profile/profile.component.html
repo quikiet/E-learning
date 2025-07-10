@@ -1,5 +1,5 @@
 <div class="grid grid-cols-12 lg:gap-5 gap-2 items-start">
-  <div class="col-span-2 bg-white h-full lg:p-4 p-2">
+  <div class="col-span-2 bg-white h-full lg:my-1 p-2">
     <div class="card flex justify-center sticky top-0">
       <div class="flex flex-col h-full">
         <div class="flex items-center justify-between pt-4 shrink-0">
@@ -27,10 +27,23 @@
                     [routerLink]="['/profile']"
                     routerLinkActive="bg-secondary-content text-white"
                     pRipple
-                    class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                   >
                     <i class="pi pi-user mr-2"></i>
                     <span class="font-medium hidden lg:block">Profile</span>
+                  </a>
+                </li>
+                <li class="mb-2" *ngIf="user && user.role !== 'admin'">
+                  <a
+                    [routerLink]="['/payment-history']"
+                    routerLinkActive="bg-secondary-content text-white"
+                    pRipple
+                    class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-credit-card mr-2"></i>
+                    <span class="font-medium hidden lg:block"
+                      >Payment history</span
+                    >
                   </a>
                 </li>
                 <div *ngIf="user && user.role !== 'admin'">
@@ -39,7 +52,7 @@
                       [routerLink]="['/create-course']"
                       routerLinkActive="bg-secondary-content text-white"
                       pRipple
-                      class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                      class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                     >
                       <i class="pi pi-calendar-plus mr-2"></i>
                       <span class="font-medium hidden lg:block"
@@ -53,11 +66,25 @@
                       [routerLink]="['/instructor-course']"
                       routerLinkActive="bg-secondary-content text-white"
                       pRipple
-                      class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                      class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                     >
                       <i class="pi pi-book mr-2"></i>
                       <span class="font-medium hidden lg:block"
                         >Instructor courses</span
+                      >
+                    </a>
+                  </li>
+                  <li class="mb-2">
+                    <a
+                      *ngIf="user && user.role === 'instructor'"
+                      [routerLink]="['/my-revenue-instructor']"
+                      routerLinkActive="bg-secondary-content text-white"
+                      pRipple
+                      class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    >
+                      <i class="pi pi-chart-bar mr-2"></i>
+                      <span class="font-medium hidden lg:block"
+                        >My revenue Instructor</span
                       >
                     </a>
                   </li>
@@ -66,26 +93,13 @@
                       [routerLink]="['/reports']"
                       routerLinkActive="bg-secondary-content text-white"
                       pRipple
-                      class="flex items-center cursor-pointer text-primary p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                      class="flex items-center cursor-pointer text-primary p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
                     >
                       <i class="pi pi-exclamation-triangle mr-2"></i>
                       <span class="font-medium hidden lg:block">Reports</span>
                     </a>
                   </li>
                 </div>
-                <li class="mb-2" *ngIf="user && user.role !== 'admin'">
-                  <a
-                    [routerLink]="['/payment-history']"
-                    routerLinkActive="bg-secondary-content text-white"
-                    pRipple
-                    class="flex items-center cursor-pointer p-2 lg:p-4 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
-                  >
-                    <i class="pi pi-credit-card mr-2"></i>
-                    <span class="font-medium hidden lg:block"
-                      >Payment history</span
-                    >
-                  </a>
-                </li>
               </ul>
             </li>
           </ul>

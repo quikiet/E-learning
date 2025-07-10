@@ -14,8 +14,7 @@ export class DetailInstructorComponent implements OnInit {
   instructor: any = null;
   courses: any[] = [];
   showFullBio: boolean = false;
-  totalStudents: number = 0;
-  totalReviews: number = 0;
+  total_summary: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -28,9 +27,8 @@ export class DetailInstructorComponent implements OnInit {
       next: (res) => {
         this.instructor = res.data.instructor;
         this.courses = res.data.courses;
-        this.totalStudents = this.courses.reduce((sum: number, course: any) => sum + course.total_students, 0);
-        this.totalReviews = this.courses.reduce((sum: number, course: any) => sum + course.total_reviews, 0);
-        console.log('Instructor profile loaded:', res.data);
+        this.total_summary = res.data.total_summary;
+        // console.log('Instructor profile loaded:', res.data);
       },
       error: (err) => {
         console.error('Error loading instructor profile:', err);

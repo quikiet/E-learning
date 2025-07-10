@@ -64,7 +64,7 @@
       <div class="flex gap-12 mb-8 justify-start max-w-xs sm:max-w-none">
         <div>
           <p class="text-lg font-extrabold text-gray-900 select-text">
-            {{ totalStudents | number }}
+            {{ total_summary.total_students | number }}
           </p>
           <p class="text-sm font-semibold text-gray-700 select-text">
             Total Students
@@ -72,9 +72,15 @@
         </div>
         <div>
           <p class="text-lg font-extrabold text-gray-900 select-text">
-            {{ totalReviews | number }}
+            {{ total_summary.total_reviews | number }}
           </p>
           <p class="text-sm font-semibold text-gray-700 select-text">Reviews</p>
+        </div>
+        <div>
+          <p class="text-lg font-extrabold text-gray-900 select-text">
+            {{ total_summary.total_reports | number }}
+          </p>
+          <p class="text-sm font-semibold text-gray-700 select-text">Report</p>
         </div>
       </div>
 
@@ -96,8 +102,9 @@
         </button>
       </article>
 
-      <h2 class="text-2xl font-semibold text-gray-800 mb-6">
-        My Courses <span class="text-gray-500">({{ courses.length }})</span>
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">
+        My Courses
+        <span class="text-gray-500">({{ total_summary.total_courses }})</span>
       </h2>
 
       <!-- Grid container -->
@@ -172,6 +179,15 @@
             </div>
           </div>
         </article>
+      </div>
+      <div class="mt-8 flex justify-center">
+        <button
+          [routerLink]="['/course']"
+          [queryParams]="{ instructor_id: instructor.instructor_id }"
+          class="border border-primary text-primary cursor-pointer font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
+        >
+          View more
+        </button>
       </div>
     </section>
   </main>
