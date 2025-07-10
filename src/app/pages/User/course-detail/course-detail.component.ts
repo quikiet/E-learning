@@ -5,7 +5,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { CommonModule } from '@angular/common';
 import { Tag, TagModule } from 'primeng/tag';
 import { CoursesService } from '../../../services/courses.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../../services/auth.service';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -71,6 +71,7 @@ interface optionSelect {
     SelectModule,
     ReactiveFormsModule,
     CheckboxModule,
+    RouterLink
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',

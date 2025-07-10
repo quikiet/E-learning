@@ -31,7 +31,10 @@
         {{ course?.course_name || "..." }}
       </h5>
       <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2">
+        <div
+          class="flex items-center gap-2 cursor-pointer"
+          [routerLink]="['/user', course?.instructors?.id]"
+        >
           <img
             [src]="course?.instructors?.avatar"
             alt="logo"

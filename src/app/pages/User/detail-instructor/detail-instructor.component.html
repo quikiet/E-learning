@@ -13,10 +13,10 @@
         <h1
           class="text-3xl sm:text-4xl font-extrabold leading-tight mb-1 select-text"
         >
-          AI Coding
+          {{ instructor?.fullname || "Instructor Name" }}
         </h1>
         <p class="font-semibold text-gray-700 select-text">
-          Senior AI Engineer
+          {{ instructor?.bio.split(".")[0] }}
         </p>
       </div>
 
@@ -26,17 +26,19 @@
       >
         <div class="rounded-full overflow-hidden w-36 h-36 mb-6 shadow-md">
           <img
-            src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8c56e84b-84e8-48bd-9403-cc19aead8a5c.png"
-            alt="Circular logo featuring AI CODING text with green and blue smoke textured background"
+            [src]="
+              instructor?.avatar ||
+              'https://placehold.co/150x150?text=Avatar&font=roboto'
+            "
+            alt="Instructor avatar"
             loading="lazy"
             class="w-full h-full object-cover object-center"
-            onerror="this.style.display='none'"
           />
         </div>
         <button
           aria-label="YouTube Channel Link"
           class="border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-colors rounded-md p-3 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-indigo-300"
-          onclick="window.open('https://www.youtube.com/', '_blank')"
+          (click)="openYouTube()"
           type="button"
         >
           <svg
@@ -61,68 +63,116 @@
     <section class="md:col-span-2 space-y-10">
       <div class="flex gap-12 mb-8 justify-start max-w-xs sm:max-w-none">
         <div>
-          <p class="text-lg font-extrabold text-gray-900 select-text">9.016</p>
+          <p class="text-lg font-extrabold text-gray-900 select-text">
+            {{ totalStudents | number }}
+          </p>
           <p class="text-sm font-semibold text-gray-700 select-text">
-            Tổng số học viên
+            Total Students
           </p>
         </div>
         <div>
-          <p class="text-lg font-extrabold text-gray-900 select-text">736</p>
-          <p class="text-sm font-semibold text-gray-700 select-text">
-            Đánh giá
+          <p class="text-lg font-extrabold text-gray-900 select-text">
+            {{ totalReviews | number }}
           </p>
+          <p class="text-sm font-semibold text-gray-700 select-text">Reviews</p>
         </div>
       </div>
 
       <article>
-        <h2 class="text-2xl font-extrabold mb-4 select-text">
-          Giới thiệu về tôi
-        </h2>
-        <p
-          class="text-base leading-relaxed text-gray-800 max-w-none select-text"
-        >
-          Mình từng học Kỹ sư tài năng tại Đại Học Bách khoa Hà Nội trong 2 năm.
-          Sau đó mình đi du học và tốt nghiệp thạc sĩ vật lý hạt nhân tại trường
-          đại học
-          <strong
-            >MEPhI - một trong những ngôi trường tốt nhất tại liên bang
-            Nga</strong
-          >. Sau đó, mình có cơ hội làm việc trong lĩnh vực công nghệ thông tin,
-          bén duyên với lĩnh vực này và hiện tại
-          <strong>mình đang là Senior AI Engineer </strong>
-          <span aria-label="heart icons" role="img">💗💗💗</span>
-        </p>
-        <p
-          class="text-base leading-relaxed text-gray-800 max-w-none mt-6 select-text"
-        >
-          Mình đã có nhiều năm kinh nghiệm làm việc với
-          <strong>Python và trí tuệ nhân tạo (AI)</strong>. Các lĩnh vực chuyên
-          môn chính của mình bao gồm: thị giác máy tính (<strong
-            >Computer Vision</strong
-          >), xử lý ngôn ngữ tự nhiên (<strong>NLP</strong>), truy xuất thông
-          tin <strong>RAG, AI Agents</strong>, triển khai mô hình AI lên các nền
-          tảng đám mây hoặc thiết bị biên, tối ưu hóa hiệu suất của các mô hình
-          AI, <strong>workflow automation với AI</strong>.
-        </p>
-        <p
-          class="text-base leading-relaxed text-gray-800 max-w-none mt-6 select-text"
-        >
-          Ngôn ngữ: Tiếng Anh, Tiếng Nga
-        </p>
-        <p
-          class="text-base leading-relaxed text-gray-800 max-w-none mt-6 select-text"
-        >
-          Mình rất vui khi được gặp gỡ và chia sẻ kiến thức cũng như đồng hành
-          cùng với các bạn. Hãy luôn giữ đam mê và nhiệt huyết, thành công sẽ
-          đến với chúng ta!
-        </p>
+        <h2 class="text-2xl font-extrabold mb-4 select-text">About Me</h2>
+        <div [ngClass]="{ 'max-h-24 overflow-hidden': !showFullBio }">
+          <p
+            class="text-base leading-relaxed text-gray-800 max-w-none select-text"
+          >
+            {{ instructor?.bio }}
+          </p>
+        </div>
         <button
           id="toggleBtn"
           class="mt-4 text-indigo-600 font-semibold text-sm hover:underline focus:outline-none select-none"
+          (click)="toggleBio()"
         >
-          Ẩn bớt ▲
+          {{ showFullBio ? "Show Less ▲" : "Show More ▼" }}
         </button>
       </article>
+
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6">
+        My Courses <span class="text-gray-500">({{ courses.length }})</span>
+      </h2>
+
+      <!-- Grid container -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <article
+          *ngFor="let course of courses"
+          class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
+          [routerLink]="['/course-detail', course.course_url]"
+        >
+          <div class="relative rounded-t-lg overflow-hidden">
+            <img
+              [src]="course.image"
+              alt="Course image for {{ course.course_name }}"
+              class="w-full h-48 object-cover"
+              loading="lazy"
+            />
+          </div>
+          <div class="p-4 flex flex-col gap-2">
+            <h3
+              class="text-gray-900 text-base font-semibold leading-snug line-clamp-3"
+            >
+              {{ course.course_name }}
+            </h3>
+            <p class="text-gray-600 text-sm line-clamp-2">
+              {{ course.course_description }}
+            </p>
+            <span class="text-gray-500 text-xs font-medium select-none">
+              {{ instructor?.fullname || "AI Coding" }}
+            </span>
+            <div class="flex flex-wrap gap-2 mt-2 text-xs">
+              <span
+                class="border border-gray-300 rounded-md py-0.5 px-2 text-gray-700 select-none"
+              >
+                Course
+              </span>
+              <span
+                class="border border-yellow-400 text-yellow-600 rounded-md py-0.5 px-2 flex items-center gap-1 select-none"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 fill-current"
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.09 3.36a1 1 0 00.95.69h3.527c.969 0 1.371 1.24.588 1.81l-2.85 2.07a1 1 0 00-.364 1.118l1.09 3.36c.3.92-.755 1.688-1.539 1.118l-2.85-2.07a1 1 0 00-1.175 0l-2.85 2.07c-.784.57-1.838-.197-1.54-1.118l1.09-3.36a1 1 0 00-.364-1.118L2.44 8.787c-.783-.57-.38-1.81.588-1.81h3.527a1 1 0 00.95-.69l1.09-3.36z"
+                  />
+                </svg>
+                {{ course.course_rating | number : "1.1-1" }}
+              </span>
+              <span
+                class="border border-gray-300 rounded-md py-0.5 px-2 text-gray-700 select-none"
+              >
+                {{ course.total_reviews }} Ratings
+              </span>
+              <span
+                class="border border-gray-300 rounded-md py-0.5 px-2 text-gray-700 select-none"
+              >
+                {{ course.difficulty_level }}
+              </span>
+            </div>
+            <div
+              class="mt-3 flex items-center gap-3 font-semibold text-lg text-gray-900 select-none"
+            >
+              <span class="text-red-600">$ {{ course.price }}</span>
+              <span
+                *ngIf="course.original_price"
+                class="line-through text-gray-400 text-sm font-normal"
+              >
+                $ {{ course.original_price }}
+              </span>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
   </main>
 </div>
