@@ -46,6 +46,7 @@ import { SocialCallbackComponent } from './components/social-callback/social-cal
 import { SelectRoleComponent } from './components/select-role/select-role.component';
 import { InstructorRequestComponent } from './pages/User/instructor-request/instructor-request.component';
 import { ResetPasswordComponent } from './pages/User/reset-password/reset-password.component';
+import { CourseCommentStatsComponent } from './pages/User/course-comment-stats/course-comment-stats.component';
 
 export const routes: Routes = [
     {
@@ -103,6 +104,7 @@ export const routes: Routes = [
         children: [
             { path: 'profile', component: ProfileInfoComponent },
             { path: 'instructor-course', component: InstructorCoursesComponent },
+            { path: 'instructor-course/:id', component: CourseCommentStatsComponent },
             { path: 'instructor-request', component: InstructorRequestComponent },
             { path: 'create-course', component: CreateCourseComponent },
             { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent },

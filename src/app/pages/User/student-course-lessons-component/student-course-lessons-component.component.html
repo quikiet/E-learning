@@ -272,7 +272,7 @@
   <!-- Review List -->
   <div class="space-y-5">
     <p-card
-      header="Write Your Review"
+      [header]="isEditing ? 'Edit Your Review' : 'Write Your Review'"
       styleClass="mb-6"
       *ngIf="!hasReviewed && currentUserId"
     >
@@ -313,9 +313,16 @@
             class="w-full resize-none"
           ></textarea>
         </div>
-        <div class="flex justify-end">
+        <div class="flex justify-end gap-2">
           <p-button
-            label="Submit"
+            *ngIf="isEditing"
+            label="Cancel"
+            icon="pi pi-times"
+            (onClick)="cancelEdit()"
+            styleClass="p-button-outlined"
+          ></p-button>
+          <p-button
+            [label]="isEditing ? 'Update' : 'Submit'"
             icon="pi pi-send"
             (onClick)="submitReview()"
             [disabled]="newRating === 0"
@@ -326,37 +333,48 @@
     </p-card>
     <p class="text-black font-bold text-sm md:text-lg mb-4">Reviews</p>
     <div *ngFor="let review of displayedReviews">
-      <div class="flex items-start gap-3">
-        <p-avatar
-          [image]="review.user?.avatar"
-          size="normal"
-          class="mt-1"
-          shape="circle"
-        />
-        <div>
-          <span class="font-semibold text-sm md:text-lg md:font-bold">{{
-            review.user?.username || review.user?.email
-          }}</span>
-          <div class="text-gray-500 text-sm flex gap-1 items-center">
-            <span *ngFor="let star of getStars(); let i = index">
-              <i
-                class="pi pi-star-fill !text-xs"
-                [ngClass]="i < review.rating ? 'text-yellow-500' : ''"
-              ></i>
-            </span>
-            <span class="text-xs ml-2">{{
-              review.created_at | date : "dd/MM/yyyy"
-            }}</span>
-          </div>
-          <div class="text-xs md:text-sm mt-3 font-light">
-            {{ review.comment }}
-          </div>
-          <p-tag
-            severity="secondary"
-            [value]="review.feedback_type"
-            [rounded]="true"
-            class="!text-xs"
+      <div class="flex items-start gap-5 justify-between">
+        <div class="flex items-start gap-3">
+          <p-avatar
+            [image]="review.user?.avatar"
+            size="normal"
+            class="mt-1"
+            shape="circle"
           />
+          <div>
+            <span class="font-semibold text-sm md:text-lg md:font-bold">{{
+              review.user?.username || review.user?.email
+            }}</span>
+            <div class="text-gray-500 text-sm flex gap-1 items-center">
+              <span *ngFor="let star of getStars(); let i = index">
+                <i
+                  class="pi pi-star-fill !text-xs"
+                  [ngClass]="i < review.rating ? 'text-yellow-500' : ''"
+                ></i>
+              </span>
+              <span class="text-xs ml-2">{{
+                review.created_at | date : "dd/MM/yyyy"
+              }}</span>
+            </div>
+            <div class="text-xs md:text-sm mt-3 font-light">
+              {{ review.comment }}
+            </div>
+            <p-tag
+              severity="secondary"
+              [value]="review.feedback_type"
+              [rounded]="true"
+              class="!text-xs"
+            />
+          </div>
+        </div>
+        <div
+          class="card flex justify-center"
+          *ngIf="currentUserId === review.user_id"
+        >
+          <i
+            class="pi pi-file-edit cursor-pointer"
+            (click)="editReview(review)"
+          ></i>
         </div>
       </div>
       <p-divider />

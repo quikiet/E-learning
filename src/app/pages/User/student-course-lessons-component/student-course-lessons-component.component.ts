@@ -18,7 +18,6 @@ import { AuthService } from '../../../services/auth.service';
 import { QuizService } from '../../../services/lesson/quiz.service';
 import { AccordionModule } from 'primeng/accordion';
 import { LoadingComponent } from "../../../components/both/loading/loading.component";
-
 interface Feedback {
   name: string;
 }
@@ -39,14 +38,14 @@ interface Feedback {
     TextareaModule,
     RouterLink,
     AccordionModule,
-    LoadingComponent
+    LoadingComponent,
   ],
   providers: [MessageService],
   templateUrl: './student-course-lessons-component.component.html',
   styleUrl: './student-course-lessons-component.component.css'
 })
 export class StudentCourseLessonsComponentComponent implements OnInit {
-  courseId: number = 0;
+  enrollmentId: number = 0;
   course: any = null;
   lessons: any[] = [];
   quizzes: any[] = [];
@@ -63,7 +62,8 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   hasReviewed: boolean = false; // Track if user has reviewed
   currentUserId: number | null = null;
   hasMarkedComplete: boolean = false;
-
+  isEditing = false;
+  editingReviewId: number | null = null;
   constructor(
     private route: ActivatedRoute,
     private quizService: QuizService,
@@ -73,7 +73,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.courseId = +this.route.snapshot.paramMap.get('id')!;
+    this.enrollmentId = +this.route.snapshot.paramMap.get('id')!;
     this.authService.getCurrentUser().subscribe(res => {
       this.currentUserId = res.user.id;
       this.loadCourseLessons();
@@ -81,15 +81,32 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
     this.feedback_type = [
       { name: 'content_quality' },
       { name: 'instructor' },
-      { name: 'platform_issue' },
       { name: 'not_interested' },
     ];
 
   }
 
+  editReview(review: any) {
+    this.isEditing = true;
+    this.editingReviewId = review.id;
+    this.newRating = review.rating;
+    this.newComment = review.comment || '';
+    this.selectedFeedback = review.feedback_type;
+    this.hasReviewed = false; // Ensure form is visible
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+    this.editingReviewId = null;
+    this.newRating = 0;
+    this.newComment = '';
+    this.selectedFeedback = 'content_quality';
+    this.checkIfUserHasReviewed();
+  }
+
   loadCourseLessons() {
     this.isLoading = true;
-    this.enrollmentService.getCourseLessons(this.courseId).subscribe({
+    this.enrollmentService.getCourseLessons(this.enrollmentId).subscribe({
       next: (res) => {
         this.course = res.data.course;
         this.lessons = res.data.lessons;
@@ -250,8 +267,9 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
     if (this.newRating === 0) {
       this.messageService.add({
         severity: 'warn',
-        summary: 'Thông báo',
-        detail: 'Vui lòng chọn số sao đánh giá'
+        summary: 'Warning',
+        detail: 'Please choose a star rating.',
+        life: 3000
       });
       return;
     }
@@ -262,33 +280,55 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
       feedback_type: this.selectedFeedback
     };
 
-    // Gửi API request
-    console.log('Submitting review:', reviewData);
-    this.enrollmentService.reviewCourse(this.courseId, reviewData).subscribe({
-      next: (res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Thành công',
-          detail: res.message
-        });
-
-        // Reset form
-        this.newRating = 0;
-        this.newComment = '';
-        this.selectedFeedback = '';
-        // Reload reviews
-        this.loadCourseLessons();
-      }, error: (err) => {
-        console.log(err.message);
-
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Thất bại',
-          detail: err.error.message
-        });
-      }
-    })
-
+    if (this.isEditing && this.editingReviewId) {
+      // Update existing review
+      this.enrollmentService.reviewCourse(this.course.id, reviewData).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: res.message || 'Review updated successfully.',
+            life: 3000
+          });
+          this.cancelEdit();
+          this.loadCourseLessons();
+        },
+        error: (err) => {
+          console.error('Error updating review:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.error?.message || 'Unable to update review.',
+            life: 3000
+          });
+        }
+      });
+    } else {
+      // Create new review
+      this.enrollmentService.reviewCourse(this.course.id, reviewData).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: res.message || 'Review submitted successfully.',
+            life: 3000
+          });
+          this.newRating = 0;
+          this.newComment = '';
+          this.selectedFeedback = 'content_quality';
+          this.loadCourseLessons();
+        },
+        error: (err) => {
+          console.error('Error submitting review:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.error?.message || 'Unable to submit review.',
+            life: 3000
+          });
+        }
+      });
+    }
   }
 
   getRatingLabel(rating: number): string {

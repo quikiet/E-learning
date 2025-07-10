@@ -243,6 +243,7 @@ export class CourseDetailComponent implements OnInit {
         this.isLoading = false;
         this.studentDialog = false;
         this.studentForm.reset();
+        this.enrollCourse();
       },
       error: (err) => {
         console.error('Error submitting student profile:', err);

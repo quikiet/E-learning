@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -24,6 +24,14 @@ export class AnalystService {
 
   distributeSession(sessionId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/admin/revenue-sessions/${sessionId}/distribute`, {}, { withCredentials: true });
+  }
+
+  getCommentStatistics(courseId: number, types: string[]): Observable<any> {
+    let params = new HttpParams();
+    types.forEach(type => {
+      params = params.append('types[]', type);
+    });
+    return this.http.get(`${this.apiUrl}/instructor/course/${courseId}/comment-statistics`, { params, withCredentials: true });
   }
 
 }

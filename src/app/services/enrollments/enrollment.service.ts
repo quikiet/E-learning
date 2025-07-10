@@ -28,7 +28,11 @@ export class EnrollmentService {
     return this.http.post<any>(`${this.apiUrl}/lessons/${lessonId}/progress`, { status }, { withCredentials: true });
   }
 
-  reviewCourse(courseId: number, data: { rating: number, comment: string | null, feedback_type: string | null }): Observable<any> {
+  reviewCourse(courseId: number, data: { rating: number, comment: string | null, feedback_type: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/reviewForStudent`, data, { withCredentials: true });
+  }
+
+  updateReview(courseId: number, data: { rating: number, comment: string | null, feedback_type: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/reviewForStudent`, data, { withCredentials: true });
   }
 
