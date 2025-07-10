@@ -68,10 +68,7 @@
     <div class="container mx-auto">
       <h2 class="text-lg font-bold mb-4">The learner also buys</h2>
 
-      <div
-        *ngFor="let recommend of recommendCourse"
-        ngIf="recommendCourse.length > 0"
-      >
+      <div *ngFor="let recommend of recommendCourse">
         <div class="p-4 mb-4 flex items-start">
           <img
             [src]="recommend.url"

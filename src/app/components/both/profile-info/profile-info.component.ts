@@ -24,6 +24,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { LoadingComponent } from "../loading/loading.component";
+import { CheckboxModule } from 'primeng/checkbox';
+import { CategoryService } from '../../../services/courses-manage/category.service';
 
 interface OptionSelect {
   label: string;
@@ -52,6 +54,7 @@ interface OptionSelect {
     SelectModule,
     FormElementComponent,
     RadioButtonModule,
+    CheckboxModule,
     LoadingComponent
   ],
   providers: [MessageService, DatePipe, AuthService],
@@ -85,6 +88,7 @@ export class ProfileInfoComponent implements OnInit {
     { label: 'Academic improvement', value: 'Academic improvement' },
     { label: 'Certification', value: 'Certification' }
   ];
+  categories: any[] = [];
   // learningGoalOptions: OptionSelect[] = [
   //   { label: 'Career Advancement', value: 'Career advancement' },
   //   { label: 'Skill Development', value: 'Skill development' },
@@ -97,6 +101,7 @@ export class ProfileInfoComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
+    private categoryService: CategoryService,
     private authService: AuthService,
     private datePipe: DatePipe,
     private router: Router
@@ -113,6 +118,7 @@ export class ProfileInfoComponent implements OnInit {
       LoE_DI: [''],
       learning_goals: [''],
       total_courses_completed: [{ value: 0, disabled: true }],
+      category_ids: [[]]
     });
 
     this.passwordForm = this.fb.group({
@@ -171,7 +177,8 @@ export class ProfileInfoComponent implements OnInit {
           email_paypal: this.user.instructor?.email_paypal || '',
           LoE_DI: this.user.student?.LoE_DI || '',
           learning_goals: this.user.student?.learning_goals || '',
-          total_courses_completed: this.user.student?.total_courses_completed || 0
+          total_courses_completed: this.user.student?.total_courses_completed || 0,
+          category_ids: this.user.categories?.map((cat: any) => cat.id) || [] // Set category_ids
         });
 
         if (this.user.role === 'instructor') {
@@ -195,6 +202,21 @@ export class ProfileInfoComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     });
+
+    this.loadCategory();
+  }
+
+  loadCategory() {
+    this.isLoading = true;
+    this.categoryService.getAllCategory().subscribe({
+      next: (res) => {
+        this.categories = res;
+        this.isLoading = false;
+      }, error: (err) => {
+        console.log(err.error.message);
+        this.isLoading = false;
+      }
+    })
   }
 
   onFileSelect(event: any) {
@@ -226,8 +248,18 @@ export class ProfileInfoComponent implements OnInit {
     this.isSubmitting = true;
     const formData = new FormData();
     const formValue = this.profileForm.getRawValue();
+    const fields = ['gender', 'bio', 'organization', 'email_paypal', 'LoE_DI', 'learning_goals'];
+    fields.forEach(key => {
+      if (formValue[key]) {
+        formData.append(key, formValue[key]);
+      }
+    });
     console.log('Form value before sending:', formValue);
-
+    if (formValue.category_ids?.length) {
+      formValue.category_ids.forEach((id: number) => {
+        formData.append('category_ids[]', id.toString());
+      });
+    }
     if (formValue.birthdate) {
       const formattedBirthdate = this.datePipe.transform(formValue.birthdate, 'yyyy-MM-dd');
       if (formattedBirthdate) {
@@ -243,8 +275,6 @@ export class ProfileInfoComponent implements OnInit {
         return;
       }
     }
-
-    const fields = ['gender', 'bio', 'organization', 'email_paypal', 'LoE_DI', 'learning_goals'];
     fields.forEach(key => {
       if (formValue[key]) {
         formData.append(key, formValue[key]);

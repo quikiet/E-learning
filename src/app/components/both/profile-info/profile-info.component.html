@@ -103,87 +103,89 @@
             </app-form-element>
           </div>
         </div>
-
-        <!-- Instructor Fields -->
-        <p-fieldset
-          *ngIf="
-            user?.role === 'instructor' ||
-            profileForm.get('bio')?.value ||
-            profileForm.get('organization')?.value ||
-            profileForm.get('email_paypal')?.value
-          "
-          legend="Instructor Information"
-          [toggleable]="true"
+        <div
+          class="grid lg:grid-cols-2 grid-cols-1 items-start gap-5 justify-between"
         >
-          <div class="flex flex-col gap-4">
-            <app-form-element
-              label="Bio"
-              [control]="profileForm.get('bio')!"
-              [required]="user?.role === 'instructor'"
-            >
-              <textarea
-                pInputTextarea
-                class="w-full"
-                formControlName="bio"
-                placeholder="Enter bio (max 1000 characters)"
-                rows="4"
-              ></textarea>
-            </app-form-element>
-            <app-form-element
-              label="Organization"
-              [control]="profileForm.get('organization')!"
-            >
-              <input
-                pInputText
-                class="w-full rounded-md"
-                formControlName="organization"
-                placeholder="Enter organization"
-              />
-            </app-form-element>
-            <app-form-element
-              label="PayPal Email"
-              [control]="profileForm.get('email_paypal')!"
-              [required]="user?.role === 'instructor'"
-            >
-              <input
-                pInputText
-                class="w-full rounded-md"
-                formControlName="email_paypal"
-                placeholder="Enter PayPal email"
-              />
-            </app-form-element>
-          </div>
-        </p-fieldset>
+          <!-- Instructor Fields -->
+          <p-fieldset
+            *ngIf="
+              user?.role === 'instructor' ||
+              profileForm.get('bio')?.value ||
+              profileForm.get('organization')?.value ||
+              profileForm.get('email_paypal')?.value
+            "
+            legend="Instructor Information"
+            [toggleable]="true"
+          >
+            <div class="flex flex-col gap-4">
+              <app-form-element
+                label="Bio"
+                [control]="profileForm.get('bio')!"
+                [required]="user?.role === 'instructor'"
+              >
+                <textarea
+                  pInputTextarea
+                  class="w-full"
+                  formControlName="bio"
+                  placeholder="Enter bio (max 1000 characters)"
+                  rows="4"
+                ></textarea>
+              </app-form-element>
+              <app-form-element
+                label="Organization"
+                [control]="profileForm.get('organization')!"
+              >
+                <input
+                  pInputText
+                  class="w-full rounded-md"
+                  formControlName="organization"
+                  placeholder="Enter organization"
+                />
+              </app-form-element>
+              <app-form-element
+                label="PayPal Email"
+                [control]="profileForm.get('email_paypal')!"
+                [required]="user?.role === 'instructor'"
+              >
+                <input
+                  pInputText
+                  class="w-full rounded-md"
+                  formControlName="email_paypal"
+                  placeholder="Enter PayPal email"
+                />
+              </app-form-element>
+            </div>
+          </p-fieldset>
 
-        <!-- Student Fields -->
-        <p-fieldset
-          *ngIf="
-            user?.role === 'student' ||
-            profileForm.get('LoE_DI')?.value ||
-            profileForm.get('learning_goals')?.value ||
-            (user?.role === 'instructor' &&
-              profileForm.get('bio')?.value &&
-              profileForm.get('organization')?.value &&
-              profileForm.get('email_paypal')?.value)
-          "
-          legend="Student Information"
-          [toggleable]="true"
-        >
-          <div class="flex flex-col gap-4">
-            <app-form-element
-              label="Educational Background"
-              [control]="profileForm.get('LoE_DI')!"
-            >
-              <p-dropdown
-                formControlName="LoE_DI"
-                [options]="loeOptions"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Select education level"
-                class="w-full"
-              />
-            </app-form-element>
-            <!-- <app-form-element
+          <!-- Student Fields -->
+          <p-fieldset
+            *ngIf="
+              user?.role === 'student' ||
+              profileForm.get('LoE_DI')?.value ||
+              profileForm.get('learning_goals')?.value ||
+              (user?.role === 'instructor' &&
+                profileForm.get('bio')?.value &&
+                profileForm.get('organization')?.value &&
+                profileForm.get('email_paypal')?.value)
+            "
+            legend="Student Information"
+            [toggleable]="true"
+          >
+            <div class="flex flex-col gap-4">
+              <app-form-element
+                label="Educational Background"
+                [control]="profileForm.get('LoE_DI')!"
+              >
+                <p-dropdown
+                  formControlName="LoE_DI"
+                  [options]="loeOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select education level"
+                  class="w-full"
+                />
+              </app-form-element>
+              <!-- <app-form-element
               label="Learning Goals"
               [control]="profileForm.get('learning_goals')!"
             >
@@ -196,37 +198,49 @@
                 class="w-full"
               />
             </app-form-element> -->
-            <app-form-element [label]="'Learning goals'">
-              <div class="flex flex-wrap gap-4">
-                <div
-                  class="flex items-center"
-                  *ngFor="let goal of learningGoals; let i = index"
-                >
-                  <p-radiobutton
-                    [inputId]="'goal' + i"
-                    name="learning_goals"
-                    [value]="goal.value"
-                    formControlName="learning_goals"
-                  />
-                  <label class="ml-2" [for]="'goal' + i">{{
-                    goal.label
-                  }}</label>
+              <app-form-element [label]="'Learning goals'">
+                <div class="flex flex-wrap gap-4">
+                  <div
+                    class="flex items-center"
+                    *ngFor="let goal of learningGoals; let i = index"
+                  >
+                    <p-radiobutton
+                      [inputId]="'goal' + i"
+                      name="learning_goals"
+                      [value]="goal.value"
+                      formControlName="learning_goals"
+                    />
+                    <label class="ml-2" [for]="'goal' + i">{{
+                      goal.label
+                    }}</label>
+                  </div>
                 </div>
-              </div>
-            </app-form-element>
-            <!-- <app-form-element
-              label="Total Courses Completed"
-              [control]="profileForm.get('total_courses_completed')!"
-            >
-              <input
-                pInputText
-                class="w-full rounded-md"
-                formControlName="total_courses_completed"
-                readonly
-              />
-            </app-form-element> -->
-          </div>
-        </p-fieldset>
+              </app-form-element>
+              <app-form-element
+                label="Favorite Category"
+                [control]="profileForm.get('category_ids')!"
+              >
+                <div class="flex flex-wrap gap-3 text-xs">
+                  <div *ngFor="let cat of categories">
+                    <p-checkbox
+                      [inputId]="'cat' + cat.id"
+                      name="category_ids"
+                      [value]="cat.id"
+                      formControlName="category_ids"
+                      class="mr-2"
+                    />
+                    <label
+                      [for]="'cat' + cat.id"
+                      class="text-xs font-medium text-gray-700 cursor-pointer"
+                    >
+                      {{ cat.name }}
+                    </label>
+                  </div>
+                </div>
+              </app-form-element>
+            </div>
+          </p-fieldset>
+        </div>
 
         <!-- Buttons -->
         <div class="flex justify-end gap-2 mt-4">
