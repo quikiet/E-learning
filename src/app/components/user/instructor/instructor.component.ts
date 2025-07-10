@@ -45,12 +45,11 @@ export class IntructorComponent implements OnInit, AfterViewInit {
       x: 100,
       scrollTrigger: {
         trigger: "#teacher_carousel",
-        start: "top center",
+        start: "top bottom",
         scrub: 1,
-        end: "+=250",
+        end: "+=50",
       }
     });
-
   }
 
   lists: any[] = [

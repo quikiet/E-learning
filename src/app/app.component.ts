@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AuthService } from './services/auth.service';
 import { MessageService } from 'primeng/api';
+
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
@@ -15,6 +16,18 @@ export class AppComponent implements AfterViewInit, OnInit {
   title = 'Elearning-Website';
   ngAfterViewInit(): void {
     gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from(".flow-up", {
+      duration: 1.5,
+      delay: 1,
+      opacity: 0,
+      x: 100,
+      scrollTrigger: {
+        start: "top bottom",
+        scrub: 1,
+        end: "+=50",
+      }
+    });
   }
   constructor(private authService: AuthService,
     private router: Router

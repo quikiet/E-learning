@@ -19,7 +19,7 @@ export class CategoryCarouselComponent implements OnInit {
 
     this.responsiveOptions = [
       {
-        breakpoint: '1400px',
+        breakpoint: '1980px',
         numVisible: 5,
         numScroll: 1
       },

@@ -1,4 +1,7 @@
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { Tag } from 'primeng/tag'; import { DividerModule } from 'primeng/divider';
@@ -16,7 +19,7 @@ import { CardSkeletonComponent } from "../../../both/card-skeleton/card-skeleton
   templateUrl: './course-card.component.html',
   styleUrl: './course-card.component.css'
 })
-export class CourseCardComponent implements OnInit {
+export class CourseCardComponent implements OnInit, AfterViewInit {
   @ViewChild('carousel') carousel!: Carousel;
   @ViewChild('cardHover') cardHover!: ElementRef;
 
@@ -49,11 +52,22 @@ export class CourseCardComponent implements OnInit {
     this.carousel.navForward(event);
   }
 
-  constructor(private courseService: CoursesService) { }
+  constructor(private courseService: CoursesService) {
+  }
 
 
   ngOnInit() {
     this.loadCourses();
+  }
+
+  ngAfterViewInit(): void {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from(".flow-up", {
+      duration: 0.4,
+      opacity: 0.5,
+      y: -50,
+    });
+
   }
 
   loadCourses() {

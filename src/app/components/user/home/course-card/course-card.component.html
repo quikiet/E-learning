@@ -1,10 +1,12 @@
-<div class="my-10 max-w-7xl mx-auto">
+<div class="my-10 max-w-7xl mx-auto" *ngIf="courses.length > 2">
   <app-card-skeleton *ngIf="isLoading"></app-card-skeleton>
-  <div *ngIf="courses.length > 2">
-    <h3 class="md:text-2xl text-lg lg:text-left text-center font-bold my-2">
+  <div>
+    <h3
+      class="md:text-2xl text-lg lg:text-left text-center font-bold my-2 flow-up"
+    >
       {{ title }}
     </h3>
-    <h5 class="md:text-xl font-bold mb-2 lg:text-left text-center">
+    <h5 class="md:text-xl font-bold mb-2 lg:text-left text-center flow-up">
       {{ subtitle }}
     </h5>
     <div>

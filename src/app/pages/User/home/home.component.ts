@@ -83,5 +83,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
       delay: 0.5,
       duration: 1.5
     });
+
+
+
   }
 }
