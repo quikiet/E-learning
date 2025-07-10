@@ -169,7 +169,7 @@
       </div>
       <div
         class="flex flex-col md:flex-row gap-4 mb-3"
-        *ngIf="!isUserEnrolled || course?.price > 0"
+        *ngIf="!isUserEnrolled && course?.price > 0 && !isAuthor"
       >
         <label
           class="flex items-center gap-2 cursor-pointer bg-gray-100 p-3 hover:bg-gray-200 transition duration-200 w-full"
