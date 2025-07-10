@@ -34,16 +34,17 @@ export class SocialCallbackComponent implements OnInit {
           next: (res) => {
             this.messageService.add({
               severity: 'success',
-              summary: 'Thành công',
-              detail: `Chào mừng !`,
+              summary: 'Success',
+              detail: `Welcome !`,
               life: 3000
             });
             // Chuyển hướng dựa trên require_role
-            if (requireRole) {
-              this.router.navigate(['/select-role']);
-            } else {
-              this.router.navigate(['/dashboard']);
-            }
+            // if (requireRole) {
+            //   this.router.navigate(['/select-role']);
+            // } else {
+            //   this.router.navigate(['/dashboard']);
+            // }
+            this.router.navigate(['/']);
           },
           error: (err) => {
             console.error('Error fetching user:', err);

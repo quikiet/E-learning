@@ -10,6 +10,8 @@ import { ToastModule } from 'primeng/toast';
 import { TextareaModule } from 'primeng/textarea';
 import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
 import { AuthService } from '../../../services/auth.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-instructor-request',
   imports: [
@@ -19,7 +21,8 @@ import { AuthService } from '../../../services/auth.service';
     InputTextModule,
     TextareaModule,
     ToastModule,
-    FormElementComponent
+    FormElementComponent,
+    ProgressSpinnerModule
   ],
   templateUrl: './instructor-request.component.html',
   styleUrl: './instructor-request.component.css',
@@ -29,31 +32,32 @@ export class InstructorRequestComponent implements OnInit {
   instructorForm: FormGroup;
   isSubmitting = false;
   isLoading = false;
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {
     this.instructorForm = this.fb.group({
-      bio: ['', Validators.maxLength(255), Validators.required],
+      bio: ['', [Validators.required, Validators.maxLength(255)]],
       organization: [''],
-      email_paypal: ['', Validators.required, Validators.email],
+      email_paypal: ['', [Validators.required, Validators.email]]
     });
   }
 
   ngOnInit(): void {
     this.isLoading = true;
-    // Lấy thông tin người dùng hiện tại để điền vào form
+    console.log('Initializing InstructorRequestComponent');
     this.authService.getCurrentUser().subscribe({
       next: (user) => {
-        if (user.instructor) {
-          this.instructorForm.patchValue({
-            bio: user.instructor.bio || '',
-            organization: user.instructor.organization || '',
-            email_paypal: user.email_paypal || ''
-          });
-        }
+        console.log('User data loaded:', user);
+        this.instructorForm.patchValue({
+          bio: user.instructor?.bio || '',
+          organization: user.instructor?.organization || '',
+          email_paypal: user.email_paypal || ''
+        });
         this.isLoading = false;
       },
       error: (err) => {
@@ -61,10 +65,11 @@ export class InstructorRequestComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể tải thông tin người dùng. Vui lòng thử lại.',
+          detail: err.error?.message || 'Không thể tải thông tin người dùng. Vui lòng đăng nhập lại.',
           life: 3000
         });
         this.isLoading = false;
+        this.router.navigate(['/login']);
       }
     });
   }
@@ -72,28 +77,30 @@ export class InstructorRequestComponent implements OnInit {
   onSubmitFormRequest() {
     if (this.instructorForm.valid) {
       this.isSubmitting = true;
-      const data = {
-        ...this.instructorForm.value
-      };
+      this.isLoading = true;
+      const data = { ...this.instructorForm.value };
+      console.log('Submitting form data:', data);
 
       this.authService.studentRequestToInstructor(data).subscribe({
         next: (res) => {
+          console.log('Request response:', res);
           this.messageService.add({
             severity: 'success',
-            summary: 'Thành công',
-            detail: res.message || 'Yêu cầu làm giảng viên đã được gửi!',
+            summary: 'Success',
+            detail: res.message,
             life: 3000
           });
           this.instructorForm.reset();
           this.isSubmitting = false;
           this.isLoading = false;
+          this.router.navigate(['/create-course']);
         },
         error: (err) => {
           console.error('Error submitting request:', err);
           this.messageService.add({
             severity: 'error',
-            summary: 'Lỗi',
-            detail: err.error?.message || 'Không thể gửi yêu cầu. Vui lòng thử lại.',
+            summary: 'error',
+            detail: err.error?.message,
             life: 3000
           });
           this.isSubmitting = false;
@@ -101,11 +108,12 @@ export class InstructorRequestComponent implements OnInit {
         }
       });
     } else {
+      console.log('Form invalid:', this.instructorForm.errors);
       this.instructorForm.markAllAsTouched();
       this.messageService.add({
         severity: 'error',
         summary: 'Lỗi',
-        detail: 'Vui lòng điền đầy đủ các trường bắt buộc.',
+        detail: 'Please fill out all required fields.',
         life: 3000
       });
       this.isLoading = false;
