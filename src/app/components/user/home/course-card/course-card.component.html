@@ -1,6 +1,6 @@
-<div class="my-10 max-w-7xl mx-auto" *ngIf="courses.length > 2">
+<div class="my-10 max-w-7xl mx-auto">
   <app-card-skeleton *ngIf="isLoading"></app-card-skeleton>
-  <div>
+  <div *ngIf="courses.length > 2">
     <h3
       class="md:text-2xl text-lg lg:text-left text-center font-bold my-2 flow-up"
     >

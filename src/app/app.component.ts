@@ -1,7 +1,5 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AuthService } from './services/auth.service';
 import { MessageService } from 'primeng/api';
 
@@ -12,23 +10,9 @@ import { MessageService } from 'primeng/api';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements AfterViewInit, OnInit {
+export class AppComponent implements OnInit {
   title = 'Elearning-Website';
-  ngAfterViewInit(): void {
-    gsap.registerPlugin(ScrollTrigger);
 
-    gsap.from(".flow-up", {
-      duration: 1.5,
-      delay: 1,
-      opacity: 0,
-      x: 100,
-      scrollTrigger: {
-        start: "top bottom",
-        scrub: 1,
-        end: "+=50",
-      }
-    });
-  }
   constructor(private authService: AuthService,
     private router: Router
   ) { }
