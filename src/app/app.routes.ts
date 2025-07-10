@@ -45,6 +45,7 @@ import { DetailInstructorComponent } from './pages/User/detail-instructor/detail
 import { SocialCallbackComponent } from './components/social-callback/social-callback.component';
 import { SelectRoleComponent } from './components/select-role/select-role.component';
 import { InstructorRequestComponent } from './pages/User/instructor-request/instructor-request.component';
+import { ResetPasswordComponent } from './pages/User/reset-password/reset-password.component';
 
 export const routes: Routes = [
     {
@@ -59,7 +60,7 @@ export const routes: Routes = [
             { path: 'course', component: CourseSearchComponent },
             { path: 'my-course', component: StudentPurchasedCoursesComponentComponent },
             { path: 'my-course/:id', component: StudentCourseLessonsComponentComponent },
-            { path: 'user', component: DetailInstructorComponent },
+            { path: 'user/:id', component: DetailInstructorComponent },
         ]
     },
     { path: 'course-detail/:slug', component: CourseDetailComponent },
@@ -68,6 +69,7 @@ export const routes: Routes = [
         component: QuizTakingComponent
     },
     { path: 'login', component: LoginComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
     { path: 'social-callback', component: SocialCallbackComponent }, // Route cho callback Google OAuth
     { path: 'select-role', component: SelectRoleComponent },
     { path: 'auth/google/callback', component: AuthCallbackComponent },

@@ -94,6 +94,13 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/api/change-password`, data, { withCredentials: true });
   }
 
+  sendMailResetPassword(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/password/email`, data, { withCredentials: true });
+  }
+
+  resetPassword(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/api/password/reset`, data, { withCredentials: true });
+  }
 
   instructorRequestToBuyCourse(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/api/updateProfile/student/profile `, data, { withCredentials: true });

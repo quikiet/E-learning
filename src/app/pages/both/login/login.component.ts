@@ -17,6 +17,8 @@ import { CategoryService } from '../../../services/courses-manage/category.servi
 import { CheckboxModule } from 'primeng/checkbox';
 import { TextareaModule } from 'primeng/textarea';
 import { FloatLabel } from 'primeng/floatlabel';
+import { MessageService } from 'primeng/api';
+import { Toast } from "primeng/toast";
 
 
 
@@ -32,7 +34,8 @@ interface optionSelect {
 
 @Component({
   selector: 'app-login',
-  imports: [FloatLabel, TextareaModule, CheckboxModule, Divider, RadioButton, FieldsetModule, DatePicker, Select, ReactiveFormsModule, CommonModule, InputIcon, IconField, InputTextModule, FormsModule, PasswordModule, FormElementComponent],
+  imports: [FloatLabel, TextareaModule, CheckboxModule, Divider, RadioButton, FieldsetModule, DatePicker, Select, ReactiveFormsModule, CommonModule, InputIcon, IconField, InputTextModule, FormsModule, PasswordModule, FormElementComponent, Toast],
+  providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -56,10 +59,14 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
   });
   registerForm!: FormGroup;
+  forgetForm!: FormGroup;
   isLoading = false;
+  forgetPassword = false;
+
   constructor(
     private authService: AuthService,
     private categoryService: CategoryService,
+    private messageService: MessageService,
     private route: Router,
     private fb: FormBuilder,
   ) { }
@@ -80,6 +87,10 @@ export class LoginComponent implements OnInit {
       learning_goals: [''],
       category_ids: [[]],
     }, { validators: this.passwordMatchValidator });
+
+    this.forgetForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+    });
     this.LoE = [
       { name: 'All Level', value: 'All Level' },
       { name: 'Beginner', value: 'Beginner' },
@@ -127,9 +138,9 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmitRegister() {
-    console.log('Form value:', this.registerForm.value); // Log giá trị form
-    console.log('Form valid:', this.registerForm.valid); // Log trạng thái hợp lệ
-    console.log('Form errors:', this.registerForm.errors);
+    // console.log('Form value:', this.registerForm.value); // Log giá trị form
+    // console.log('Form valid:', this.registerForm.valid); // Log trạng thái hợp lệ
+    // console.log('Form errors:', this.registerForm.errors);
     this.isLoading = true;
     if (this.registerForm.valid) {
       const data = {
@@ -163,6 +174,28 @@ export class LoginComponent implements OnInit {
       console.log('Form không hợp lệ, lỗi:', this.registerForm.errors);
       this.isLoading = false;
       this.registerForm.markAllAsTouched();
+    }
+  }
+
+  onSubmitForgetPassword() {
+    this.isLoading = true;
+    if (this.forgetForm.valid) {
+      const data = {
+        ...this.forgetForm.value,
+      };
+      this.authService.sendMailResetPassword(data).subscribe({
+        next: (res) => {
+          this.isLoading = false;
+          console.log(res);
+
+          this.messageService.add({ severity: 'success', summary: 'Suceess', detail: res.message, life: 3000 });
+        }, error: (err) => {
+          this.isLoading = false;
+          console.log(err);
+
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error.error, life: 3000 });
+        }
+      });
     }
   }
 
