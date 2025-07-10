@@ -93,7 +93,9 @@ export class InstructorRequestComponent implements OnInit {
           this.instructorForm.reset();
           this.isSubmitting = false;
           this.isLoading = false;
-          this.router.navigate(['/create-course']);
+          setInterval(() => {
+            this.router.navigate(['/create-course']);
+          }, 1000);
         },
         error: (err) => {
           console.error('Error submitting request:', err);

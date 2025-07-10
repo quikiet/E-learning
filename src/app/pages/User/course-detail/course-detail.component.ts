@@ -211,42 +211,53 @@ export class CourseDetailComponent implements OnInit {
   }
 
   onSubmitForm() {
-    this.isLoading = true;
-    if (this.studentForm.valid) {
-      const data = {
-        ...this.studentForm.value,
-        learning_goals: this.studentForm.value.learning_goals?.value,
-        category_ids: this.studentForm.value.category_ids,
-      };
-      console.log(data);
-
-      this.authService.instructorRequestToBuyCourse(data).subscribe({
-        next: (res) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: res.message,
-            life: 3000
-          });
-          this.isLoading = false;
-        }, error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: err.error.message,
-            life: 3000
-          });
-        }, complete: () => {
-          this.studentForm.reset();
-          this.isLoading = false;
-          this.studentDialog = false;
-        }
-      });
-    } else {
-      console.log('Form không hợp lệ, lỗi:', this.studentForm.errors);
-      this.isLoading = false;
+    if (this.studentForm.invalid) {
+      console.log('Form invalid:', this.studentForm.errors);
       this.studentForm.markAllAsTouched();
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Warning',
+        detail: 'Please fill in all required fields correctly.',
+        life: 3000
+      });
+      return;
     }
+
+    this.isLoading = true;
+    const formValue = this.studentForm.value;
+    const data = {
+      LoE_DI: formValue.LoE_DI,
+      learning_goals: formValue.learning_goals, // Already a string
+      category_ids: formValue.category_ids
+    };
+    console.log('Submitting student profile:', data);
+
+    this.authService.instructorRequestToBuyCourse(data).subscribe({
+      next: (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message || 'Student profile updated successfully.',
+          life: 3000
+        });
+        this.isLoading = false;
+        this.studentDialog = false;
+        this.studentForm.reset();
+      },
+      error: (err) => {
+        console.error('Error submitting student profile:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error?.message || 'Unable to update student profile.',
+          life: 3000
+        });
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
   checkUserEnrollment(enrollments: any[]): boolean {
@@ -322,9 +333,11 @@ export class CourseDetailComponent implements OnInit {
           }
         } else if (res.message === 'Student profile not found. Please complete your profile.') {
           this.studentDialog = true;
-          this.categoryService.getSubCategory().subscribe({
+          this.categoryService.getAllCategory().subscribe({
             next: (res) => {
               this.categories = res;
+              console.log(this.categories);
+
             },
             error: (error) => {
               alert('Không thể tải danh mục' + error.message);

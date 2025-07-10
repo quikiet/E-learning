@@ -1,28 +1,31 @@
-<main
-  class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20 rounded-md bg-gradient-to-r from-[#f3e7e1] to-[#d9f0f0]"
->
-  <div class="mt-24 bg-white w-full h-full p-6">
-    <p-toast></p-toast>
+<main class="max-w-7xl mx-auto">
+  <p-toast></p-toast>
+  <app-loading [isLoading]="isLoading"></app-loading>
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-xl font-bold mb-4">User Profile</h2>
+    <div *ngIf="isLoading" class="flex justify-center">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
     <form
+      *ngIf="!isLoading"
       [formGroup]="profileForm"
       (ngSubmit)="onSubmit()"
       enctype="multipart/form-data"
     >
-      <div class="flex items-center justify-between gap-5">
-        <div class="flex items-center gap-5">
-          <p-avatar
-            [image]="avatarPreview || user?.avatar"
-            size="xlarge"
-            shape="circle"
-          />
-          <div>
-            <span class="font-bold text-lg">{{ user?.username }}</span>
-            <p class="text-gray-500 text-sm">
-              {{ user?.email }}
-            </p>
+      <div class="flex flex-col gap-4">
+        <!-- Avatar and Basic Info -->
+        <div class="flex items-center justify-between gap-5">
+          <div class="flex items-center gap-5">
+            <p-avatar
+              [image]="avatarPreview || user?.avatar"
+              size="xlarge"
+              shape="circle"
+            />
+            <div>
+              <span class="font-bold text-lg">{{ user?.username }}</span>
+              <p class="text-gray-500 text-sm">{{ user?.email }}</p>
+            </div>
           </div>
-        </div>
-        <div>
           <p-fileUpload
             mode="basic"
             accept="image/*"
@@ -31,210 +34,298 @@
             (onSelect)="onFileSelect($event)"
             [auto]="true"
             [customUpload]="true"
-            invalidFileSizeMessageSummary="The file is too large. "
-            invalidFileSizeMessageDetail="The maximum size is 2MB."
+            invalidFileSizeMessageSummary="The file is too large."
+            invalidFileSizeMessageDetail="Maximum size is 2MB."
           />
-          <!-- <input type="file" (change)="onFileSelect($event)" /> -->
         </div>
-      </div>
-      <div class="pt-6">
-        <div class="flex justify-between w-full gap-10">
-          <div class="flex flex-col gap-2 w-full py-2">
-            <app-form-element
-              label="Username"
-              [control]="profileForm.get('username')!"
-              [required]="true"
-            >
-              <input
-                pInputText
-                class="text-sm w-full px-4 py-3 rounded-md"
-                formControlName="username"
-                placeholder="Enter username"
-                required
-              />
-            </app-form-element>
-          </div>
-          <div class="flex flex-col gap-2 w-full py-2">
+
+        <!-- Default Fields -->
+        <div class="flex flex-col gap-4">
+          <app-form-element label="Email" [control]="profileForm.get('email')!">
+            <input
+              pInputText
+              class="w-full rounded-md"
+              formControlName="email"
+              readonly
+            />
+          </app-form-element>
+          <app-form-element
+            label="Username"
+            [control]="profileForm.get('username')!"
+            [required]="true"
+          >
+            <input
+              pInputText
+              class="w-full rounded-md"
+              formControlName="username"
+            />
+          </app-form-element>
+          <app-form-element
+            label="Full Name"
+            [control]="profileForm.get('fullname')!"
+          >
+            <input
+              pInputText
+              class="w-full rounded-md"
+              formControlName="fullname"
+            />
+          </app-form-element>
+
+          <div class="flex items-center justify-between gap-2">
             <app-form-element
               label="Birthdate"
+              class="w-full z-50"
               [control]="profileForm.get('birthdate')!"
             >
-              <p-datepicker
+              <p-calendar
                 formControlName="birthdate"
-                [showIcon]="true"
+                dateFormat="yy-mm-dd"
                 placeholder="YYYY-MM-DD"
+                class="w-full !z-50"
+                [minDate]="minDate"
+                [maxDate]="maxDate"
+                [showIcon]="true"
               />
             </app-form-element>
-          </div>
-        </div>
-        <div class="flex justify-between w-full gap-10">
-          <div
-            class="flex flex-col gap-2 w-full py-2"
-            *ngIf="user?.role !== 'admin'"
-          >
-            <app-form-element [label]="'Educational background'">
-              <p-select
-                [options]="LoE"
-                formControlName="LoE_DI"
-                optionLabel="name"
-                optionValue="value"
-                class="w-full"
-              />
-            </app-form-element>
-          </div>
-          <div class="flex flex-col gap-2 w-full py-2">
-            <app-form-element label="Gender">
-              <p-select
-                [options]="genderOptions"
+            <app-form-element
+              class="w-full"
+              label="Gender"
+              [control]="profileForm.get('gender')!"
+            >
+              <p-dropdown
                 formControlName="gender"
-                placeholder="Choice gender"
+                [options]="genderOptions"
                 optionLabel="label"
                 optionValue="value"
-                class="w-full"
+                placeholder="Select gender"
+                class="!w-full"
               />
             </app-form-element>
           </div>
         </div>
-        <div class="flex justify-between w-full gap-10">
-          <!-- <div
-            class="flex flex-col gap-2 w-full py-2"
-            *ngIf="user?.role === 'student'"
-          >
-            <app-form-element label="Danh mục quan tâm">
-              <p-multiSelect
-                [options]="categories"
-                formControlName="category_ids"
-                placeholder="Chọn danh mục"
-                optionLabel="label"
-                optionValue="value"
-                class="w-full"
-              />
-            </app-form-element>
-            <app-form-element [label]="'Danh mục bạn quan tâm'">
-              <div class="flex flex-wrap gap-3">
-                <div *ngFor="let cat of categories">
-                  <p-checkbox
-                    [inputId]="'cat' + cat.id"
-                    [value]="cat.id"
-                    formControlName="category_ids"
-                  />
-                  <label for="{{ 'cat' + cat.id }}" class="ml-2">
-                    {{ cat.name }}
-                  </label>
-                </div>
-              </div>
-            </app-form-element>
-          </div> -->
-        </div>
-        <div *ngIf="user?.role === 'instructor'">
-          <div class="flex flex-col gap-2 w-full py-2">
-            <app-form-element label="Bio" [control]="profileForm.get('bio')!">
+
+        <!-- Instructor Fields -->
+        <p-fieldset
+          *ngIf="
+            user?.role === 'instructor' ||
+            profileForm.get('bio')?.value ||
+            profileForm.get('organization')?.value ||
+            profileForm.get('email_paypal')?.value
+          "
+          legend="Instructor Information"
+          [toggleable]="true"
+        >
+          <div class="flex flex-col gap-4">
+            <app-form-element
+              label="Bio"
+              [control]="profileForm.get('bio')!"
+              [required]="user?.role === 'instructor'"
+            >
               <textarea
                 pInputTextarea
                 class="w-full"
                 formControlName="bio"
-                placeholder="Enter bio"
+                placeholder="Enter bio (max 1000 characters)"
                 rows="4"
               ></textarea>
             </app-form-element>
-          </div>
-          <div class="flex flex-col gap-2 w-full py-2">
             <app-form-element
               label="Organization"
               [control]="profileForm.get('organization')!"
             >
               <input
                 pInputText
-                class="text-sm w-full px-4 py-3 rounded-md"
+                class="w-full rounded-md"
                 formControlName="organization"
                 placeholder="Enter organization"
               />
             </app-form-element>
-          </div>
-          <div class="flex flex-col gap-2 w-full py-2">
             <app-form-element
-              label="Instructor Fullname"
-              [control]="profileForm.get('name')!"
+              label="PayPal Email"
+              [control]="profileForm.get('email_paypal')!"
+              [required]="user?.role === 'instructor'"
             >
               <input
                 pInputText
-                class="text-sm w-full px-4 py-3 rounded-md"
-                formControlName="name"
-                placeholder="Enter fullname"
+                class="w-full rounded-md"
+                formControlName="email_paypal"
+                placeholder="Enter PayPal email"
               />
             </app-form-element>
           </div>
-        </div>
-        <div class="flex justify-end gap-2 mt-4">
-          <p-button label="Hủy" severity="secondary" (onClick)="resetForm()" />
-          <p-button
-            label="Save"
-            type="submit"
-            [disabled]="profileForm.invalid || isSubmitting"
-          />
-        </div>
-      </div>
-    </form>
-    <p-divider />
-    <!-- Password Change Section (Placeholder for Future Implementation) -->
-    <div class="pt-6">
-      <h3 class="text-xl font-bold pb-3">Change password</h3>
-      <form [formGroup]="passwordForm" (ngSubmit)="onResetPassword()">
-        <div class="flex flex-col gap-2 w-full py-2">
-          <app-form-element [label]="'Current password'" [required]="true">
-            <p-password
-              [toggleMask]="true"
-              [feedback]="false"
-              formControlName="old_password"
-              placeholder="Enter password"
-            />
-          </app-form-element>
-        </div>
-        <div class="flex flex-col gap-2 w-full py-2">
-          <app-form-element [label]="'New password'" [required]="true">
-            <p-password
-              [toggleMask]="true"
-              placeholder="Enter new password"
-              promptLabel="Enter new password"
-              formControlName="new_password"
-              weakLabel="Weak security"
-              mediumLabel="Normal"
-              strongLabel="Good"
-            />
-          </app-form-element>
-        </div>
-        <div class="flex flex-col gap-2 w-full py-2">
-          <app-form-element [label]="'Repeat password'" [required]="true">
-            <p-password
-              [toggleMask]="true"
-              placeholder="Repeat password"
-              promptLabel="Repeat password"
-              formControlName="repeat_password"
-              weakLabel="Weak security"
-              mediumLabel="Normal"
-              strongLabel="Good"
-            />
-          </app-form-element>
-        </div>
+        </p-fieldset>
+
+        <!-- Student Fields -->
+        <p-fieldset
+          *ngIf="
+            user?.role === 'student' ||
+            profileForm.get('LoE_DI')?.value ||
+            profileForm.get('learning_goals')?.value ||
+            (user?.role === 'instructor' &&
+              profileForm.get('bio')?.value &&
+              profileForm.get('organization')?.value &&
+              profileForm.get('email_paypal')?.value)
+          "
+          legend="Student Information"
+          [toggleable]="true"
+        >
+          <div class="flex flex-col gap-4">
+            <app-form-element
+              label="Educational Background"
+              [control]="profileForm.get('LoE_DI')!"
+            >
+              <p-dropdown
+                formControlName="LoE_DI"
+                [options]="loeOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select education level"
+                class="w-full"
+              />
+            </app-form-element>
+            <!-- <app-form-element
+              label="Learning Goals"
+              [control]="profileForm.get('learning_goals')!"
+            >
+              <p-dropdown
+                formControlName="learning_goals"
+                [options]="learningGoalOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select learning goals"
+                class="w-full"
+              />
+            </app-form-element> -->
+            <app-form-element [label]="'Learning goals'">
+              <div class="flex flex-wrap gap-4">
+                <div
+                  class="flex items-center"
+                  *ngFor="let goal of learningGoals; let i = index"
+                >
+                  <p-radiobutton
+                    [inputId]="'goal' + i"
+                    name="learning_goals"
+                    [value]="goal.value"
+                    formControlName="learning_goals"
+                  />
+                  <label class="ml-2" [for]="'goal' + i">{{
+                    goal.label
+                  }}</label>
+                </div>
+              </div>
+            </app-form-element>
+            <!-- <app-form-element
+              label="Total Courses Completed"
+              [control]="profileForm.get('total_courses_completed')!"
+            >
+              <input
+                pInputText
+                class="w-full rounded-md"
+                formControlName="total_courses_completed"
+                readonly
+              />
+            </app-form-element> -->
+          </div>
+        </p-fieldset>
+
+        <!-- Buttons -->
         <div class="flex justify-end gap-2 mt-4">
           <p-button
             label="Cancel"
             severity="secondary"
-            (onClick)="resetPasswordForm()"
+            (onClick)="resetForm()"
           />
           <p-button
-            label="Reset password"
+            label="Save"
             type="submit"
-            [disabled]="passwordForm.invalid || isPasswordSubmitting"
+            [disabled]="profileForm.invalid || isSubmitting"
+            [loading]="isSubmitting"
           />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+    <!-- Password Change Section -->
+    <div class="">
+      <h3 class="text-xl font-bold pb-3">Change Password</h3>
+      <div *ngIf="isLoading" class="flex justify-center">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+      <form
+        *ngIf="!isLoading"
+        [formGroup]="passwordForm"
+        (ngSubmit)="onResetPassword()"
+      >
+        <div class="flex flex-col gap-4">
+          <app-form-element
+            label="Current Password"
+            [control]="passwordForm.get('old_password')!"
+            [required]="true"
+          >
+            <p-password
+              formControlName="old_password"
+              [toggleMask]="true"
+              [feedback]="false"
+              placeholder="Enter current password"
+              class="w-full"
+            />
+          </app-form-element>
+          <app-form-element
+            label="New Password"
+            [control]="passwordForm.get('new_password')!"
+            [required]="true"
+          >
+            <p-password
+              formControlName="new_password"
+              [toggleMask]="true"
+              placeholder="Enter new password"
+              promptLabel="Enter new password"
+              weakLabel="Weak"
+              mediumLabel="Medium"
+              strongLabel="Strong"
+              class="w-full"
+            />
+          </app-form-element>
+          <app-form-element
+            label="Repeat Password"
+            [control]="passwordForm.get('repeat_password')!"
+            [required]="true"
+          >
+            <p-password
+              formControlName="repeat_password"
+              [toggleMask]="true"
+              placeholder="Repeat new password"
+              promptLabel="Repeat new password"
+              weakLabel="Weak"
+              mediumLabel="Medium"
+              strongLabel="Strong"
+              class="w-full"
+            />
+          </app-form-element>
+          <div class="flex justify-end gap-2 mt-4">
+            <p-button
+              label="Cancel"
+              severity="secondary"
+              (onClick)="resetPasswordForm()"
+            />
+            <p-button
+              label="Reset Password"
+              type="submit"
+              [disabled]="passwordForm.invalid || isPasswordSubmitting"
+              [loading]="isPasswordSubmitting"
+            />
+          </div>
         </div>
       </form>
     </div>
-    <p-divider />
-    <!-- Account Deletion Section (Placeholder for Future Implementation) -->
-    <div class="pt-6">
-      <h3 class="text-xl font-bold pb-3">Delete account</h3>
-      <p>The account deletion feature will be implemented later.</p>
-    </div>
+  </div>
+  <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+    <!-- Account Deletion Section -->
+    <h3 class="text-xl font-bold pb-3 text-primary">Delete Account</h3>
+
+    <p class="text-sm">
+      The account deletion feature will be implemented later.
+    </p>
   </div>
 </main>

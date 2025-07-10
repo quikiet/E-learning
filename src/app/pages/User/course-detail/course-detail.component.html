@@ -353,23 +353,28 @@
         />
       </app-form-element>
       <app-form-element
-        [label]="'Learning goal'"
+        label="Learning Goal"
         [control]="studentForm.get('learning_goals')!"
+        [required]="true"
       >
         <div class="flex flex-wrap gap-4">
           <div
             class="flex items-center"
             *ngFor="let goal of learningGoals; let i = index"
           >
-            <p-radiobutton
+            <p-radioButton
               [inputId]="'goal' + i"
               name="learning_goals"
               [value]="goal.value"
               formControlName="learning_goals"
+              class="mr-2"
             />
-            <label class="ml-2 text-xs" [for]="'goal' + i">{{
-              goal.label
-            }}</label>
+            <label
+              [for]="'goal' + i"
+              class="text-xs font-medium text-gray-700 cursor-pointer"
+            >
+              {{ goal.label }}
+            </label>
           </div>
         </div>
       </app-form-element>

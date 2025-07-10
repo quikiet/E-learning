@@ -96,7 +96,7 @@ export class LoginComponent implements OnInit {
       { name: 'Female', value: 'Female' },
       { name: 'Other', value: 'other' },
     ];
-    this.categoryService.getSubCategory().subscribe({
+    this.categoryService.getAllCategory().subscribe({
       next: (res) => {
         this.categories = res;
       },

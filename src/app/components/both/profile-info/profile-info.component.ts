@@ -1,38 +1,38 @@
+// src/app/components/profile-info/profile-info.component.ts
 import { Component, OnInit } from '@angular/core';
-import { AvatarModule } from 'primeng/avatar';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SelectModule } from 'primeng/select';
-import { DividerModule } from 'primeng/divider';
-import { RippleModule } from 'primeng/ripple';
-import { FormElementComponent } from '../form-element/form-element.component';
-import { PasswordModule } from 'primeng/password';
-import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { TextareaModule } from 'primeng/textarea';
-import { CommonModule } from '@angular/common';
-import { MessageService } from 'primeng/api';
-import { CategoryService } from '../../../services/courses-manage/category.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadModule } from 'primeng/fileupload';
+import { FieldsetModule } from 'primeng/fieldset';
+import { PasswordModule } from 'primeng/password';
+import { FormElementComponent } from '../form-element/form-element.component';
 import { AuthService } from '../../../services/auth.service';
-import { UploadService } from '../../../services/upload.service';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { DatePickerModule } from 'primeng/datepicker';
 import { DatePipe } from '@angular/common';
-
-interface City {
-  name: string;
-  code: string;
-}
+import { Router } from '@angular/router';
+import { DividerModule } from 'primeng/divider';
+import { AvatarModule } from 'primeng/avatar';
+import { DatePickerModule } from 'primeng/datepicker';
+import { SelectModule } from 'primeng/select';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { LoadingComponent } from "../loading/loading.component";
 
 interface OptionSelect {
-  name: string;
+  label: string;
   value: string;
 }
 
 @Component({
   selector: 'app-profile-info',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -40,17 +40,21 @@ interface OptionSelect {
     InputTextModule,
     TextareaModule,
     ToastModule,
-    AvatarModule,
-    DividerModule,
-    SelectModule,
-    PasswordModule,
+    ProgressSpinnerModule,
+    CalendarModule,
+    DropdownModule,
     FileUploadModule,
-    MultiSelectModule,
+    FieldsetModule,
+    PasswordModule,
+    DividerModule,
+    AvatarModule,
+    DatePickerModule,
+    SelectModule,
     FormElementComponent,
     RadioButtonModule,
-    DatePickerModule
+    LoadingComponent
   ],
-  providers: [MessageService, DatePipe, CategoryService, AuthService, UploadService],
+  providers: [MessageService, DatePipe, AuthService],
   templateUrl: './profile-info.component.html',
   styleUrls: ['./profile-info.component.css']
 })
@@ -59,48 +63,56 @@ export class ProfileInfoComponent implements OnInit {
   passwordForm: FormGroup;
   user: any = null;
   isSubmitting = false;
+  isLoading = false;
   avatarPreview: string | null = null;
   isPasswordSubmitting = false;
-  categories: any[] = [];
-  genderOptions = [
+  selectedFile: File | null = null;
+  genderOptions: OptionSelect[] = [
     { label: 'Male', value: 'Male' },
     { label: 'Female', value: 'Female' },
-    { label: 'Other', value: 'other' }
+    { label: 'Other', value: 'Other' }
   ];
-  LoE: OptionSelect[] = [
-    { name: 'Unknown', value: 'Unknown' },
-    { name: 'Beginner', value: 'Beginner' },
-    { name: 'Intermediate', value: 'Intermediate' },
-    { name: 'Advanced', value: 'Advanced' }
+  loeOptions: OptionSelect[] = [
+    { label: 'Unknown', value: 'Unknown' },
+    { label: 'Beginner', value: 'Beginner' },
+    { label: 'Intermediate', value: 'Intermediate' },
+    { label: 'Advanced', value: 'Advanced' }
   ];
   learningGoals = [
-    { label: 'Career Advancement', value: 'Career advancement' },
-    { label: 'Skill Development', value: 'Skill development' },
-    { label: 'Personal Growth', value: 'Personal growth' },
-    { label: 'Academic Improvement', value: 'Academic improvement' },
+    { label: 'Career advancement', value: 'Career advancement' },
+    { label: 'Skill development', value: 'Skill development' },
+    { label: 'Personal growth', value: 'Personal growth' },
+    { label: 'Academic improvement', value: 'Academic improvement' },
     { label: 'Certification', value: 'Certification' }
   ];
-  currentYear = new Date().getFullYear();
-  selectedFile: File | null = null;
-
+  // learningGoalOptions: OptionSelect[] = [
+  //   { label: 'Career Advancement', value: 'Career advancement' },
+  //   { label: 'Skill Development', value: 'Skill development' },
+  //   { label: 'Personal Growth', value: 'Personal growth' },
+  //   { label: 'Academic Improvement', value: 'Academic improvement' },
+  //   { label: 'Certification', value: 'Certification' }
+  // ];
+  minDate: Date = new Date(1900, 0, 1); // January 1, 1900
+  maxDate: Date = new Date();
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
-    private categoryService: CategoryService,
     private authService: AuthService,
-    private uploadService: UploadService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private router: Router
   ) {
     this.profileForm = this.fb.group({
-      username: ['', [Validators.required, Validators.maxLength(50)]],
-      LoE_DI: ['', [Validators.maxLength(50)]],
+      username: [[Validators.required, Validators.maxLength(50)]],
+      fullname: [[Validators.maxLength(100)]],
+      email: [{ value: '', disabled: true }, [Validators.email]],
       birthdate: [null],
       gender: [''],
-      avatar: [null],
       bio: ['', [Validators.maxLength(1000)]],
       organization: ['', [Validators.maxLength(100)]],
-      name: ['', [Validators.maxLength(100)]],
-      category_ids: [[]]
+      email_paypal: ['', [Validators.email]],
+      LoE_DI: [''],
+      learning_goals: [''],
+      total_courses_completed: [{ value: 0, disabled: true }],
     });
 
     this.passwordForm = this.fb.group({
@@ -108,17 +120,16 @@ export class ProfileInfoComponent implements OnInit {
       new_password: ['', [Validators.required, Validators.minLength(6)]],
       repeat_password: ['', Validators.required]
     }, { validators: this.confirmedValidator('new_password', 'repeat_password') });
+
   }
 
   confirmedValidator(controlName: string, matchingControlName: string) {
     return (formGroup: FormGroup) => {
       const control = formGroup.controls[controlName];
       const matchingControl = formGroup.controls[matchingControlName];
-
       if (matchingControl.errors && !matchingControl.errors['confirmed']) {
         return null;
       }
-
       if (control.value !== matchingControl.value) {
         matchingControl.setErrors({ confirmed: true });
         return { confirmed: true };
@@ -130,66 +141,58 @@ export class ProfileInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCategories();
-    this.loadUserProfile();
-  }
-
-  loadCategories() {
-    this.categoryService.getCategory().subscribe({
-      next: (res) => {
-        this.categories = res.map((cat: any) => ({
-          label: cat.name,
-          value: cat.id
-        }));
-      },
-      error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Unable to load categories.',
-          life: 3000
-        });
-      }
-    });
-  }
-
-  loadUserProfile() {
+    this.isLoading = true;
+    console.log('Initializing ProfileInfoComponent');
     this.authService.getCurrentUser().subscribe({
       next: (res: any) => {
         this.user = res.user;
         console.log('User data loaded:', this.user);
 
         if (!this.user.username) {
-          console.error('Username is missing in user data');
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
             detail: 'Username is required and cannot be empty.',
             life: 3000
           });
+          this.isLoading = false;
+          this.router.navigate(['/login']);
           return;
         }
 
         this.profileForm.patchValue({
           username: this.user.username,
-          LoE_DI: this.user.LoE_DI || '',
+          fullname: this.user.fullname,
+          email: this.user.email,
           birthdate: this.user.birthdate ? new Date(this.user.birthdate) : null,
           gender: this.user.gender || '',
-          bio: this.user.role === 'instructor' ? this.user.instructor?.bio || '' : '',
-          organization: this.user.role === 'instructor' ? this.user.instructor?.organization || '' : '',
-          name: this.user.role === 'instructor' ? this.user.instructor?.name || '' : '',
-          category_ids: this.user.category_ids || []
+          bio: this.user.instructor?.bio || '',
+          organization: this.user.instructor?.organization || '',
+          email_paypal: this.user.instructor?.email_paypal || '',
+          LoE_DI: this.user.student?.LoE_DI || '',
+          learning_goals: this.user.student?.learning_goals || '',
+          total_courses_completed: this.user.student?.total_courses_completed || 0
         });
+
+        if (this.user.role === 'instructor') {
+          this.profileForm.get('bio')?.setValidators([Validators.required, Validators.maxLength(1000)]);
+          this.profileForm.get('email_paypal')?.setValidators([Validators.required, Validators.email]);
+        }
+
+        this.profileForm.updateValueAndValidity();
         this.avatarPreview = this.user.avatar || null;
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error loading user profile:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Unable to load user profile.',
+          detail: 'Unable to load user profile. Please log in again.',
           life: 3000
         });
+        this.isLoading = false;
+        this.router.navigate(['/login']);
       }
     });
   }
@@ -207,6 +210,7 @@ export class ProfileInfoComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
     if (this.profileForm.invalid) {
       console.log('Profile form invalid:', this.profileForm.errors);
       this.profileForm.markAllAsTouched();
@@ -221,31 +225,14 @@ export class ProfileInfoComponent implements OnInit {
 
     this.isSubmitting = true;
     const formData = new FormData();
-    const formValue = this.profileForm.value;
-
-    // Log form value before processing
+    const formValue = this.profileForm.getRawValue();
     console.log('Form value before sending:', formValue);
 
-    // Validate username
-    if (!formValue.username || formValue.username.trim() === '') {
-      console.error('Username is missing or empty');
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Username is required and cannot be empty.',
-        life: 3000
-      });
-      this.isSubmitting = false;
-      return;
-    }
-
-    // Format birthdate to Y-m-d (YYYY-MM-DD)
     if (formValue.birthdate) {
       const formattedBirthdate = this.datePipe.transform(formValue.birthdate, 'yyyy-MM-dd');
       if (formattedBirthdate) {
-        formData.append('birthdate', formattedBirthdate); // Use 'YoB' to match API
+        formData.append('birthdate', formattedBirthdate);
       } else {
-        console.warn('Invalid birthdate format');
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -257,47 +244,29 @@ export class ProfileInfoComponent implements OnInit {
       }
     }
 
-    // Add other fields to FormData
-    for (const key in formValue) {
-      if (formValue[key] !== null && formValue[key] !== undefined) {
-        if (key === 'category_ids') {
-          if (Array.isArray(formValue[key]) && formValue[key].length > 0) {
-            formValue[key].forEach((id: number, index: number) => {
-              formData.append(`category_ids[${index}]`, id.toString());
-            });
-          }
-        } else if (key === 'avatar' || key === 'birthdate') {
-          continue; // Skip avatar and birthdate (handled separately)
-        } else {
-          const value = String(formValue[key]).trim();
-          if (value !== '') {
-            formData.append(key, value);
-          } else {
-            console.warn(`Skipping empty field: ${key}`);
-          }
-        }
+    const fields = ['gender', 'bio', 'organization', 'email_paypal', 'LoE_DI', 'learning_goals'];
+    fields.forEach(key => {
+      if (formValue[key]) {
+        formData.append(key, formValue[key]);
       }
-    }
+    });
 
-    // Add avatar file if selected
     if (this.selectedFile) {
       formData.append('avatar', this.selectedFile);
-    } else {
-      console.warn('No file selected for avatar');
     }
 
-    // Log FormData entries for debugging
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
+    // for (const pair of formData.entries()) {
+    //   console.log(`${pair[0]}: ${pair[1]}`);
+    // }
 
     this.authService.updateUser(formData).subscribe({
       next: (response: any) => {
+        this.isLoading = false;
         console.log('Update profile success:', response);
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: response.message || 'Profile updated successfully.',
+          detail: response.message,
           life: 3000
         });
         this.user = response.user;
@@ -307,20 +276,20 @@ export class ProfileInfoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Update profile error:', err);
-        console.error('Error details:', err.error);
+        this.isLoading = false;
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: err.error?.message || 'Unable to update profile.',
+          detail: err.error.message,
           life: 3000
         });
         this.isSubmitting = false;
-        this.resetForm();
       }
     });
   }
 
   onResetPassword() {
+    this.isLoading = true;
     if (this.passwordForm.invalid) {
       this.passwordForm.markAllAsTouched();
       this.messageService.add({
@@ -337,6 +306,7 @@ export class ProfileInfoComponent implements OnInit {
 
     this.authService.changePassword(formValue).subscribe({
       next: (response: any) => {
+        this.isLoading = false;
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -347,6 +317,7 @@ export class ProfileInfoComponent implements OnInit {
         this.isPasswordSubmitting = false;
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Password reset error:', err);
         this.messageService.add({
           severity: 'error',
@@ -362,19 +333,26 @@ export class ProfileInfoComponent implements OnInit {
   resetForm() {
     this.profileForm.reset({
       username: this.user?.username || '',
-      LoE_DI: this.user?.LoE_DI || '',
+      fullname: this.user?.fullname || '',
+      email: this.user?.email || '',
       birthdate: this.user?.birthdate ? new Date(this.user.birthdate) : null,
       gender: this.user?.gender || '',
-      bio: this.user?.role === 'instructor' ? this.user.instructor?.bio || '' : '',
-      organization: this.user?.role === 'instructor' ? this.user.instructor?.organization || '' : '',
-      name: this.user?.role === 'instructor' ? this.user.instructor?.name || '' : '',
-      category_ids: this.user?.category_ids || []
+      bio: this.user?.instructor?.bio || '',
+      organization: this.user?.instructor?.organization || '',
+      email_paypal: this.user?.instructor?.email_paypal || '',
+      LoE_DI: this.user?.student?.LoE_DI || '',
+      learning_goals: this.user?.student?.learning_goals || '',
+      total_courses_completed: this.user?.student?.total_courses_completed || 0
     });
     this.selectedFile = null;
     this.avatarPreview = this.user?.avatar || null;
   }
 
   resetPasswordForm() {
-    this.passwordForm.reset({ email: this.user?.email || '' });
+    this.passwordForm.reset({
+      old_password: '',
+      new_password: '',
+      repeat_password: ''
+    });
   }
 }
