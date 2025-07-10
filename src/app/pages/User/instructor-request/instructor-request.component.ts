@@ -28,7 +28,7 @@ import { AuthService } from '../../../services/auth.service';
 export class InstructorRequestComponent implements OnInit {
   instructorForm: FormGroup;
   isSubmitting = false;
-
+  isLoading = false;
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -36,67 +36,87 @@ export class InstructorRequestComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.instructorForm = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(100)]],
-      phone_number: ['', [Validators.maxLength(20), Validators.pattern(/^\+?[0-9]{8,15}$/)]],
-      professional_links: [''],
-      bio: ['', [Validators.required, Validators.minLength(50), Validators.maxLength(1000), Validators.pattern(/^[A-Za-z0-9\s.,!@#$%^&*()_+\-=\[\]{};:"\\',.<>?\/]*$/)]],
-      organization: ['', [Validators.maxLength(100)]],
-      qualifications: ['', [Validators.required, Validators.minLength(50), Validators.maxLength(2000)]],
-      teaching_experience: ['', [Validators.maxLength(2000)]],
-      expertise: ['', [Validators.maxLength(500)]],
-      course_proposal: ['', [Validators.maxLength(2000)]],
-      motivation: ['', [Validators.maxLength(1000)]],
-      document_urls: [''],
+      bio: ['', Validators.maxLength(255), Validators.required],
+      organization: [''],
+      email_paypal: ['', Validators.required, Validators.email],
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.isLoading = true;
+    // Lấy thông tin người dùng hiện tại để điền vào form
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        if (user.instructor) {
+          this.instructorForm.patchValue({
+            bio: user.instructor.bio || '',
+            organization: user.instructor.organization || '',
+            email_paypal: user.email_paypal || ''
+          });
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching user:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: err.error?.message || 'Không thể tải thông tin người dùng. Vui lòng thử lại.',
+          life: 3000
+        });
+        this.isLoading = false;
+      }
+    });
+  }
 
-  onSubmit() {
-    if (this.instructorForm.invalid) {
+  onSubmitFormRequest() {
+    if (this.instructorForm.valid) {
+      this.isSubmitting = true;
+      const data = {
+        ...this.instructorForm.value
+      };
+
+      this.authService.studentRequestToInstructor(data).subscribe({
+        next: (res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Thành công',
+            detail: res.message || 'Yêu cầu làm giảng viên đã được gửi!',
+            life: 3000
+          });
+          this.instructorForm.reset();
+          this.isSubmitting = false;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error('Error submitting request:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: err.error?.message || 'Không thể gửi yêu cầu. Vui lòng thử lại.',
+            life: 3000
+          });
+          this.isSubmitting = false;
+          this.isLoading = false;
+        }
+      });
+    } else {
       this.instructorForm.markAllAsTouched();
-      return;
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Lỗi',
+        detail: 'Vui lòng điền đầy đủ các trường bắt buộc.',
+        life: 3000
+      });
+      this.isLoading = false;
     }
-
-    this.isSubmitting = true;
-    const formValue = this.instructorForm.value;
-
-    // this.authService.instructorRequest(formValue).subscribe({
-    //   next: (response: any) => {
-    //     this.messageService.add({
-    //       severity: 'success',
-    //       summary: 'Thành công',
-    //       detail: response.message || 'Yêu cầu trở thành giảng viên đã được gửi.',
-    //       life: 3000,
-    //     });
-    //     this.resetForm();
-    //     this.isSubmitting = false;
-    //   },
-    //   error: (error) => {
-    //     this.messageService.add({
-    //       severity: 'error',
-    //       summary: 'Lỗi',
-    //       detail: error.error?.error || 'Không thể gửi yêu cầu. Vui lòng thử lại.',
-    //       life: 3000,
-    //     });
-    //     this.isSubmitting = false;
-    //   },
-    // });
   }
 
   resetForm() {
     this.instructorForm.reset({
-      name: '',
-      phone_number: '',
-      professional_links: '',
       bio: '',
       organization: '',
-      qualifications: '',
-      teaching_experience: '',
-      expertise: '',
-      course_proposal: '',
-      motivation: '',
-      document_urls: '',
+      email_paypal: ''
     });
   }
 }

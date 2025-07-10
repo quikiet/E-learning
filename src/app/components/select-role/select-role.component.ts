@@ -47,7 +47,6 @@ export class SelectRoleComponent implements OnInit {
           });
           this.authService.getCurrentUser().subscribe({
             next: (user) => {
-              this.authService.setUser(user);
               this.router.navigate(['/dashboard']);
             }
           });

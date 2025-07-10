@@ -10,10 +10,17 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
+import { AuthService } from '../../../services/auth.service';
+import { DialogModule } from 'primeng/dialog';
+import { TextareaModule } from 'primeng/textarea';
+import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
+import { DividerModule } from 'primeng/divider';
+import { SelectModule } from 'primeng/select';
 
 interface Category {
   name: string;
   id: number;
+  parent_id: number;
 }
 
 @Component({
@@ -25,7 +32,11 @@ interface Category {
     MultiSelectModule,
     ButtonModule,
     DropdownModule,
-    InputTextModule
+    InputTextModule,
+    DialogModule,
+    TextareaModule,
+    DividerModule,
+    SelectModule
   ],
   providers: [MessageService],
   templateUrl: './create-course.component.html',
@@ -47,7 +58,7 @@ export class CreateCourseComponent implements OnInit {
   categories: Category[] = [];
   selectedCategories: number[] = [];
   CertiFormData = new FormData();
-
+  isLoading = false;
   createCertificate = false;
   showCertificateModal = false;
   certificateRule = {
@@ -63,25 +74,45 @@ export class CreateCourseComponent implements OnInit {
     { label: 'Any', value: 'any' },
   ];
 
+  currentUser: any = {};
 
   constructor(
     private coursesService: CoursesService,
     private categoryService: CategoryService,
+    private authService: AuthService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit() {
     this.loadCategory();
+    this.checkUserRole();
+  }
+
+  checkUserRole() {
+    this.authService.getCurrentUser().subscribe({
+      next: (res) => {
+        this.currentUser = res.user;
+        if (this.currentUser && this.currentUser.role !== 'instructor') {
+          // this.router.navigate(['/instructor-course']);
+          this.router.navigate(['/instructor-request']);
+        }
+      }, error: (err) => {
+        console.log(err.error.message);
+      }
+    })
   }
 
   loadCategory() {
-    this.categoryService.getCategory().subscribe({
+    this.isLoading = true;
+    this.categoryService.getAllCategory().subscribe({
       next: (res) => {
+        this.isLoading = false;
         this.categories = res;
         console.log('Loaded categories:', this.categories);
       },
       error: (err) => {
+        this.isLoading = false;
         console.log('Error loading categories:', err.message);
         this.messageService.add({
           severity: 'error',
@@ -163,7 +194,7 @@ export class CreateCourseComponent implements OnInit {
         if (this.createCertificate) {
           this.createCertificateRule();
         } else {
-          this.router.navigate(['/danh-sach-khoa-hoc']);
+          this.router.navigate(['/instructor-course']);
         }
       },
       error: (err) => {
@@ -201,7 +232,7 @@ export class CreateCourseComponent implements OnInit {
           life: 3000,
         });
         this.showCertificateModal = false;
-        this.router.navigate(['/danh-sach-khoa-hoc']);
+        this.router.navigate(['/instructor-course']);
       },
       error: (err) => {
         this.messageService.add({

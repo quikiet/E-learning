@@ -23,7 +23,6 @@ import { CategoryManageComponent } from './pages/admin/category-manage/category-
 import { UserDetailComponent } from './pages/admin/user-manage/user-detail/user-detail.component';
 import { UserDeletedComponent } from './pages/admin/user-manage/user-deleted/user-deleted.component';
 import { CourseSearchComponent } from './pages/User/course-search/course-search.component';
-import { InstructorRequestComponent } from './pages/User/instructor-request/instructor-request.component';
 import { RequestReviewComponent } from './pages/admin/user-manage/request-review/request-review.component';
 import { InstructorManageComponent } from './pages/admin/user-manage/instructor-manage/instructor-manage.component';
 import { CreateCourseComponent } from './pages/User/create-course/create-course.component';
@@ -45,6 +44,7 @@ import { ReportManageComponent } from './pages/admin/report-manage/report-manage
 import { DetailInstructorComponent } from './pages/User/detail-instructor/detail-instructor.component';
 import { SocialCallbackComponent } from './components/social-callback/social-callback.component';
 import { SelectRoleComponent } from './components/select-role/select-role.component';
+import { InstructorRequestComponent } from './pages/User/instructor-request/instructor-request.component';
 
 export const routes: Routes = [
     {
@@ -101,6 +101,7 @@ export const routes: Routes = [
         children: [
             { path: 'profile', component: ProfileInfoComponent },
             { path: 'instructor-course', component: InstructorCoursesComponent },
+            { path: 'instructor-request', component: InstructorRequestComponent },
             { path: 'create-course', component: CreateCourseComponent },
             { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent },
             { path: 'payment-history', component: StudentPaymentHistoryComponent },

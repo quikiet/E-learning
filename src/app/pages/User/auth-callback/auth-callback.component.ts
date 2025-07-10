@@ -37,7 +37,6 @@ export class AuthCallbackComponent implements OnInit {
         this.authService.storeToken(token);
         this.authService.getCurrentUser().subscribe({
           next: (user) => {
-            this.authService.setUser(user);
             this.messageService.add({
               severity: 'success',
               summary: 'Thành công', // Success

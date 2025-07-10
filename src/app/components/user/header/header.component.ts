@@ -13,10 +13,11 @@ import { CoursesService } from '../../../services/courses.service';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { CustomAutocompleteComponent } from "../../both/custom-autocomplete/custom-autocomplete.component";
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-header',
-  imports: [BadgeModule, RouterLink, Divider, InputIcon, IconField, InputTextModule, CommonModule, AutoCompleteModule, ButtonModule, FormsModule, CustomAutocompleteComponent],
+  imports: [SkeletonModule, BadgeModule, RouterLink, Divider, InputIcon, IconField, InputTextModule, CommonModule, AutoCompleteModule, ButtonModule, FormsModule, CustomAutocompleteComponent],
   providers: [CoursesService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
@@ -28,7 +29,7 @@ export class HeaderComponent implements OnInit {
   userRole: string = '';
   categories: any = {};
   parentCategories: any[] = [];
-
+  isLoading = true;
   constructor(
     private authService: AuthService,
     private categoryService: CategoryService,
@@ -51,12 +52,15 @@ export class HeaderComponent implements OnInit {
   }
 
   getCurrentUser() {
+    this.isLoading = true;
     this.authService.getCurrentUser().subscribe({
       next: (res) => {
         this.currentUser = res.user;
+        this.isLoading = false;
         this.userRole = this.currentUser.role;
       }, error: (error) => {
         console.log(error.error);
+        this.isLoading = false;
       }
     });
   }

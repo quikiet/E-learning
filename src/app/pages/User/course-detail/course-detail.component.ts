@@ -204,7 +204,6 @@ export class CourseDetailComponent implements OnInit {
       next: (res) => {
         this.recommendCourse = res.recommendations;
         console.log(this.recommendCourse.length + 'hehe');
-
       }, error: (err) => {
         console.log(err.message);
       }

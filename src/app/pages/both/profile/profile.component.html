@@ -33,7 +33,7 @@
                     <span class="font-medium hidden lg:block">Profile</span>
                   </a>
                 </li>
-                <div *ngIf="user && user.role === 'instructor'">
+                <div *ngIf="user && user.role !== 'admin'">
                   <li class="mb-2">
                     <a
                       [routerLink]="['/create-course']"
@@ -49,6 +49,7 @@
                   </li>
                   <li class="mb-2">
                     <a
+                      *ngIf="user && user.role === 'instructor'"
                       [routerLink]="['/instructor-course']"
                       routerLinkActive="bg-secondary-content text-white"
                       pRipple
@@ -60,7 +61,7 @@
                       >
                     </a>
                   </li>
-                  <li class="mb-2">
+                  <li class="mb-2" *ngIf="user && user.role === 'instructor'">
                     <a
                       [routerLink]="['/reports']"
                       routerLinkActive="bg-secondary-content text-white"

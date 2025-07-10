@@ -31,8 +31,7 @@ export class SocialCallbackComponent implements OnInit {
         // Lưu token và lấy thông tin người dùng
         this.authService.storeToken(token);
         this.authService.getCurrentUser().subscribe({
-          next: (user) => {
-            this.authService.setUser(user);
+          next: (res) => {
             this.messageService.add({
               severity: 'success',
               summary: 'Thành công',

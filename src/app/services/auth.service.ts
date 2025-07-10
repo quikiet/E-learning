@@ -36,11 +36,6 @@ export class AuthService {
     localStorage.setItem('token_expiry', (new Date().getTime() + 60 * 60 * 1000).toString()); // 60 phút
   }
 
-  setUser(user: User) {
-    this.currentUserSubject.next(user);
-    localStorage.setItem('auth_user', JSON.stringify(user));
-  }
-
   getToken(): string | null {
     const expiry = localStorage.getItem('token_expiry');
     if (expiry && new Date().getTime() > parseInt(expiry)) {
@@ -80,17 +75,16 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<any> {
-    const token = this.getToken();
-    console.log('Sending Authorization header:', `Bearer ${token}`);
-    return this.http.get<any>(`${this.apiUrl}/api/currentStudent`, {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${token}`
-      }),
-      withCredentials: true
-    }).pipe(
-      tap(user => this.setUser(user))
-    );
+    return this.http.get<any>(`${this.apiUrl}/api/currentStudent`, { withCredentials: true });
   }
+
+  // getCurrentUser() {
+  //   return this.http.get(`${this.apiUrl}/user`, {
+  //     headers: {
+  //       'Authorization': `Bearer ${this.getToken()}`
+  //     }
+  //   });
+  // }
 
   updateUser(data: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/api/user/profile/update`, data, { withCredentials: true });

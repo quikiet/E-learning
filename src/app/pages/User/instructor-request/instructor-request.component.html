@@ -1,183 +1,72 @@
-<div class="max-w-7xl mx-auto">
-  <div class="p-4">
-    <h2 class="text-xl font-bold mb-4">Yêu cầu trở thành giảng viên</h2>
-    <p-toast></p-toast>
-
-    <form [formGroup]="instructorForm" (ngSubmit)="onSubmit()">
-      <!-- Name -->
-      <app-form-element
-        [label]="'Họ và tên'"
-        [required]="true"
-        [control]="instructorForm.get('name')!"
-      >
-        <input
-          pInputText
-          class="w-full"
-          formControlName="name"
-          placeholder="Nhập họ và tên"
-        />
-      </app-form-element>
-
-      <!-- Phone Number -->
-      <app-form-element
-        [label]="'Số điện thoại'"
-        [control]="instructorForm.get('phone_number')!"
-      >
-        <input
-          pInputText
-          class="w-full"
-          formControlName="phone_number"
-          placeholder="Nhập số điện thoại (VD: +1234567890)"
-        />
-      </app-form-element>
-
-      <!-- Professional Links -->
-      <app-form-element
-        [label]="'Liên kết chuyên môn'"
-        [control]="instructorForm.get('phone_number')!"
-      >
-        <input
-          pInputText
-          class="w-full"
-          formControlName="professional_links"
-          placeholder="Nhập các liên kết (VD: LinkedIn, website)"
-        />
-        <small class="text-gray-500"
-          >Phân tách bằng dấu phẩy (VD:
-          https://linkedin.com,https://website.com)</small
+<!-- src/app/instructor-request/instructor-request.component.html -->
+<div class="max-w-7xl mx-auto p-4">
+  <p-toast></p-toast>
+  <div class="bg-white rounded-lg shadow-lg p-6">
+    <h2 class="text-xl font-bold mb-4">Yêu cầu làm giảng viên</h2>
+    <form [formGroup]="instructorForm" (ngSubmit)="onSubmitFormRequest()">
+      <div class="flex flex-col gap-4">
+        <!-- Bio -->
+        <app-form-element
+          [label]="'Tiểu sử'"
+          [required]="true"
+          [control]="instructorForm.get('bio')!"
         >
-      </app-form-element>
+          <textarea
+            rows="5"
+            cols="30"
+            class="w-full rounded-md"
+            pInputTextarea
+            formControlName="bio"
+            placeholder="Giới thiệu bản thân (tối đa 255 ký tự)"
+          ></textarea>
+        </app-form-element>
 
-      <!-- Bio -->
-      <app-form-element
-        [label]="'Tiểu sử '"
-        [control]="instructorForm.get('phone_number')!"
-        [required]="true"
-      >
-        <textarea
-          pInputTextarea
-          class="w-full"
-          formControlName="bio"
-          placeholder="Mô tả tiểu sử của bạn (50-1000 ký tự)"
-          rows="4"
-        ></textarea>
-      </app-form-element>
-      <!-- Organization -->
-      <app-form-element
-        [label]="'Tổ chức'"
-        [control]="instructorForm.get('phone_number')!"
-      >
-        <input
-          pInputText
-          class="w-full"
-          formControlName="organization"
-          placeholder="Nhập tổ chức (VD: Stanford University)"
-        />
-      </app-form-element>
-
-      <!-- Qualifications -->
-      <app-form-element
-        [label]="'Trình độ chuyên môn'"
-        [required]="true"
-        [control]="instructorForm.get('qualifications')!"
-      >
-        <textarea
-          pInputTextarea
-          class="w-full"
-          formControlName="qualifications"
-          placeholder="Mô tả trình độ chuyên môn (50-2000 ký tự)"
-          rows="4"
-        ></textarea>
-      </app-form-element>
-
-      <!-- Teaching Experience -->
-
-      <app-form-element
-        [label]="'Kinh nghiệm giảng dạy'"
-        [control]="instructorForm.get('teaching_experience')!"
-      >
-        <textarea
-          pInputTextarea
-          class="w-full"
-          formControlName="teaching_experience"
-          placeholder="Mô tả kinh nghiệm giảng dạy (tối đa 2000 ký tự)"
-          rows="4"
-        ></textarea>
-      </app-form-element>
-
-      <!-- Expertise -->
-
-      <app-form-element
-        [label]="'Chuyên môn'"
-        [control]="instructorForm.get('expertise')!"
-      >
-        <input
-          pInputText
-          class="w-full"
-          formControlName="expertise"
-          placeholder="Nhập chuyên môn (VD: Machine Learning, Python)"
-        />
-      </app-form-element>
-
-      <!-- Course Proposal -->
-
-      <app-form-element
-        [label]="'Đề xuất khóa học'"
-        [control]="instructorForm.get('expertise')!"
-      >
-        <textarea
-          pInputTextarea
-          class="w-full"
-          formControlName="course_proposal"
-          placeholder="Mô tả đề xuất khóa học (tối đa 2000 ký tự)"
-          rows="4"
-        ></textarea>
-      </app-form-element>
-
-      <!-- Motivation -->
-
-      <app-form-element
-        [label]="' Lý do muốn trở thành &quot;Giảng viên&quot; '"
-        [control]="instructorForm.get('motivation')!"
-      >
-        <textarea
-          pInputTextarea
-          class="w-full"
-          formControlName="motivation"
-          placeholder="Mô tả động lực của bạn (tối đa 1000 ký tự)"
-          rows="4"
-        ></textarea>
-      </app-form-element>
-
-      <!-- Document URLs -->
-
-      <app-form-element
-        [label]="'Liên kết thông tin'"
-        [control]="instructorForm.get('document_urls')!"
-      >
-        <input
-          pInputText
-          class="w-full"
-          formControlName="document_urls"
-          placeholder="Nhập liên kết tài liệu (VD: CV, video)"
-        />
-        <small class="text-gray-500"
-          >Phân tách bằng dấu phẩy (VD: https://cv.pdf,https://video.mp4)</small
+        <!-- Organization -->
+        <app-form-element
+          [label]="'Tổ chức'"
+          [control]="instructorForm.get('organization')!"
         >
-      </app-form-element>
+          <input
+            type="text"
+            pInputText
+            class="w-full rounded-full"
+            formControlName="organization"
+            placeholder="Tên tổ chức (nếu có)"
+          />
+        </app-form-element>
 
-      <!-- Submit Button -->
-      <div class="flex justify-end gap-2">
-        <p-button
-          label="Gửi yêu cầu"
-          type="submit"
-          [disabled]="instructorForm.invalid || isSubmitting"
-        ></p-button>
-        <p-button
-          label="Hủy"
-          severity="secondary"
-          (onClick)="resetForm()"
-        ></p-button>
+        <!-- Email PayPal -->
+        <app-form-element
+          [label]="'Email PayPal'"
+          [required]="true"
+          [control]="instructorForm.get('email_paypal')!"
+        >
+          <input
+            type="email"
+            pInputText
+            class="w-full rounded-full"
+            formControlName="email_paypal"
+            placeholder="Email PayPal"
+          />
+        </app-form-element>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-2">
+          <p-button
+            label="Hủy"
+            icon="pi pi-times"
+            styleClass="p-button-text"
+            (click)="resetForm()"
+          ></p-button>
+          <p-button
+            label="Gửi yêu cầu"
+            icon="pi pi-check"
+            styleClass="p-button-raised"
+            type="submit"
+            [disabled]="instructorForm.invalid || isSubmitting"
+            [loading]="isLoading"
+          ></p-button>
+        </div>
       </div>
     </form>
   </div>
