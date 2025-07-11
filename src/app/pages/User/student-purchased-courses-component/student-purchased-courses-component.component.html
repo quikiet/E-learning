@@ -8,13 +8,13 @@
   <!-- Grid layout cho các card khóa học -->
   <div
     *ngIf="enrollments.length > 0"
-    class="grid grid-cols-1 lg:grid-cols-2 gap-2 py-5"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 py-5"
   >
     <a
       *ngFor="let enrollment of enrollments"
-      class="bg-white overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col md:flex-row"
+      class="bg-white overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col border border-gray-200"
     >
-      <div class="relative flex-shrink-0 w-full md:w-1/2">
+      <div class="relative flex-shrink-0 w-full">
         <!-- Hình ảnh khóa học -->
         <img
           [src]="enrollment.course.image"
@@ -24,14 +24,8 @@
         <!-- Trạng thái đăng ký -->
         <div class="absolute top-5 right-5">
           <p-tag
-            [severity]="
-              enrollment.status === 'expired'
-                ? 'danger'
-                : enrollment.status === 'active'
-                ? 'info'
-                : 'success'
-            "
-            [value]="enrollment.status"
+            [severity]="!enrollment.completed_at ? 'info' : 'success'"
+            [value]="!enrollment.completed_at ? 'In Progress' : 'Finished'"
             [rounded]="true"
             class="!text-xs"
           />
@@ -47,7 +41,7 @@
             [pTooltip]="enrollment.course.course_name"
             tooltipPosition="top"
           >
-            {{ cutText(enrollment.course.course_name, 20) }}
+            {{ enrollment.course.course_name }}
           </h3>
           <p-button
             icon="pi pi-exclamation-triangle"
@@ -68,9 +62,14 @@
             (click)="undoReport(enrollment.pending_report_id)"
           />
         </div>
+
+        <!-- Mô tả ngắn -->
+        <p class="text-sm text-gray-600 mb-2 line-clamp-2 truncate">
+          {{ enrollment.course.course_description }}
+        </p>
         <!-- Mức độ khó -->
         <p class="text-sm text-gray-600 mb-1">
-          <i class="pi pi-star mr-1 text-secondary"></i> Level:
+          Level:
           {{ enrollment.course.difficulty_level }}
         </p>
 
@@ -98,14 +97,9 @@
         </p>
 
         <!-- Kỹ năng -->
-        <p class="text-sm text-gray-600 mb-1 truncate">
+        <p class="text-sm text-gray-600 mb-1">
           <i class="pi pi-book mr-1"></i> Skills:
           {{ enrollment.course.skills }}
-        </p>
-
-        <!-- Mô tả ngắn -->
-        <p class="text-sm text-gray-600 mb-2 line-clamp-2">
-          {{ cutText(enrollment.course.course_description, 10) }}
         </p>
 
         <!-- Ngày đăng ký -->
@@ -202,7 +196,7 @@
         [(ngModel)]="reportData.report_type"
         optionLabel="label"
         optionValue="value"
-        placeholder="Chọn loại báo cáo"
+        placeholder="Choice report type"
         class="w-full"
       />
     </div>

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { LoginRequest } from '../pages/both/login/login.component';
 
 interface User {
@@ -26,6 +26,17 @@ export class AuthService {
       this.currentUserSubject.next(JSON.parse(userData));
     }
   }
+
+  // isAuthenticated(): boolean {
+  //   const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+  //     const [name, value] = cookie.trim().split('=');
+  //     acc[name] = value;
+  //     return acc;
+  //   }, {} as { [key: string]: string });
+  //   const isAuthenticated = !!cookies['jwt_token'];
+  //   console.log('Checking auth:', isAuthenticated);
+  //   return isAuthenticated;
+  // }
 
   loginWithGoogle() {
     return this.http.get<any>(`${this.apiUrl}/auth/google`);
@@ -76,6 +87,38 @@ export class AuthService {
 
   getCurrentUser(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/api/currentStudent`, { withCredentials: true });
+  }
+
+  isLoggedIn(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/api/currentStudent`, { withCredentials: true }).pipe(
+      map((response: any) => response.user || null),
+      catchError(() => {
+        console.error('Error fetching user data');
+        return of(null);
+      })
+    );
+  }
+
+  isInstructor(): Observable<boolean> {
+    return this.getCurrentUser().pipe(
+      map((user) => {
+        const isInstructor = user?.role === 'instructor' && !!user?.instructor;
+        // console.log('Checking instructor:', isInstructor, user);
+        return isInstructor;
+      }),
+      catchError(() => of(false))
+    );
+  }
+
+  isAdmin(): Observable<boolean> {
+    return this.getCurrentUser().pipe(
+      map((user) => {
+        const isAdmin = user?.role === 'admin';
+        console.log('Checking admin:', isAdmin, user);
+        return isAdmin;
+      }),
+      catchError(() => of(false))
+    );
   }
 
   // getCurrentUser() {

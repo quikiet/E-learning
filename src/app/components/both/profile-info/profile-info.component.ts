@@ -73,7 +73,7 @@ export class ProfileInfoComponent implements OnInit {
   genderOptions: OptionSelect[] = [
     { label: 'Male', value: 'Male' },
     { label: 'Female', value: 'Female' },
-    { label: 'Other', value: 'Other' }
+    { label: 'Other', value: 'other' }
   ];
   loeOptions: OptionSelect[] = [
     { label: 'Unknown', value: 'Unknown' },

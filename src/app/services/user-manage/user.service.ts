@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -9,8 +9,27 @@ export class UserService {
   private apiUrl = 'http://localhost:8000/api/admin';
   constructor(private http: HttpClient) { }
 
-  getAllUser(page: number = 1, perPage: number = 20): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/users?page=${page}&perPage=${perPage}`, { withCredentials: true });
+  getAllUser(page: number, perPage: number, filters?: any): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('per_page', perPage.toString());
+
+    if (filters) {
+      if (filters.username) params = params.set('username', filters.username);
+      if (filters.fullname) params = params.set('fullname', filters.fullname);
+      if (filters.email) params = params.set('email', filters.email);
+      if (filters.role) params = params.set('role', filters.role);
+      if (filters.gender) params = params.set('gender', filters.gender);
+      if (filters.status) params = params.set('status', filters.status);
+      if (filters.birthdate) params = params.set('birthdate', filters.birthdate);
+    }
+
+    return this.http.get(`${this.apiUrl}/users`, { params, withCredentials: true });
+  }
+
+
+  createUser(data: { email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/users`, data, { withCredentials: true });
   }
 
   showUser(id: number): Observable<any> {

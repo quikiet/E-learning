@@ -48,33 +48,41 @@ import { InstructorRequestComponent } from './pages/User/instructor-request/inst
 import { ResetPasswordComponent } from './pages/User/reset-password/reset-password.component';
 import { CourseCommentStatsComponent } from './pages/User/course-comment-stats/course-comment-stats.component';
 import { InstructorRevenueComponent } from './pages/User/instructor-revenue/instructor-revenue.component';
+import { loggedInGuard } from './guard/logged-in.guard';
+import { adminGuard } from './guard/admin.guard';
 
 export const routes: Routes = [
+    { path: 'login', component: LoginComponent },
+    { path: 'reset-password', component: ResetPasswordComponent },
+    { path: 'social-callback', component: SocialCallbackComponent }, // Route cho callback Google OAuth
+    // { path: 'select-role', component: SelectRoleComponent },
+    { path: 'auth/google/callback', component: AuthCallbackComponent },
     {
         path: '', component: MainLayoutComponent,
         children: [
             { path: '', component: HomeComponent },
+            { path: 'course', component: CourseSearchComponent },
+            { path: 'user/:id', component: DetailInstructorComponent },
+
+
             {
                 path: 'quiz/:quizId/attempt',
-                component: StudentQuizAttemptComponent
+                component: StudentQuizAttemptComponent,
             },
-
-            { path: 'course', component: CourseSearchComponent },
-            { path: 'my-course', component: StudentPurchasedCoursesComponentComponent },
-            { path: 'my-course/:id', component: StudentCourseLessonsComponentComponent },
-            { path: 'user/:id', component: DetailInstructorComponent },
+            {
+                path: 'my-course', component: StudentPurchasedCoursesComponentComponent,
+            },
+            {
+                path: 'my-course/:id', component: StudentCourseLessonsComponentComponent,
+            },
         ]
     },
     { path: 'course-detail/:slug', component: CourseDetailComponent },
     {
         path: 'quiz/:quiz_id',
-        component: QuizTakingComponent
+        component: QuizTakingComponent,
     },
-    { path: 'login', component: LoginComponent },
-    { path: 'reset-password', component: ResetPasswordComponent },
-    { path: 'social-callback', component: SocialCallbackComponent }, // Route cho callback Google OAuth
-    { path: 'select-role', component: SelectRoleComponent },
-    { path: 'auth/google/callback', component: AuthCallbackComponent },
+
     {
         path: 'admin', component: AdminComponent,
         children: [

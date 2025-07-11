@@ -21,6 +21,7 @@
     "@tailwindcss/postcss": "^4.1.6",
     "chart.js": "^4.5.0",
     "gsap": "^3.13.0",
+    "ngx-cookie-service": "^19.0.0",
     "postcss": "^8.5.3",
     "primeicons": "^7.0.0",
     "primeng": "^19.1.2",

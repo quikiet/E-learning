@@ -4,9 +4,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AuthService } from './services/auth.service';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ToastModule],
   providers: [MessageService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

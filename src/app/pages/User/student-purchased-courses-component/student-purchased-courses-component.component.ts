@@ -52,9 +52,9 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
     report_type: '',
   };
   reportTypes = [
-    { label: 'Nội dung không phù hợp', value: 'inappropriate_content' },
-    { label: 'Vi phạm bản quyền', value: 'copyright_violation' },
-    { label: 'Khác', value: 'other' },
+    { label: 'Inappropriate Content', value: 'inappropriate_content' },
+    { label: 'Copyright Violation', value: 'copyright_violation' },
+    { label: 'Other', value: 'other' },
   ];
 
   constructor(

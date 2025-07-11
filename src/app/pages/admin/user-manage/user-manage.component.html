@@ -5,16 +5,31 @@
       icon="pi pi-filter-slash"
       label="Clear"
       class="mr-2"
+      (click)="clear(dt)"
     />
   </ng-template>
 
   <ng-template #end>
-    <p-button
-      label="Export"
-      (click)="dt.exportCSV()"
-      icon="pi pi-upload"
-      severity="info"
-    />
+    <div class="flex items-center gap-2">
+      <p-button
+        label="Filter"
+        icon="pi pi-filter"
+        severity="warn"
+        (click)="showFilterDialog()"
+      />
+      <p-button
+        label="Export"
+        (click)="dt.exportCSV()"
+        icon="pi pi-upload"
+        severity="info"
+      />
+      <p-button
+        label="Create Admin"
+        icon="pi pi-plus"
+        severity="success"
+        (click)="showCreateAdminDialog()"
+      />
+    </div>
   </ng-template>
 </p-toolbar>
 
@@ -29,7 +44,7 @@
   [rows]="rows"
   [totalRecords]="totalRecords"
   [paginator]="true"
-  [globalFilterFields]="['id', 'userid_DI', 'email']"
+  [globalFilterFields]="['id', 'username', 'email']"
   [(selection)]="selectedUsers"
   [rowHover]="true"
   dataKey="id"
@@ -54,9 +69,7 @@
   </ng-template>
   <ng-template #header>
     <tr class="text-sm">
-      <th>
-        <span>ID</span>
-      </th>
+      <th>ID</th>
       <th>Email</th>
       <th>Username</th>
       <th>Fullname</th>
@@ -66,9 +79,7 @@
   </ng-template>
   <ng-template #body let-user>
     <tr class="text-sm" (click)="showUser(user)">
-      <td>
-        {{ user.id }}
-      </td>
+      <td>{{ user.id }}</td>
       <td>
         <div class="flex items-center gap-2">
           <p-overlaybadge
@@ -90,7 +101,7 @@
           </p-overlaybadge>
           <div>
             <span
-              [tooltipDisabled]="user.email.lenght < 20"
+              [tooltipDisabled]="user.email.length < 20"
               [pTooltip]="user.email"
               tooltipPosition="right"
               >{{ cutText(user.email, 20) }}</span
@@ -112,47 +123,13 @@
           </div>
         </div>
       </td>
-      <td>
-        {{ user.username }}
-      </td>
-      <td>
-        {{ user.fullname }}
-      </td>
-      <td class="text-center align-middle">
-        {{ user.gender || "NaN" }}
-      </td>
-      <td>
-        {{ user.created_at | date }}
-      </td>
-      <!-- <td>
-        <div>
-          <p-tag
-            *ngIf="user.role === 'admin'"
-            severity="danger"
-            value="Quản trị viên"
-            [rounded]="true"
-            class="!text-xs"
-          />
-          <p-tag
-            *ngIf="user.role === 'student'"
-            severity="success"
-            class="!text-xs"
-            value="Học viên"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="user.role === 'instructor'"
-            severity="info"
-            class="!text-xs"
-            value="Giáo viên"
-            [rounded]="true"
-          />
-        </div>
-      </td> -->
+      <td>{{ user.username }}</td>
+      <td>{{ user.fullname }}</td>
+      <td class="text-center align-middle">{{ user.gender || "NaN" }}</td>
+      <td>{{ user.created_at | date }}</td>
     </tr>
   </ng-template>
 </p-table>
-
 <p-drawer
   [(visible)]="visibleDrawer"
   position="right"
@@ -277,4 +254,136 @@
     </div>
   </ng-template>
 </p-drawer>
+
+<p-dialog
+  [(visible)]="createAdminDialog"
+  header="Create Admin"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+>
+  <form [formGroup]="adminForm" class="flex flex-col gap-4">
+    <app-form-element label="Email" [control]="adminForm.get('email')!">
+      <input
+        pInputText
+        id="email"
+        formControlName="email"
+        class="w-full"
+        [ngClass]="{
+          'ng-invalid ng-dirty': submitted && adminForm.controls.email.errors
+        }"
+      />
+    </app-form-element>
+    <app-form-element label="Password" [control]="adminForm.get('password')!">
+      <input
+        pInputText
+        id="password"
+        type="password"
+        formControlName="password"
+        class="w-full"
+        [ngClass]="{
+          'ng-invalid ng-dirty': submitted && adminForm.controls.password.errors
+        }"
+      />
+    </app-form-element>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancel"
+      severity="secondary"
+      (click)="createAdminDialog = false"
+    />
+    <p-button label="Create" severity="success" (click)="createAdmin()" />
+  </ng-template>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="filterDialog"
+  header="Filter Users"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+>
+  <form [formGroup]="filterForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label for="username" class="block font-medium mb-1">Username</label>
+      <input
+        pInputText
+        id="username"
+        formControlName="username"
+        class="w-full"
+      />
+    </div>
+    <div>
+      <label for="fullname" class="block font-medium mb-1">Fullname</label>
+      <input
+        pInputText
+        id="fullname"
+        formControlName="fullname"
+        class="w-full"
+      />
+    </div>
+    <div>
+      <label for="email" class="block font-medium mb-1">Email</label>
+      <input pInputText id="email" formControlName="email" class="w-full" />
+    </div>
+    <div>
+      <label for="role" class="block font-medium mb-1">Role</label>
+      <p-dropdown
+        id="role"
+        formControlName="role"
+        [options]="roleOptions"
+        optionLabel="label"
+        optionValue="value"
+        class="w-full"
+        placeholder="Select Role"
+      />
+    </div>
+    <div>
+      <label for="gender" class="block font-medium mb-1">Gender</label>
+      <p-dropdown
+        id="gender"
+        formControlName="gender"
+        [options]="genderOptions"
+        optionLabel="label"
+        optionValue="value"
+        class="w-full"
+        placeholder="Select Gender"
+      />
+    </div>
+    <div>
+      <label for="status" class="block font-medium mb-1">Status</label>
+      <p-dropdown
+        id="status"
+        formControlName="status"
+        [options]="statusOptions"
+        optionLabel="label"
+        optionValue="value"
+        class="w-full"
+        placeholder="Select Status"
+      />
+    </div>
+    <div>
+      <label for="birthdate" class="block font-medium mb-1">Birthdate</label>
+      <input
+        pInputText
+        id="birthdate"
+        type="date"
+        formControlName="birthdate"
+        class="w-full"
+      />
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancel"
+      severity="secondary"
+      (click)="filterDialog = false"
+    />
+    <p-button
+      label="Apply Filters"
+      severity="success"
+      (click)="applyFilters()"
+    />
+  </ng-template>
+</p-dialog>
+
 <p-toast />
