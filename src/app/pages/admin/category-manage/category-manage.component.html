@@ -13,7 +13,6 @@
   currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} danh mục"
   [showCurrentPageReport]="true"
   [loading]="isLoading"
-  [responsive]="true"
   [expandedRowKeys]="expandedRows"
 >
   <ng-template #caption>
@@ -224,7 +223,7 @@
             [label]="'Parent Category'"
             [control]="categoryForm.get('parent_id')!"
           >
-            <p-dropdown
+            <p-select
               class="w-full"
               formControlName="parent_id"
               [options]="parentCategories"

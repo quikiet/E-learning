@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
-import { DropdownModule } from 'primeng/dropdown';
 import { MessageService } from 'primeng/api';
 import { InstructorsService } from '../../../services/instructors.service';
+import { SelectModule } from 'primeng/select';
 @Component({
   selector: 'app-instructor-revenue',
-  imports: [CommonModule, FormsModule, ToastModule, TableModule, DropdownModule],
+  imports: [CommonModule, FormsModule, ToastModule, TableModule, SelectModule],
   providers: [MessageService, InstructorsService],
   templateUrl: './instructor-revenue.component.html',
   styleUrl: './instructor-revenue.component.css'

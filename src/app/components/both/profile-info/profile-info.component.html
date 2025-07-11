@@ -4,188 +4,174 @@
   <div class="bg-white rounded-lg shadow-md p-6">
     <h2 class="text-xl font-bold mb-4">User Profile</h2>
     @if (isLoading) {
-      <div class="flex justify-center">
-        <p-progressSpinner></p-progressSpinner>
-      </div>
-    }
-    @if (!isLoading) {
-      <form
-        [formGroup]="profileForm"
-        (ngSubmit)="onSubmit()"
-        enctype="multipart/form-data"
-        >
+    <div class="flex justify-center">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+    } @if (!isLoading) {
+    <form
+      [formGroup]="profileForm"
+      (ngSubmit)="onSubmit()"
+      enctype="multipart/form-data"
+    >
+      <div class="flex flex-col gap-4">
+        <!-- Avatar and Basic Info -->
+        <div class="flex items-center justify-between gap-5">
+          <div class="flex items-center gap-5">
+            <p-avatar
+              [image]="avatarPreview || user?.avatar"
+              size="xlarge"
+              shape="circle"
+            />
+            <div>
+              <span class="font-bold text-lg">{{ user?.username }}</span>
+              <p class="text-gray-500 text-sm">{{ user?.email }}</p>
+            </div>
+          </div>
+          <p-fileUpload
+            mode="basic"
+            accept="image/*"
+            [maxFileSize]="2000000"
+            chooseLabel="Upload"
+            (onSelect)="onFileSelect($event)"
+            [auto]="true"
+            [customUpload]="true"
+            invalidFileSizeMessageSummary="The file is too large."
+            invalidFileSizeMessageDetail="Maximum size is 2MB."
+          />
+        </div>
+        <!-- Default Fields -->
         <div class="flex flex-col gap-4">
-          <!-- Avatar and Basic Info -->
-          <div class="flex items-center justify-between gap-5">
-            <div class="flex items-center gap-5">
-              <p-avatar
-                [image]="avatarPreview || user?.avatar"
-                size="xlarge"
-                shape="circle"
+          <app-form-element label="Email" [control]="profileForm.get('email')!">
+            <input
+              pInputText
+              class="w-full rounded-md"
+              formControlName="email"
+              readonly
+            />
+          </app-form-element>
+          <app-form-element
+            label="Username"
+            [control]="profileForm.get('username')!"
+            [required]="true"
+          >
+            <input
+              pInputText
+              class="w-full rounded-md"
+              formControlName="username"
+            />
+          </app-form-element>
+          <app-form-element
+            label="Full Name"
+            [control]="profileForm.get('fullname')!"
+          >
+            <input
+              pInputText
+              class="w-full rounded-md"
+              formControlName="fullname"
+            />
+          </app-form-element>
+          <div class="flex items-center justify-between gap-2">
+            <app-form-element
+              label="Birthdate"
+              class="w-full z-50"
+              [control]="profileForm.get('birthdate')!"
+            >
+              <p-datepicker
+                formControlName="birthdate"
+                dateFormat="yy-mm-dd"
+                placeholder="YYYY-MM-DD"
+                class="w-full !z-50"
+                [minDate]="minDate"
+                [maxDate]="maxDate"
+                [showIcon]="true"
+              />
+            </app-form-element>
+            <app-form-element
+              class="w-full"
+              label="Gender"
+              [control]="profileForm.get('gender')!"
+            >
+              <p-select
+                formControlName="gender"
+                [options]="genderOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select gender"
+                class="!w-full"
+              />
+            </app-form-element>
+          </div>
+        </div>
+        <div
+          class="grid lg:grid-cols-2 grid-cols-1 items-start gap-5 justify-between"
+        >
+          <!-- Instructor Fields -->
+          @if ( user?.role === 'instructor' || profileForm.get('bio')?.value ||
+          profileForm.get('organization')?.value ||
+          profileForm.get('email_paypal')?.value ) {
+          <p-fieldset legend="Instructor Information" [toggleable]="true">
+            <div class="flex flex-col gap-4">
+              <app-form-element
+                label="Bio"
+                [control]="profileForm.get('bio')!"
+                [required]="user?.role === 'instructor'"
+              >
+                <textarea
+                  pInputTextarea
+                  class="w-full"
+                  formControlName="bio"
+                  placeholder="Enter bio (max 1000 characters)"
+                  rows="4"
+                ></textarea>
+              </app-form-element>
+              <app-form-element
+                label="Organization"
+                [control]="profileForm.get('organization')!"
+              >
+                <input
+                  pInputText
+                  class="w-full rounded-md"
+                  formControlName="organization"
+                  placeholder="Enter organization"
                 />
-                <div>
-                  <span class="font-bold text-lg">{{ user?.username }}</span>
-                  <p class="text-gray-500 text-sm">{{ user?.email }}</p>
-                </div>
-              </div>
-              <p-fileUpload
-                mode="basic"
-                accept="image/*"
-                [maxFileSize]="2000000"
-                chooseLabel="Upload"
-                (onSelect)="onFileSelect($event)"
-                [auto]="true"
-                [customUpload]="true"
-                invalidFileSizeMessageSummary="The file is too large."
-                invalidFileSizeMessageDetail="Maximum size is 2MB."
+              </app-form-element>
+              <app-form-element
+                label="PayPal Email"
+                [control]="profileForm.get('email_paypal')!"
+                [required]="user?.role === 'instructor'"
+              >
+                <input
+                  pInputText
+                  class="w-full rounded-md"
+                  formControlName="email_paypal"
+                  placeholder="Enter PayPal email"
                 />
-              </div>
-              <!-- Default Fields -->
-              <div class="flex flex-col gap-4">
-                <app-form-element label="Email" [control]="profileForm.get('email')!">
-                  <input
-                    pInputText
-                    class="w-full rounded-md"
-                    formControlName="email"
-                    readonly
-                    />
-                  </app-form-element>
-                  <app-form-element
-                    label="Username"
-                    [control]="profileForm.get('username')!"
-                    [required]="true"
-                    >
-                    <input
-                      pInputText
-                      class="w-full rounded-md"
-                      formControlName="username"
-                      />
-                    </app-form-element>
-                    <app-form-element
-                      label="Full Name"
-                      [control]="profileForm.get('fullname')!"
-                      >
-                      <input
-                        pInputText
-                        class="w-full rounded-md"
-                        formControlName="fullname"
-                        />
-                      </app-form-element>
-                      <div class="flex items-center justify-between gap-2">
-                        <app-form-element
-                          label="Birthdate"
-                          class="w-full z-50"
-                          [control]="profileForm.get('birthdate')!"
-                          >
-                          <p-calendar
-                            formControlName="birthdate"
-                            dateFormat="yy-mm-dd"
-                            placeholder="YYYY-MM-DD"
-                            class="w-full !z-50"
-                            [minDate]="minDate"
-                            [maxDate]="maxDate"
-                            [showIcon]="true"
-                            />
-                          </app-form-element>
-                          <app-form-element
-                            class="w-full"
-                            label="Gender"
-                            [control]="profileForm.get('gender')!"
-                            >
-                            <p-dropdown
-                              formControlName="gender"
-                              [options]="genderOptions"
-                              optionLabel="label"
-                              optionValue="value"
-                              placeholder="Select gender"
-                              class="!w-full"
-                              />
-                            </app-form-element>
-                          </div>
-                        </div>
-                        <div
-                          class="grid lg:grid-cols-2 grid-cols-1 items-start gap-5 justify-between"
-                          >
-                          <!-- Instructor Fields -->
-                          @if (
-                            user?.role === 'instructor' ||
-                            profileForm.get('bio')?.value ||
-                            profileForm.get('organization')?.value ||
-                            profileForm.get('email_paypal')?.value
-                            ) {
-                            <p-fieldset
-                              legend="Instructor Information"
-                              [toggleable]="true"
-                              >
-                              <div class="flex flex-col gap-4">
-                                <app-form-element
-                                  label="Bio"
-                                  [control]="profileForm.get('bio')!"
-                                  [required]="user?.role === 'instructor'"
-                                  >
-                                  <textarea
-                                    pInputTextarea
-                                    class="w-full"
-                                    formControlName="bio"
-                                    placeholder="Enter bio (max 1000 characters)"
-                                    rows="4"
-                                  ></textarea>
-                                </app-form-element>
-                                <app-form-element
-                                  label="Organization"
-                                  [control]="profileForm.get('organization')!"
-                                  >
-                                  <input
-                                    pInputText
-                                    class="w-full rounded-md"
-                                    formControlName="organization"
-                                    placeholder="Enter organization"
-                                    />
-                                  </app-form-element>
-                                  <app-form-element
-                                    label="PayPal Email"
-                                    [control]="profileForm.get('email_paypal')!"
-                                    [required]="user?.role === 'instructor'"
-                                    >
-                                    <input
-                                      pInputText
-                                      class="w-full rounded-md"
-                                      formControlName="email_paypal"
-                                      placeholder="Enter PayPal email"
-                                      />
-                                    </app-form-element>
-                                  </div>
-                                </p-fieldset>
-                              }
-                              <!-- Student Fields -->
-                              @if (
-                                user?.role === 'student' ||
-                                profileForm.get('LoE_DI')?.value ||
-                                profileForm.get('learning_goals')?.value ||
-                                (user?.role === 'instructor' &&
-                                profileForm.get('bio')?.value &&
-                                profileForm.get('organization')?.value &&
-                                profileForm.get('email_paypal')?.value)
-                                ) {
-                                <p-fieldset
-                                  legend="Student Information"
-                                  [toggleable]="true"
-                                  >
-                                  <div class="flex flex-col gap-4">
-                                    <app-form-element
-                                      label="Educational Background"
-                                      [control]="profileForm.get('LoE_DI')!"
-                                      >
-                                      <p-dropdown
-                                        formControlName="LoE_DI"
-                                        [options]="loeOptions"
-                                        optionLabel="label"
-                                        optionValue="value"
-                                        placeholder="Select education level"
-                                        class="w-full"
-                                        />
-                                      </app-form-element>
-                                      <!-- <app-form-element
+              </app-form-element>
+            </div>
+          </p-fieldset>
+          }
+          <!-- Student Fields -->
+          @if ( user?.role === 'student' || profileForm.get('LoE_DI')?.value ||
+          profileForm.get('learning_goals')?.value || (user?.role ===
+          'instructor' && profileForm.get('bio')?.value &&
+          profileForm.get('organization')?.value &&
+          profileForm.get('email_paypal')?.value) ) {
+          <p-fieldset legend="Student Information" [toggleable]="true">
+            <div class="flex flex-col gap-4">
+              <app-form-element
+                label="Educational Background"
+                [control]="profileForm.get('LoE_DI')!"
+              >
+                <p-select
+                  formControlName="LoE_DI"
+                  [options]="loeOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Select education level"
+                  class="w-full"
+                />
+              </app-form-element>
+              <!-- <app-form-element
                                       label="Learning Goals"
                                       [control]="profileForm.get('learning_goals')!"
                                       >
@@ -198,155 +184,149 @@
                                         class="w-full"
                                         />
                                       </app-form-element> -->
-                                      <app-form-element [label]="'Learning goals'">
-                                        <div class="flex flex-wrap gap-4">
-                                          @for (goal of learningGoals; track goal; let i = $index) {
-                                            <div
-                                              class="flex items-center"
-                                              >
-                                              <p-radiobutton
-                                                [inputId]="'goal' + i"
-                                                name="learning_goals"
-                                                [value]="goal.value"
-                                                formControlName="learning_goals"
-                                                />
-                                                <label class="ml-2" [for]="'goal' + i">{{
-                                                  goal.label
-                                                }}</label>
-                                              </div>
-                                            }
-                                          </div>
-                                        </app-form-element>
-                                        <app-form-element
-                                          label="Favorite Category"
-                                          [control]="profileForm.get('category_ids')!"
-                                          >
-                                          <div class="flex flex-wrap gap-3 text-xs">
-                                            @for (cat of categories; track cat) {
-                                              <div>
-                                                <p-checkbox
-                                                  [inputId]="'cat' + cat.id"
-                                                  name="category_ids"
-                                                  [value]="cat.id"
-                                                  formControlName="category_ids"
-                                                  class="mr-2"
-                                                  />
-                                                  <label
-                                                    [for]="'cat' + cat.id"
-                                                    class="text-xs font-medium text-gray-700 cursor-pointer"
-                                                    >
-                                                    {{ cat.name }}
-                                                  </label>
-                                                </div>
-                                              }
-                                            </div>
-                                          </app-form-element>
-                                        </div>
-                                      </p-fieldset>
-                                    }
-                                  </div>
-                                  <!-- Buttons -->
-                                  <div class="flex justify-end gap-2 mt-4">
-                                    <p-button
-                                      label="Cancel"
-                                      severity="secondary"
-                                      (onClick)="resetForm()"
-                                      />
-                                      <p-button
-                                        label="Save"
-                                        type="submit"
-                                        [disabled]="profileForm.invalid || isSubmitting"
-                                        [loading]="isSubmitting"
-                                        />
-                                      </div>
-                                    </div>
-                                  </form>
-                                }
-                              </div>
-                              <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-                                <!-- Password Change Section -->
-                                <div class="">
-                                  <h3 class="text-xl font-bold pb-3">Change Password</h3>
-                                  @if (isLoading) {
-                                    <div class="flex justify-center">
-                                      <p-progressSpinner></p-progressSpinner>
-                                    </div>
-                                  }
-                                  @if (!isLoading) {
-                                    <form
-                                      [formGroup]="passwordForm"
-                                      (ngSubmit)="onResetPassword()"
-                                      >
-                                      <div class="flex flex-col gap-4">
-                                        <app-form-element
-                                          label="Current Password"
-                                          [control]="passwordForm.get('old_password')!"
-                                          [required]="true"
-                                          >
-                                          <p-password
-                                            formControlName="old_password"
-                                            [toggleMask]="true"
-                                            [feedback]="false"
-                                            placeholder="Enter current password"
-                                            class="w-full"
-                                            />
-                                          </app-form-element>
-                                          <app-form-element
-                                            label="New Password"
-                                            [control]="passwordForm.get('new_password')!"
-                                            [required]="true"
-                                            >
-                                            <p-password
-                                              formControlName="new_password"
-                                              [toggleMask]="true"
-                                              placeholder="Enter new password"
-                                              promptLabel="Enter new password"
-                                              weakLabel="Weak"
-                                              mediumLabel="Medium"
-                                              strongLabel="Strong"
-                                              class="w-full"
-                                              />
-                                            </app-form-element>
-                                            <app-form-element
-                                              label="Repeat Password"
-                                              [control]="passwordForm.get('repeat_password')!"
-                                              [required]="true"
-                                              >
-                                              <p-password
-                                                formControlName="repeat_password"
-                                                [toggleMask]="true"
-                                                placeholder="Repeat new password"
-                                                promptLabel="Repeat new password"
-                                                weakLabel="Weak"
-                                                mediumLabel="Medium"
-                                                strongLabel="Strong"
-                                                class="w-full"
-                                                />
-                                              </app-form-element>
-                                              <div class="flex justify-end gap-2 mt-4">
-                                                <p-button
-                                                  label="Cancel"
-                                                  severity="secondary"
-                                                  (onClick)="resetPasswordForm()"
-                                                  />
-                                                  <p-button
-                                                    label="Reset Password"
-                                                    type="submit"
-                                                    [disabled]="passwordForm.invalid || isPasswordSubmitting"
-                                                    [loading]="isPasswordSubmitting"
-                                                    />
-                                                  </div>
-                                                </div>
-                                              </form>
-                                            }
-                                          </div>
-                                        </div>
-                                        <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-                                          <!-- Account Deletion Section -->
-                                          <h3 class="text-xl font-bold pb-3 text-primary">Delete Account</h3>
+              <app-form-element [label]="'Learning goals'">
+                <div class="flex flex-wrap gap-4">
+                  @for (goal of learningGoals; track goal; let i = $index) {
+                  <div class="flex items-center">
+                    <p-radiobutton
+                      [inputId]="'goal' + i"
+                      name="learning_goals"
+                      [value]="goal.value"
+                      formControlName="learning_goals"
+                    />
+                    <label class="ml-2" [for]="'goal' + i">{{
+                      goal.label
+                    }}</label>
+                  </div>
+                  }
+                </div>
+              </app-form-element>
+              <app-form-element
+                label="Favorite Category"
+                [control]="profileForm.get('category_ids')!"
+              >
+                <div class="flex flex-wrap gap-3 text-xs">
+                  @for (cat of categories; track cat) {
+                  <div>
+                    <p-checkbox
+                      [inputId]="'cat' + cat.id"
+                      name="category_ids"
+                      [value]="cat.id"
+                      formControlName="category_ids"
+                      class="mr-2"
+                    />
+                    <label
+                      [for]="'cat' + cat.id"
+                      class="text-xs font-medium text-gray-700 cursor-pointer"
+                    >
+                      {{ cat.name }}
+                    </label>
+                  </div>
+                  }
+                </div>
+              </app-form-element>
+            </div>
+          </p-fieldset>
+          }
+        </div>
+        <!-- Buttons -->
+        <div class="flex justify-end gap-2 mt-4">
+          <p-button
+            label="Cancel"
+            severity="secondary"
+            (onClick)="resetForm()"
+          />
+          <p-button
+            label="Save"
+            type="submit"
+            [disabled]="profileForm.invalid || isSubmitting"
+            [loading]="isSubmitting"
+          />
+        </div>
+      </div>
+    </form>
+    }
+  </div>
+  <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+    <!-- Password Change Section -->
+    <div class="">
+      <h3 class="text-xl font-bold pb-3">Change Password</h3>
+      @if (isLoading) {
+      <div class="flex justify-center">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+      } @if (!isLoading) {
+      <form [formGroup]="passwordForm" (ngSubmit)="onResetPassword()">
+        <div class="flex flex-col gap-4">
+          <app-form-element
+            label="Current Password"
+            [control]="passwordForm.get('old_password')!"
+            [required]="true"
+          >
+            <p-password
+              formControlName="old_password"
+              [toggleMask]="true"
+              [feedback]="false"
+              placeholder="Enter current password"
+              class="w-full"
+            />
+          </app-form-element>
+          <app-form-element
+            label="New Password"
+            [control]="passwordForm.get('new_password')!"
+            [required]="true"
+          >
+            <p-password
+              formControlName="new_password"
+              [toggleMask]="true"
+              placeholder="Enter new password"
+              promptLabel="Enter new password"
+              weakLabel="Weak"
+              mediumLabel="Medium"
+              strongLabel="Strong"
+              class="w-full"
+            />
+          </app-form-element>
+          <app-form-element
+            label="Repeat Password"
+            [control]="passwordForm.get('repeat_password')!"
+            [required]="true"
+          >
+            <p-password
+              formControlName="repeat_password"
+              [toggleMask]="true"
+              placeholder="Repeat new password"
+              promptLabel="Repeat new password"
+              weakLabel="Weak"
+              mediumLabel="Medium"
+              strongLabel="Strong"
+              class="w-full"
+            />
+          </app-form-element>
+          <div class="flex justify-end gap-2 mt-4">
+            <p-button
+              label="Cancel"
+              severity="secondary"
+              (onClick)="resetPasswordForm()"
+            />
+            <p-button
+              label="Reset Password"
+              type="submit"
+              [disabled]="passwordForm.invalid || isPasswordSubmitting"
+              [loading]="isPasswordSubmitting"
+            />
+          </div>
+        </div>
+      </form>
+      }
+    </div>
+  </div>
+  <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+    <!-- Account Deletion Section -->
+    <h3 class="text-xl font-bold pb-3 text-primary">Delete Account</h3>
 
-                                          <p class="text-sm">
-                                            The account deletion feature will be implemented later.
-                                          </p>
-                                        </div>
-                                      </main>
+    <p class="text-sm">
+      The account deletion feature will be implemented later.
+    </p>
+  </div>
+</main>

@@ -11,10 +11,10 @@ import { ButtonModule } from 'primeng/button';
 import { EnrollmentService } from '../../../services/enrollments/enrollment.service';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CardSkeletonComponent } from "../../../components/both/card-skeleton/card-skeleton.component";
 import { TooltipModule } from 'primeng/tooltip';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-student-purchased-courses-component',
@@ -29,9 +29,9 @@ import { TooltipModule } from 'primeng/tooltip';
     RouterLink,
     ProgressBarModule,
     InputTextModule,
-    DropdownModule,
     FormsModule,
     CardSkeletonComponent,
+    SelectModule,
     TooltipModule
   ],
   providers: [MessageService, CoursesService],

@@ -21,7 +21,7 @@
       <label for="month" class="block text-sm font-medium text-gray-700 mb-2"
         >Month</label
       >
-      <p-dropdown
+      <p-select
         id="month"
         [(ngModel)]="selectedMonth"
         [options]="months"
@@ -30,13 +30,13 @@
         placeholder="Select Month"
         (onChange)="loadDetails()"
         class="w-full sm:w-48"
-      ></p-dropdown>
+      ></p-select>
     </div>
     <div>
       <label for="year" class="block text-sm font-medium text-gray-700 mb-2"
         >Year</label
       >
-      <p-dropdown
+      <p-select
         id="year"
         [(ngModel)]="selectedYear"
         [options]="years"
@@ -45,7 +45,7 @@
         placeholder="Select Year"
         (onChange)="loadDetails()"
         class="w-full sm:w-48"
-      ></p-dropdown>
+      ></p-select>
     </div>
   </div>
 

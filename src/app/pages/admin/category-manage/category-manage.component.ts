@@ -14,7 +14,6 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -42,7 +41,7 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-category-manage',
-  imports: [DropdownModule, FormsModule, ConfirmPopupModule, ReactiveFormsModule, ToastModule, TooltipModule, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
+  imports: [FormsModule, ConfirmPopupModule, ReactiveFormsModule, ToastModule, TooltipModule, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, SelectModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent],
   providers: [ConfirmationService, MessageService],
   templateUrl: './category-manage.component.html',
   styleUrl: './category-manage.component.css'

@@ -7,317 +7,308 @@
       <div class="flex flex-col">
         <label for="searchQuery" class="text-sm font-medium text-gray-700"
           >Filter</label
-          >
-          <input
-            id="searchQuery"
-            pInputText
-            [(ngModel)]="filters.q"
-            name="q"
-            placeholder="Enter course name, description, instructor, category"
-            class="mt-1 p-2 border border-gray-300 rounded-md"
-            (ngModelChange)="applyFilters()"
+        >
+        <input
+          id="searchQuery"
+          pInputText
+          [(ngModel)]="filters.q"
+          name="q"
+          placeholder="Enter course name, description, instructor, category"
+          class="mt-1 p-2 border border-gray-300 rounded-md"
+          (ngModelChange)="applyFilters()"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="status" class="text-sm font-medium text-gray-700"
+          >Status</label
+        >
+        <p-select
+          id="status"
+          [(ngModel)]="filters.status"
+          [options]="statusOptions"
+          optionLabel="label"
+          optionValue="value"
+          name="status"
+          placeholder="Choice status"
+          class="mt-1"
+          (onChange)="applyFilters()"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="difficultyLevel" class="text-sm font-medium text-gray-700"
+          >Level</label
+        >
+        <p-select
+          id="difficultyLevel"
+          [(ngModel)]="filters.difficulty_level"
+          [options]="difficultyOptions"
+          optionLabel="label"
+          optionValue="value"
+          name="difficulty_level"
+          placeholder="Choice level"
+          class="mt-1"
+          (onChange)="applyFilters()"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label
+          for="certificateEnabled"
+          class="text-sm font-medium text-gray-700"
+          >CCertificate</label
+        >
+        <p-select
+          id="certificateEnabled"
+          [(ngModel)]="filters.is_certificate_enabled"
+          [options]="certificateOptions"
+          optionLabel="label"
+          optionValue="value"
+          name="is_certificate_enabled"
+          class="mt-1"
+          (onChange)="applyFilters()"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="priceMin" class="text-sm font-medium text-gray-700"
+          >Min price</label
+        >
+        <input
+          id="priceMin"
+          type="number"
+          pInputText
+          [(ngModel)]="filters.price_min"
+          name="price_min"
+          placeholder="Enter min price"
+          class="mt-1 p-2 border border-gray-300 rounded-md"
+          min="0"
+          (ngModelChange)="applyFilters()"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label for="priceMax" class="text-sm font-medium text-gray-700"
+          >Max price</label
+        >
+        <input
+          id="priceMax"
+          type="number"
+          pInputText
+          [(ngModel)]="filters.price_max"
+          name="price_max"
+          placeholder="Enter max price"
+          class="mt-1 p-2 border border-gray-300 rounded-md"
+          min="0"
+          (ngModelChange)="applyFilters()"
+        />
+      </div>
+      <div class="flex items-end">
+        <p-button
+          label="CLear"
+          icon="pi pi-times"
+          (click)="resetFilters()"
+          styleClass="p-button-secondary"
+        />
+      </div>
+    </form>
+  </div>
+
+  <!-- Course Table -->
+  <p-table
+    [value]="courses"
+    [paginator]="true"
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    [first]="firstRow"
+    [rowHover]="true"
+    [lazy]="true"
+    (onLazyLoad)="onLazyLoad($event)"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Hiển thị {first} đến {last} của {totalRecords} khóa học"
+    paginatorDropdownAppendTo="body"
+    [loading]="loading"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 5%">ID</th>
+        <th style="width: 20%">Course name</th>
+        <th style="width: 15%">Difficulty Level</th>
+        <th style="width: 15%">Rating</th>
+        <th style="width: 10%">Price ($)</th>
+        <th style="width: 10%">Status</th>
+        <th style="width: 10%">Certificate</th>
+        <th style="width: 15%">Categories</th>
+        <th style="width: 15%">Instructor name</th>
+        <th style="width: 7.5%">Created at</th>
+        <th style="width: 7.5%">Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-course>
+      <tr class="text-sm">
+        <td>{{ course.id }}</td>
+        <td>{{ course.course_name }}</td>
+        <td>{{ course.difficulty_level }}</td>
+        <td>
+          <div class="flex items-center justify-center h-full">
+            @if (course.course_rating >= 4) {
+            <p-tag
+              severity="success"
+              value="{{ course.course_rating | number : '1.1-1' }}"
+              [rounded]="true"
             />
+            } @if (course.course_rating >= 3 && course.course_rating < 4) {
+            <p-tag
+              severity="info"
+              value="{{ course.course_rating | number : '1.1-1' }}"
+              [rounded]="true"
+            />
+            } @if (course.course_rating >= 2 && course.course_rating < 3) {
+            <p-tag
+              severity="warn"
+              value="{{ course.course_rating | number : '1.1-1' }}"
+              [rounded]="true"
+            />
+            } @if (course.course_rating >= 1 && course.course_rating < 2) {
+            <p-tag
+              severity="danger"
+              value="{{ course.course_rating | number : '1.1-1' }}"
+              [rounded]="true"
+            />
+            } @if (course.course_rating === 0) {
+            <p-tag
+              severity="contrast"
+              value="{{ course.course_rating | number : '1.1-1' }}"
+              [rounded]="true"
+            />
+            }
           </div>
-          <div class="flex flex-col">
-            <label for="status" class="text-sm font-medium text-gray-700"
-              >Status</label
-              >
-              <p-dropdown
-                id="status"
-                [(ngModel)]="filters.status"
-                [options]="statusOptions"
-                optionLabel="label"
-                optionValue="value"
-                name="status"
-                placeholder="Choice status"
-                class="mt-1"
-                (onChange)="applyFilters()"
-                />
-              </div>
-              <div class="flex flex-col">
-                <label for="difficultyLevel" class="text-sm font-medium text-gray-700"
-                  >Level</label
-                  >
-                  <p-dropdown
-                    id="difficultyLevel"
-                    [(ngModel)]="filters.difficulty_level"
-                    [options]="difficultyOptions"
-                    optionLabel="label"
-                    optionValue="value"
-                    name="difficulty_level"
-                    placeholder="Choice level"
-                    class="mt-1"
-                    (onChange)="applyFilters()"
-                    />
-                  </div>
-                  <div class="flex flex-col">
-                    <label
-                      for="certificateEnabled"
-                      class="text-sm font-medium text-gray-700"
-                      >CCertificate</label
-                      >
-                      <p-dropdown
-                        id="certificateEnabled"
-                        [(ngModel)]="filters.is_certificate_enabled"
-                        [options]="certificateOptions"
-                        optionLabel="label"
-                        optionValue="value"
-                        name="is_certificate_enabled"
-                        class="mt-1"
-                        (onChange)="applyFilters()"
-                        />
-                      </div>
-                      <div class="flex flex-col">
-                        <label for="priceMin" class="text-sm font-medium text-gray-700"
-                          >Min price</label
-                          >
-                          <input
-                            id="priceMin"
-                            type="number"
-                            pInputText
-                            [(ngModel)]="filters.price_min"
-                            name="price_min"
-                            placeholder="Enter min price"
-                            class="mt-1 p-2 border border-gray-300 rounded-md"
-                            min="0"
-                            (ngModelChange)="applyFilters()"
-                            />
-                          </div>
-                          <div class="flex flex-col">
-                            <label for="priceMax" class="text-sm font-medium text-gray-700"
-                              >Max price</label
-                              >
-                              <input
-                                id="priceMax"
-                                type="number"
-                                pInputText
-                                [(ngModel)]="filters.price_max"
-                                name="price_max"
-                                placeholder="Enter max price"
-                                class="mt-1 p-2 border border-gray-300 rounded-md"
-                                min="0"
-                                (ngModelChange)="applyFilters()"
-                                />
-                              </div>
-                              <div class="flex items-end">
-                                <p-button
-                                  label="CLear"
-                                  icon="pi pi-times"
-                                  (click)="resetFilters()"
-                                  styleClass="p-button-secondary"
-                                  />
-                                </div>
-                              </form>
-                            </div>
+        </td>
+        <td>{{ course.price | number }}</td>
+        <td>
+          <div>
+            @if (course.status === 'banned') {
+            <p-tag
+              severity="contrast"
+              [value]="course.status"
+              [rounded]="true"
+              class="!text-xs"
+            />
+            } @if (course.status === 'approved') {
+            <p-tag
+              severity="success"
+              [value]="course.status"
+              [rounded]="true"
+              class="!text-xs"
+            />
+            } @if (course.status === 'pending') {
+            <p-tag
+              severity="warn"
+              class="!text-xs"
+              [value]="course.status"
+              [rounded]="true"
+            />
+            } @if (course.status === 'rejected') {
+            <p-tag
+              severity="danger"
+              class="!text-xs"
+              [value]="course.status"
+              [rounded]="true"
+            />
+            } @if (course.status === 'unavailable') {
+            <p-tag
+              severity="secondary"
+              class="!text-xs"
+              [value]="course.status"
+              [rounded]="true"
+            />
+            }
+          </div>
+        </td>
+        <td>
+          <p-tag
+            [value]="course.is_certificate_enabled ? 'Yes' : 'No'"
+            [severity]="course.is_certificate_enabled ? 'success' : 'danger'"
+            [rounded]="true"
+            class="!text-xs"
+          />
+        </td>
+        <td
+          [pTooltip]="getCategoryNames(course.categories)"
+          tooltipPosition="right"
+        >
+          {{ cutText(getCategoryNames(course.categories), 2) }}
+        </td>
+        <td>{{ course.instructors.user.username }}</td>
+        <td>{{ course.created_at | date : "dd/MM/yyyy" }}</td>
+        <td class="flex gap-1">
+          <p-button
+            icon="pi pi-eye"
+            [rounded]="true"
+            [raised]="true"
+            severity="help"
+            [routerLink]="[course.id]"
+          />
+          @if (course.status === 'pending') {
+          <p-button
+            icon="pi pi-check"
+            [rounded]="true"
+            [raised]="true"
+            (click)="openReviewDialog(course.id, 'approved')"
+            severity="success"
+          />
+          } @if (course.status === 'pending') {
+          <p-button
+            icon="pi pi-times"
+            (click)="openReviewDialog(course.id, 'rejected')"
+            [rounded]="true"
+            [raised]="true"
+            severity="danger"
+          />
+          }
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="9" class="text-center">Không tìm thấy khóa học nào.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
 
-                            <!-- Course Table -->
-                            <p-table
-                              [value]="courses"
-                              [paginator]="true"
-                              [rows]="rows"
-                              [totalRecords]="totalRecords"
-                              [first]="firstRow"
-                              [rowHover]="true"
-                              [lazy]="true"
-                              (onLazyLoad)="onLazyLoad($event)"
-                              [showCurrentPageReport]="true"
-                              currentPageReportTemplate="Hiển thị {first} đến {last} của {totalRecords} khóa học"
-                              paginatorDropdownAppendTo="body"
-                              [loading]="loading"
-                              >
-                              <ng-template pTemplate="header">
-                                <tr>
-                                  <th style="width: 5%">ID</th>
-                                  <th style="width: 20%">Course name</th>
-                                  <th style="width: 15%">Difficulty Level</th>
-                                  <th style="width: 15%">Rating</th>
-                                  <th style="width: 10%">Price ($)</th>
-                                  <th style="width: 10%">Status</th>
-                                  <th style="width: 10%">Certificate</th>
-                                  <th style="width: 15%">Categories</th>
-                                  <th style="width: 15%">Instructor name</th>
-                                  <th style="width: 7.5%">Created at</th>
-                                  <th style="width: 7.5%">Action</th>
-                                </tr>
-                              </ng-template>
-                              <ng-template pTemplate="body" let-course>
-                                <tr class="text-sm">
-                                  <td>{{ course.id }}</td>
-                                  <td>{{ course.course_name }}</td>
-                                  <td>{{ course.difficulty_level }}</td>
-                                  <td>
-                                    <div class="flex items-center justify-center h-full">
-                                      @if (course.course_rating >= 4) {
-                                        <p-tag
-                                          severity="success"
-                                          value="{{ course.course_rating | number : '1.1-1' }}"
-                                          [rounded]="true"
-                                          />
-                                      }
-                                      @if (course.course_rating >= 3 && course.course_rating < 4) {
-                                        <p-tag
-                                          severity="info"
-                                          value="{{ course.course_rating | number : '1.1-1' }}"
-                                          [rounded]="true"
-                                          />
-                                      }
-                                      @if (course.course_rating >= 2 && course.course_rating < 3) {
-                                        <p-tag
-                                          severity="warn"
-                                          value="{{ course.course_rating | number : '1.1-1' }}"
-                                          [rounded]="true"
-                                          />
-                                      }
-                                      @if (course.course_rating >= 1 && course.course_rating < 2) {
-                                        <p-tag
-                                          severity="danger"
-                                          value="{{ course.course_rating | number : '1.1-1' }}"
-                                          [rounded]="true"
-                                          />
-                                      }
-                                      @if (course.course_rating === 0) {
-                                        <p-tag
-                                          severity="contrast"
-                                          value="{{ course.course_rating | number : '1.1-1' }}"
-                                          [rounded]="true"
-                                          />
-                                      }
-                                    </div>
-                                  </td>
-                                  <td>{{ course.price | number }}</td>
-                                  <td>
-                                    <div>
-                                      @if (course.status === 'banned') {
-                                        <p-tag
-                                          severity="contrast"
-                                          [value]="course.status"
-                                          [rounded]="true"
-                                          class="!text-xs"
-                                          />
-                                      }
-                                      @if (course.status === 'approved') {
-                                        <p-tag
-                                          severity="success"
-                                          [value]="course.status"
-                                          [rounded]="true"
-                                          class="!text-xs"
-                                          />
-                                      }
-                                      @if (course.status === 'pending') {
-                                        <p-tag
-                                          severity="warn"
-                                          class="!text-xs"
-                                          [value]="course.status"
-                                          [rounded]="true"
-                                          />
-                                      }
-                                      @if (course.status === 'rejected') {
-                                        <p-tag
-                                          severity="danger"
-                                          class="!text-xs"
-                                          [value]="course.status"
-                                          [rounded]="true"
-                                          />
-                                      }
-                                      @if (course.status === 'unavailable') {
-                                        <p-tag
-                                          severity="secondary"
-                                          class="!text-xs"
-                                          [value]="course.status"
-                                          [rounded]="true"
-                                          />
-                                      }
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <p-tag
-                                      [value]="course.is_certificate_enabled ? 'Yes' : 'No'"
-                                      [severity]="course.is_certificate_enabled ? 'success' : 'danger'"
-                                      [rounded]="true"
-                                      class="!text-xs"
-                                      />
-                                    </td>
-                                    <td
-                                      [pTooltip]="getCategoryNames(course.categories)"
-                                      tooltipPosition="right"
-                                      >
-                                      {{ cutText(getCategoryNames(course.categories), 2) }}
-                                    </td>
-                                    <td>{{ course.instructors.user.username }}</td>
-                                    <td>{{ course.created_at | date : "dd/MM/yyyy" }}</td>
-                                    <td class="flex gap-1">
-                                      <p-button
-                                        icon="pi pi-eye"
-                                        [rounded]="true"
-                                        [raised]="true"
-                                        severity="help"
-                                        [routerLink]="[course.id]"
-                                        />
-                                        @if (course.status === 'pending') {
-                                          <p-button
-                                            icon="pi pi-check"
-                                            [rounded]="true"
-                                            [raised]="true"
-                                            (click)="openReviewDialog(course.id, 'approved')"
-                                            severity="success"
-                                            />
-                                        }
-                                        @if (course.status === 'pending') {
-                                          <p-button
-                                            icon="pi pi-times"
-                                            (click)="openReviewDialog(course.id, 'rejected')"
-                                            [rounded]="true"
-                                            [raised]="true"
-                                            severity="danger"
-                                            />
-                                        }
-                                      </td>
-                                    </tr>
-                                  </ng-template>
-                                  <ng-template pTemplate="emptymessage">
-                                    <tr>
-                                      <td colspan="9" class="text-center">Không tìm thấy khóa học nào.</td>
-                                    </tr>
-                                  </ng-template>
-                                </p-table>
-                              </div>
-
-                              <p-dialog
-                                [header]="reviewAction === 'approved' ? 'Duyệt yêu cầu' : 'Từ chối yêu cầu'"
-                                [(visible)]="displayReviewDialog"
-                                [modal]="true"
-                                [style]="{ width: '30vw' }"
-                                [draggable]="false"
-                                [resizable]="false"
-                                >
-                                <div class="p-4">
-                                  <p>Vui lòng nhập ghi chú (nếu có):</p>
-                                  <textarea
-                                    rows="5"
-                                    cols="30"
-                                    placeholder="Nhập ghi chú (tối đa 2000 ký tự)"
-                                    maxlength="2000"
-                                    pTextarea
-                                    [(ngModel)]="notes"
-                                    class="w-full mt-4"
-                                  ></textarea>
-                                </div>
-                                <ng-template pTemplate="footer">
-                                  <button
-                                    pButton
-                                    label="Hủy"
-                                    class="p-button-secondary"
-                                    (click)="displayReviewDialog = false; notes = ''"
-                                  ></button>
-                                  <button
-                                    pButton
+<p-dialog
+  [header]="reviewAction === 'approved' ? 'Duyệt yêu cầu' : 'Từ chối yêu cầu'"
+  [(visible)]="displayReviewDialog"
+  [modal]="true"
+  [style]="{ width: '30vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="p-4">
+    <p>Vui lòng nhập ghi chú (nếu có):</p>
+    <textarea
+      rows="5"
+      cols="30"
+      placeholder="Nhập ghi chú (tối đa 2000 ký tự)"
+      maxlength="2000"
+      pTextarea
+      [(ngModel)]="notes"
+      class="w-full mt-4"
+    ></textarea>
+  </div>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      label="Hủy"
+      class="p-button-secondary"
+      (click)="displayReviewDialog = false; notes = ''"
+    ></button>
+    <button
+      pButton
       [label]="
         reviewAction === 'approved' ? 'Xác nhận duyệt' : 'Xác nhận từ chối'
       "
       [ngClass]="
         reviewAction === 'approved' ? 'p-button-success' : 'p-button-danger'
       "
-                                    (click)="submitReview()"
-                                  ></button>
-                                </ng-template>
-                              </p-dialog>
+      (click)="submitReview()"
+    ></button>
+  </ng-template>
+</p-dialog>

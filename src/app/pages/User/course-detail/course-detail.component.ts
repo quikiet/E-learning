@@ -14,7 +14,6 @@ import { HeaderComponent } from "../../../components/user/header/header.componen
 import { LoadingComponent } from '../../../components/both/loading/loading.component';
 import { CardSkeletonComponent } from "../../../components/both/card-skeleton/card-skeleton.component";
 import { FormBuilder, FormControl, FormControlName, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
@@ -61,7 +60,6 @@ interface optionSelect {
     HeaderComponent,
     LoadingComponent,
     FormsModule,
-    DropdownModule,
     RadioButtonModule,
     ToastModule,
     DialogModule,

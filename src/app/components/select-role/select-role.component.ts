@@ -6,10 +6,10 @@ import { AuthService } from '../../services/auth.service';
 
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 @Component({
   selector: 'app-select-role',
-  imports: [FormsModule, ButtonModule, ToastModule, DropdownModule, ReactiveFormsModule],
+  imports: [FormsModule, ButtonModule, ToastModule, SelectModule, ReactiveFormsModule],
   templateUrl: './select-role.component.html',
   styleUrl: './select-role.component.css'
 })

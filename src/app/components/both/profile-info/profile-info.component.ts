@@ -9,8 +9,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { TextareaModule } from 'primeng/textarea';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { CalendarModule } from 'primeng/calendar';
-import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
 import { FieldsetModule } from 'primeng/fieldset';
 import { PasswordModule } from 'primeng/password';
@@ -42,8 +40,6 @@ interface OptionSelect {
     TextareaModule,
     ToastModule,
     ProgressSpinnerModule,
-    CalendarModule,
-    DropdownModule,
     FileUploadModule,
     FieldsetModule,
     PasswordModule,
@@ -55,7 +51,7 @@ interface OptionSelect {
     RadioButtonModule,
     CheckboxModule,
     LoadingComponent
-],
+  ],
   providers: [MessageService, DatePipe, AuthService],
   templateUrl: './profile-info.component.html',
   styleUrls: ['./profile-info.component.css']

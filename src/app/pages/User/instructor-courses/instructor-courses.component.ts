@@ -11,7 +11,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CategoryService } from '../../../services/courses-manage/category.service';
-import { DropdownModule } from 'primeng/dropdown';
 import { HttpEventType } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { InputIconModule } from 'primeng/inputicon';
@@ -22,6 +21,7 @@ import { HeaderComponent } from '../../../components/user/header/header.componen
 import { LoadingComponent } from '../../../components/both/loading/loading.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { DrawerModule } from 'primeng/drawer';
+import { SelectModule } from 'primeng/select';
 
 interface Category {
   name: string;
@@ -40,7 +40,7 @@ interface Category {
     TooltipModule,
     FormsModule,
     MultiSelectModule,
-    DropdownModule,
+    SelectModule,
     ButtonModule,
     RouterLink,
     InputIconModule,

@@ -8,7 +8,6 @@ import { CategoryService } from '../../../services/courses-manage/category.servi
 import { MultiSelectModule } from 'primeng/multiselect';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthService } from '../../../services/auth.service';
 import { DialogModule } from 'primeng/dialog';
@@ -30,13 +29,12 @@ interface Category {
     ToastModule,
     MultiSelectModule,
     ButtonModule,
-    DropdownModule,
     InputTextModule,
     DialogModule,
     TextareaModule,
     DividerModule,
     SelectModule
-],
+  ],
   providers: [MessageService],
   templateUrl: './create-course.component.html',
   styleUrl: './create-course.component.css'

@@ -15,7 +15,6 @@ import { InputIconModule } from 'primeng/inputicon';
 import { Table } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { FileUpload } from 'primeng/fileupload';
-import { DropdownModule } from 'primeng/dropdown';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -44,7 +43,7 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-progress-manage',
-  imports: [Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent, CourseSearchSidebarComponent, CourseSearchComponent],
+  imports: [Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, SelectModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent, CourseSearchSidebarComponent, CourseSearchComponent],
   templateUrl: './progress-manage.component.html',
   styleUrl: './progress-manage.component.css'
 })

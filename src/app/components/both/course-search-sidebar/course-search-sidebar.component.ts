@@ -20,8 +20,6 @@ import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
-
-import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { FormElementComponent } from '../form-element/form-element.component';
@@ -33,7 +31,7 @@ import { Divider } from 'primeng/divider';
 
 @Component({
   selector: 'app-course-search-sidebar',
-  imports: [Divider, AccordionModule, RadioButton, Checkbox, SliderModule, FormsModule, ConfirmPopupModule, ReactiveFormsModule, ToastModule, TooltipModule, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent, ReactiveFormsModule],
+  imports: [Divider, AccordionModule, RadioButton, Checkbox, SliderModule, FormsModule, ConfirmPopupModule, ReactiveFormsModule, ToastModule, TooltipModule, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent, ReactiveFormsModule],
   templateUrl: './course-search-sidebar.component.html',
   styleUrl: './course-search-sidebar.component.css'
 })

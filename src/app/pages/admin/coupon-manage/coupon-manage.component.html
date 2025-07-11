@@ -217,7 +217,7 @@
             [required]="true"
             [control]="couponForm.get('discount_type')!"
           >
-            <p-dropdown
+            <p-select
               class="w-full"
               [options]="[
                 { label: 'Phần trăm', value: 'percent' },
@@ -225,7 +225,7 @@
               ]"
               formControlName="discount_type"
               placeholder="Chọn loại giảm giá"
-            ></p-dropdown>
+            ></p-select>
           </app-form-element>
         </div>
 

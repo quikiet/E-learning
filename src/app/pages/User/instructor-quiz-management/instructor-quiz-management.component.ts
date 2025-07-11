@@ -10,10 +10,10 @@ import { TagModule } from 'primeng/tag';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../../../services/lesson/quiz.service';
 import { Tooltip, TooltipModule } from 'primeng/tooltip';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-instructor-quiz-management',
@@ -28,9 +28,9 @@ import { Tooltip, TooltipModule } from 'primeng/tooltip';
     CheckboxModule,
     ToastModule,
     InputTextModule,
-    DropdownModule,
+    SelectModule,
     TooltipModule
-],
+  ],
   providers: [MessageService, QuizService],
   templateUrl: './instructor-quiz-management.component.html',
   styleUrls: ['./instructor-quiz-management.component.css'],

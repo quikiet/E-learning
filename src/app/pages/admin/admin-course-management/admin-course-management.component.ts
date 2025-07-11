@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
@@ -13,6 +12,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { RouterLink } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-admin-course-management',
@@ -23,13 +23,13 @@ import { TextareaModule } from 'primeng/textarea';
     TableModule,
     ButtonModule,
     InputTextModule,
-    DropdownModule,
     TagModule,
     ToastModule,
     TooltipModule,
     RouterLink,
     DialogModule,
-    TextareaModule
+    TextareaModule,
+    SelectModule
   ],
   providers: [MessageService, CoursesService],
   templateUrl: './admin-course-management.component.html',
