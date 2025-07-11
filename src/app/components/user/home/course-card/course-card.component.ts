@@ -9,10 +9,10 @@ import { TabsModule } from 'primeng/tabs';
 import { CoursesService } from '../../../../services/courses.service';
 import { RouterLink } from '@angular/router';
 import { CardSkeletonComponent } from "../../../both/card-skeleton/card-skeleton.component";
-
+import { AnimateOnScroll } from 'primeng/animateonscroll';
 @Component({
   selector: 'app-course-card',
-  imports: [RouterLink, TabsModule, Carousel, DividerModule, ButtonModule, CardModule, Tag, CommonModule, FormsModule, CardSkeletonComponent],
+  imports: [AnimateOnScroll, RouterLink, TabsModule, Carousel, DividerModule, ButtonModule, CardModule, Tag, CommonModule, FormsModule, CardSkeletonComponent],
   templateUrl: './course-card.component.html',
   styleUrl: './course-card.component.css'
 })

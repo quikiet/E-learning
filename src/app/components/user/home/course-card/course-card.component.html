@@ -1,10 +1,18 @@
 <div class="my-10 max-w-7xl mx-auto">
   <app-card-skeleton *ngIf="isLoading"></app-card-skeleton>
   <div *ngIf="courses.length > 2">
-    <h3 class="md:text-2xl text-lg lg:text-left text-center font-bold my-2">
+    <h3
+      class="md:text-2xl text-lg lg:text-left text-center font-bold my-2"
+      pAnimateOnScroll
+      enterClass="animate-enter fade-in-10 slide-in-from-b-20 animate-duration-1000"
+    >
       {{ title }}
     </h3>
-    <h5 class="md:text-xl font-bold mb-2 lg:text-left text-center">
+    <h5
+      class="md:text-xl font-bold mb-2 lg:text-left text-center"
+      pAnimateOnScroll
+      enterClass="animate-enter fade-in-10 zoom-in-50 animate-duration-1000"
+    >
       {{ subtitle }}
     </h5>
     <div>
