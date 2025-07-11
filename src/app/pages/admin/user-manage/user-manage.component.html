@@ -10,7 +10,7 @@
   </ng-template>
 
   <ng-template #end>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 flex-wrap">
       <p-button
         label="Filter"
         icon="pi pi-filter"
@@ -53,7 +53,7 @@
   [loading]="isLoading"
 >
   <ng-template #caption>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between flex-wrap gap-2 md:p-0 p-2">
       <p class="m-0 lg:text-lg font-semibold">User management</p>
       <p-iconfield>
         <p-inputicon styleClass="pi pi-search" />
@@ -82,23 +82,13 @@
       <td>{{ user.id }}</td>
       <td>
         <div class="flex items-center gap-2">
-          <p-overlaybadge
-            [severity]="
-              user.status === 'active'
-                ? 'success'
-                : user.status === 'suspended'
-                ? 'warn'
-                : 'danger'
+          <p-avatar
+            [image]="
+              user.avatar ||
+              'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
             "
-          >
-            <p-avatar
-              [image]="
-                user.avatar ||
-                'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
-              "
-              shape="circle"
-            />
-          </p-overlaybadge>
+            shape="circle"
+          />
           <div>
             <span
               [tooltipDisabled]="user.email.length < 20"
@@ -349,18 +339,7 @@
         placeholder="Select Gender"
       />
     </div>
-    <div>
-      <label for="status" class="block font-medium mb-1">Status</label>
-      <p-dropdown
-        id="status"
-        formControlName="status"
-        [options]="statusOptions"
-        optionLabel="label"
-        optionValue="value"
-        class="w-full"
-        placeholder="Select Status"
-      />
-    </div>
+
     <div>
       <label for="birthdate" class="block font-medium mb-1">Birthdate</label>
       <input

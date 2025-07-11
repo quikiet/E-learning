@@ -50,6 +50,7 @@ import { CourseCommentStatsComponent } from './pages/User/course-comment-stats/c
 import { InstructorRevenueComponent } from './pages/User/instructor-revenue/instructor-revenue.component';
 import { loggedInGuard } from './guard/logged-in.guard';
 import { adminGuard } from './guard/admin.guard';
+import { PolicyComponent } from './pages/User/policy/policy.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -62,6 +63,7 @@ export const routes: Routes = [
         children: [
             { path: '', component: HomeComponent },
             { path: 'course', component: CourseSearchComponent },
+            { path: 'policy', component: PolicyComponent },
             { path: 'user/:id', component: DetailInstructorComponent },
 
 

@@ -84,7 +84,6 @@ export class UserManageComponent implements OnInit {
     email: new FormControl(''),
     role: new FormControl(''),
     gender: new FormControl(''),
-    status: new FormControl(''),
     birthdate: new FormControl(''),
   });
 
@@ -101,12 +100,6 @@ export class UserManageComponent implements OnInit {
     { label: 'Female', value: 'female' }
   ];
 
-  statusOptions = [
-    { label: 'All Statuses', value: '' },
-    { label: 'Active', value: 'active' },
-    { label: 'Suspended', value: 'suspended' },
-    { label: 'Inactive', value: 'inactive' }
-  ];
 
   constructor(
     private userService: UserService,
@@ -167,7 +160,6 @@ export class UserManageComponent implements OnInit {
       { field: 'birthdate', header: 'Birthdate' },
       { field: 'gender', header: 'Gender' },
       { field: 'role', header: 'Role' },
-      { field: 'status', header: 'Status' },
       { field: 'created_at', header: 'Created At' },
       { field: 'updated_at', header: 'Updated At' }
     ];
