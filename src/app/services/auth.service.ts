@@ -73,13 +73,15 @@ export class AuthService {
         tap(res => {
           const expiry = new Date().getTime() + 60 * 60 * 1000; // 60 phút
           localStorage.setItem('token_expiry', expiry.toString());
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('user', JSON.stringify(res.user));
         })
       );
   }
 
   logout(): Observable<any> {
-    localStorage.removeItem('jwt_token');
-    localStorage.removeItem('auth_user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     localStorage.removeItem('token_expiry');
     this.currentUserSubject.next(null);
     return this.http.post(`${this.apiUrl}/api/logout`, {}, { withCredentials: true });

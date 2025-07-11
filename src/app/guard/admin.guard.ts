@@ -1,35 +1,14 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { MessageService } from 'primeng/api';
-import { tap } from 'rxjs';
 
 export const adminGuard: CanActivateFn = (route, state) => {
-  const authService = inject(AuthService);
   const router = inject(Router);
-  const messageService = inject(MessageService);
+  const user = JSON.parse(localStorage.getItem('user') ?? '{}');
 
-  if (!authService.isLoggedIn()) {
-    messageService.add({
-      severity: 'warn',
-      summary: 'Access Denied',
-      detail: 'Please log in to access this page.',
-      life: 3000
-    });
-    router.navigate(['/login']);
-    return false;
+  if (user && user.role === 'admin') {
+    return true;
   }
-  return authService.isAdmin().pipe(
-    tap((isAdmin) => {
-      if (!isAdmin) {
-        messageService.add({
-          severity: 'warn',
-          summary: 'Access Denied',
-          detail: 'You are not authorized as an admin.',
-          life: 3000
-        });
-        router.navigate(['/']);
-      }
-    })
-  );
-};
+
+  alert('Access denied. Admins only!');
+  return router.parseUrl('/');
+}

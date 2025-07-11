@@ -48,16 +48,28 @@ import { InstructorRequestComponent } from './pages/User/instructor-request/inst
 import { ResetPasswordComponent } from './pages/User/reset-password/reset-password.component';
 import { CourseCommentStatsComponent } from './pages/User/course-comment-stats/course-comment-stats.component';
 import { InstructorRevenueComponent } from './pages/User/instructor-revenue/instructor-revenue.component';
-import { loggedInGuard } from './guard/logged-in.guard';
 import { adminGuard } from './guard/admin.guard';
 import { PolicyComponent } from './pages/User/policy/policy.component';
+import { instructorGuard } from './guard/instructor.guard';
 
 export const routes: Routes = [
-    { path: 'login', component: LoginComponent },
-    { path: 'reset-password', component: ResetPasswordComponent },
-    { path: 'social-callback', component: SocialCallbackComponent }, // Route cho callback Google OAuth
+    {
+        path: 'login', component: LoginComponent,
+        canActivate: [isLoggedInGuard]
+    },
+    {
+        path: 'reset-password', component: ResetPasswordComponent,
+        canActivate: [isLoggedInGuard]
+    },
+    {
+        path: 'social-callback', component: SocialCallbackComponent,
+        canActivate: [isLoggedInGuard]
+    }, // Route cho callback Google OAuth
     // { path: 'select-role', component: SelectRoleComponent },
-    { path: 'auth/google/callback', component: AuthCallbackComponent },
+    {
+        path: 'auth/google/callback', component: AuthCallbackComponent,
+        canActivate: [isLoggedInGuard]
+    },
     {
         path: '', component: MainLayoutComponent,
         children: [
@@ -86,7 +98,7 @@ export const routes: Routes = [
     },
 
     {
-        path: 'admin', component: AdminComponent,
+        path: 'admin', component: AdminComponent, canActivate: [adminGuard],
         children: [
             { path: 'profile', component: ProfileInfoComponent },
             { path: 'dashboard', component: DashboardComponent },
@@ -114,16 +126,16 @@ export const routes: Routes = [
         component: ProfileComponent,
         children: [
             { path: 'profile', component: ProfileInfoComponent },
-            { path: 'instructor-course', component: InstructorCoursesComponent },
-            { path: 'instructor-course/:id', component: CourseCommentStatsComponent },
-            { path: 'instructor-request', component: InstructorRequestComponent },
-            { path: 'my-revenue-instructor', component: InstructorRevenueComponent },
-            { path: 'create-course', component: CreateCourseComponent },
-            { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent },
             { path: 'payment-history', component: StudentPaymentHistoryComponent },
-            { path: 'add-lesson/:courseId', component: AddLessonsComponent },
-            { path: 'reports', component: InstructorReportsComponent },
-            { path: 'course/:course_id/user-progress', component: CourseProgressComponent },
+            { path: 'create-course', component: CreateCourseComponent },
+            { path: 'instructor-request', component: InstructorRequestComponent },
+            { path: 'instructor-course', component: InstructorCoursesComponent, canActivate: [instructorGuard] },
+            { path: 'instructor-course/:id', component: CourseCommentStatsComponent, canActivate: [instructorGuard] },
+            { path: 'my-revenue-instructor', component: InstructorRevenueComponent, canActivate: [instructorGuard] },
+            { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent, canActivate: [instructorGuard] },
+            { path: 'add-lesson/:courseId', component: AddLessonsComponent, canActivate: [instructorGuard] },
+            { path: 'reports', component: InstructorReportsComponent, canActivate: [instructorGuard] },
+            { path: 'course/:course_id/user-progress', component: CourseProgressComponent, canActivate: [instructorGuard] },
             { path: '**', redirectTo: 'profile', pathMatch: 'full' },
         ]
     },
