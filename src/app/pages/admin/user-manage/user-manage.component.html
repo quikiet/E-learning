@@ -6,52 +6,6 @@
       label="Clear"
       class="mr-2"
     />
-    <p-button
-      (click)="op.toggle($event)"
-      icon="pi pi-database"
-      label="Đã xoá"
-      severity="contrast"
-    />
-    <p-popover #op>
-      <div class="lg:w-[25rem] max-h-[20rem] overflow-auto">
-        <div class="px-2">
-          <span
-            class="font-medium text-surface-900 dark:text-surface-0 block mb-2"
-            >Khoá học đã bị xoá</span
-          >
-          <ul class="list-none p-0 m-0 flex flex-col gap-4">
-            <li>
-              <div class="flex items-center justify-between gap-2 pr-2">
-                <div class="flex items-center gap-3">
-                  <img style="width: 42px" />
-                  <div>
-                    <span class="font-medium"></span>
-                    <div class="text-sm text-muted-color"></div>
-                  </div>
-                </div>
-                <div class="flex flex-col gap-2 justify-between items-center">
-                  <a
-                    class="flex items-center gap-2 text-muted-color ml-auto text-sm text-blue-500 cursor-pointer hover:text-blue-700 hover:font-semibold"
-                  >
-                    <span class="text-xs">Khôi phục</span>
-                    <i class="pi pi-undo"></i>
-                  </a>
-                  <a
-                    class="flex items-center gap-2 text-muted-color ml-auto text-sm text-red-500 cursor-pointer hover:text-red-700 hover:font-semibold"
-                  >
-                    <span class="text-xs">Xoá vĩnh viễn</span>
-                    <i class="pi pi-trash"></i>
-                  </a>
-                </div>
-              </div>
-              <p-divider class="m-0" />
-            </li>
-
-            <li class="text-xs">Không có Khoá học nào đã bị xoá trước đó</li>
-          </ul>
-        </div>
-      </div>
-    </p-popover>
   </ng-template>
 
   <ng-template #end>
@@ -101,9 +55,11 @@
   <ng-template #header>
     <tr class="text-sm">
       <th>
-        <span>Mã</span>
+        <span>ID</span>
       </th>
       <th>Email</th>
+      <th>Username</th>
+      <th>Fullname</th>
       <th>Gender</th>
       <th>Birthdate</th>
     </tr>
@@ -114,14 +70,24 @@
         {{ user.id }}
       </td>
       <td>
-        <div class="flex items-center gap-1">
-          <p-avatar
-            [image]="
-              user.avatar ||
-              'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
+        <div class="flex items-center gap-2">
+          <p-overlaybadge
+            [severity]="
+              user.status === 'active'
+                ? 'success'
+                : user.status === 'suspended'
+                ? 'warn'
+                : 'danger'
             "
-            shape="circle"
-          />
+          >
+            <p-avatar
+              [image]="
+                user.avatar ||
+                'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
+              "
+              shape="circle"
+            />
+          </p-overlaybadge>
           <div>
             <span
               [tooltipDisabled]="user.email.lenght < 20"
@@ -131,31 +97,27 @@
             >
             <div>
               <p-tag
-                *ngIf="user.role === 'admin'"
-                severity="danger"
+                [severity]="
+                  user.role === 'admin'
+                    ? 'danger'
+                    : user.role === 'student'
+                    ? 'success'
+                    : 'info'
+                "
                 [value]="user.role"
                 [rounded]="true"
                 class="!text-xs"
-              />
-              <p-tag
-                *ngIf="user.role === 'student'"
-                severity="success"
-                class="!text-xs"
-                [value]="user.role"
-                [rounded]="true"
-              />
-              <p-tag
-                *ngIf="user.role === 'instructor'"
-                severity="info"
-                class="!text-xs"
-                [value]="user.role"
-                [rounded]="true"
               />
             </div>
           </div>
         </div>
       </td>
-
+      <td>
+        {{ user.username }}
+      </td>
+      <td>
+        {{ user.fullname }}
+      </td>
       <td class="text-center align-middle">
         {{ user.gender || "NaN" }}
       </td>
@@ -197,11 +159,12 @@
   [dismissible]="false"
   (onHide)="visibleDrawer = false"
   modal="false"
-  styleClass="!w-full lg:!w-[25rem]"
+  styleClass="!w-full sm:!w-[35rem] md:!w-[25rem]"
 >
   <ng-template #header>
     <div class="flex items-center gap-2">
       <p-avatar
+        [styleClass]="'lazy-avatar'"
         [image]="
           user.avatar ||
           'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
@@ -238,17 +201,31 @@
     </div>
   </ng-template>
   <ng-template #content>
-    <div class="flex flex-col gap-2">
-      <div class="flex items-center gap-5">
+    <div class="flex flex-col gap-2 lg:p-2 p-6">
+      <div class="flex items-center gap-2 lg:flex-row flex-col lg:gap-5">
         <img
           [src]="user.avatar"
           [alt]="user.avatar"
           class="block w-32 h-32 md:w-64 md:h-64 lg:h-28 lg:w-28 border rounded-md"
           *ngIf="user.avatar"
         />
+        <!-- <div class="">
+          <p-image
+            alt="Image"
+            [src]="
+              user.avatar ||
+              'https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg'
+            "
+            [alt]="user.avatar"
+            class="!w-32 !h-64 !lg:h-32 !lg:w-32"
+            [preview]="true"
+          />
+        </div> -->
 
         <div class="flex h-full w-full flex-col justify-between gap-5">
-          <div class="flex items-center gap-5 justify-between w-full pr-5">
+          <div
+            class="flex lg:items-center lg:flex-row flex-col gap-2 lg:gap-5 lg:justify-between w-full pr-5"
+          >
             <div>
               <label class="text-sm block">Email</label>
               <span class="text-sm text-secondary">{{ user.email }}</span>
@@ -289,11 +266,11 @@
     </div>
   </ng-template>
   <ng-template #footer>
-    <div class="flex justify-center">
+    <div class="flex justify-center w-full">
       <p-button
         (onClick)="deleteUser(user.id)"
-        label="Delete"
-        icon="pi pi-trash"
+        label="Temporary lock"
+        icon="pi pi-lock"
         [disabled]="true"
         severity="danger"
       />

@@ -22,11 +22,8 @@
             <td>{{ instructor.name }}</td>
             <td>
               <img
-                [src]="
-                  instructor.avatar
-                    ? instructor.avatar
-                    : 'assets/default-avatar.jpg'
-                "
+                [src]="instructor.avatar"
+                loading="lazy"
                 alt="Avatar"
                 class="w-12 h-12 rounded-full"
                 [style]="{ 'object-fit': 'cover' }"

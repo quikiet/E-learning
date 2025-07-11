@@ -259,68 +259,6 @@
               </ul>
             </li>
 
-            <!-- Menu Item Certificates -->
-            <li class="text-sm font-medium">
-              <div
-                (click)="isCertificateManageOpen = !isCertificateManageOpen"
-                [ngClass]="
-                  isCertificateManageOpen
-                    ? 'bg-secondary-light/50 text-secondary'
-                    : 'icon-gray'
-                "
-                class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="pi pi-graduation-cap !font-normal"></i>
-                  <span
-                    class="!font-normal"
-                    [ngClass]="
-                      sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
-                    "
-                  >
-                    Đăng ký học & chứng chỉ
-                  </span>
-                </div>
-                <span
-                  [ngClass]="
-                    sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
-                  "
-                >
-                  <i
-                    class="pi"
-                    [ngClass]="{
-                      'pi-angle-down': !isCertificateManageOpen,
-                      'pi-angle-up': isCertificateManageOpen
-                    }"
-                  ></i>
-                </span>
-              </div>
-
-              <!-- Submenu -->
-              <ul
-                [ngClass]="
-                  sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
-                "
-                *ngIf="isCertificateManageOpen"
-                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
-              >
-                <li
-                  routerLink="quan-ly-nguoi-dung"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Khoá học đang chờ
-                </li>
-                <li
-                  routerLink="quan-ly-chung-chi"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Chứng nhận
-                </li>
-              </ul>
-            </li>
-
             <!-- Menu Item Reviews -->
             <li class="text-sm font-medium">
               <div
@@ -333,14 +271,14 @@
                 class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
               >
                 <div class="flex items-center gap-2">
-                  <i class="pi pi-comments !font-normal"></i>
+                  <i class="pi pi-exclamation-triangle !font-normal"></i>
                   <span
                     class="!font-normal"
                     [ngClass]="
                       sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                     "
                   >
-                    Đánh giá & phản hồi
+                    Report
                   </span>
                 </div>
                 <span
@@ -367,16 +305,11 @@
                 class="mt-1 space-y-1 text-sm text-gray-700 w-full"
               >
                 <li
-                  routerLink="quan-ly-danh-gia"
+                  routerLink="report-manage"
                   routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
                   class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
                 >
-                  Đánh giá khóa học
-                </li>
-                <li
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Bình luận bài học
+                  Report management
                 </li>
               </ul>
             </li>
@@ -400,7 +333,7 @@
                       sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                     "
                   >
-                    Thanh toán & khuyến mãi
+                    Payment & Discount
                   </span>
                 </div>
                 <span
@@ -427,78 +360,18 @@
                 class="mt-1 space-y-1 text-sm text-gray-700 w-full"
               >
                 <li
-                  routerLink="quan-ly-thanh-toan"
+                  routerLink="payment-manage"
                   routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
                   class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
                 >
-                  Lịch sử thanh toán
+                  Payment History
                 </li>
                 <li
-                  routerLink="quan-ly-ma-giam-gia"
+                  routerLink="coupon-manage"
                   routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
                   class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
                 >
-                  Mã giảm giá
-                </li>
-              </ul>
-            </li>
-
-            <!-- Menu Item Progress -->
-            <li class="text-sm font-medium">
-              <div
-                (click)="isProgressManageOpen = !isProgressManageOpen"
-                [ngClass]="
-                  isProgressManageOpen
-                    ? 'bg-secondary-light/50 text-secondary'
-                    : 'icon-gray'
-                "
-                class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="pi pi-chart-bar !font-light"></i>
-                  <span
-                    class="!font-normal"
-                    [ngClass]="
-                      sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
-                    "
-                  >
-                    Tiến độ học tập
-                  </span>
-                </div>
-                <span
-                  [ngClass]="
-                    sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
-                  "
-                >
-                  <i
-                    class="pi"
-                    [ngClass]="{
-                      'pi-angle-down': !isProgressManageOpen,
-                      'pi-angle-up': isProgressManageOpen
-                    }"
-                  ></i>
-                </span>
-              </div>
-
-              <!-- Submenu -->
-              <ul
-                [ngClass]="
-                  sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
-                "
-                *ngIf="isProgressManageOpen"
-                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
-              >
-                <li
-                  routerLink="quan-ly-tien-do"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Tiến độ người học
-                </li>
-                <li
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Theo dõi tiến trình học, hoàn thành quiz, chứng chỉ
+                  Coupons
                 </li>
               </ul>
             </li>
@@ -659,7 +532,7 @@
             <!-- Application nav menu button -->
 
             <!-- Search -->
-            <div class="hidden lg:block">
+            <!-- <div class="hidden lg:block">
               <form>
                 <div class="relative">
                   <span
@@ -696,7 +569,7 @@
                   </button>
                 </div>
               </form>
-            </div>
+            </div> -->
           </div>
 
           <div

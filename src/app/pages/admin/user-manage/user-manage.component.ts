@@ -31,8 +31,8 @@ import { Tag } from 'primeng/tag';
 import { UserService } from '../../../services/user-manage/user.service';
 import { RouterLink } from '@angular/router';
 import { Toast } from 'primeng/toast';
-
-
+import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { Image } from 'primeng/image';
 
 interface Column {
   field: string;
@@ -46,7 +46,7 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-user-manage',
-  imports: [Toast, RouterLink, Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule],
+  imports: [Image, OverlayBadgeModule, Toast, RouterLink, Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule],
   providers: [MessageService],
   templateUrl: './user-manage.component.html',
   styleUrl: './user-manage.component.css'
@@ -135,7 +135,7 @@ export class UserManageComponent implements OnInit {
         this.totalRecords = res.data.total;
         this.rows = res.data.per_page;
         this.currentPage = res.data.current_page - 1;
-        console.log(this.users);
+        // console.log(this.users);
 
         this.cd.markForCheck();
         this.isLoading = false;
@@ -147,10 +147,13 @@ export class UserManageComponent implements OnInit {
     });
     this.cols = [
       { field: 'id', header: 'Mã' },
+      { field: 'username', header: 'Tên người dùng' },
+      { field: 'fullname', header: 'Tên đầy đủ' },
       { field: 'email', header: 'Email' },
-      { field: 'Birthdate', header: 'Năm sinh' },
+      { field: 'birthdate', header: 'Năm sinh' },
       { field: 'gender', header: 'Giới tính' },
       { field: 'role', header: 'Vai trò' },
+      { field: 'status', header: 'Trạng thái' },
       { field: 'created_at', header: 'Ngày tạo' },
       { field: 'updated_at', header: 'Ngày cập nhật' }
     ];

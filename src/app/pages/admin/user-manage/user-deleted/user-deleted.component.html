@@ -16,13 +16,13 @@
     [(selection)]="selectedUsers"
     [rowHover]="true"
     dataKey="id"
-    currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} người dùng"
+    currentPageReportTemplate="Displaying from {first} to {last} of {totalRecords} users"
     [showCurrentPageReport]="true"
     [loading]="isLoading"
   >
     <ng-template pTemplate="caption">
       <div class="flex items-center justify-between">
-        <p class="m-0 lg:text-lg font-semibold">Danh sách Người dùng đã Xóa</p>
+        <p class="m-0 lg:text-lg font-semibold">List of Blocked Users</p>
       </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -32,7 +32,7 @@
         </th>
         <th class="hidden lg:table-cell !p-0">
           <div class="flex items-center">
-            <span>Mã</span>
+            <span>Id</span>
           </div>
         </th>
         <th>
@@ -132,9 +132,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="11" class="text-center">
-          Không tìm thấy người dùng đã xóa.
-        </td>
+        <td colspan="11" class="text-center">User not found.</td>
       </tr>
     </ng-template>
   </p-table>

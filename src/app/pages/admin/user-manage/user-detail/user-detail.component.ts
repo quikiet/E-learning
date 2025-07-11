@@ -7,6 +7,7 @@ import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { Tag } from 'primeng/tag';
+import { AvatarModule } from 'primeng/avatar';
 
 
 
@@ -14,12 +15,13 @@ interface UserData {
   user: {
     id: number;
     username: string;
+    fullname: string;
     email: string;
     avatar: string | null;
-    LoE_DI: string;
     birthdate: number;
     gender: string;
     role: string;
+    status: string;
     created_at: string;
     updated_at: string;
     enrollments: any[];
@@ -34,7 +36,9 @@ interface UserData {
 }
 @Component({
   selector: 'app-user-detail',
-  imports: [Tag, ProgressSpinnerModule, MessageModule, TableModule, CardModule, CommonModule, RouterLink],
+  imports: [Tag, ProgressSpinnerModule, MessageModule, TableModule, CardModule, CommonModule, RouterLink,
+    AvatarModule
+  ],
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.css'
 })
@@ -53,7 +57,7 @@ export class UserDetailComponent implements OnInit {
     if (userId) {
       this.fetchUserData(userId);
     } else {
-      this.errorMessage = 'ID người dùng không hợp lệ';
+      this.errorMessage = 'ID not found';
       this.isLoading = false;
     }
   }
@@ -65,7 +69,7 @@ export class UserDetailComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Không thể tải dữ liệu người dùng: ' + (err.error?.message || 'Lỗi không xác định');
+        this.errorMessage = err.error?.message;
         this.isLoading = false;
       }
     });

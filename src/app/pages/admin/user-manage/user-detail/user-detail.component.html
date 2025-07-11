@@ -1,23 +1,33 @@
-<div class="">
+<p-progressSpinner
+  *ngIf="isLoading"
+  class="flex justify-center"
+></p-progressSpinner>
+<div *ngIf="userData && !isLoading">
   <div class="flex justify-between gap-2">
-    <h6 class="text-xl font-bold mb-4">User Details</h6>
-    <a [routerLink]="['/admin/user-management']">
+    <div class="flex gap-2 items-center mb-4">
+      <h6 class="text-xl font-bold">User Details</h6>
+      <p-avatar
+        *ngIf="userData"
+        [image]="
+          userData.user.avatar ||
+          'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'
+        "
+        shape="circle"
+      />
+    </div>
+    <a [routerLink]="['/admin/user-manage']">
       <i class="pi pi-window-minimize"></i>
     </a>
   </div>
 
-  <p-progressSpinner
-    *ngIf="isLoading"
-    class="flex justify-center"
-  ></p-progressSpinner>
-
   <!-- User Data -->
-  <div *ngIf="userData && !isLoading">
+  <div>
     <!-- User Information -->
     <p-card header="User Information" styleClass="!rounded-none mb-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
         <div><strong>ID:</strong> {{ userData.user.id }}</div>
         <div><strong>Username:</strong> {{ userData.user.username }}</div>
+        <div><strong>Fullname:</strong> {{ userData.user.fullname }}</div>
         <div><strong>Email:</strong> {{ userData.user.email }}</div>
         <div>
           <strong>Birthdate:</strong> {{ userData.user.birthdate | date }}
@@ -25,39 +35,29 @@
         <div><strong>Gender:</strong> {{ userData.user.gender }}</div>
         <div class="flex items-center gap-2">
           <strong>Role:</strong>
-          <div>
-            <p-tag
-              *ngIf="userData.user.role === 'admin'"
-              severity="danger"
-              [value]="userData.user.role"
-              [rounded]="true"
-              class="!text-xs"
-            />
-            <p-tag
-              *ngIf="userData.user.role === 'student'"
-              severity="success"
-              class="!text-xs"
-              [value]="userData.user.role"
-              [rounded]="true"
-            />
-            <p-tag
-              *ngIf="userData.user.role === 'instructor'"
-              severity="info"
-              class="!text-xs"
-              [value]="userData.user.role"
-              [rounded]="true"
-            />
-          </div>
+          <p-tag
+            *ngIf="userData.user.role"
+            [severity]="
+              userData.user.role === 'admin'
+                ? 'danger'
+                : userData.user.role === 'student'
+                ? 'success'
+                : 'info'
+            "
+            [value]="userData.user.role"
+            [rounded]="true"
+            class="!text-xs"
+          />
         </div>
         <div>
           <strong>Created At:</strong>
-          <span class="text-sm">{{
+          <span>{{
             userData.user.created_at | date : "dd/MM/yyyy HH:mm"
           }}</span>
         </div>
         <div>
           <strong>Updated At:</strong>
-          <span class="text-sm">{{
+          <span>{{
             userData.user.updated_at | date : "dd/MM/yyyy HH:mm"
           }}</span>
         </div>
@@ -66,19 +66,31 @@
 
     <!-- Student Information -->
     <p-card
-      *ngIf="userData.user.role === 'student'"
+      *ngIf="userData.user.student"
       header="Student Information"
       styleClass="!rounded-none mb-4"
     >
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div><strong>ID:</strong> {{ userData.user.student.id }}</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div><strong>Student ID:</strong> {{ userData.user.student.id }}</div>
         <div>
           <strong>Learning Goals:</strong>
           {{ userData.user.student.learning_goals }}
         </div>
         <div>
-          <strong>Total Courses Completed:</strong>
-          {{ userData.user.student.total_courses_completed }}
+          <strong>Total courses completed:</strong>
+          {{ userData.analytics.courses_completed }}
+        </div>
+        <div>
+          <strong>Average raing given:</strong>
+          {{ userData.analytics.average_rating_given || 0 | number }}
+        </div>
+        <div>
+          <strong>Lesson completed rate:</strong>
+          {{ userData.analytics.lesson_completion_rate || 0 | number }}
+        </div>
+        <div>
+          <strong>Total payments made:</strong>
+          {{ userData.analytics.total_payments_made || 0 | number }}$
         </div>
         <div>
           <strong>Created At:</strong>
@@ -121,7 +133,11 @@
       header="Course Enrollments"
       styleClass="!rounded-none mb-4"
     >
-      <p-table [value]="userData.user.enrollments" [rowHover]="true">
+      <p-table
+        [value]="userData.user.enrollments"
+        class="!text-xs"
+        [rowHover]="true"
+      >
         <ng-template pTemplate="header">
           <tr>
             <th>ID</th>
@@ -166,9 +182,34 @@
       <p-table
         *ngIf="userData.user.payments.length > 0"
         [value]="userData.user.payments"
+        class="!text-xs"
         [rowHover]="true"
       >
-        <!-- Add table headers and content if needed -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Course ID</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Payment_date</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-payment>
+          <tr>
+            <td>{{ payment.id }}</td>
+            <td>
+              <a
+                [routerLink]="['/admin/course-manage', payment.course_id]"
+                class="underline text-secondary text-xs"
+              >
+                {{ payment.course_id }}
+              </a>
+            </td>
+            <td>{{ payment.amount }}</td>
+            <td>{{ payment.status }}</td>
+            <td>{{ payment.payment_date | date }}</td>
+          </tr>
+        </ng-template>
       </p-table>
     </p-card>
 
@@ -178,7 +219,11 @@
       header="Lesson Progress"
       styleClass="!rounded-none mb-4"
     >
-      <p-table [value]="userData.user.lesson_progress" [rowHover]="true">
+      <p-table
+        [value]="userData.user.lesson_progress"
+        class="!text-xs"
+        [rowHover]="true"
+      >
         <ng-template pTemplate="header">
           <tr>
             <th>ID</th>
@@ -239,7 +284,11 @@
       header="Reviews"
       styleClass="!rounded-none mb-4"
     >
-      <p-table [value]="userData.user.reviews" [rowHover]="true">
+      <p-table
+        [value]="userData.user.reviews"
+        class="!text-xs"
+        [rowHover]="true"
+      >
         <ng-template pTemplate="header">
           <tr>
             <th>ID</th>
@@ -268,7 +317,11 @@
       header="Quiz Results"
       styleClass="!rounded-none mb-4"
     >
-      <p-table [value]="userData.user.quiz_results" [rowHover]="true">
+      <p-table
+        class="!text-xs"
+        [value]="userData.user.quiz_results"
+        [rowHover]="true"
+      >
         <ng-template pTemplate="header">
           <tr>
             <th>ID</th>
@@ -330,42 +383,34 @@
       header="Analytics"
       styleClass="!rounded-none mb-4"
     >
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
         <div>
           <strong>Total Courses Enrolled:</strong>
-          {{ userData.analytics.total_courses_enrolled }}
+          {{ userData.analytics.total_courses_enrolled | number }}
         </div>
         <div>
           <strong>Courses Completed:</strong>
-          {{ userData.analytics.courses_completed }}
+          {{ userData.analytics.courses_completed | number }}
         </div>
-        <div>
+        <!-- <div>
           <strong>Certificates Earned:</strong>
           {{ userData.analytics.certificates_earned }}
-        </div>
+        </div> -->
         <div>
           <strong>Total Payments Made:</strong>
-          {{ userData.analytics.total_payments_made }}
+          {{ userData.analytics.total_payments_made || 0 | number }} $
         </div>
         <div>
           <strong>Average Rating Given:</strong>
-          {{ userData.analytics.average_rating_given }}
+          {{ userData.analytics.average_rating_given || 0 | number }}
         </div>
         <div>
           <strong>Lesson Completion Rate:</strong>
-          {{ userData.analytics.lesson_completion_rate }}%
+          {{ userData.analytics.lesson_completion_rate || 0 | number }}%
         </div>
         <div>
           <strong>Average Quiz Score:</strong>
-          {{ userData.analytics.average_quiz_score }}
-        </div>
-        <div>
-          <strong>Total Forum Posts:</strong>
-          {{ userData.analytics.forum_engagement.total_posts }}
-        </div>
-        <div>
-          <strong>Flagged Posts:</strong>
-          {{ userData.analytics.forum_engagement.flagged_posts }}
+          {{ userData.analytics.average_quiz_score || 0 | number }}
         </div>
       </div>
     </p-card>
