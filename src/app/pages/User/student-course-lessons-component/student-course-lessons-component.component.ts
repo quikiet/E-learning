@@ -148,7 +148,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   updateDisplayedReviews() {
     this.displayedReviews = this.showAll
       ? this.reviews
-      : this.reviews.slice(0, 1);
+      : this.reviews.slice(0, 5);
   }
 
   // Toggle show more/less

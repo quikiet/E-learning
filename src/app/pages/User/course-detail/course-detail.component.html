@@ -32,12 +32,13 @@
       </h5>
       <div class="flex items-center gap-4">
         <div
-          class="flex items-center gap-2 cursor-pointer"
+          class="flex items-center gap-2 cursor-pointer hover:underline text-secondary"
           [routerLink]="['/user', course?.instructors?.id]"
         >
           <img
             [src]="course?.instructors?.avatar"
-            alt="logo"
+            alt="avatar"
+            loading="lazy"
             class="w-8 h-8 rounded-full bg-white border border-[#32d296] p-1"
           />
           <span class="text-[#32d296] text-sm font-bold">
@@ -49,9 +50,9 @@
             <span class="pi pi-users"></span>
             {{ course?.enrollments_count || 0 }}
           </span>
-          <span class="flex items-center gap-1 text-[#32d296] text-sm">
-            <span class="pi pi-comments"></span>
-            {{ course?.forum_posts_count || 0 }}
+          <span class="flex items-center gap-1 text-primary text-sm">
+            <span class="pi pi-exclamation-triangle !text-sm"></span>
+            {{ course?.reports_count || 0 }}
           </span>
         </span>
       </div>
@@ -69,10 +70,13 @@
 
     <!-- Learner also -->
     <div class="container mx-auto">
-      <h2 class="text-lg font-bold mb-4">The learner also buys</h2>
+      <h2 class="text-lg font-bold mb-4">Related courses</h2>
 
       <div *ngFor="let recommend of recommendCourse">
-        <div class="p-4 mb-4 flex items-start">
+        <div
+          class="p-4 flex items-start hover:bg-gray-200 duration-200 transition hover:text-secondary hover:cursor-pointer"
+          [routerLink]="['/course-detail', recommend.url]"
+        >
           <img
             [src]="recommend.url"
             [alt]="recommend.course_title"
@@ -83,21 +87,32 @@
               <h3 class="font-semibold text-sm">
                 {{ recommend.course_title }}
               </h3>
-              <div class="flex items-center mt-1">
-                <span class="text-gray-500">• 163</span>
-                <span class="text-gray-500">• Tổng số 3 giờ</span>
-                <p class="text-gray-500">Đã cập nhật 8/2024</p>
+              <div class="flex items-center mt-1 gap-2">
+                <span class="text-gray-500"
+                  >Lectures {{ recommend.num_lectures }}</span
+                >
+                <span class="text-gray-500"
+                  ><i class="pi pi-clock !text-xs"></i>
+                  {{ recommend.content_duration }} hours</span
+                >
               </div>
             </div>
-            <span class="text-yellow-500">4,7 ★</span>
-            <span class="text-xs font-bold">1.299.000 ₫</span>
+            <span class="text-yellow-600">{{ recommend.course_rating }} ★</span>
+            <span class="text-xs"
+              ><i class="pi pi-user !text-xs"></i>
+              {{ recommend.num_subscribers | number }}
+            </span>
+            <span class="text-xs font-bold"
+              >{{ recommend.price | number }} $</span
+            >
           </div>
         </div>
+        <p-divider class="!p-0 !m-0"></p-divider>
       </div>
     </div>
 
     <!-- Review List -->
-    <div class="space-y-5">
+    <div class="space-y-5 mt-5">
       <p class="text-black font-bold md:text-lg mb-2">Reviews</p>
       <div *ngFor="let review of reviews" class="flex items-start gap-3">
         <p-avatar
@@ -107,10 +122,18 @@
           shape="circle"
         />
         <div>
-          <span class="font-bold">{{ review.user?.username || "..." }}</span>
-          <div class="text-gray-400 text-sm">
-            {{ review.created_at | date : "dd/MM/yyyy" }}
+          <div class="flex items-center gap-2">
+            <span class="font-bold">{{ review.user?.username || "..." }}</span>
+            <div class="text-gray-400 text-xs">
+              {{ review.created_at | date : "dd/MM/yyyy" }}
+            </div>
           </div>
+          <span *ngFor="let star of getStars(); let i = index">
+            <i
+              class="pi pi-star-fill !text-[10px]"
+              [ngClass]="i < review.rating ? 'text-yellow-500' : ''"
+            ></i>
+          </span>
           <div class="text-sm">
             {{ review.comment }}
           </div>
@@ -134,11 +157,11 @@
       class="sticky top-4 px-0 py-0 flex-col shadow border-l border-gray-100 bg-white !p-4 h-fit"
       *ngIf="!isLoading"
     >
-      <div class="flex items-center gap-1 px-4 py-2 select-none">
-        <span class="font-bold text-red-500">
+      <div class="flex items-center gap-1 px-4 py-2 select-none flex-wrap">
+        <span class="font-bold text-red-500 text-sm">
           {{ course?.course_rating | number : "1.1-1" }}
         </span>
-        <span class="text-red-500">
+        <span class="text-red-500 text-xs">
           <span *ngFor="let star of getStarArray(course?.course_rating)">{{
             star
           }}</span>
@@ -148,13 +171,13 @@
           <p-tag severity="success">
             <div class="flex items-center gap-2 px-1">
               <i class="pi pi-trophy"></i>
-              <span class="text-base"> Certificates </span>
+              <span class="text-xs"> Certificates </span>
             </div>
           </p-tag>
           |
         </div>
         <p
-          class="text-xl font-bold text-primary"
+          class="text-base font-bold text-primary"
           *ngIf="course && course.price > 0"
         >
           {{ course?.price | number }}

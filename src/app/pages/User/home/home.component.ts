@@ -8,9 +8,12 @@ import { CategoryCarouselComponent } from "../../../components/user/category-car
 import { CourseCardComponent } from "../../../components/user/home/course-card/course-card.component";
 import { IntructorComponent } from "../../../components/user/instructor/instructor.component";
 import { RouterLink } from '@angular/router';
+import { Toast } from "primeng/toast";
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, CategoryCarouselComponent, CourseCardComponent, IntructorComponent, RouterLink],
+  imports: [CommonModule, CategoryCarouselComponent, CourseCardComponent, IntructorComponent, RouterLink, Toast],
+  providers: [MessageService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -20,6 +23,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
   imageAnimate = 'up';
   showScrollTop: boolean = false;
   @HostListener('window:scroll', ['$event'])
+
+
   onWindowScroll() {
     // Hiển thị nút khi cuộn xuống hơn 1000px
     this.showScrollTop = window.scrollY > 1000;

@@ -62,8 +62,7 @@ export class FooterComponent implements OnDestroy, AfterViewInit {
       stagger: 0.3,
       scrollTrigger: {
         trigger: ".footer-section",
-        scroller: "body",
-        start: "top 90%", // Bắt đầu khi đỉnh footer-head cách đỉnh viewport 70%
+        start: "top 90%",
         toggleActions: "play none none none", // Chỉ chạy khi vào viewport
       },
     });
@@ -77,7 +76,6 @@ export class FooterComponent implements OnDestroy, AfterViewInit {
       scrollTrigger: {
         trigger: ".footer-section",
         start: "top 90%",
-        end: "bottom bottom", // Kéo dài vùng kích hoạt
         // end: "bottom 20%", // Kéo dài vùng kích hoạt
         toggleActions: "play none none none",
       },
@@ -91,7 +89,6 @@ export class FooterComponent implements OnDestroy, AfterViewInit {
       scrollTrigger: {
         trigger: ".footer-section",
         start: "top 90%",
-        end: "bottom bottom", // Kéo dài vùng kích hoạt
         toggleActions: "play none none none",
       },
     });

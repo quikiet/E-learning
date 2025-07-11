@@ -180,7 +180,10 @@
           </div>
         </article>
       </div>
-      <div class="mt-8 flex justify-center">
+      <div
+        class="mt-8 flex justify-center"
+        *ngIf="courses && total_summary.total_courses > 0"
+      >
         <button
           [routerLink]="['/course']"
           [queryParams]="{ instructor_id: instructor.instructor_id }"

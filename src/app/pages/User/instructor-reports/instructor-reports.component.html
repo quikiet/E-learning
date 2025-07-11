@@ -45,18 +45,9 @@
           Report ID
           <p-sortIcon field="id" />
         </th>
-        <th pSortableColumn="user.username">
-          Course image
-          <p-sortIcon field="user.username" />
-        </th>
-        <th pSortableColumn="user.email">
-          Email
-          <p-sortIcon field="user.email" />
-        </th>
-        <th pSortableColumn="course.course_name">
-          Course Name
-          <p-sortIcon field="course.course_name" />
-        </th>
+        <th>Course image</th>
+        <th>Email</th>
+        <th>Course Name</th>
         <th>Reason</th>
         <th>Report Type</th>
       </tr>
@@ -107,9 +98,10 @@
           </div>
         </td>
         <td
-          class="text-gray-800 truncate"
+          class="text-gray-800 truncate hover:text-secondary hover:underline cursor-pointer transition duration-300"
           [pTooltip]="report.course.course_name"
           tooltipPosition="right"
+          [routerLink]="['/course-detail', report?.course?.course_url]"
         >
           {{ report.course.course_name | slice : 0 : 20
           }}{{ report.course.course_name.length > 20 ? "..." : "" }}

@@ -200,11 +200,16 @@ export class CourseDetailComponent implements OnInit {
     }
   }
 
+
+  getStars(): number[] {
+    return [1, 2, 3, 4, 5];
+  }
+
   loadCourseRecommendByTilte(course_title: string) {
     this.coursesService.getCoursesByRecommend(course_title).subscribe({
       next: (res) => {
         this.recommendCourse = res.recommendations;
-        console.log(this.recommendCourse.length + 'hehe');
+        // console.log(this.recommendCourse.length + 'hehe');
       }, error: (err) => {
         console.log(err.message);
       }

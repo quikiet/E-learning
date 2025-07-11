@@ -212,6 +212,7 @@ export class LoginComponent implements OnInit {
           // console.log('Form submitted:', this.loginForm.value);
           // console.log(res.message);
           localStorage.setItem('user', JSON.stringify(res.user));
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: res?.message, life: 3000 });
           // console.log('Đăng nhập thành công!');
           if (res.user) {
             if (res.user.role === 'admin') {
@@ -221,6 +222,7 @@ export class LoginComponent implements OnInit {
             }
           }
         }, error: (err) => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: err?.message, life: 3000 });
           console.log('Login error: ' + err.message);
         }
       });
