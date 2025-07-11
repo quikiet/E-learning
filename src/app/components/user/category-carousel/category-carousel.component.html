@@ -1,4 +1,4 @@
-<div class="my-10 max-w-7xl mx-auto overflow-hidden">
+<div class="my-10 max-w-7xl mx-auto overflow-hidden py-6">
   <h3
     class="font-semibold text-lg md:text-xl lg:text-2xl lg:font-bold my-2 mb-6 text-center md:text-left"
   >
@@ -16,12 +16,12 @@
     >
       <ng-template let-list #item>
         <div
-          [routerLink]="['/khoa-hoc']"
+          [routerLink]="['/course']"
           [queryParams]="{ categories: list.id }"
           class="cursor-pointer border hover:bg-surface-100 transition-all border-surface-300 m-2 p-2 md:p-4 text-center duration-300"
         >
-          <a class="font-medium text-center w-full"
-            ><span class="select-none text-sm md:text-lg">{{
+          <a class="font-medium text-center"
+            ><span class="select-none text-sm md:text-base">{{
               list.name
             }}</span></a
           >

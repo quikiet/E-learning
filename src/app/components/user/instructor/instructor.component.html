@@ -64,6 +64,7 @@
                   <a
                     class="absolute -bottom-3 right-10 cursor-pointer"
                     target="_blank"
+                    [routerLink]="['/user', instructor.instructor_id]"
                   >
                     <svg
                       width="41"
@@ -88,7 +89,7 @@
 
                 <div class="p-6 pt-3">
                   <p class="text-black font-semibold">
-                    {{ instructor.instructor_profile.name }}
+                    {{ instructor.name }}
                   </p>
                   <p class="text-orange-600">
                     {{ instructor.user_info.email }}

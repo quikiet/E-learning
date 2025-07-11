@@ -5,9 +5,10 @@ import { Tag } from 'primeng/tag';
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { InstructorsService } from '../../../services/instructors.service';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-instructor',
-  imports: [ButtonModule, CarouselModule],
+  imports: [ButtonModule, CarouselModule, RouterLink],
   templateUrl: './instructor.component.html',
   styleUrl: './instructor.component.css'
 })
