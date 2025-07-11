@@ -35,7 +35,7 @@ export class IntructorComponent implements OnInit, AfterViewInit {
       scrollTrigger: {
         trigger: ".shape_intructor",
         start: "top bottom",
-        end: "+=100",
+        end: "top center",
       }
     });
     gsap.from(".shape_intructor", {
@@ -47,7 +47,8 @@ export class IntructorComponent implements OnInit, AfterViewInit {
         trigger: "#teacher_carousel",
         start: "top center",
         scrub: 1,
-        end: "+=250",
+        end: "top center",
+        // end: "+=250",
       }
     });
 

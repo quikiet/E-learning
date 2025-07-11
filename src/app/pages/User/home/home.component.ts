@@ -35,8 +35,8 @@ export class HomeComponent implements AfterViewInit, OnInit {
 
   startDotAnimate() {
     gsap.to(".dot", {
-      y: 6,
-      duration: 1.6,
+      y: 10,
+      duration: 1.5,
       yoyo: true,
       repeat: -1,
       ease: "sine.inOut"
