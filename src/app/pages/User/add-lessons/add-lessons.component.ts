@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -11,10 +11,9 @@ import { HttpEventType } from '@angular/common/http';
   selector: 'app-add-lessons',
   imports: [
     FormsModule,
-    CommonModule,
     ToastModule,
     ProgressBarModule
-  ],
+],
   providers: [MessageService],
   templateUrl: './add-lessons.component.html',
   styleUrl: './add-lessons.component.css'

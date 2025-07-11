@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { MessageService } from 'primeng/api';
-import { CommonModule } from '@angular/common';
+
 import { LoadingComponent } from '../../../components/both/loading/loading.component';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-auth-callback',
   standalone: true,
-  imports: [CommonModule, LoadingComponent, ToastModule],
+  imports: [LoadingComponent, ToastModule],
   providers: [MessageService],
   templateUrl: './auth-callback.component.html',
   styleUrls: ['./auth-callback.component.css']

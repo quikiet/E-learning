@@ -3,20 +3,20 @@
 <!-- Main content -->
 <div
   class="bg-gradient-to-r from-primary-light to-secondary-light h-full py-10"
->
+  >
   <main
     class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20 md:p-10 p-4 pt-6"
-  >
+    >
     <!-- Left text block -->
     <section class="max-w-xl flex flex-col space-y-3 md:space-y-5">
       <span
         class="left-section text-xs md:text-sm text-secondary font-semibold bg-secondary-light px-3 py-1 rounded select-none w-max"
-      >
+        >
         Learn &amp; Receive Certificate
       </span>
       <h1
         class="left-section text-[#1a2a3a] font-extrabold text-3xl sm:text-4xl md:text-5xl leading-tight"
-      >
+        >
         Learn smarter &amp; Progress further every day
       </h1>
       <p class="left-section text-xs md:text-sm text-[#4a4a4a] font-normal">
@@ -29,10 +29,10 @@
           value="Browse Courses"
           [routerLink]="['/course']"
           class="p-2 px-4 bg-primary w-fit rounded-full text-white transition-all duration-200 hover:border border-secondary"
-        />
-      </div>
+          />
+        </div>
 
-      <!-- <form class="mt-4 w-full max-w-md">  
+        <!-- <form class="mt-4 w-full max-w-md">
         <label class="left-section sr-only" for="search"> Search course </label>
         <div class="left-section relative">
           <input
@@ -40,112 +40,113 @@
             id="search"
             placeholder="What do you want to learn today?"
             type="text"
-          />
-          <button
-            aria-label="Search"
-            class="absolute right-0 top-1/2 -translate-y-1/2 bg-secondary hover:bg-secondary-content text-white rounded-full p-4 text-sm flex items-center justify-center"
-            type="submit"
-          >
-            <i class="pi pi-search"></i>
-          </button>
-        </div>
-      </form> -->
-    </section>
-    <!-- Right images and badges -->
-    <section
-      class="relative flex items-center lg:items-end space-x-6 lg:space-x-10"
-    >
-      <!-- Left oval with girl -->
-      <div class="relative">
-        <img
-          class="thumb-girl relative object-cover w-full h-full z-40 select-none"
-          src="thumb-girl.png"
-          [@imageAnimate]="imageAnimate"
-        />
-        <img
-          class="absolute top-2 -left-2 z-0 w-full h-full select-none"
-          src="border-image.png"
-          alt="Border"
-        />
-        <div
-          class="absolute dot bottom-2 -right-2 w-3 h-3 rounded-full bg-secondary"
-          [@dotAnimate]="dotAnimate"
-        ></div>
-      </div>
-      <div class="relative mb-10">
-        <img
-          class="thumb-boy relative object-cover w-full h-full z-40 select-none"
-          src="thumb-boy.png"
-        />
-        <img
-          class="absolute top-2 -left-2 z-0 w-full h-full select-none"
-          src="border-image.png"
-          alt="Border"
-        />
-        <div
-          class="absolute dot top-16 -right-5 w-3 h-3 md:w-5 md:h-5 rounded-full bg-primary"
-          [@dotAnimate]="dotAnimate"
-        ></div>
-      </div>
+            />
+            <button
+              aria-label="Search"
+              class="absolute right-0 top-1/2 -translate-y-1/2 bg-secondary hover:bg-secondary-content text-white rounded-full p-4 text-sm flex items-center justify-center"
+              type="submit"
+              >
+              <i class="pi pi-search"></i>
+            </button>
+          </div>
+        </form> -->
+      </section>
+      <!-- Right images and badges -->
+      <section
+        class="relative flex items-center lg:items-end space-x-6 lg:space-x-10"
+        >
+        <!-- Left oval with girl -->
+        <div class="relative">
+          <img
+            class="thumb-girl relative object-cover w-full h-full z-40 select-none"
+            src="thumb-girl.png"
+            [@imageAnimate]="imageAnimate"
+            />
+            <img
+              class="absolute top-2 -left-2 z-0 w-full h-full select-none"
+              src="border-image.png"
+              alt="Border"
+              />
+              <div
+                class="absolute dot bottom-2 -right-2 w-3 h-3 rounded-full bg-secondary"
+                [@dotAnimate]="dotAnimate"
+              ></div>
+            </div>
+            <div class="relative mb-10">
+              <img
+                class="thumb-boy relative object-cover w-full h-full z-40 select-none"
+                src="thumb-boy.png"
+                />
+                <img
+                  class="absolute top-2 -left-2 z-0 w-full h-full select-none"
+                  src="border-image.png"
+                  alt="Border"
+                  />
+                  <div
+                    class="absolute dot top-16 -right-5 w-3 h-3 md:w-5 md:h-5 rounded-full bg-primary"
+                    [@dotAnimate]="dotAnimate"
+                  ></div>
+                </div>
 
-      <div
-        class="absolute dot top-5 -left-2 w-3 h-3 rounded-full bg-primary"
-        [@dotAnimate]="dotAnimate"
-      ></div>
-      <div
-        class="absolute dot bottom-16 right-[calc(100%+70px)] w-3 h-3 rounded-full bg-secondary"
-        [@dotAnimate]="dotAnimate"
-      ></div>
-    </section>
-  </main>
-</div>
+                <div
+                  class="absolute dot top-5 -left-2 w-3 h-3 rounded-full bg-primary"
+                  [@dotAnimate]="dotAnimate"
+                ></div>
+                <div
+                  class="absolute dot bottom-16 right-[calc(100%+70px)] w-3 h-3 rounded-full bg-secondary"
+                  [@dotAnimate]="dotAnimate"
+                ></div>
+              </section>
+            </main>
+          </div>
 
-<app-course-card
-  title="Top Rated Courses"
-  subtitle="Explore our highest-rated courses"
-  apiEndpoint="/title_high_rated/courses/high-rated"
-></app-course-card>
+          <app-course-card
+            title="Top Rated Courses"
+            subtitle="Explore our highest-rated courses"
+            apiEndpoint="/title_high_rated/courses/high-rated"
+          ></app-course-card>
 
-<app-course-card
-  title="Top Lastest Courses"
-  subtitle="Explore our lastest courses"
-  apiEndpoint="/title_latest/courses"
-></app-course-card>
+          <app-course-card
+            title="Top Lastest Courses"
+            subtitle="Explore our lastest courses"
+            apiEndpoint="/title_latest/courses"
+          ></app-course-card>
 
-<app-course-card
-  title="Other users are learning"
-  subtitle="Explore the courses that are already being taken by learners."
-  apiEndpoint="/title_active_course/courses/active"
-></app-course-card>
+          <app-course-card
+            title="Other users are learning"
+            subtitle="Explore the courses that are already being taken by learners."
+            apiEndpoint="/title_active_course/courses/active"
+          ></app-course-card>
 
-<app-course-card
-  title="Top Popular Courses"
-  subtitle="Explore our popular courses"
-  apiEndpoint="/title_popular/courses/popular"
-></app-course-card>
+          <app-course-card
+            title="Top Popular Courses"
+            subtitle="Explore our popular courses"
+            apiEndpoint="/title_popular/courses/popular"
+          ></app-course-card>
 
-<app-category-carousel></app-category-carousel>
-<app-instructor></app-instructor>
+          <app-category-carousel></app-category-carousel>
+          <app-instructor></app-instructor>
 
-<!-- Đặt ở cuối nội dung trang -->
-<button
-  *ngIf="showScrollTop"
-  (click)="scrollToTop()"
-  class="animate-bounce fixed bottom-4 left-1/2 -translate-x-1/2 bg-opacity-30 hover:bg-opacity-100 z-[100] bg-secondary-content/50 hover:bg-secondary text-white p-3 rounded-full shadow-lg transition-all duration-300"
-  title="Scroll to top"
->
-  <svg
-    class="w-6 h-6"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M5 10l7-7m0 0l7 7m-7-7v18"
-    ></path>
-  </svg>
-</button>
+          <!-- Đặt ở cuối nội dung trang -->
+          @if (showScrollTop) {
+            <button
+              (click)="scrollToTop()"
+              class="animate-bounce fixed bottom-4 left-1/2 -translate-x-1/2 bg-opacity-30 hover:bg-opacity-100 z-[100] bg-secondary-content/50 hover:bg-secondary text-white p-3 rounded-full shadow-lg transition-all duration-300"
+              title="Scroll to top"
+              >
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 10l7-7m0 0l7 7m-7-7v18"
+                ></path>
+              </svg>
+            </button>
+          }

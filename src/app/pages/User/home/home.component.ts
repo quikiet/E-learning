@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { trigger, state, style, animate, transition, keyframes } from '@angular/animations';
-import { CommonModule } from '@angular/common';
+
 import { CategoryCarouselComponent } from "../../../components/user/category-carousel/category-carousel.component";
 import { CourseCardComponent } from "../../../components/user/home/course-card/course-card.component";
 import { IntructorComponent } from "../../../components/user/instructor/instructor.component";
@@ -12,7 +12,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, CategoryCarouselComponent, CourseCardComponent, IntructorComponent, RouterLink, ToastModule],
+  imports: [CategoryCarouselComponent, CourseCardComponent, IntructorComponent, RouterLink, ToastModule],
   providers: [MessageService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

@@ -7,7 +7,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
-import { CommonModule } from '@angular/common';
+
 import { SelectModule } from 'primeng/select';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -44,7 +44,7 @@ interface ExportColumn {
 }
 @Component({
   selector: 'app-progress-manage',
-  imports: [Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, CommonModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent, CourseSearchSidebarComponent, CourseSearchComponent],
+  imports: [Tag, TooltipModule, Divider, Button, PopoverModule, AccordionModule, TextareaModule, AvatarModule, DrawerModule, InputGroupModule, InputGroupAddonModule, ConfirmDialogModule, ButtonModule, TableModule, DialogModule, SelectModule, ToastModule, ToolbarModule, InputTextModule, TextareaModule, DropdownModule, InputTextModule, FormsModule, IconFieldModule, InputIconModule, FormElementComponent, CourseSearchSidebarComponent, CourseSearchComponent],
   templateUrl: './progress-manage.component.html',
   styleUrl: './progress-manage.component.css'
 })

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { MessageService } from 'primeng/api';
@@ -10,7 +10,7 @@ import { RevenueComponentimplements } from "../../../components/admin/revenue/re
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, CardModule, ChartModule, ToastModule, ProgressSpinnerModule, RevenueComponentimplements],
+  imports: [CardModule, ChartModule, ToastModule, ProgressSpinnerModule, RevenueComponentimplements],
   providers: [MessageService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

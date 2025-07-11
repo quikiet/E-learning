@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -11,13 +11,12 @@ import { FormElementComponent } from '../../../components/both/form-element/form
 @Component({
   selector: 'app-reset-password',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     InputTextModule,
     ButtonModule,
     ToastModule,
     FormElementComponent
-  ],
+],
   providers: [MessageService],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.css'

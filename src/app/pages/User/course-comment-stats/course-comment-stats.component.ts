@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -9,7 +9,7 @@ import { AnalystService } from '../../../services/analyst.service';
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-course-comment-stats',
-  imports: [CommonModule, TableModule, MultiSelectModule, ToastModule, FormsModule],
+  imports: [TableModule, MultiSelectModule, ToastModule, FormsModule],
   providers: [MessageService, DatePipe, AnalystService],
   templateUrl: './course-comment-stats.component.html',
   styleUrl: './course-comment-stats.component.css'

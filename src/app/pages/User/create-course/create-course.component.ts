@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CoursesService } from '../../../services/courses.service';
@@ -27,7 +27,6 @@ interface Category {
   selector: 'app-create-course',
   imports: [
     FormsModule,
-    CommonModule,
     ToastModule,
     MultiSelectModule,
     ButtonModule,
@@ -37,7 +36,7 @@ interface Category {
     TextareaModule,
     DividerModule,
     SelectModule
-  ],
+],
   providers: [MessageService],
   templateUrl: './create-course.component.html',
   styleUrl: './create-course.component.css'

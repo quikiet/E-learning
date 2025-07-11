@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -12,13 +12,12 @@ import { TextareaModule } from 'primeng/textarea';
 import { QuizService } from '../../../services/lesson/quiz.service';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-student-quiz-attempt',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     ButtonModule,
     CardModule,
@@ -28,7 +27,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ToastModule,
     DialogModule,
     InputTextModule,
-    DropdownModule,
+    SelectModule
   ],
   providers: [MessageService, QuizService],
   templateUrl: './student-quiz-attempt.component.html',

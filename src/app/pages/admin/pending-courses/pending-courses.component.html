@@ -5,24 +5,30 @@
   styleClass="md:w-[30vw]"
   [draggable]="false"
   [resizable]="false"
->
-  <div *ngIf="selectedCourse">
-    <div class="m-2 relative group">
-      <div class="flex flex-col">
-        <img alt="Card" class="w-full" [src]="selectedCourse.image" />
-        <b class="py-2">{{ selectedCourse.course_name }}</b>
-        <span class="text-gray-400 text-sm">{{
-          selectedCourse.difficulty_level
-        }}</span>
-        <b class="py-1" *ngIf="selectedCourse.price > 0">{{
-          selectedCourse.price | currency : "VND" : "symbol-narrow" : "1.0-0"
-        }}</b>
-        <b class="py-1 text-secondary" *ngIf="selectedCourse.price === 0">
-          Miễn phí
-        </b>
+  >
+  @if (selectedCourse) {
+    <div>
+      <div class="m-2 relative group">
+        <div class="flex flex-col">
+          <img alt="Card" class="w-full" [src]="selectedCourse.image" />
+          <b class="py-2">{{ selectedCourse.course_name }}</b>
+          <span class="text-gray-400 text-sm">{{
+            selectedCourse.difficulty_level
+          }}</span>
+          @if (selectedCourse.price > 0) {
+            <b class="py-1">{{
+              selectedCourse.price | currency : "VND" : "symbol-narrow" : "1.0-0"
+            }}</b>
+          }
+          @if (selectedCourse.price === 0) {
+            <b class="py-1 text-secondary">
+              Miễn phí
+            </b>
+          }
+        </div>
       </div>
     </div>
-  </div>
+  }
   <ng-template pTemplate="footer">
     <button
       pButton
@@ -49,7 +55,7 @@
       [style]="{ width: '30vw' }"
       [draggable]="false"
       [resizable]="false"
-    >
+      >
       <div class="p-4">
         <p>Vui lòng nhập ghi chú (nếu có):</p>
         <textarea
@@ -102,7 +108,7 @@
   currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} khoá học"
   [showCurrentPageReport]="true"
   [loading]="isLoading"
->
+  >
   <ng-template #caption>
     <div class="flex items-center justify-between">
       <p class="m-0 lg:text-lg font-semibold">Khoá học đang chờ duyệt</p>
@@ -114,114 +120,118 @@
           (input)="searchGlobal($event)"
           [(ngModel)]="searchValue"
           placeholder="Search..."
-        />
-      </p-iconfield>
-    </div>
-  </ng-template>
-  <ng-template #header>
-    <tr class="text-sm">
-      <th>
-        <p-tableHeaderCheckbox />
-      </th>
-      <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
-        <div class="flex items-center">
-          <p-sortIcon field="id" />
-          <span>Mã</span>
-        </div>
-      </th>
-      <th>Hình ảnh</th>
-      <th>
-        <div class="flex items-center">
-          Tên
-          <p-sortIcon field="course_name" />
-        </div>
-      </th>
-      <th>Độ khó</th>
-      <th>Kỹ năng</th>
-      <th>
-        <div class="flex items-center">
-          Chi tiết
-          <p-sortIcon field="course_url" />
-        </div>
-      </th>
-      <th>
-        <div class="flex items-center">
-          Giá
-          <p-sortIcon field="price" />
-        </div>
-      </th>
-      <th>
-        <div class="flex items-center">Trạng thái</div>
-      </th>
-    </tr>
-  </ng-template>
-  <ng-template #body let-course>
-    <tr class="text-sm" (click)="showRequestDetails(course)">
-      <td>
-        <p-tableCheckbox [value]="course" />
-      </td>
-      <td class="hidden lg:table-cell !p-0 text-center align-middle">
-        <div class="flex items-center justify-center h-full">
-          {{ course.id }}
-        </div>
-      </td>
-      <td>
-        <p-avatar styleClass="mr-2" [image]="course.image" size="xlarge" />
-      </td>
-      <td>
-        <span [pTooltip]="course.course_name" tooltipPosition="right">
-          {{ cutText(course.course_name, 4) }}
-        </span>
-      </td>
-      <td>{{ course.difficulty_level }}</td>
-      <td>{{ course.skills }}</td>
-      <td>
-        <a
-          class="text-secondary underline"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr class="text-sm">
+        <th>
+          <p-tableHeaderCheckbox />
+        </th>
+        <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
+          <div class="flex items-center">
+            <p-sortIcon field="id" />
+            <span>Mã</span>
+          </div>
+        </th>
+        <th>Hình ảnh</th>
+        <th>
+          <div class="flex items-center">
+            Tên
+            <p-sortIcon field="course_name" />
+          </div>
+        </th>
+        <th>Độ khó</th>
+        <th>Kỹ năng</th>
+        <th>
+          <div class="flex items-center">
+            Chi tiết
+            <p-sortIcon field="course_url" />
+          </div>
+        </th>
+        <th>
+          <div class="flex items-center">
+            Giá
+            <p-sortIcon field="price" />
+          </div>
+        </th>
+        <th>
+          <div class="flex items-center">Trạng thái</div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-course>
+      <tr class="text-sm" (click)="showRequestDetails(course)">
+        <td>
+          <p-tableCheckbox [value]="course" />
+        </td>
+        <td class="hidden lg:table-cell !p-0 text-center align-middle">
+          <div class="flex items-center justify-center h-full">
+            {{ course.id }}
+          </div>
+        </td>
+        <td>
+          <p-avatar styleClass="mr-2" [image]="course.image" size="xlarge" />
+        </td>
+        <td>
+          <span [pTooltip]="course.course_name" tooltipPosition="right">
+            {{ cutText(course.course_name, 4) }}
+          </span>
+        </td>
+        <td>{{ course.difficulty_level }}</td>
+        <td>{{ course.skills }}</td>
+        <td>
+          <a
+            class="text-secondary underline"
           [href]="
             'http://localhost:4200/chi-tiet-khoa-hoc/' + course.course_url
           "
-          target="_blank"
-          >Xem chi tiết</a
-        >
-      </td>
-      <td class="text-center align-middle">
-        <div class="underline font-bold">
-          {{ course.price | currency : "VND" : "symbol-narrow" : "1.0-0" }}
-        </div>
-      </td>
-      <td>
-        <div>
-          <p-tag
-            *ngIf="course.status === 'approved'"
-            severity="success"
-            value="Đang bán"
-            [rounded]="true"
-            class="!text-xs"
-          />
-          <p-tag
-            *ngIf="course.status === 'pending'"
-            severity="warn"
-            class="!text-xs"
-            value="Đang chờ"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="course.status === 'rejected'"
-            severity="danger"
-            class="!text-xs"
-            value="Đã xoá"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="course.status === 'unavailable'"
-            severity="secondary"
-            class="!text-xs"
-            value="Đã ẩn"
-            [rounded]="true"
-          />
-        </div>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+            target="_blank"
+            >Xem chi tiết</a
+            >
+          </td>
+          <td class="text-center align-middle">
+            <div class="underline font-bold">
+              {{ course.price | currency : "VND" : "symbol-narrow" : "1.0-0" }}
+            </div>
+          </td>
+          <td>
+            <div>
+              @if (course.status === 'approved') {
+                <p-tag
+                  severity="success"
+                  value="Đang bán"
+                  [rounded]="true"
+                  class="!text-xs"
+                  />
+              }
+              @if (course.status === 'pending') {
+                <p-tag
+                  severity="warn"
+                  class="!text-xs"
+                  value="Đang chờ"
+                  [rounded]="true"
+                  />
+              }
+              @if (course.status === 'rejected') {
+                <p-tag
+                  severity="danger"
+                  class="!text-xs"
+                  value="Đã xoá"
+                  [rounded]="true"
+                  />
+              }
+              @if (course.status === 'unavailable') {
+                <p-tag
+                  severity="secondary"
+                  class="!text-xs"
+                  value="Đã ẩn"
+                  [rounded]="true"
+                  />
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>

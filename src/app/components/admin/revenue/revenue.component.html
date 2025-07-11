@@ -18,7 +18,7 @@
       [sortField]="'created_at'"
       [sortOrder]="-1"
       class="!text-xs"
-    >
+      >
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="session_id">
@@ -66,14 +66,15 @@
           <td>{{ session.created_at | date }}</td>
           <td>{{ session.updated_at | date }}</td>
           <td>
-            <p-button
-              *ngIf="session.need_distribution"
-              label="Distribute"
-              icon="pi pi-money-bill"
-              severity="success"
-              (onClick)="distributeSession(session.session_id)"
-              [loading]="distributingSessions.includes(session.session_id)"
-            ></p-button>
+            @if (session.need_distribution) {
+              <p-button
+                label="Distribute"
+                icon="pi pi-money-bill"
+                severity="success"
+                (onClick)="distributeSession(session.session_id)"
+                [loading]="distributingSessions.includes(session.session_id)"
+              ></p-button>
+            }
           </td>
         </tr>
       </ng-template>

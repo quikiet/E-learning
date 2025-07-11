@@ -6,401 +6,413 @@
   styleClass="md:w-[50vw]"
   [draggable]="false"
   [resizable]="false"
->
-  <div *ngIf="selectedRequest" class="cv-container">
-    <div class="w-full flex items-center gap-5 mb-4">
-      <p-avatar
+  >
+  @if (selectedRequest) {
+    <div class="cv-container">
+      <div class="w-full flex items-center gap-5 mb-4">
+        <p-avatar
         [image]="
           selectedRequest.avatar
             ? selectedRequest.avatar
             : 'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'
         "
-        class="mr-2"
-        size="xlarge"
-        shape="circle"
-      />
-      <h3 class="text-xl font-bold mb-4">{{ selectedRequest.name }}</h3>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div>
-        <p><strong>Email:</strong> {{ selectedRequest.user.email }}</p>
-        <p>
-          <strong>Số điện thoại:</strong> {{ selectedRequest.phone_number }}
-        </p>
-        <p>
-          <strong>Liên kết chuyên môn:</strong>
-          <a
-            [href]="selectedRequest.professional_links"
-            target="_blank"
-            class="text-blue-500 hover:underline"
-          >
-            {{ selectedRequest.professional_links }}
-          </a>
-        </p>
-        <p><strong>Gender:</strong> {{ selectedRequest.user.gender }}</p>
-        <p>
-          <strong>Birthdate:</strong>
-          {{ selectedRequest.user.birthdate | date }}
-        </p>
-      </div>
-      <div>
-        <p><strong>Tiểu sử:</strong> {{ selectedRequest.bio }}</p>
-        <p><strong>Tổ chức:</strong> {{ selectedRequest.organization }}</p>
-        <p><strong>Trình độ:</strong> {{ selectedRequest.qualifications }}</p>
-        <p>
-          <strong>Kinh nghiệm giảng dạy:</strong>
-          {{ selectedRequest.teaching_experience }}
-        </p>
-        <p><strong>Chuyên môn:</strong> {{ selectedRequest.expertise }}</p>
-      </div>
-    </div>
-    <div class="mt-4">
-      <p>
-        <strong>Đề xuất khóa học:</strong> {{ selectedRequest.course_proposal }}
-      </p>
-      <p><strong>Động lực:</strong> {{ selectedRequest.motivation }}</p>
-      <p>
-        <strong>Tài liệu:</strong>
-        <a
-          [href]="selectedRequest.document_urls"
-          target="_blank"
-          class="text-blue-500 hover:underline"
-        >
-          {{ selectedRequest.document_urls }}
-        </a>
-      </p>
-      <div>
-        <strong class="mr-2">Trạng thái:</strong>
-        <span>
-          <p-tag
-            *ngIf="selectedRequest.status === 'pending'"
-            severity="warn"
-            value="Chờ duyệt"
-            [rounded]="true"
-            class="!text-xs"
+          class="mr-2"
+          size="xlarge"
+          shape="circle"
           />
-          <p-tag
-            *ngIf="selectedRequest.status === 'approved'"
-            severity="success"
-            class="!text-xs"
-            value="Chấp nhận"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="selectedRequest.status === 'rejected'"
-            severity="danger"
-            class="!text-xs"
-            value="Từ chối"
-            [rounded]="true"
-          />
-        </span>
+          <h3 class="text-xl font-bold mb-4">{{ selectedRequest.name }}</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p><strong>Email:</strong> {{ selectedRequest.user.email }}</p>
+            <p>
+              <strong>Số điện thoại:</strong> {{ selectedRequest.phone_number }}
+            </p>
+            <p>
+              <strong>Liên kết chuyên môn:</strong>
+              <a
+                [href]="selectedRequest.professional_links"
+                target="_blank"
+                class="text-blue-500 hover:underline"
+                >
+                {{ selectedRequest.professional_links }}
+              </a>
+            </p>
+            <p><strong>Gender:</strong> {{ selectedRequest.user.gender }}</p>
+            <p>
+              <strong>Birthdate:</strong>
+              {{ selectedRequest.user.birthdate | date }}
+            </p>
+          </div>
+          <div>
+            <p><strong>Tiểu sử:</strong> {{ selectedRequest.bio }}</p>
+            <p><strong>Tổ chức:</strong> {{ selectedRequest.organization }}</p>
+            <p><strong>Trình độ:</strong> {{ selectedRequest.qualifications }}</p>
+            <p>
+              <strong>Kinh nghiệm giảng dạy:</strong>
+              {{ selectedRequest.teaching_experience }}
+            </p>
+            <p><strong>Chuyên môn:</strong> {{ selectedRequest.expertise }}</p>
+          </div>
+        </div>
+        <div class="mt-4">
+          <p>
+            <strong>Đề xuất khóa học:</strong> {{ selectedRequest.course_proposal }}
+          </p>
+          <p><strong>Động lực:</strong> {{ selectedRequest.motivation }}</p>
+          <p>
+            <strong>Tài liệu:</strong>
+            <a
+              [href]="selectedRequest.document_urls"
+              target="_blank"
+              class="text-blue-500 hover:underline"
+              >
+              {{ selectedRequest.document_urls }}
+            </a>
+          </p>
+          <div>
+            <strong class="mr-2">Trạng thái:</strong>
+            <span>
+              @if (selectedRequest.status === 'pending') {
+                <p-tag
+                  severity="warn"
+                  value="Chờ duyệt"
+                  [rounded]="true"
+                  class="!text-xs"
+                  />
+              }
+              @if (selectedRequest.status === 'approved') {
+                <p-tag
+                  severity="success"
+                  class="!text-xs"
+                  value="Chấp nhận"
+                  [rounded]="true"
+                  />
+              }
+              @if (selectedRequest.status === 'rejected') {
+                <p-tag
+                  severity="danger"
+                  class="!text-xs"
+                  value="Từ chối"
+                  [rounded]="true"
+                  />
+              }
+            </span>
+          </div>
+          <p>
+            <strong>Ngày gửi:</strong>
+            {{ selectedRequest.created_at | date : "dd/MM/yyyy HH:mm" }}
+          </p>
+          @if (selectedRequest.admin_notes) {
+            <p>
+              <strong>Ghi chú từ admin:</strong> {{ selectedRequest.admin_notes }}
+            </p>
+          }
+          @if (selectedRequest.reviewed_at) {
+            <p>
+              <strong>Ngày duyệt:</strong>
+              {{ selectedRequest.reviewed_at | date : "dd/MM/yyyy HH:mm" }}
+            </p>
+          }
+        </div>
       </div>
-      <p>
-        <strong>Ngày gửi:</strong>
-        {{ selectedRequest.created_at | date : "dd/MM/yyyy HH:mm" }}
-      </p>
-      <p *ngIf="selectedRequest.admin_notes">
-        <strong>Ghi chú từ admin:</strong> {{ selectedRequest.admin_notes }}
-      </p>
-      <p *ngIf="selectedRequest.reviewed_at">
-        <strong>Ngày duyệt:</strong>
-        {{ selectedRequest.reviewed_at | date : "dd/MM/yyyy HH:mm" }}
-      </p>
-    </div>
-  </div>
-  <ng-template pTemplate="footer">
-    <button
-      pButton
-      label="Từ chối"
-      class="p-button-danger"
+    }
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        label="Từ chối"
+        class="p-button-danger"
       (click)="
         openReviewDialog(selectedRequest.id, 'rejected');
         $event.stopPropagation()
       "
-    ></button>
-    <button
-      pButton
-      label="Duyệt"
-      class="p-button-primary"
+      ></button>
+      <button
+        pButton
+        label="Duyệt"
+        class="p-button-primary"
       (click)="
         openReviewDialog(selectedRequest.id, 'approved');
         $event.stopPropagation()
       "
-    ></button>
+      ></button>
 
-    <p-dialog
+      <p-dialog
       [header]="
         reviewAction === 'approved' ? 'Duyệt yêu cầu' : 'Từ chối yêu cầu'
       "
-      [(visible)]="displayReviewDialog"
-      [modal]="true"
-      [style]="{ width: '30vw' }"
-      [draggable]="false"
-      [resizable]="false"
-    >
-      <div class="p-4">
-        <p>Vui lòng nhập ghi chú (nếu có):</p>
-        <textarea
-          rows="5"
-          cols="30"
-          placeholder="Nhập ghi chú (tối đa 2000 ký tự)"
-          maxlength="2000"
-          pTextarea
-          [(ngModel)]="adminNotes"
-          class="w-full mt-4"
-        ></textarea>
-      </div>
-      <ng-template pTemplate="footer">
-        <button
-          pButton
-          label="Hủy"
-          class="p-button-secondary"
-          (click)="displayReviewDialog = false; adminNotes = ''"
-        ></button>
-        <button
-          pButton
+        [(visible)]="displayReviewDialog"
+        [modal]="true"
+        [style]="{ width: '30vw' }"
+        [draggable]="false"
+        [resizable]="false"
+        >
+        <div class="p-4">
+          <p>Vui lòng nhập ghi chú (nếu có):</p>
+          <textarea
+            rows="5"
+            cols="30"
+            placeholder="Nhập ghi chú (tối đa 2000 ký tự)"
+            maxlength="2000"
+            pTextarea
+            [(ngModel)]="adminNotes"
+            class="w-full mt-4"
+          ></textarea>
+        </div>
+        <ng-template pTemplate="footer">
+          <button
+            pButton
+            label="Hủy"
+            class="p-button-secondary"
+            (click)="displayReviewDialog = false; adminNotes = ''"
+          ></button>
+          <button
+            pButton
           [label]="
             reviewAction === 'approved' ? 'Xác nhận duyệt' : 'Xác nhận từ chối'
           "
           [ngClass]="
             reviewAction === 'approved' ? 'p-button-success' : 'p-button-danger'
           "
-          (click)="submitReview()"
-        ></button>
-      </ng-template>
-    </p-dialog>
-  </ng-template>
-</p-dialog>
+            (click)="submitReview()"
+          ></button>
+        </ng-template>
+      </p-dialog>
+    </ng-template>
+  </p-dialog>
 
-<div>
-  <!-- Bảng hiển thị yêu cầu -->
-  <p-table
-    [value]="requests"
-    class="w-full !text-sm"
-    [rowHover]="true"
-    #tableRequest
-  >
-    <ng-template pTemplate="caption">
-      <div class="flex items-center justify-between">
-        <p class="m-0 lg:text-lg font-semibold">
-          Danh sách yêu cầu trở thành giảng viên
-          <p-button type="button" icon="pi pi-refresh" (click)="reset()" text />
-          <p-button
-            type="button"
-            icon="pi pi-filter"
-            (click)="drawerFilter = true"
-            text
-          />
-        </p>
-      </div>
-      <p-drawer
-        header="Tìm kiếm yêu cầu"
-        [(visible)]="drawerFilter"
-        position="right"
-        styleClass="!w-full md:!w-[40rem] lg:!w-[30rem]"
+  <div>
+    <!-- Bảng hiển thị yêu cầu -->
+    <p-table
+      [value]="requests"
+      class="w-full !text-sm"
+      [rowHover]="true"
+      #tableRequest
       >
-        <!-- Form tìm kiếm -->
-        <form (ngSubmit)="search()" class="grid grid-cols-1 gap-4 w-full">
-          <div class="w-full">
-            <label
-              for="name"
-              class="block text-sm font-medium text-gray-700 mb-1"
-              >Tên</label
-            >
-            <input
-              id="name"
-              type="text"
-              [(ngModel)]="searchParams.name"
-              name="name"
-              placeholder="Nhập tên..."
-              class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
-            />
-          </div>
-          <div class="w-full">
-            <label
-              for="email"
-              class="block text-sm font-medium text-gray-700 mb-1"
-              >Email</label
-            >
-            <input
-              id="email"
-              type="text"
-              [(ngModel)]="searchParams.email"
-              name="email"
-              placeholder="Nhập email..."
-              class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
-            />
-          </div>
-          <div>
-            <label
-              for="phone_number"
-              class="block text-sm font-medium text-gray-700 mb-1"
-              >Số điện thoại</label
-            >
-            <input
-              id="phone_number"
-              type="text"
-              [(ngModel)]="searchParams.phone_number"
-              name="phone_number"
-              placeholder="Nhập số điện thoại..."
-              class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
-            />
-          </div>
-          <div>
-            <label
-              for="organization"
-              class="block text-sm font-medium text-gray-700 mb-1"
-              >Tổ chức</label
-            >
-            <input
-              id="organization"
-              type="text"
-              [(ngModel)]="searchParams.organization"
-              name="organization"
-              placeholder="Nhập tổ chức..."
-              class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
-            />
-          </div>
-          <div>
-            <label
-              for="status"
-              class="block text-sm font-medium text-gray-700 mb-1"
-              >Trạng thái</label
-            >
-            <p-dropdown
-              id="status"
-              [(ngModel)]="searchParams.status"
-              name="status"
-              [options]="statusOptions"
-              optionLabel="label"
-              optionValue="value"
-              placeholder="Chọn trạng thái"
-              class="w-full"
-            ></p-dropdown>
-          </div>
-          <div class="md:col-span-2 flex gap-2">
-            <div class="w-1/2">
-              <label
-                for="sort_by"
-                class="block text-sm font-medium text-gray-700 mb-1"
-                >Sắp xếp theo</label
-              >
-              <p-dropdown
-                id="sort_by"
-                [(ngModel)]="searchParams.sort_by"
-                name="sort_by"
-                [options]="sortByOptions"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Chọn trường sắp xếp"
-                class="w-full"
-              ></p-dropdown>
-            </div>
-            <div class="w-1/2">
-              <label
-                for="sort_order"
-                class="block text-sm font-medium text-gray-700 mb-1"
-                >Thứ tự</label
-              >
-              <p-dropdown
-                id="sort_order"
-                [(ngModel)]="searchParams.sort_order"
-                name="sort_order"
-                [options]="sortOrderOptions"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Chọn thứ tự"
-                class="w-full"
-              ></p-dropdown>
-            </div>
-          </div>
-          <div class="flex gap-2 items-end">
-            <button
-              type="submit"
-              class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
-            >
-              Tìm kiếm
-            </button>
-            <button
+      <ng-template pTemplate="caption">
+        <div class="flex items-center justify-between">
+          <p class="m-0 lg:text-lg font-semibold">
+            Danh sách yêu cầu trở thành giảng viên
+            <p-button type="button" icon="pi pi-refresh" (click)="reset()" text />
+            <p-button
               type="button"
-              (click)="reset()"
-              class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
+              icon="pi pi-filter"
+              (click)="drawerFilter = true"
+              text
+              />
+            </p>
+          </div>
+          <p-drawer
+            header="Tìm kiếm yêu cầu"
+            [(visible)]="drawerFilter"
+            position="right"
+            styleClass="!w-full md:!w-[40rem] lg:!w-[30rem]"
             >
-              Xóa bộ lọc
-            </button>
-          </div>
-        </form>
-      </p-drawer>
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="user_id">
-          Mã người dùng <p-sortIcon field="user_id" />
-        </th>
-        <th>Tên</th>
-        <th>Email</th>
-        <th>Chuyên môn</th>
-        <th>Trình độ</th>
-        <th>Kinh nghiệm giảng dạy</th>
-        <th>Đề xuất khóa học</th>
-        <th>Ngày gửi</th>
-        <th>Trạng thái</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-request>
-      <tr (click)="showRequestDetails(request)">
-        <td>{{ request.user_id }}</td>
-        <td>{{ request.name }}</td>
-        <td [pTooltip]="request.user.email" tooltipPosition="right">
-          {{ cutText(request.user.email, 16) }}
-        </td>
-        <td [pTooltip]="request.expertise" tooltipPosition="right">
-          {{ cutText(request.expertise, 20) }}
-        </td>
-        <td [pTooltip]="request.qualifications" tooltipPosition="right">
-          {{ cutText(request.qualifications, 30) }}
-        </td>
-        <td [pTooltip]="request.teaching_experience" tooltipPosition="right">
-          {{ cutText(request.teaching_experience, 20) }}
-        </td>
-        <td [pTooltip]="request.course_proposal" tooltipPosition="right">
-          {{ cutText(request.course_proposal, 20) }}
-        </td>
-        <td>{{ request.created_at | date : "dd/MM/yyyy" }}</td>
-        <td>
-          <div>
-            <p-tag
-              *ngIf="request.status === 'pending'"
-              severity="warn"
-              value="Chờ duyệt"
-              [rounded]="true"
-              class="!text-xs"
-            />
-            <p-tag
-              *ngIf="request.status === 'approved'"
-              severity="success"
-              class="!text-xs"
-              value="Chấp nhận"
-              [rounded]="true"
-            />
-            <p-tag
-              *ngIf="request.status === 'rejected'"
-              severity="danger"
-              class="!text-xs"
-              value="Từ chối"
-              [rounded]="true"
-            />
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+            <!-- Form tìm kiếm -->
+            <form (ngSubmit)="search()" class="grid grid-cols-1 gap-4 w-full">
+              <div class="w-full">
+                <label
+                  for="name"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Tên</label
+                  >
+                  <input
+                    id="name"
+                    type="text"
+                    [(ngModel)]="searchParams.name"
+                    name="name"
+                    placeholder="Nhập tên..."
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
+                    />
+                  </div>
+                  <div class="w-full">
+                    <label
+                      for="email"
+                      class="block text-sm font-medium text-gray-700 mb-1"
+                      >Email</label
+                      >
+                      <input
+                        id="email"
+                        type="text"
+                        [(ngModel)]="searchParams.email"
+                        name="email"
+                        placeholder="Nhập email..."
+                        class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          for="phone_number"
+                          class="block text-sm font-medium text-gray-700 mb-1"
+                          >Số điện thoại</label
+                          >
+                          <input
+                            id="phone_number"
+                            type="text"
+                            [(ngModel)]="searchParams.phone_number"
+                            name="phone_number"
+                            placeholder="Nhập số điện thoại..."
+                            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              for="organization"
+                              class="block text-sm font-medium text-gray-700 mb-1"
+                              >Tổ chức</label
+                              >
+                              <input
+                                id="organization"
+                                type="text"
+                                [(ngModel)]="searchParams.organization"
+                                name="organization"
+                                placeholder="Nhập tổ chức..."
+                                class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-sm"
+                                />
+                              </div>
+                              <div>
+                                <label
+                                  for="status"
+                                  class="block text-sm font-medium text-gray-700 mb-1"
+                                  >Trạng thái</label
+                                  >
+                                  <p-dropdown
+                                    id="status"
+                                    [(ngModel)]="searchParams.status"
+                                    name="status"
+                                    [options]="statusOptions"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    placeholder="Chọn trạng thái"
+                                    class="w-full"
+                                  ></p-dropdown>
+                                </div>
+                                <div class="md:col-span-2 flex gap-2">
+                                  <div class="w-1/2">
+                                    <label
+                                      for="sort_by"
+                                      class="block text-sm font-medium text-gray-700 mb-1"
+                                      >Sắp xếp theo</label
+                                      >
+                                      <p-dropdown
+                                        id="sort_by"
+                                        [(ngModel)]="searchParams.sort_by"
+                                        name="sort_by"
+                                        [options]="sortByOptions"
+                                        optionLabel="label"
+                                        optionValue="value"
+                                        placeholder="Chọn trường sắp xếp"
+                                        class="w-full"
+                                      ></p-dropdown>
+                                    </div>
+                                    <div class="w-1/2">
+                                      <label
+                                        for="sort_order"
+                                        class="block text-sm font-medium text-gray-700 mb-1"
+                                        >Thứ tự</label
+                                        >
+                                        <p-dropdown
+                                          id="sort_order"
+                                          [(ngModel)]="searchParams.sort_order"
+                                          name="sort_order"
+                                          [options]="sortOrderOptions"
+                                          optionLabel="label"
+                                          optionValue="value"
+                                          placeholder="Chọn thứ tự"
+                                          class="w-full"
+                                        ></p-dropdown>
+                                      </div>
+                                    </div>
+                                    <div class="flex gap-2 items-end">
+                                      <button
+                                        type="submit"
+                                        class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+                                        >
+                                        Tìm kiếm
+                                      </button>
+                                      <button
+                                        type="button"
+                                        (click)="reset()"
+                                        class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
+                                        >
+                                        Xóa bộ lọc
+                                      </button>
+                                    </div>
+                                  </form>
+                                </p-drawer>
+                              </ng-template>
+                              <ng-template pTemplate="header">
+                                <tr>
+                                  <th pSortableColumn="user_id">
+                                    Mã người dùng <p-sortIcon field="user_id" />
+                                  </th>
+                                  <th>Tên</th>
+                                  <th>Email</th>
+                                  <th>Chuyên môn</th>
+                                  <th>Trình độ</th>
+                                  <th>Kinh nghiệm giảng dạy</th>
+                                  <th>Đề xuất khóa học</th>
+                                  <th>Ngày gửi</th>
+                                  <th>Trạng thái</th>
+                                </tr>
+                              </ng-template>
+                              <ng-template pTemplate="body" let-request>
+                                <tr (click)="showRequestDetails(request)">
+                                  <td>{{ request.user_id }}</td>
+                                  <td>{{ request.name }}</td>
+                                  <td [pTooltip]="request.user.email" tooltipPosition="right">
+                                    {{ cutText(request.user.email, 16) }}
+                                  </td>
+                                  <td [pTooltip]="request.expertise" tooltipPosition="right">
+                                    {{ cutText(request.expertise, 20) }}
+                                  </td>
+                                  <td [pTooltip]="request.qualifications" tooltipPosition="right">
+                                    {{ cutText(request.qualifications, 30) }}
+                                  </td>
+                                  <td [pTooltip]="request.teaching_experience" tooltipPosition="right">
+                                    {{ cutText(request.teaching_experience, 20) }}
+                                  </td>
+                                  <td [pTooltip]="request.course_proposal" tooltipPosition="right">
+                                    {{ cutText(request.course_proposal, 20) }}
+                                  </td>
+                                  <td>{{ request.created_at | date : "dd/MM/yyyy" }}</td>
+                                  <td>
+                                    <div>
+                                      @if (request.status === 'pending') {
+                                        <p-tag
+                                          severity="warn"
+                                          value="Chờ duyệt"
+                                          [rounded]="true"
+                                          class="!text-xs"
+                                          />
+                                      }
+                                      @if (request.status === 'approved') {
+                                        <p-tag
+                                          severity="success"
+                                          class="!text-xs"
+                                          value="Chấp nhận"
+                                          [rounded]="true"
+                                          />
+                                      }
+                                      @if (request.status === 'rejected') {
+                                        <p-tag
+                                          severity="danger"
+                                          class="!text-xs"
+                                          value="Từ chối"
+                                          [rounded]="true"
+                                          />
+                                      }
+                                    </div>
+                                  </td>
+                                </tr>
+                              </ng-template>
+                            </p-table>
 
-  <!-- Phân trang -->
-  <p-paginator
-    [rows]="perPage"
-    [totalRecords]="totalRecords"
-    [rowsPerPageOptions]="[5, 10, 20]"
-    (onPageChange)="onPageChange($event)"
-  ></p-paginator>
-</div>
+                            <!-- Phân trang -->
+                            <p-paginator
+                              [rows]="perPage"
+                              [totalRecords]="totalRecords"
+                              [rowsPerPageOptions]="[5, 10, 20]"
+                              (onPageChange)="onPageChange($event)"
+                            ></p-paginator>
+                          </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { CoursesService } from '../../../services/courses.service';
 import { Router, RouterLink } from '@angular/router';
@@ -16,7 +16,7 @@ interface Course {
 @Component({
   selector: 'app-custom-autocomplete',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink],
   templateUrl: './custom-autocomplete.component.html',
   styleUrls: ['./custom-autocomplete.component.css'],
 })

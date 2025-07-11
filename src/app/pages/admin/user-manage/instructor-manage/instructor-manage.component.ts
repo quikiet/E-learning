@@ -5,8 +5,8 @@ import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { PaginatorModule } from 'primeng/paginator';
-import { TabViewModule } from 'primeng/tabview'; // Để tạo tab
 import { InstructorsService } from '../../../../services/instructors.service';
+import { TabsModule } from 'primeng/tabs';
 @Component({
   selector: 'app-instructor-manage',
   imports: [
@@ -15,7 +15,7 @@ import { InstructorsService } from '../../../../services/instructors.service';
     ButtonModule,
     ToastModule,
     PaginatorModule,
-    TabViewModule
+    TabsModule
   ],
   providers: [MessageService],
   templateUrl: './instructor-manage.component.html',

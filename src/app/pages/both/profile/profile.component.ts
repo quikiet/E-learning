@@ -6,10 +6,10 @@ import { DividerModule } from 'primeng/divider';
 import { RippleModule } from 'primeng/ripple';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-profile',
-  imports: [RouterOutlet, RippleModule, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule, RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterOutlet, RippleModule, AvatarModule, ButtonModule, InputTextModule, FormsModule, DividerModule, RouterLink, RouterLinkActive],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })

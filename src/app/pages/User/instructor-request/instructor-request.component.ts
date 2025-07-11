@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,7 +15,6 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-instructor-request',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ButtonModule,
     InputTextModule,
@@ -23,7 +22,7 @@ import { Router } from '@angular/router';
     ToastModule,
     FormElementComponent,
     ProgressSpinnerModule
-  ],
+],
   templateUrl: './instructor-request.component.html',
   styleUrl: './instructor-request.component.css',
   providers: [MessageService],

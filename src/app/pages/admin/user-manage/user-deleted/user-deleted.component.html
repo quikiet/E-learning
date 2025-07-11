@@ -19,7 +19,7 @@
     currentPageReportTemplate="Displaying from {first} to {last} of {totalRecords} users"
     [showCurrentPageReport]="true"
     [loading]="isLoading"
-  >
+    >
     <ng-template pTemplate="caption">
       <div class="flex items-center justify-between">
         <p class="m-0 lg:text-lg font-semibold">List of Blocked Users</p>
@@ -88,27 +88,30 @@
         </td>
         <td>
           <div>
-            <p-tag
-              *ngIf="user.role === 'admin'"
-              severity="danger"
-              [value]="user.role"
-              [rounded]="true"
-              class="!text-xs"
-            />
-            <p-tag
-              *ngIf="user.role === 'student'"
-              severity="success"
-              class="!text-xs"
-              [value]="user.role"
-              [rounded]="true"
-            />
-            <p-tag
-              *ngIf="user.role === 'instructor'"
-              severity="info"
-              class="!text-xs"
-              [value]="user.role"
-              [rounded]="true"
-            />
+            @if (user.role === 'admin') {
+              <p-tag
+                severity="danger"
+                [value]="user.role"
+                [rounded]="true"
+                class="!text-xs"
+                />
+            }
+            @if (user.role === 'student') {
+              <p-tag
+                severity="success"
+                class="!text-xs"
+                [value]="user.role"
+                [rounded]="true"
+                />
+            }
+            @if (user.role === 'instructor') {
+              <p-tag
+                severity="info"
+                class="!text-xs"
+                [value]="user.role"
+                [rounded]="true"
+                />
+            }
           </div>
         </td>
         <td>

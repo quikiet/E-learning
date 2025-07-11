@@ -10,127 +10,139 @@
       icon="pi pi-database"
       label="Trash"
       severity="contrast"
-    />
-    <p-popover #op>
-      <div class="lg:w-[25rem] max-h-[20rem] overflow-auto">
-        <div class="px-2">
-          <span class="font-medium text-primary block mb-2"
-            >Deleted Courses</span
-          >
-          <ul
-            class="list-none p-0 m-0 flex flex-col gap-4"
-            *ngFor="let deleteCourse of deletedCourses"
-          >
-            <li>
-              <div class="flex items-center justify-between gap-2 pr-2">
-                <div class="flex items-center gap-3">
-                  <img
-                    class="w-20 h-20"
+      />
+      <p-popover #op>
+        <div class="lg:w-[25rem] max-h-[20rem] overflow-auto">
+          <div class="px-2">
+            <span class="font-medium text-primary block mb-2"
+              >Deleted Courses</span
+              >
+              @for (deleteCourse of deletedCourses; track deleteCourse) {
+                <ul
+                  class="list-none p-0 m-0 flex flex-col gap-4"
+                  >
+                  <li>
+                    <div class="flex items-center justify-between gap-2 pr-2">
+                      <div class="flex items-center gap-3">
+                        <img
+                          class="w-20 h-20"
                     [src]="
                       deleteCourse.image ||
                       'https://res.cloudinary.com/dj11e209p/image/upload/v1751878057/How-to-Create-an-Online-Course-For-Free--Complete-Guide--6_ulvjwh.jpg'
                     "
-                    alt="{{ deleteCourse.course_name }}"
-                  />
-                  <div>
-                    <span class="text-sm font-normal">{{
-                      deleteCourse.course_name
-                    }}</span>
-                    <div class="text-xs text-muted-color">
-                      {{ deleteCourse.price | number }} $
+                          alt="{{ deleteCourse.course_name }}"
+                          />
+                          <div>
+                            <span class="text-sm font-normal">{{
+                              deleteCourse.course_name
+                            }}</span>
+                            <div class="text-xs text-muted-color">
+                              {{ deleteCourse.price | number }} $
+                            </div>
+                          </div>
+                        </div>
+                        <div class="flex flex-col gap-2 justify-between items-center">
+                          <a
+                            class="flex items-center gap-2 ml-auto text-sm text-blue-500 cursor-pointer hover:text-blue-700 hover:font-semibold"
+                            (click)="restoreCourse(deleteCourse.id)"
+                            >
+                            <span class="text-xs">Restore</span>
+                            <i class="pi pi-undo"></i>
+                          </a>
+                          <!-- <a
+                          class="flex items-center gap-2 text-muted-color ml-auto text-sm text-red-500 cursor-pointer hover:text-red-700 hover:font-semibold"
+                          >
+                          <span class="text-xs">Delete Permanently</span>
+                          <i class="pi pi-trash"></i>
+                        </a> -->
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="flex flex-col gap-2 justify-between items-center">
-                  <a
-                    class="flex items-center gap-2 ml-auto text-sm text-blue-500 cursor-pointer hover:text-blue-700 hover:font-semibold"
-                    (click)="restoreCourse(deleteCourse.id)"
-                  >
-                    <span class="text-xs">Restore</span>
-                    <i class="pi pi-undo"></i>
-                  </a>
-                  <!-- <a
-                    class="flex items-center gap-2 text-muted-color ml-auto text-sm text-red-500 cursor-pointer hover:text-red-700 hover:font-semibold"
-                  >
-                    <span class="text-xs">Delete Permanently</span>
-                    <i class="pi pi-trash"></i>
-                  </a> -->
-                </div>
-              </div>
-              <p-divider class="m-0" />
-            </li>
-            <li
-              class="text-xs"
-              *ngIf="!deletedCourses || deletedCourses.length === 0"
-            >
-              No courses have been deleted.
-            </li>
-          </ul>
-        </div>
+                    <p-divider class="m-0" />
+                  </li>
+                  @if (!deletedCourses || deletedCourses.length === 0) {
+                    <li
+                      class="text-xs"
+                      >
+                      No courses have been deleted.
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+          </div>
+        </p-popover>
       </div>
-    </p-popover>
-  </div>
 
-  <!-- Search and Filter -->
-  <div class="flex items-center justify-between mb-6">
-    <div class="flex gap-2">
-      <p-iconfield>
-        <p-inputicon styleClass="pi pi-search" />
-        <input
-          pInputText
-          type="text"
-          [(ngModel)]="searchKeyword"
-          (input)="filterCourses()"
-          placeholder="Search courses..."
-          class="p-2 border border-gray-300 rounded-md lg:w-96"
-        />
-      </p-iconfield>
+      <!-- Search and Filter -->
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex gap-2">
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-search" />
+            <input
+              pInputText
+              type="text"
+              [(ngModel)]="searchKeyword"
+              (input)="filterCourses()"
+              placeholder="Search courses..."
+              class="p-2 border border-gray-300 rounded-md lg:w-96"
+              />
+            </p-iconfield>
 
-      <p-button type="Filter" (click)="openFilter = true" icon="pi pi-filter" />
-      <p-drawer
-        header="Expanding Filter"
-        [(visible)]="openFilter"
-        position="right"
-      >
-        <div class="flex flex-col gap-5">
-          <div>
-            <p class="font-semibold pb-2 md:text-lg">Category</p>
-            <p-dropdown
-              [options]="categories"
-              [(ngModel)]="selectedCategory"
-              placeholder="Select category"
-              optionLabel="name"
-              optionValue="id"
-              (onChange)="filterCourses()"
-              styleClass="w-[200px]"
-            ></p-dropdown>
+            <p-button type="Filter" (click)="openFilter = true" icon="pi pi-filter" />
+            <p-drawer
+              header="Expanding Filter"
+              [(visible)]="openFilter"
+              position="right"
+              >
+              <div class="flex flex-col gap-5">
+                <div>
+                  <p class="font-semibold pb-2 md:text-lg">Category</p>
+                  <p-dropdown
+                    [options]="categories"
+                    [(ngModel)]="selectedCategory"
+                    placeholder="Select category"
+                    optionLabel="name"
+                    optionValue="id"
+                    (onChange)="filterCourses()"
+                    styleClass="w-[200px]"
+                  ></p-dropdown>
+                </div>
+
+                <div>
+                  <p class="font-semibold pb-2 md:text-lg">Status</p>
+                  <p-dropdown
+                    [options]="statusOptions"
+                    [(ngModel)]="selectedStatus"
+                    placeholder="Select status"
+                    optionLabel="label"
+                    optionValue="value"
+                    (onChange)="filterCourses()"
+                    styleClass="w-[200px]"
+                  ></p-dropdown>
+                </div>
+                <div>
+                  <p class="font-semibold pb-2 md:text-lg">Level</p>
+                  <p-dropdown
+                    [options]="difficultyLevels"
+                    [(ngModel)]="selectedDifficultyLevel"
+                    placeholder="Select difficulty"
+                    optionLabel="label"
+                    optionValue="value"
+                    (onChange)="filterCourses()"
+                    styleClass="w-[200px]"
+                  ></p-dropdown>
+                </div>
+
+                <button
+                  pButton
+                  label="Clear Filters"
+                  icon="pi pi-times"
+                  class="p-button-secondary"
+                  (click)="clearFilters()"
+                ></button>
+              </div>
+            </p-drawer>
           </div>
-
-          <div>
-            <p class="font-semibold pb-2 md:text-lg">Status</p>
-            <p-dropdown
-              [options]="statusOptions"
-              [(ngModel)]="selectedStatus"
-              placeholder="Select status"
-              optionLabel="label"
-              optionValue="value"
-              (onChange)="filterCourses()"
-              styleClass="w-[200px]"
-            ></p-dropdown>
-          </div>
-          <div>
-            <p class="font-semibold pb-2 md:text-lg">Level</p>
-            <p-dropdown
-              [options]="difficultyLevels"
-              [(ngModel)]="selectedDifficultyLevel"
-              placeholder="Select difficulty"
-              optionLabel="label"
-              optionValue="value"
-              (onChange)="filterCourses()"
-              styleClass="w-[200px]"
-            ></p-dropdown>
-          </div>
-
           <button
             pButton
             label="Clear Filters"
@@ -139,95 +151,94 @@
             (click)="clearFilters()"
           ></button>
         </div>
-      </p-drawer>
-    </div>
-    <button
-      pButton
-      label="Clear Filters"
-      icon="pi pi-times"
-      class="p-button-secondary"
-      (click)="clearFilters()"
-    ></button>
-  </div>
 
-  <!-- Grid layout for course cards -->
-  <div
-    *ngIf="courses.length > 0; else noCourses"
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 my-6"
-  >
-    <div
-      *ngFor="let course of courses"
-      class="bg-white shadow-lg hover:shadow-2xl rounded-lg overflow-hidden transition-shadow duration-200"
-    >
-      <div class="relative">
-        <img
+        <!-- Grid layout for course cards -->
+        @if (courses.length > 0) {
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 my-6"
+            >
+            @for (course of courses; track course) {
+              <div
+                class="bg-white shadow-lg hover:shadow-2xl rounded-lg overflow-hidden transition-shadow duration-200"
+                >
+                <div class="relative">
+                  <img
           [src]="
             course.image ||
             'https://res.cloudinary.com/dj11e209p/image/upload/v1751878057/How-to-Create-an-Online-Course-For-Free--Complete-Guide--6_ulvjwh.jpg'
           "
-          alt="{{ course.course_name }}"
-          class="w-full h-40 object-cover"
-        />
-        <div
-          class="absolute top-5 right-5"
-          pTooltip="{{ getNotes(course.coursereview) }}"
-          tooltipPosition="bottom"
-        >
-          <p-tag
-            *ngIf="course.status === 'approved'"
-            severity="success"
-            [value]="course.status"
-            [rounded]="true"
-            class="!text-xs"
-          />
-          <p-tag
-            *ngIf="course.status === 'draft'"
-            severity="secondary"
-            [value]="course.status"
-            [rounded]="true"
-            class="!text-xs"
-          />
-          <p-tag
-            *ngIf="course.status === 'pending'"
-            severity="warn"
-            class="!text-xs"
-            [value]="course.status"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="course.status === 'rejected'"
-            severity="danger"
-            class="!text-xs"
-            [value]="course.status"
-            [rounded]="true"
-          />
-          <p-tag
-            *ngIf="course.status === 'unavailable'"
-            severity="secondary"
-            class="!text-xs"
-            [value]="course.status"
-            [rounded]="true"
-          />
-        </div>
-        <div class="absolute top-5 left-5">
-          <span
-            (click)="openEditDialog(course)"
-            class="rounded-full bg-secondary-content hover:bg-secondary w-8 h-8 cursor-pointer"
-          >
-            <i class="pi pi-file-edit p-2"></i>
-          </span>
-        </div>
-      </div>
-      <div class="md:p-4 p-2">
-        <div class="flex justify-between items-center">
-          <h3
-            class="md:text-lg font-semibold text-gray-800 mb-2 truncate"
-            [title]="course.course_name"
-          >
-            {{ course.course_name }}
-          </h3>
-          <div class="flex items-center gap-2">
-            <p-button
+                    alt="{{ course.course_name }}"
+                    class="w-full h-40 object-cover"
+                    />
+                    <div
+                      class="absolute top-5 right-5"
+                      pTooltip="{{ getNotes(course.coursereview) }}"
+                      tooltipPosition="bottom"
+                      >
+                      @if (course.status === 'approved') {
+                        <p-tag
+                          severity="success"
+                          [value]="course.status"
+                          [rounded]="true"
+                          class="!text-xs"
+                          />
+                      }
+                      @if (course.status === 'draft') {
+                        <p-tag
+                          severity="secondary"
+                          [value]="course.status"
+                          [rounded]="true"
+                          class="!text-xs"
+                          />
+                      }
+                      @if (course.status === 'pending') {
+                        <p-tag
+                          severity="warn"
+                          class="!text-xs"
+                          [value]="course.status"
+                          [rounded]="true"
+                          />
+                      }
+                      @if (course.status === 'rejected') {
+                        <p-tag
+                          severity="danger"
+                          class="!text-xs"
+                          [value]="course.status"
+                          [rounded]="true"
+                          />
+                      }
+                      @if (course.status === 'unavailable') {
+                        <p-tag
+                          severity="secondary"
+                          class="!text-xs"
+                          [value]="course.status"
+                          [rounded]="true"
+                          />
+                      }
+                    </div>
+                    <div class="absolute top-5 left-5">
+                      <span
+                        (click)="openEditDialog(course)"
+                        class="rounded-full bg-secondary-content hover:bg-secondary w-8 h-8 cursor-pointer"
+                        >
+                        <i class="pi pi-file-edit p-2"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="md:p-4 p-2">
+                    <div class="flex justify-between items-center">
+                      <h3
+                        class="md:text-lg font-semibold text-gray-800 mb-2 truncate"
+                        [title]="course.course_name"
+                        >
+                        {{ course.course_name }}
+                      </h3>
+                      <div class="flex items-center gap-2">
+                        @if (
+                          course?.status === 'approved' ||
+                          course?.status === 'unavailable'
+                          ) {
+                          <p-button
               [icon]="
                 course?.status === 'unavailable'
                   ? 'pi pi-eye'
@@ -235,15 +246,11 @@
                   ? 'pi pi-eye-slash'
                   : ''
               "
-              (onClick)="toggleAvailableCourse(course.id, course.status)"
-              [rounded]="true"
-              severity="info"
-              size="small"
-              [outlined]="true"
-              *ngIf="
-                course?.status === 'approved' ||
-                course?.status === 'unavailable'
-              "
+                            (onClick)="toggleAvailableCourse(course.id, course.status)"
+                            [rounded]="true"
+                            severity="info"
+                            size="small"
+                            [outlined]="true"
               [pTooltip]="
                 course?.status === 'unavailable'
                   ? 'Make course available'
@@ -251,490 +258,503 @@
                   ? 'Make course unavailable'
                   : ''
               "
-              tooltipPosition="top"
-            />
-            <p-button
-              icon="pi pi-clone !text-xs"
-              (onClick)="cloneCourse(course.id)"
-              [rounded]="true"
-              severity="info"
-              size="small"
-              [outlined]="true"
-              pTooltip="Clone"
-              tooltipPosition="top"
-            />
-            <p-button
-              icon="pi pi-cloud-upload !text-xs"
-              (onClick)="publicCourse(course.id)"
-              [rounded]="true"
-              severity="success"
-              size="small"
-              [outlined]="true"
-              *ngIf="course.status === 'draft'"
-              pTooltip="Send to request"
-              tooltipPosition="top"
-            />
-            <p-button
-              icon="pi pi-trash !text-xs"
-              (onClick)="deleteCourse(course.id)"
-              [rounded]="true"
-              severity="danger"
-              size="small"
-              [outlined]="true"
-              pTooltip="Delete"
-              tooltipPosition="top"
-            />
-          </div>
-        </div>
-        <p class="text-xs md:text-sm text-gray-600 mb-1">
-          <i class="pi pi-star mr-1"></i> Level:
-          {{ course.difficulty_level }}
-        </p>
-        <div class="flex items-center mb-1">
-          <span class="text-xs md:text-sm text-gray-600 mr-1">
-            <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
-            {{ course.course_rating | number : "1.1-1" }}
-          </span>
-          <span class="text-xs text-gray-500">
-            ({{
-              course.course_rating >= 4
-                ? "Excellent"
-                : course.course_rating >= 3
-                ? "Good"
-                : "Average"
-            }})
-          </span>
-        </div>
-        <p class="text-xs md:text-sm font-medium text-gray-800 mb-1">
-          <i class="pi pi-money-bill mr-1"></i>
-          {{ course.price | number }} $
-        </p>
-        <p class="text-xs md:text-sm text-gray-600 mb-2">
-          <i class="pi pi-book mr-1"></i> Total Lessons:
-          {{ course.lessons_count }}
-        </p>
-        <div class="flex gap-2 md:justify-start justify-center">
-          <button
-            (click)="navigateToUserProgress(course.id)"
-            class="md:w-full bg-secondary text-white px-4 rounded-md hover:bg-secondary-content transition duration-200 md:text-sm text-xs md:font-medium"
-          >
-            User Progress
-          </button>
-          <button
-            (click)="navigateToAddLesson(course.id)"
-            class="md:w-full bg-blue-500 text-white px-4 rounded-md hover:bg-blue-600 transition duration-200 md:text-sm text-xs md:font-medium"
-          >
-            Add Lesson
-          </button>
-          <button
-            (click)="showLessons(course.id)"
-            class="md:w-full bg-primary/90 text-white px-4 rounded-md hover:bg-primary transition duration-200 md:text-sm text-xs md:font-medium"
-          >
-            Lessons
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <ng-template #noCourses>
-    <p class="text-center text-gray-500 py-4">No courses found.</p>
-  </ng-template>
-
-  <p-paginator
-    [rows]="perPage"
-    [totalRecords]="totalRecords"
-    (onPageChange)="onPageChange($event)"
-    [first]="(currentPage - 1) * perPage"
-    class="mt-6"
-  ></p-paginator>
-
-  <!-- Lessons Dialog -->
-  <p-dialog
-    [(visible)]="showLessonsDialog"
-    [style]="{ width: '700px' }"
-    header="Lessons List"
-    [modal]="true"
-    class="rounded-lg shadow-lg"
-  >
-    <ng-template pTemplate="content">
-      <div *ngIf="selectedCourseLessons.length > 0; else noLessons">
-        <div class="max-h-[400px] overflow-y-auto">
-          <div
-            *ngFor="let lesson of selectedCourseLessons"
-            class="border-b border-gray-200 py-3"
-          >
-            <div class="flex items-center gap-2 justify-between">
-              <div class="flex items-center flex-col">
-                <div>
-                  <h4
-                    class="text-md font-semibold text-gray-800"
-                    [pTooltip]="lesson.title"
-                    tooltipPosition="right"
-                  >
-                    {{ cutText(lesson.title, 5) }}
-                  </h4>
-                  <p class="text-sm text-gray-600">
-                    <i class="pi pi-clock mr-1"></i> Duration:
-                    {{ lesson.duration }} minutes
-                  </p>
-                  <p class="text-sm text-gray-600">
-                    <i class="pi pi-eye mr-1"></i> Preview:
-                    {{ lesson.is_preview ? "Yes" : "No" }}
-                  </p>
-                  <p class="text-sm text-gray-600">
-                    <i class="pi pi-eye mr-1"></i> Visible:
-                    {{ lesson.is_visible ? "Yes" : "No" }}
-                  </p>
-                  <p class="text-sm text-gray-600">
-                    <i class="pi pi-tag mr-1"></i> Version: {{ lesson.version }}
-                  </p>
+                            tooltipPosition="top"
+                            />
+                        }
+                        <p-button
+                          icon="pi pi-clone !text-xs"
+                          (onClick)="cloneCourse(course.id)"
+                          [rounded]="true"
+                          severity="info"
+                          size="small"
+                          [outlined]="true"
+                          pTooltip="Clone"
+                          tooltipPosition="top"
+                          />
+                          @if (course.status === 'draft') {
+                            <p-button
+                              icon="pi pi-cloud-upload !text-xs"
+                              (onClick)="publicCourse(course.id)"
+                              [rounded]="true"
+                              severity="success"
+                              size="small"
+                              [outlined]="true"
+                              pTooltip="Send to request"
+                              tooltipPosition="top"
+                              />
+                          }
+                          <p-button
+                            icon="pi pi-trash !text-xs"
+                            (onClick)="deleteCourse(course.id)"
+                            [rounded]="true"
+                            severity="danger"
+                            size="small"
+                            [outlined]="true"
+                            pTooltip="Delete"
+                            tooltipPosition="top"
+                            />
+                          </div>
+                        </div>
+                        <p class="text-xs md:text-sm text-gray-600 mb-1">
+                          <i class="pi pi-star mr-1"></i> Level:
+                          {{ course.difficulty_level }}
+                        </p>
+                        <div class="flex items-center mb-1">
+                          <span class="text-xs md:text-sm text-gray-600 mr-1">
+                            <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
+                            {{ course.course_rating | number : "1.1-1" }}
+                          </span>
+                          <span class="text-xs text-gray-500">
+                            ({{
+                            course.course_rating >= 4
+                            ? "Excellent"
+                            : course.course_rating >= 3
+                            ? "Good"
+                            : "Average"
+                            }})
+                          </span>
+                        </div>
+                        <p class="text-xs md:text-sm font-medium text-gray-800 mb-1">
+                          <i class="pi pi-money-bill mr-1"></i>
+                          {{ course.price | number }} $
+                        </p>
+                        <p class="text-xs md:text-sm text-gray-600 mb-2">
+                          <i class="pi pi-book mr-1"></i> Total Lessons:
+                          {{ course.lessons_count }}
+                        </p>
+                        <div class="flex gap-2 md:justify-start justify-center">
+                          <button
+                            (click)="navigateToUserProgress(course.id)"
+                            class="md:w-full bg-secondary text-white px-4 rounded-md hover:bg-secondary-content transition duration-200 md:text-sm text-xs md:font-medium"
+                            >
+                            User Progress
+                          </button>
+                          <button
+                            (click)="navigateToAddLesson(course.id)"
+                            class="md:w-full bg-blue-500 text-white px-4 rounded-md hover:bg-blue-600 transition duration-200 md:text-sm text-xs md:font-medium"
+                            >
+                            Add Lesson
+                          </button>
+                          <button
+                            (click)="showLessons(course.id)"
+                            class="md:w-full bg-primary/90 text-white px-4 rounded-md hover:bg-primary transition duration-200 md:text-sm text-xs md:font-medium"
+                            >
+                            Lessons
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  }
                 </div>
-                <p-button
-                  label="Quiz Management"
-                  severity="success"
-                  [routerLink]="['/quiz-management', lesson.id]"
-                />
-              </div>
-              <div class="flex gap-2">
-                <video
-                  controls
-                  [src]="lesson.video_url"
-                  class="w-52 h-36"
-                  type="video/mp4"
-                >
-                  Your browser does not support the video tag.
-                </video>
-                <div
-                  class="flex flex-col items-center justify-center gap-2 py-2"
-                >
-                  <p-button
-                    (click)="deleteLesson(lesson.id)"
-                    icon="pi pi-trash"
-                    severity="danger"
-                    [rounded]="true"
-                    [text]="true"
-                    pTooltip="Delete"
-                    tooltipPosition="top"
-                  />
-                  <p-button
-                    (click)="openEditLessonDialog(lesson)"
-                    icon="pi pi-file-edit"
-                    pTooltip="Edit"
-                    tooltipPosition="bottom"
-                    severity="info"
-                    [rounded]="true"
-                    [text]="true"
-                    [disabled]="lesson.origin_id && lesson.version === 1"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p-paginator
-          [rows]="lessonsPerPage"
-          [totalRecords]="lessonsTotalRecords"
-          (onPageChange)="onLessonsPageChange($event)"
-          [first]="(lessonsCurrentPage - 1) * lessonsPerPage"
-          class="mt-4"
-        ></p-paginator>
-      </div>
-      <ng-template #noLessons>
-        <p class="text-center text-gray-500 py-4">
-          No lessons found for this course.
-        </p>
-      </ng-template>
-    </ng-template>
-    <ng-template pTemplate="footer">
-      <button
-        pButton
-        type="button"
-        label="Close"
-        icon="pi pi-times"
-        class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
-        (click)="showLessonsDialog = false"
-      ></button>
-    </ng-template>
-  </p-dialog>
+              } @else {
+                <p class="text-center text-gray-500 py-4">No courses found.</p>
+              }
 
-  <!-- Update Course Dialog -->
-  <p-dialog
-    [(visible)]="showEditDialog"
-    [style]="{ width: '600px' }"
-    header="Update Course"
-    [modal]="true"
-    class="rounded-lg shadow-lg"
-  >
-    <ng-template pTemplate="content">
-      <form (ngSubmit)="updateCourse()" #courseForm="ngForm">
-        <div class="p-4 grid grid-cols-1 gap-4">
-          <div class="mb-4">
-            <label
-              for="course_name"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Course Name <span class="text-red-500">*</span>
-            </label>
-            <input
-              id="course_name"
-              name="course_name"
-              [(ngModel)]="course.course_name"
-              required
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              <p-paginator
+                [rows]="perPage"
+                [totalRecords]="totalRecords"
+                (onPageChange)="onPageChange($event)"
+                [first]="(currentPage - 1) * perPage"
+                class="mt-6"
+              ></p-paginator>
+
+              <!-- Lessons Dialog -->
+              <p-dialog
+                [(visible)]="showLessonsDialog"
+                [style]="{ width: '700px' }"
+                header="Lessons List"
+                [modal]="true"
+                class="rounded-lg shadow-lg"
+                >
+                <ng-template pTemplate="content">
+                  @if (selectedCourseLessons.length > 0) {
+                    <div>
+                      <div class="max-h-[400px] overflow-y-auto">
+                        @for (lesson of selectedCourseLessons; track lesson) {
+                          <div
+                            class="border-b border-gray-200 py-3"
+                            >
+                            <div class="flex items-center gap-2 justify-between">
+                              <div class="flex items-center flex-col">
+                                <div>
+                                  <h4
+                                    class="text-md font-semibold text-gray-800"
+                                    [pTooltip]="lesson.title"
+                                    tooltipPosition="right"
+                                    >
+                                    {{ cutText(lesson.title, 5) }}
+                                  </h4>
+                                  <p class="text-sm text-gray-600">
+                                    <i class="pi pi-clock mr-1"></i> Duration:
+                                    {{ lesson.duration }} minutes
+                                  </p>
+                                  <p class="text-sm text-gray-600">
+                                    <i class="pi pi-eye mr-1"></i> Preview:
+                                    {{ lesson.is_preview ? "Yes" : "No" }}
+                                  </p>
+                                  <p class="text-sm text-gray-600">
+                                    <i class="pi pi-eye mr-1"></i> Visible:
+                                    {{ lesson.is_visible ? "Yes" : "No" }}
+                                  </p>
+                                  <p class="text-sm text-gray-600">
+                                    <i class="pi pi-tag mr-1"></i> Version: {{ lesson.version }}
+                                  </p>
+                                </div>
+                                <p-button
+                                  label="Quiz Management"
+                                  severity="success"
+                                  [routerLink]="['/quiz-management', lesson.id]"
+                                  />
+                                </div>
+                                <div class="flex gap-2">
+                                  <video
+                                    controls
+                                    [src]="lesson.video_url"
+                                    class="w-52 h-36"
+                                    type="video/mp4"
+                                    >
+                                    Your browser does not support the video tag.
+                                  </video>
+                                  <div
+                                    class="flex flex-col items-center justify-center gap-2 py-2"
+                                    >
+                                    <p-button
+                                      (click)="deleteLesson(lesson.id)"
+                                      icon="pi pi-trash"
+                                      severity="danger"
+                                      [rounded]="true"
+                                      [text]="true"
+                                      pTooltip="Delete"
+                                      tooltipPosition="top"
+                                      />
+                                      <p-button
+                                        (click)="openEditLessonDialog(lesson)"
+                                        icon="pi pi-file-edit"
+                                        pTooltip="Edit"
+                                        tooltipPosition="bottom"
+                                        severity="info"
+                                        [rounded]="true"
+                                        [text]="true"
+                                        [disabled]="lesson.origin_id && lesson.version === 1"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              }
+                            </div>
+                            <p-paginator
+                              [rows]="lessonsPerPage"
+                              [totalRecords]="lessonsTotalRecords"
+                              (onPageChange)="onLessonsPageChange($event)"
+                              [first]="(lessonsCurrentPage - 1) * lessonsPerPage"
+                              class="mt-4"
+                            ></p-paginator>
+                          </div>
+                        } @else {
+                          <p class="text-center text-gray-500 py-4">
+                            No lessons found for this course.
+                          </p>
+                        }
+                      </ng-template>
+                      <ng-template pTemplate="footer">
+                        <button
+                          pButton
+                          type="button"
+                          label="Close"
+                          icon="pi pi-times"
+                          class="p-button-text text-gray-700 hover:bg-gray-100 transition duration-200"
+                          (click)="showLessonsDialog = false"
+                        ></button>
+                      </ng-template>
+                    </p-dialog>
+
+                    <!-- Update Course Dialog -->
+                    <p-dialog
+                      [(visible)]="showEditDialog"
+                      [style]="{ width: '600px' }"
+                      header="Update Course"
+                      [modal]="true"
+                      class="rounded-lg shadow-lg"
+                      >
+                      <ng-template pTemplate="content">
+                        <form (ngSubmit)="updateCourse()" #courseForm="ngForm">
+                          <div class="p-4 grid grid-cols-1 gap-4">
+                            <div class="mb-4">
+                              <label
+                                for="course_name"
+                                class="block text-sm font-medium text-gray-700"
+                                >
+                                Course Name <span class="text-red-500">*</span>
+                              </label>
+                              <input
+                                id="course_name"
+                                name="course_name"
+                                [(ngModel)]="course.course_name"
+                                required
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               [ngClass]="{
                 'border-red-500':
                   courseForm.submitted &&
                   courseForm.controls['course_name']?.invalid
               }"
-            />
-            <div
-              *ngIf="
-                courseForm.submitted &&
-                courseForm.controls['course_name']?.invalid
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              Please enter the course name.
-            </div>
-          </div>
-          <div class="mb-4">
-            <label
-              for="difficulty_level"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Difficulty Level
-            </label>
-            <p-dropdown
-              id="difficulty_level"
-              name="difficulty_level"
-              [(ngModel)]="course.difficulty_level"
-              [options]="difficultyLevels"
-              optionLabel="label"
-              optionValue="value"
-              class="w-full"
-            ></p-dropdown>
-          </div>
-          <div class="mb-4">
-            <label
-              for="course_description"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Description
-            </label>
-            <textarea
-              id="course_description"
-              name="course_description"
-              [(ngModel)]="course.course_description"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-              rows="4"
-            ></textarea>
-          </div>
-          <div class="mb-4">
-            <label for="skills" class="block text-sm font-medium text-gray-700">
-              Skills
-            </label>
-            <input
-              id="skills"
-              name="skills"
-              [(ngModel)]="course.skills"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div class="mb-4">
-            <label for="price" class="block text-sm font-medium text-gray-700">
-              Price ($) <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              [(ngModel)]="course.price"
-              required
-              min="0"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                />
+                                @if (
+                                  courseForm.submitted &&
+                                  courseForm.controls['course_name']?.invalid
+                                  ) {
+                                  <div
+                                    class="text-red-500 text-sm mt-1"
+                                    >
+                                    Please enter the course name.
+                                  </div>
+                                }
+                              </div>
+                              <div class="mb-4">
+                                <label
+                                  for="difficulty_level"
+                                  class="block text-sm font-medium text-gray-700"
+                                  >
+                                  Difficulty Level
+                                </label>
+                                <p-dropdown
+                                  id="difficulty_level"
+                                  name="difficulty_level"
+                                  [(ngModel)]="course.difficulty_level"
+                                  [options]="difficultyLevels"
+                                  optionLabel="label"
+                                  optionValue="value"
+                                  class="w-full"
+                                ></p-dropdown>
+                              </div>
+                              <div class="mb-4">
+                                <label
+                                  for="course_description"
+                                  class="block text-sm font-medium text-gray-700"
+                                  >
+                                  Description
+                                </label>
+                                <textarea
+                                  id="course_description"
+                                  name="course_description"
+                                  [(ngModel)]="course.course_description"
+                                  class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                  rows="4"
+                                ></textarea>
+                              </div>
+                              <div class="mb-4">
+                                <label for="skills" class="block text-sm font-medium text-gray-700">
+                                  Skills
+                                </label>
+                                <input
+                                  id="skills"
+                                  name="skills"
+                                  [(ngModel)]="course.skills"
+                                  class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                  />
+                                </div>
+                                <div class="mb-4">
+                                  <label for="price" class="block text-sm font-medium text-gray-700">
+                                    Price ($) <span class="text-red-500">*</span>
+                                  </label>
+                                  <input
+                                    type="number"
+                                    id="price"
+                                    name="price"
+                                    [(ngModel)]="course.price"
+                                    required
+                                    min="0"
+                                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               [ngClass]="{
                 'border-red-500':
                   courseForm.submitted && courseForm.controls['price']?.invalid
               }"
-            />
-            <div
-              *ngIf="
-                courseForm.submitted && courseForm.controls['price']?.invalid
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              Please enter the course price.
-            </div>
-          </div>
-          <div class="mb-4">
-            <label
-              for="category_ids"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Categories <span class="text-red-500">*</span>
-            </label>
-            <p-multiSelect
-              id="category_ids"
-              name="category_ids"
-              [(ngModel)]="selectedCategories"
-              [options]="categories"
-              optionLabel="name"
-              optionValue="id"
-              placeholder="Select categories"
-              class="w-full"
-              required
-              #categoryIds="ngModel"
-            ></p-multiSelect>
-            <div
-              *ngIf="courseForm.submitted && categoryIds.invalid"
-              class="text-red-500 text-sm mt-1"
-            >
-              Please select at least one category.
-            </div>
-          </div>
-        </div>
-        <div class="p-4 flex justify-end gap-2">
-          <button
-            type="button"
-            (click)="showEditDialog = false"
-            class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            [disabled]="courseForm.invalid || isSubmitting"
-            class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            {{ isSubmitting ? "Updating..." : "Submit" }}
-          </button>
-        </div>
-      </form>
-    </ng-template>
-  </p-dialog>
+                                    />
+                                    @if (
+                                      courseForm.submitted && courseForm.controls['price']?.invalid
+                                      ) {
+                                      <div
+                                        class="text-red-500 text-sm mt-1"
+                                        >
+                                        Please enter the course price.
+                                      </div>
+                                    }
+                                  </div>
+                                  <div class="mb-4">
+                                    <label
+                                      for="category_ids"
+                                      class="block text-sm font-medium text-gray-700"
+                                      >
+                                      Categories <span class="text-red-500">*</span>
+                                    </label>
+                                    <p-multiSelect
+                                      id="category_ids"
+                                      name="category_ids"
+                                      [(ngModel)]="selectedCategories"
+                                      [options]="categories"
+                                      optionLabel="name"
+                                      optionValue="id"
+                                      placeholder="Select categories"
+                                      class="w-full"
+                                      required
+                                      #categoryIds="ngModel"
+                                    ></p-multiSelect>
+                                    @if (courseForm.submitted && categoryIds.invalid) {
+                                      <div
+                                        class="text-red-500 text-sm mt-1"
+                                        >
+                                        Please select at least one category.
+                                      </div>
+                                    }
+                                  </div>
+                                </div>
+                                <div class="p-4 flex justify-end gap-2">
+                                  <button
+                                    type="button"
+                                    (click)="showEditDialog = false"
+                                    class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
+                                    >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    type="submit"
+                                    [disabled]="courseForm.invalid || isSubmitting"
+                                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                    >
+                                    {{ isSubmitting ? "Updating..." : "Submit" }}
+                                  </button>
+                                </div>
+                              </form>
+                            </ng-template>
+                          </p-dialog>
 
-  <!-- Edit Lesson Dialog -->
-  <p-dialog
-    [(visible)]="showEditLessonDialog"
-    [style]="{ width: '600px' }"
-    header="Edit Lesson"
-    [modal]="true"
-    class="rounded-lg shadow-lg"
-  >
-    <ng-template pTemplate="content">
-      <form (ngSubmit)="updateLesson()" #lessonForm="ngForm">
-        <div class="p-4 grid grid-cols-1 gap-4">
-          <div class="mb-4">
-            <label
-              for="lesson_title"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Lesson Title <span class="text-red-500">*</span>
-            </label>
-            <input
-              id="lesson_title"
-              name="lesson_title"
-              [(ngModel)]="lesson.title"
-              required
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                          <!-- Edit Lesson Dialog -->
+                          <p-dialog
+                            [(visible)]="showEditLessonDialog"
+                            [style]="{ width: '600px' }"
+                            header="Edit Lesson"
+                            [modal]="true"
+                            class="rounded-lg shadow-lg"
+                            >
+                            <ng-template pTemplate="content">
+                              <form (ngSubmit)="updateLesson()" #lessonForm="ngForm">
+                                <div class="p-4 grid grid-cols-1 gap-4">
+                                  <div class="mb-4">
+                                    <label
+                                      for="lesson_title"
+                                      class="block text-sm font-medium text-gray-700"
+                                      >
+                                      Lesson Title <span class="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                      id="lesson_title"
+                                      name="lesson_title"
+                                      [(ngModel)]="lesson.title"
+                                      required
+                                      class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               [ngClass]="{
                 'border-red-500':
                   lessonForm.submitted &&
                   lessonForm.controls['lesson_title']?.invalid
               }"
-            />
-            <div
-              *ngIf="
-                lessonForm.submitted &&
-                lessonForm.controls['lesson_title']?.invalid
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              Please enter the lesson title.
-            </div>
-          </div>
-          <div class="mb-4">
-            <label
-              for="lesson_duration"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Duration (minutes) <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="number"
-              id="lesson_duration"
-              name="lesson_duration"
-              [(ngModel)]="lesson.duration"
-              [disabled]="true"
-              min="1"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray/30"
-            />
-          </div>
-          <div class="mb-4">
-            <label class="flex items-center text-sm font-medium text-gray-700">
-              <input
-                type="checkbox"
-                id="is_preview"
-                name="is_preview"
-                [(ngModel)]="lesson.is_preview"
-                class="mr-2"
-              />
-              Allow Preview
-            </label>
-          </div>
-          <div class="mb-4">
-            <label for="video" class="block text-sm font-medium text-gray-700">
-              Lesson Video
-            </label>
-            <input
-              type="file"
-              id="video"
-              name="video"
-              (change)="onVideoSelected($event)"
-              accept="video/*"
-              class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-            <div *ngIf="uploadProgress > 0 && isSubmittingLesson" class="mt-2">
-              <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div
-                  class="bg-blue-500 h-2.5 rounded-full"
-                  [style.width]="uploadProgress + '%'"
-                ></div>
-              </div>
-              <p class="text-sm text-gray-600 mt-1">
-                Uploading: {{ uploadProgress }}%
-              </p>
-            </div>
-            <div *ngIf="selectedLesson?.video_url" class="mt-2">
-              <p>Current Video:</p>
-              <video
-                class="w-52 h-32"
-                controls
-                [src]="selectedLesson.video_url"
-                type="video/mp4"
-              >
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </div>
-        </div>
-        <div class="p-4 flex justify-end gap-2">
-          <button
-            type="button"
-            (click)="showEditLessonDialog = false"
-            class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            [disabled]="lessonForm.invalid || isSubmittingLesson"
-            class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          >
-            {{ isSubmittingLesson ? "Updating..." : "Update" }}
-          </button>
-        </div>
-      </form>
-    </ng-template>
-  </p-dialog>
-</div>
+                                      />
+                                      @if (
+                                        lessonForm.submitted &&
+                                        lessonForm.controls['lesson_title']?.invalid
+                                        ) {
+                                        <div
+                                          class="text-red-500 text-sm mt-1"
+                                          >
+                                          Please enter the lesson title.
+                                        </div>
+                                      }
+                                    </div>
+                                    <div class="mb-4">
+                                      <label
+                                        for="lesson_duration"
+                                        class="block text-sm font-medium text-gray-700"
+                                        >
+                                        Duration (minutes) <span class="text-red-500">*</span>
+                                      </label>
+                                      <input
+                                        type="number"
+                                        id="lesson_duration"
+                                        name="lesson_duration"
+                                        [(ngModel)]="lesson.duration"
+                                        [disabled]="true"
+                                        min="1"
+                                        class="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray/30"
+                                        />
+                                      </div>
+                                      <div class="mb-4">
+                                        <label class="flex items-center text-sm font-medium text-gray-700">
+                                          <input
+                                            type="checkbox"
+                                            id="is_preview"
+                                            name="is_preview"
+                                            [(ngModel)]="lesson.is_preview"
+                                            class="mr-2"
+                                            />
+                                            Allow Preview
+                                          </label>
+                                        </div>
+                                        <div class="mb-4">
+                                          <label for="video" class="block text-sm font-medium text-gray-700">
+                                            Lesson Video
+                                          </label>
+                                          <input
+                                            type="file"
+                                            id="video"
+                                            name="video"
+                                            (change)="onVideoSelected($event)"
+                                            accept="video/*"
+                                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                            />
+                                            @if (uploadProgress > 0 && isSubmittingLesson) {
+                                              <div class="mt-2">
+                                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                                  <div
+                                                    class="bg-blue-500 h-2.5 rounded-full"
+                                                    [style.width]="uploadProgress + '%'"
+                                                  ></div>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-1">
+                                                  Uploading: {{ uploadProgress }}%
+                                                </p>
+                                              </div>
+                                            }
+                                            @if (selectedLesson?.video_url) {
+                                              <div class="mt-2">
+                                                <p>Current Video:</p>
+                                                <video
+                                                  class="w-52 h-32"
+                                                  controls
+                                                  [src]="selectedLesson.video_url"
+                                                  type="video/mp4"
+                                                  >
+                                                  Your browser does not support the video tag.
+                                                </video>
+                                              </div>
+                                            }
+                                          </div>
+                                        </div>
+                                        <div class="p-4 flex justify-end gap-2">
+                                          <button
+                                            type="button"
+                                            (click)="showEditLessonDialog = false"
+                                            class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition duration-200"
+                                            >
+                                            Cancel
+                                          </button>
+                                          <button
+                                            type="submit"
+                                            [disabled]="lessonForm.invalid || isSubmittingLesson"
+                                            class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                            >
+                                            {{ isSubmittingLesson ? "Updating..." : "Update" }}
+                                          </button>
+                                        </div>
+                                      </form>
+                                    </ng-template>
+                                  </p-dialog>
+                                </div>

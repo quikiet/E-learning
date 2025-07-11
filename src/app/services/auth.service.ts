@@ -27,17 +27,6 @@ export class AuthService {
     }
   }
 
-  // isAuthenticated(): boolean {
-  //   const cookies = document.cookie.split(';').reduce((acc, cookie) => {
-  //     const [name, value] = cookie.trim().split('=');
-  //     acc[name] = value;
-  //     return acc;
-  //   }, {} as { [key: string]: string });
-  //   const isAuthenticated = !!cookies['jwt_token'];
-  //   console.log('Checking auth:', isAuthenticated);
-  //   return isAuthenticated;
-  // }
-
   loginWithGoogle() {
     return this.http.get<any>(`${this.apiUrl}/auth/google`);
   }

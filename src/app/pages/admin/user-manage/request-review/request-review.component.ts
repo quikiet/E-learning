@@ -15,8 +15,8 @@ import { Tag } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { AvatarModule } from 'primeng/avatar';
 import { TextareaModule } from 'primeng/textarea';
-import { DropdownModule } from 'primeng/dropdown';
 import { DrawerModule } from 'primeng/drawer';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-request-review',
@@ -35,7 +35,7 @@ import { DrawerModule } from 'primeng/drawer';
     DialogModule,
     AvatarModule,
     TextareaModule,
-    DropdownModule,
+    SelectModule,
     ReactiveFormsModule,
     DrawerModule
   ],

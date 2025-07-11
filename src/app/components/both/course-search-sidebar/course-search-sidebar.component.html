@@ -20,114 +20,117 @@
         class="w-full"
         placeholder="Search by name, description, skills..."
         formControlName="keyword"
-      />
-    </div>
-    <p-divider></p-divider>
+        />
+      </div>
+      <p-divider></p-divider>
 
-    <p-accordion [value]="['0']" [multiple]="true">
-      <p-accordion-panel value="0">
-        <p-accordion-header class="lg:!bg-[#F8F8F8]"
-          >Category</p-accordion-header
-        >
-        <p-accordion-content>
-          <div class="flex flex-col gap-2">
-            <div *ngFor="let cat of categories">
-              <p-checkbox
-                [inputId]="'cat' + cat.id"
-                [value]="cat.id"
-                formControlName="categories"
-              />
-              <label [for]="'cat' + cat.id" class="ml-2 text-xs">
-                <span class="text-black">{{ cat.name }}</span>
-                <span> ({{ cat.courses_count }})</span>
-              </label>
-              <!-- Danh mục con -->
-              <!-- <div *ngIf="cat.children?.length" class="flex flex-wrap gap-3">
-                <div
-                  *ngFor="let child of cat.children"
-                  class="flex items-center"
-                >
-                  <p-checkbox
-                    [inputId]="'child' + child.id"
-                    [value]="child.id"
-                    formControlName="categories"
-                  />
-                  <label [for]="'child' + child.id" class="ml-2 text-gray-600">
-                    {{ child.name }}
-                  </label>
-                </div>
-              </div> -->
-            </div>
-          </div>
-        </p-accordion-content>
-      </p-accordion-panel>
-      <p-accordion-panel value="1">
-        <p-accordion-header class="lg:!bg-[#F8F8F8]"
-          >Difficult</p-accordion-header
-        >
-        <p-accordion-content>
-          <div class="flex flex-wrap gap-4">
-            <div
-              class="flex items-center"
-              *ngFor="let difficult of difficultyOptions; let i = index"
+      <p-accordion [value]="['0']" [multiple]="true">
+        <p-accordion-panel value="0">
+          <p-accordion-header class="lg:!bg-[#F8F8F8]"
+            >Category</p-accordion-header
             >
-              <p-radiobutton
-                [name]="'difficultyOptions'"
-                [inputId]="'difficult' + i"
-                [value]="difficult.value"
-                formControlName="difficulty"
-              />
-              <label class="ml-2 text-sm" [for]="'difficult' + i">{{
-                difficult.label
-              }}</label>
-            </div>
-          </div>
-        </p-accordion-content>
-      </p-accordion-panel>
-      <p-accordion-panel value="2">
-        <p-accordion-header class="lg:!bg-[#F8F8F8]">Rating</p-accordion-header>
-        <p-accordion-content>
-          <p-slider
-            formControlName="min_rating"
-            [min]="0"
-            [max]="5"
-            [step]="0.5"
-          ></p-slider>
-          <div class="text-center mt-2">
-            {{ searchForm.get("min_rating")?.value }}
-          </div>
-        </p-accordion-content>
-      </p-accordion-panel>
-      <p-accordion-panel value="3">
-        <p-accordion-header class="lg:!bg-[#F8F8F8]">Price</p-accordion-header>
-        <p-accordion-content>
-          <div class="flex gap-2">
-            <input
-              pInputText
-              type="number"
-              class="w-full"
-              placeholder="From"
-              min="0"
-              formControlName="min_price"
-            />
-            <input
-              pInputText
-              type="number"
-              class="w-full"
-              placeholder="To"
-              formControlName="max_price"
-            /></div
-        ></p-accordion-content>
-      </p-accordion-panel>
-    </p-accordion>
+            <p-accordion-content>
+              <div class="flex flex-col gap-2">
+                @for (cat of categories; track cat) {
+                  <div>
+                    <p-checkbox
+                      [inputId]="'cat' + cat.id"
+                      [value]="cat.id"
+                      formControlName="categories"
+                      />
+                      <label [for]="'cat' + cat.id" class="ml-2 text-xs">
+                        <span class="text-black">{{ cat.name }}</span>
+                        <span> ({{ cat.courses_count }})</span>
+                      </label>
+                      <!-- Danh mục con -->
+                      <!-- <div *ngIf="cat.children?.length" class="flex flex-wrap gap-3">
+                      <div
+                        *ngFor="let child of cat.children"
+                        class="flex items-center"
+                        >
+                        <p-checkbox
+                          [inputId]="'child' + child.id"
+                          [value]="child.id"
+                          formControlName="categories"
+                          />
+                          <label [for]="'child' + child.id" class="ml-2 text-gray-600">
+                            {{ child.name }}
+                          </label>
+                        </div>
+                      </div> -->
+                    </div>
+                  }
+                </div>
+              </p-accordion-content>
+            </p-accordion-panel>
+            <p-accordion-panel value="1">
+              <p-accordion-header class="lg:!bg-[#F8F8F8]"
+                >Difficult</p-accordion-header
+                >
+                <p-accordion-content>
+                  <div class="flex flex-wrap gap-4">
+                    @for (difficult of difficultyOptions; track difficult; let i = $index) {
+                      <div
+                        class="flex items-center"
+                        >
+                        <p-radiobutton
+                          [name]="'difficultyOptions'"
+                          [inputId]="'difficult' + i"
+                          [value]="difficult.value"
+                          formControlName="difficulty"
+                          />
+                          <label class="ml-2 text-sm" [for]="'difficult' + i">{{
+                            difficult.label
+                          }}</label>
+                        </div>
+                      }
+                    </div>
+                  </p-accordion-content>
+                </p-accordion-panel>
+                <p-accordion-panel value="2">
+                  <p-accordion-header class="lg:!bg-[#F8F8F8]">Rating</p-accordion-header>
+                  <p-accordion-content>
+                    <p-slider
+                      formControlName="min_rating"
+                      [min]="0"
+                      [max]="5"
+                      [step]="0.5"
+                    ></p-slider>
+                    <div class="text-center mt-2">
+                      {{ searchForm.get("min_rating")?.value }}
+                    </div>
+                  </p-accordion-content>
+                </p-accordion-panel>
+                <p-accordion-panel value="3">
+                  <p-accordion-header class="lg:!bg-[#F8F8F8]">Price</p-accordion-header>
+                  <p-accordion-content>
+                    <div class="flex gap-2">
+                      <input
+                        pInputText
+                        type="number"
+                        class="w-full"
+                        placeholder="From"
+                        min="0"
+                        formControlName="min_price"
+                        />
+                        <input
+                          pInputText
+                          type="number"
+                          class="w-full"
+                          placeholder="To"
+                          formControlName="max_price"
+                          /></div
+                        ></p-accordion-content>
+                      </p-accordion-panel>
+                    </p-accordion>
 
-    <!-- Nút đặt lại -->
-    <button
-      pButton
-      type="button"
-      label="Reset filter"
-      class="bg-secondary w-full mt-4"
-      (click)="resetFilters()"
-    ></button>
-  </form>
-</div>
+                    <!-- Nút đặt lại -->
+                    <button
+                      pButton
+                      type="button"
+                      label="Reset filter"
+                      class="bg-secondary w-full mt-4"
+                      (click)="resetFilters()"
+                    ></button>
+                  </form>
+                </div>

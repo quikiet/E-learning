@@ -49,214 +49,217 @@
       <div class="mb-4">
         <label for="course_name" class="block text-sm font-medium text-gray-700"
           >Course name</label
-        >
-        <input
-          pInputText
-          type="text"
-          id="course_name"
-          name="course_name"
-          [(ngModel)]="course.course_name"
-          placeholder="Design with Figma"
-          required
-          class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        />
-      </div>
-      <div class="mb-4">
-        <label
-          for="difficulty_level"
-          class="block text-sm font-medium text-gray-700"
-          >Level</label
-        >
-        <select
-          id="difficulty_level"
-          name="difficulty_level"
-          [(ngModel)]="course.difficulty_level"
-          class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        >
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
-        </select>
-      </div>
-      <div class="mb-4">
-        <label
-          for="course_description"
-          class="block text-sm font-medium text-gray-700"
-          >Description</label
-        >
-        <textarea
-          pTextarea
-          id="course_description"
-          name="course_description"
-          [(ngModel)]="course.course_description"
-          class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
-          rows="4"
-          placeholder="After learn..."
-        ></textarea>
-      </div>
-      <div class="mb-4">
-        <label for="skills" class="block text-sm font-medium text-gray-700"
-          >Skills</label
-        >
-        <input
-          pInputText
-          type="text"
-          id="skills"
-          name="skills"
-          [(ngModel)]="course.skills"
-          placeholder="HTML5, CSS3,.."
-          class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        />
-      </div>
-      <div class="mb-4">
-        <label for="price" class="block text-sm font-medium text-gray-700"
-          >Price ($)</label
-        >
-        <input
-          pInputText
-          type="number"
-          id="price"
-          name="price"
-          [(ngModel)]="course.price"
-          required
-          min="0"
-          class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        />
-      </div>
-      <div class="mb-4">
-        <label for="image" class="block text-sm font-medium text-gray-700"
-          >Thumbnail</label
-        >
-        <input
-          type="file"
-          pInputText
-          id="image"
-          name="image"
-          (change)="onImageSelected($event)"
-          accept="image/*"
-          class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        />
-      </div>
-      <div class="mb-4 md:flex gap-5 items-center justify-between">
-        <div>
-          <label
-            for="category_ids"
-            class="block text-sm font-medium text-gray-700"
-            >Categories</label
           >
-          <p-multiSelect
-            [options]="categories"
-            [(ngModel)]="selectedCategories"
-            optionLabel="name"
-            optionValue="id"
-            placeholder="Select categories"
-            class="w-full md:w-56"
-            name="category_ids"
+          <input
+            pInputText
+            type="text"
+            id="course_name"
+            name="course_name"
+            [(ngModel)]="course.course_name"
+            placeholder="Design with Figma"
             required
-            #categoryIds="ngModel"
-            (onChange)="onCategoryChange($event)"
-          ></p-multiSelect>
-          <div
-            *ngIf="courseForm.submitted && categoryIds.invalid"
-            class="text-red-500 !text-sm mt-1"
-          >
-            Vui lòng chọn ít nhất một danh mục.
+            class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            />
           </div>
-        </div>
-        <div class="mb-6 flex items-center my-5 md:my-0">
-          <input
-            type="checkbox"
-            name="is_certificate_enabled"
-            (click)="openCertify()"
-            [(ngModel)]="course.is_certificate_enabled"
-            class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-          />
-          <label
-            for="is_certificate_enabled"
-            class="ml-2 text-sm font-medium text-gray-700"
-          >
-            Certificate
-          </label>
-        </div>
-      </div>
+          <div class="mb-4">
+            <label
+              for="difficulty_level"
+              class="block text-sm font-medium text-gray-700"
+              >Level</label
+              >
+              <select
+                id="difficulty_level"
+                name="difficulty_level"
+                [(ngModel)]="course.difficulty_level"
+                class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                >
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label
+                for="course_description"
+                class="block text-sm font-medium text-gray-700"
+                >Description</label
+                >
+                <textarea
+                  pTextarea
+                  id="course_description"
+                  name="course_description"
+                  [(ngModel)]="course.course_description"
+                  class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  rows="4"
+                  placeholder="After learn..."
+                ></textarea>
+              </div>
+              <div class="mb-4">
+                <label for="skills" class="block text-sm font-medium text-gray-700"
+                  >Skills</label
+                  >
+                  <input
+                    pInputText
+                    type="text"
+                    id="skills"
+                    name="skills"
+                    [(ngModel)]="course.skills"
+                    placeholder="HTML5, CSS3,.."
+                    class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div class="mb-4">
+                    <label for="price" class="block text-sm font-medium text-gray-700"
+                      >Price ($)</label
+                      >
+                      <input
+                        pInputText
+                        type="number"
+                        id="price"
+                        name="price"
+                        [(ngModel)]="course.price"
+                        required
+                        min="0"
+                        class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                        />
+                      </div>
+                      <div class="mb-4">
+                        <label for="image" class="block text-sm font-medium text-gray-700"
+                          >Thumbnail</label
+                          >
+                          <input
+                            type="file"
+                            pInputText
+                            id="image"
+                            name="image"
+                            (change)="onImageSelected($event)"
+                            accept="image/*"
+                            class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            />
+                          </div>
+                          <div class="mb-4 md:flex gap-5 items-center justify-between">
+                            <div>
+                              <label
+                                for="category_ids"
+                                class="block text-sm font-medium text-gray-700"
+                                >Categories</label
+                                >
+                                <p-multiSelect
+                                  [options]="categories"
+                                  [(ngModel)]="selectedCategories"
+                                  optionLabel="name"
+                                  optionValue="id"
+                                  placeholder="Select categories"
+                                  class="w-full md:w-56"
+                                  name="category_ids"
+                                  required
+                                  #categoryIds="ngModel"
+                                  (onChange)="onCategoryChange($event)"
+                                ></p-multiSelect>
+                                @if (courseForm.submitted && categoryIds.invalid) {
+                                  <div
+                                    class="text-red-500 !text-sm mt-1"
+                                    >
+                                    Vui lòng chọn ít nhất một danh mục.
+                                  </div>
+                                }
+                              </div>
+                              <div class="mb-6 flex items-center my-5 md:my-0">
+                                <input
+                                  type="checkbox"
+                                  name="is_certificate_enabled"
+                                  (click)="openCertify()"
+                                  [(ngModel)]="course.is_certificate_enabled"
+                                  class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                  />
+                                  <label
+                                    for="is_certificate_enabled"
+                                    class="ml-2 text-sm font-medium text-gray-700"
+                                    >
+                                    Certificate
+                                  </label>
+                                </div>
+                              </div>
 
-      <div class="space-y-4" *ngIf="showCertificateModal">
-        <div class="flex flex-col gap-2">
-          <label
-            for="lessonCompletionPercent"
-            class="text-sm font-medium text-gray-700"
-            >Percentage of lesson completion (%):</label
-          >
-          <input
-            id="lessonCompletionPercent"
-            type="number"
-            pInputText
-            min="0"
-            max="100"
-            [(ngModel)]="certificateRule.lesson_completion_percent"
-            name="lesson_completion_percent"
-            placeholder="Enter percentage (e.g., 85)"
-            class="w-full !text-sm"
-          />
-        </div>
-        <div class="flex flex-col gap-2">
-          <label for="quizMinScore" class="text-sm font-medium text-gray-700"
-            >Minimum quiz score (%):</label
-          >
-          <input
-            id="quizMinScore"
-            type="number"
-            pInputText
-            min="0"
-            max="100"
-            [(ngModel)]="certificateRule.quiz_min_score"
-            placeholder="Enter the minimum score (e.g., 70)"
-            name="quiz_min_score"
-            class="w-full !text-sm"
-          />
-        </div>
-        <div class="flex flex-col gap-2">
-          <label
-            for="lessonVersionRule"
-            class="text-sm font-medium text-gray-700"
-            >Lesson version rules:</label
-          >
-          <p-dropdown
-            id="lessonVersionRule"
-            [(ngModel)]="certificateRule.lesson_version_rule"
-            name="lesson_version_rule"
-            [options]="versionRuleOptions"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Select a rule"
-            class="w-full !text-sm"
-          />
-        </div>
-        <div class="flex flex-col gap-2">
-          <label for="quizVersionRule" class="text-sm font-medium text-gray-700"
-            >Quiz version rules:</label
-          >
-          <p-dropdown
-            id="quizVersionRule"
-            [(ngModel)]="certificateRule.quiz_version_rule"
-            [options]="versionRuleOptions"
-            name="quiz_version_rule"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Select a rule"
-            class="w-full !text-sm"
-          />
-        </div>
-      </div>
-      <div class="text-right">
-        <button
-          type="submit"
-          [disabled]="!courseForm.valid"
-          class="bg-secondary text-white px-4 py-2 rounded-md hover:bg-secondary-content mt-4 w-full"
-        >
-          Create
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+                              @if (showCertificateModal) {
+                                <div class="space-y-4">
+                                  <div class="flex flex-col gap-2">
+                                    <label
+                                      for="lessonCompletionPercent"
+                                      class="text-sm font-medium text-gray-700"
+                                      >Percentage of lesson completion (%):</label
+                                      >
+                                      <input
+                                        id="lessonCompletionPercent"
+                                        type="number"
+                                        pInputText
+                                        min="0"
+                                        max="100"
+                                        [(ngModel)]="certificateRule.lesson_completion_percent"
+                                        name="lesson_completion_percent"
+                                        placeholder="Enter percentage (e.g., 85)"
+                                        class="w-full !text-sm"
+                                        />
+                                      </div>
+                                      <div class="flex flex-col gap-2">
+                                        <label for="quizMinScore" class="text-sm font-medium text-gray-700"
+                                          >Minimum quiz score (%):</label
+                                          >
+                                          <input
+                                            id="quizMinScore"
+                                            type="number"
+                                            pInputText
+                                            min="0"
+                                            max="100"
+                                            [(ngModel)]="certificateRule.quiz_min_score"
+                                            placeholder="Enter the minimum score (e.g., 70)"
+                                            name="quiz_min_score"
+                                            class="w-full !text-sm"
+                                            />
+                                          </div>
+                                          <div class="flex flex-col gap-2">
+                                            <label
+                                              for="lessonVersionRule"
+                                              class="text-sm font-medium text-gray-700"
+                                              >Lesson version rules:</label
+                                              >
+                                              <p-dropdown
+                                                id="lessonVersionRule"
+                                                [(ngModel)]="certificateRule.lesson_version_rule"
+                                                name="lesson_version_rule"
+                                                [options]="versionRuleOptions"
+                                                optionLabel="label"
+                                                optionValue="value"
+                                                placeholder="Select a rule"
+                                                class="w-full !text-sm"
+                                                />
+                                              </div>
+                                              <div class="flex flex-col gap-2">
+                                                <label for="quizVersionRule" class="text-sm font-medium text-gray-700"
+                                                  >Quiz version rules:</label
+                                                  >
+                                                  <p-dropdown
+                                                    id="quizVersionRule"
+                                                    [(ngModel)]="certificateRule.quiz_version_rule"
+                                                    [options]="versionRuleOptions"
+                                                    name="quiz_version_rule"
+                                                    optionLabel="label"
+                                                    optionValue="value"
+                                                    placeholder="Select a rule"
+                                                    class="w-full !text-sm"
+                                                    />
+                                                  </div>
+                                                </div>
+                                              }
+                                              <div class="text-right">
+                                                <button
+                                                  type="submit"
+                                                  [disabled]="!courseForm.valid"
+                                                  class="bg-secondary text-white px-4 py-2 rounded-md hover:bg-secondary-content mt-4 w-full"
+                                                  >
+                                                  Create
+                                                </button>
+                                              </div>
+                                            </form>
+                                          </div>
+                                        </div>

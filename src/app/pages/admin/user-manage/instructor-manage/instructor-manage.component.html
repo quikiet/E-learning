@@ -1,8 +1,8 @@
 <p-toast></p-toast>
 <div>
-  <p-tabView>
+  <p-tabs>
     <!-- Tab 1: Danh sách giảng viên -->
-    <p-tabPanel header="Instructor list">
+    <p-tabpanels header="Instructor list">
       <p-table
         [value]="instructors"
         [tableStyle]="{ 'min-width': '50rem' }"
@@ -43,6 +43,6 @@
         [rowsPerPageOptions]="[5, 10, 20]"
         (onPageChange)="onPageChange($event)"
       ></p-paginator>
-    </p-tabPanel>
-  </p-tabView>
+    </p-tabpanels>
+  </p-tabs>
 </div>

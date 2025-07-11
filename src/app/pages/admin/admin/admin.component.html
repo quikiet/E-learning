@@ -9,22 +9,22 @@
     class="no-scrollbar cursor-pointer sidebar fixed top-0 left-0 z-10 flex h-screen w-[290px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-5 transition-all duration-300 lg:static lg:translate-x-0"
     (mouseenter)="onSidebarMouseEnter()"
     (mouseleave)="onSidebarMouseLeave()"
-  >
+    >
     <!-- SIDEBAR HEADER -->
     <div
       [ngClass]="sidebarToggle ? 'justify-center' : 'justify-between'"
       class="sidebar-header flex items-center gap-2 pt-8 pb-7"
-    >
+      >
       <a href="index.html">
         <div
           [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''"
           class="logo"
-        >
+          >
           <div class="flex items-center gap-5">
             <!-- <img
-              class="w-14 h-14 lg:block hidden"
-              src="thumb-boy.png"
-              alt="Logo"
+            class="w-14 h-14 lg:block hidden"
+            src="thumb-boy.png"
+            alt="Logo"
             /> -->
             <img
               alt="Edunity logo, green hexagonal shape with stacked layers"
@@ -32,650 +32,652 @@
               height="32"
               src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
               width="32"
-            />
-            <span class="text-secondary font-semibold text-2xl"
-              >LearnSmart</span
-            >
+              />
+              <span class="text-secondary font-semibold text-2xl"
+                >LearnSmart</span
+                >
+              </div>
+            </div>
+
+            <!-- <img
+            [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:block' : 'hidden'"
+            class="logo-icon hidden w-12 h-12"
+            src="thumb-boy.png"
+            alt="Logo"
+            /> -->
+            <img
+              alt="Edunity logo, green hexagonal shape with stacked layers"
+              [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:block' : 'hidden'"
+              class="logo-icon hidden w-12 h-12"
+              height="32"
+              src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
+              width="32"
+              />
+            </a>
           </div>
-        </div>
+          <!-- SIDEBAR HEADER -->
 
-        <!-- <img
-          [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:block' : 'hidden'"
-          class="logo-icon hidden w-12 h-12"
-          src="thumb-boy.png"
-          alt="Logo"
-        /> -->
-        <img
-          alt="Edunity logo, green hexagonal shape with stacked layers"
-          [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:block' : 'hidden'"
-          class="logo-icon hidden w-12 h-12"
-          height="32"
-          src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
-          width="32"
-        />
-      </a>
-    </div>
-    <!-- SIDEBAR HEADER -->
-
-    <div
-      class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear"
-    >
-      <!-- Sidebar Menu -->
-      <nav>
-        <!-- Menu Group -->
-        <div>
-          <h3 class="mb-4 text-xs leading-[20px] text-gray-400 uppercase">
-            <span
-              [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''"
-              class="menu-group-title"
+          <div
+            class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear"
             >
-              Menu
-            </span>
-            <svg
+            <!-- Sidebar Menu -->
+            <nav>
+              <!-- Menu Group -->
+              <div>
+                <h3 class="mb-4 text-xs leading-[20px] text-gray-400 uppercase">
+                  <span
+                    [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''"
+                    class="menu-group-title"
+                    >
+                    Menu
+                  </span>
+                  <svg
               [ngClass]="
                 sidebarToggle && !isSidebarHovered
                   ? 'lg:block hidden'
                   : 'hidden'
               "
-              class="menu-group-icon mx-auto fill-current hidden"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M5.99915 10.2451C6.96564 10.2451 7.74915 11.0286 7.74915 11.9951V12.0051C7.74915 12.9716 6.96564 13.7551 5.99915 13.7551C5.03265 13.7551 4.24915 12.9716 4.24915 12.0051V11.9951C4.24915 11.0286 5.03265 10.2451 5.99915 10.2451ZM17.9991 10.2451C18.9656 10.2451 19.7491 11.0286 19.7491 11.9951V12.0051C19.7491 12.9716 18.9656 13.7551 17.9991 13.7551C17.0326 13.7551 16.2491 12.9716 16.2491 12.0051V11.9951C16.2491 11.0286 17.0326 10.2451 17.9991 10.2451ZM13.7491 11.9951C13.7491 11.0286 12.9656 10.2451 11.9991 10.2451C11.0326 10.2451 10.2491 11.0286 10.2491 11.9951V12.0051C10.2491 12.9716 11.0326 13.7551 11.9991 13.7551C12.9656 13.7551 13.7491 12.9716 13.7491 12.0051V11.9951Z"
-                fill=""
-              ></path>
-            </svg>
-          </h3>
-          <ul
-            class="mb-6 flex flex-col gap-4"
+                    class="menu-group-icon mx-auto fill-current hidden"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M5.99915 10.2451C6.96564 10.2451 7.74915 11.0286 7.74915 11.9951V12.0051C7.74915 12.9716 6.96564 13.7551 5.99915 13.7551C5.03265 13.7551 4.24915 12.9716 4.24915 12.0051V11.9951C4.24915 11.0286 5.03265 10.2451 5.99915 10.2451ZM17.9991 10.2451C18.9656 10.2451 19.7491 11.0286 19.7491 11.9951V12.0051C19.7491 12.9716 18.9656 13.7551 17.9991 13.7551C17.0326 13.7551 16.2491 12.9716 16.2491 12.0051V11.9951C16.2491 11.0286 17.0326 10.2451 17.9991 10.2451ZM13.7491 11.9951C13.7491 11.0286 12.9656 10.2451 11.9991 10.2451C11.0326 10.2451 10.2491 11.0286 10.2491 11.9951V12.0051C10.2491 12.9716 11.0326 13.7551 11.9991 13.7551C12.9656 13.7551 13.7491 12.9716 13.7491 12.0051V11.9951Z"
+                      fill=""
+                    ></path>
+                  </svg>
+                </h3>
+                <ul
+                  class="mb-6 flex flex-col gap-4"
             [ngClass]="
               sidebarToggle && !isSidebarHovered ? 'lg:items-center' : ''
             "
-          >
-            <!-- Menu Item Dashboard -->
-            <li
-              routerLink="dashboard"
-              routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-              class="hover:bg-gray/30 transition duration-200 rounded text-sm font-medium"
-            >
-              <div
-                class="cursor-pointer transition duration-200 p-2 rounded flex items-center justify-between"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="pi pi-objects-column !font-normal"></i>
-                  <span
+                  >
+                  <!-- Menu Item Dashboard -->
+                  <li
+                    routerLink="dashboard"
+                    routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                    class="hover:bg-gray/30 transition duration-200 rounded text-sm font-medium"
+                    >
+                    <div
+                      class="cursor-pointer transition duration-200 p-2 rounded flex items-center justify-between"
+                      >
+                      <div class="flex items-center gap-2">
+                        <i class="pi pi-objects-column !font-normal"></i>
+                        <span
                     [ngClass]="
                       sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                     "
-                    class="!font-normal"
-                  >
-                    Dashboard
-                  </span>
-                </div>
-              </div>
-            </li>
+                          class="!font-normal"
+                          >
+                          Dashboard
+                        </span>
+                      </div>
+                    </div>
+                  </li>
 
-            <!-- Menu Item User -->
-            <li class="text-sm font-medium">
-              <div
-                (click)="isUserManageOpen = !isUserManageOpen"
+                  <!-- Menu Item User -->
+                  <li class="text-sm font-medium">
+                    <div
+                      (click)="isUserManageOpen = !isUserManageOpen"
                 [ngClass]="
                   isUserManageOpen
                     ? 'bg-secondary-light/50 text-secondary hover:bg-secondary-light/50'
                     : 'icon-gray'
                 "
-                class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="pi pi-user !font-normal"></i>
-                  <span
+                      class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
+                      >
+                      <div class="flex items-center gap-2">
+                        <i class="pi pi-user !font-normal"></i>
+                        <span
                     [ngClass]="
                       sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                     "
-                    class="!font-normal"
-                  >
-                    User
-                  </span>
-                </div>
-                <span
+                          class="!font-normal"
+                          >
+                          User
+                        </span>
+                      </div>
+                      <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
-                >
-                  <i
-                    class="pi !font-normal"
+                        >
+                        <i
+                          class="pi !font-normal"
                     [ngClass]="{
                       'pi-angle-down': !isUserManageOpen,
                       'pi-angle-up': isUserManageOpen
                     }"
-                  ></i>
-                </span>
-              </div>
+                        ></i>
+                      </span>
+                    </div>
 
-              <!-- Submenu -->
-              <ul
+                    <!-- Submenu -->
+                    @if (isUserManageOpen) {
+                      <ul
                 [ngClass]="
                   sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                 "
-                *ngIf="isUserManageOpen"
-                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
-              >
-                <li
-                  routerLink="user-manage"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  User list
-                </li>
-                <li
-                  routerLink="instructor-manage"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Instructor list
-                </li>
-                <li
-                  routerLink="deleted-user"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Deleted user
-                </li>
-              </ul>
-            </li>
+                        class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+                        >
+                        <li
+                          routerLink="user-manage"
+                          routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                          class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                          >
+                          User list
+                        </li>
+                        <li
+                          routerLink="instructor-manage"
+                          routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                          class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                          >
+                          Instructor list
+                        </li>
+                        <li
+                          routerLink="deleted-user"
+                          routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                          class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                          >
+                          Deleted user
+                        </li>
+                      </ul>
+                    }
+                  </li>
 
-            <!-- Menu Item Course -->
-            <li class="text-sm font-medium">
-              <div
-                (click)="isCourseManageOpen = !isCourseManageOpen"
+                  <!-- Menu Item Course -->
+                  <li class="text-sm font-medium">
+                    <div
+                      (click)="isCourseManageOpen = !isCourseManageOpen"
                 [ngClass]="
                   isCourseManageOpen
                     ? 'bg-secondary-light/50 text-secondary'
                     : 'icon-gray'
                 "
-                class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="pi pi-book !font-normal"></i>
-                  <span
-                    class="!font-normal"
+                      class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
+                      >
+                      <div class="flex items-center gap-2">
+                        <i class="pi pi-book !font-normal"></i>
+                        <span
+                          class="!font-normal"
                     [ngClass]="
                       sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                     "
-                  >
-                    Course
-                  </span>
-                </div>
-                <span
+                          >
+                          Course
+                        </span>
+                      </div>
+                      <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
-                >
-                  <i
-                    class="pi"
+                        >
+                        <i
+                          class="pi"
                     [ngClass]="{
                       'pi-angle-down': !isCourseManageOpen,
                       'pi-angle-up': isCourseManageOpen
                     }"
-                  ></i>
-                </span>
-              </div>
+                        ></i>
+                      </span>
+                    </div>
 
-              <!-- Submenu -->
-              <ul
+                    <!-- Submenu -->
+                    @if (isCourseManageOpen) {
+                      <ul
                 [ngClass]="
                   sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                 "
-                *ngIf="isCourseManageOpen"
-                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
-              >
-                <li
-                  routerLink="course-manage"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Course list
-                </li>
-                <li
-                  routerLink="pending-course"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Pending course
-                </li>
-                <li
-                  routerLink="category-manage"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Category
-                </li>
-              </ul>
-            </li>
+                        class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+                        >
+                        <li
+                          routerLink="course-manage"
+                          routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                          class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                          >
+                          Course list
+                        </li>
+                        <li
+                          routerLink="pending-course"
+                          routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                          class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                          >
+                          Pending course
+                        </li>
+                        <li
+                          routerLink="category-manage"
+                          routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                          class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                          >
+                          Category
+                        </li>
+                      </ul>
+                    }
+                  </li>
 
-            <!-- Menu Item Reviews -->
-            <li class="text-sm font-medium">
-              <div
-                (click)="isReviewManageOpen = !isReviewManageOpen"
+                  <!-- Menu Item Reviews -->
+                  <li class="text-sm font-medium">
+                    <div
+                      (click)="isReviewManageOpen = !isReviewManageOpen"
                 [ngClass]="
                   isReviewManageOpen
                     ? 'bg-secondary-light/50 text-secondary'
                     : 'icon-gray'
                 "
-                class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="pi pi-exclamation-triangle !font-normal"></i>
-                  <span
-                    class="!font-normal"
+                      class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
+                      >
+                      <div class="flex items-center gap-2">
+                        <i class="pi pi-exclamation-triangle !font-normal"></i>
+                        <span
+                          class="!font-normal"
                     [ngClass]="
                       sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                     "
-                  >
-                    Report
-                  </span>
-                </div>
-                <span
+                          >
+                          Report
+                        </span>
+                      </div>
+                      <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
-                >
-                  <i
-                    class="pi"
+                        >
+                        <i
+                          class="pi"
                     [ngClass]="{
                       'pi-angle-down': !isReviewManageOpen,
                       'pi-angle-up': isReviewManageOpen
                     }"
-                  ></i>
-                </span>
-              </div>
+                        ></i>
+                      </span>
+                    </div>
 
-              <!-- Submenu -->
-              <ul
+                    <!-- Submenu -->
+                    @if (isReviewManageOpen) {
+                      <ul
                 [ngClass]="
                   sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                 "
-                *ngIf="isReviewManageOpen"
-                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
-              >
-                <li
-                  routerLink="report-manage"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Report management
-                </li>
-              </ul>
-            </li>
+                        class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+                        >
+                        <li
+                          routerLink="report-manage"
+                          routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                          class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                          >
+                          Report management
+                        </li>
+                      </ul>
+                    }
+                  </li>
 
-            <!-- Menu Item Payments -->
-            <li class="text-sm font-medium">
-              <div
-                (click)="isPaymentManageOpen = !isPaymentManageOpen"
+                  <!-- Menu Item Payments -->
+                  <li class="text-sm font-medium">
+                    <div
+                      (click)="isPaymentManageOpen = !isPaymentManageOpen"
                 [ngClass]="
                   isPaymentManageOpen
                     ? 'bg-secondary-light/50 text-secondary'
                     : 'icon-gray'
                 "
-                class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="pi pi-wallet !font-normal"></i>
-                  <span
-                    class="!font-normal"
+                      class="cursor-pointer hover:bg-gray/30 transition duration-200 p-2 rounded flex items-center justify-between"
+                      >
+                      <div class="flex items-center gap-2">
+                        <i class="pi pi-wallet !font-normal"></i>
+                        <span
+                          class="!font-normal"
                     [ngClass]="
                       sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                     "
-                  >
-                    Payment & Discount
-                  </span>
-                </div>
-                <span
+                          >
+                          Payment & Discount
+                        </span>
+                      </div>
+                      <span
                   [ngClass]="
                     sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                   "
-                >
-                  <i
-                    class="pi"
+                        >
+                        <i
+                          class="pi"
                     [ngClass]="{
                       'pi-angle-down': !isPaymentManageOpen,
                       'pi-angle-up': isPaymentManageOpen
                     }"
-                  ></i>
-                </span>
-              </div>
+                        ></i>
+                      </span>
+                    </div>
 
-              <!-- Submenu -->
-              <ul
+                    <!-- Submenu -->
+                    @if (isPaymentManageOpen) {
+                      <ul
                 [ngClass]="
                   sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''
                 "
-                *ngIf="isPaymentManageOpen"
-                class="mt-1 space-y-1 text-sm text-gray-700 w-full"
-              >
-                <li
-                  routerLink="payment-manage"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Payment History
-                </li>
-                <li
-                  routerLink="coupon-manage"
-                  routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
-                  class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
-                >
-                  Coupons
-                </li>
-              </ul>
-            </li>
-          </ul>
+                        class="mt-1 space-y-1 text-sm text-gray-700 w-full"
+                        >
+                        <li
+                          routerLink="payment-manage"
+                          routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                          class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                          >
+                          Payment History
+                        </li>
+                        <li
+                          routerLink="coupon-manage"
+                          routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
+                          class="hover:bg-gray/30 transition duration-200 p-2 rounded text-sm font-normal w-full pl-8"
+                          >
+                          Coupons
+                        </li>
+                      </ul>
+                    }
+                  </li>
+                </ul>
 
-          <ul class="mb-6 flex flex-col gap-4">
-            <!-- Menu Item Dashboard -->
-            <!-- Thêm các mục menu nếu cần -->
-          </ul>
-        </div>
-      </nav>
-      <!-- Sidebar Menu -->
-    </div>
-  </aside>
-  <!-- ===== Sidebar End ===== -->
+                <ul class="mb-6 flex flex-col gap-4">
+                  <!-- Menu Item Dashboard -->
+                  <!-- Thêm các mục menu nếu cần -->
+                </ul>
+              </div>
+            </nav>
+            <!-- Sidebar Menu -->
+          </div>
+        </aside>
+        <!-- ===== Sidebar End ===== -->
 
-  <!-- ===== Content Area Start ===== -->
-  <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
-    <!-- Small Device Overlay Start -->
-    <div
-      [ngClass]="sidebarToggle ? 'block lg:hidden' : 'hidden'"
-      class="fixed z-9 h-screen w-full bg-gray-900/50"
-      (click)="toggleSidebar()"
-    ></div>
-    <!-- Small Device Overlay End -->
-
-    <!-- ===== Main Content Start ===== -->
-    <main>
-      <!-- ===== Header Start ===== -->
-      <header
-        class="sticky top-0 z-50 flex w-full border-gray-200 bg-white lg:border-b"
-      >
-        <div
-          class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6"
-        >
+        <!-- ===== Content Area Start ===== -->
+        <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+          <!-- Small Device Overlay Start -->
           <div
-            class="flex w-full items-center justify-between gap-2 border-b border-gray-200 px-3 py-3 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4"
-          >
-            <!-- Hamburger Toggle BTN -->
-            <button
-              (click)="toggleSidebar()"
-              class="z-50 flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 lg:h-11 lg:w-11 lg:border"
-            >
-              <svg
-                class="fill-current"
-                width="16"
-                height="12"
-                viewBox="0 0 16 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            [ngClass]="sidebarToggle ? 'block lg:hidden' : 'hidden'"
+            class="fixed z-9 h-screen w-full bg-gray-900/50"
+            (click)="toggleSidebar()"
+          ></div>
+          <!-- Small Device Overlay End -->
+
+          <!-- ===== Main Content Start ===== -->
+          <main>
+            <!-- ===== Header Start ===== -->
+            <header
+              class="sticky top-0 z-50 flex w-full border-gray-200 bg-white lg:border-b"
               >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M0.583252 1C0.583252 0.585788 0.919038 0.25 1.33325 0.25H14.6666C15.0808 0.25 15.4166 0.585786 15.4166 1C15.4166 1.41421 15.0808 1.75 14.6666 1.75L1.33325 1.75C0.919038 1.75 0.583252 1.41422 0.583252 1ZM0.583252 11C0.583252 10.5858 0.919038 10.25 1.33325 10.25L14.6666 10.25C15.0808 10.25 15.4166 10.5858 15.4166 11C15.4166 11.4142 15.0808 11.75 14.6666 11.75L1.33325 11.75C0.919038 11.75 0.583252 11.4142 0.583252 11ZM1.33325 5.25C0.919038 5.25 0.583252 5.58579 0.583252 6C0.583252 6.41421 0.919038 6.75 1.33325 6.75L7.99992 6.75C8.41413 6.75 8.74992 6.41421 8.74992 6C8.74992 5.58579 8.41413 5.25 7.99992 5.25L1.33325 5.25Z"
-                  fill=""
-                ></path>
-              </svg>
-            </button>
-
-            <!-- Application nav menu button -->
-
-            <div
-              class="flex lg:hidden w-full items-center justify-between gap-4 px-5 shadow-theme-md justify-end lg:px-0 lg:shadow-none"
-            >
-              <!-- User Area -->
-              <div class="relative" *ngIf="userRole">
-                <a
-                  (click)="toggleDropdown()"
-                  class="flex items-center text-gray-700 cursor-pointer"
+              <div
+                class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6"
                 >
-                  <span class="mr-3 h-11 w-11 overflow-hidden rounded-full">
-                    <img
+                <div
+                  class="flex w-full items-center justify-between gap-2 border-b border-gray-200 px-3 py-3 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4"
+                  >
+                  <!-- Hamburger Toggle BTN -->
+                  <button
+                    (click)="toggleSidebar()"
+                    class="z-50 flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 lg:h-11 lg:w-11 lg:border"
+                    >
+                    <svg
+                      class="fill-current"
+                      width="16"
+                      height="12"
+                      viewBox="0 0 16 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M0.583252 1C0.583252 0.585788 0.919038 0.25 1.33325 0.25H14.6666C15.0808 0.25 15.4166 0.585786 15.4166 1C15.4166 1.41421 15.0808 1.75 14.6666 1.75L1.33325 1.75C0.919038 1.75 0.583252 1.41422 0.583252 1ZM0.583252 11C0.583252 10.5858 0.919038 10.25 1.33325 10.25L14.6666 10.25C15.0808 10.25 15.4166 10.5858 15.4166 11C15.4166 11.4142 15.0808 11.75 14.6666 11.75L1.33325 11.75C0.919038 11.75 0.583252 11.4142 0.583252 11ZM1.33325 5.25C0.919038 5.25 0.583252 5.58579 0.583252 6C0.583252 6.41421 0.919038 6.75 1.33325 6.75L7.99992 6.75C8.41413 6.75 8.74992 6.41421 8.74992 6C8.74992 5.58579 8.41413 5.25 7.99992 5.25L1.33325 5.25Z"
+                        fill=""
+                      ></path>
+                    </svg>
+                  </button>
+
+                  <!-- Application nav menu button -->
+
+                  <div
+                    class="flex lg:hidden w-full items-center justify-between gap-4 px-5 shadow-theme-md justify-end lg:px-0 lg:shadow-none"
+                    >
+                    <!-- User Area -->
+                    @if (userRole) {
+                      <div class="relative">
+                        <a
+                          (click)="toggleDropdown()"
+                          class="flex items-center text-gray-700 cursor-pointer"
+                          >
+                          <span class="mr-3 h-11 w-11 overflow-hidden rounded-full">
+                            <img
                       [src]="
                         currentUser.avatar ||
                         'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
                       "
-                      [alt]="currentUser.email"
-                    />
-                  </span>
+                              [alt]="currentUser.email"
+                              />
+                            </span>
+                            <span class="mr-1 block text-theme-sm font-medium">
+                              {{ currentUser.username }}
+                            </span>
+                            <svg
+                              [ngClass]="dropdownOpen ? 'rotate-180' : ''"
+                              class="stroke-gray-500"
+                              width="18"
+                              height="20"
+                              viewBox="0 0 18 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                              >
+                              <path
+                                d="M4.3125 8.65625L9 13.3437L13.6875 8.65625"
+                                stroke=""
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              ></path>
+                            </svg>
+                          </a>
+                          <!-- Dropdown Start -->
+                          @if (dropdownOpen) {
+                            <div
+                              class="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg"
+                              >
+                              <div>
+                                <span class="block text-theme-sm font-medium text-gray-700">
+                                  {{ currentUser.email }}
+                                </span>
+                                <span class="mt-0.5 block text-theme-xs text-gray-500">
+                                  {{ currentUser.role }}
+                                </span>
+                              </div>
+                              <ul
+                                class="flex flex-col gap-1 border-b border-gray-200 pb-3 pt-4"
+                                >
+                                <li>
+                                  <a
+                                    routerLink="profile"
+                                    class="group flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
+                                    >
+                                    <svg
+                                      class="fill-gray-500 group-hover:fill-gray-700"
+                                      width="24"
+                                      height="24"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                      <path
+                                        fill-rule="evenodd"
+                                        clip-rule="evenodd"
+                                        d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
+                                        fill=""
+                                      ></path>
+                                    </svg>
+                                    Profile
+                                  </a>
+                                </li>
+                              </ul>
+                              <button
+                                (click)="logOut()"
+                                class="group mt-3 flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
+                                >
+                                <i class="pi pi-sign-out"></i>
+                                Sign out
+                              </button>
+                            </div>
+                          }
+                          <!-- Dropdown End -->
+                        </div>
+                      }
+                      <!-- User Area -->
+                    </div>
+                    <!-- Application nav menu button -->
 
-                  <span class="mr-1 block text-theme-sm font-medium">
-                    {{ currentUser.username }}
-                  </span>
+                    <!-- Search -->
+                    <!-- <div class="hidden lg:block">
+                    <form>
+                      <div class="relative">
+                        <span
+                          class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2"
+                          >
+                          <svg
+                            class="fill-gray-500"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            >
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M3.04175 9.37363C3.04175 5.87693 5.87711 3.04199 9.37508 3.04199C12.8731 3.04199 15.7084 15.7053 9.37508 15.7053C5.87711 15.7053 3.04175 12.8703 3.04175 9.37363ZM9.37508 1.54199C5.04902 1.54199 1.54175 5.04817 1.54175 9.37363C1.54175 13.6991 5.04902 17.2053 9.37508 17.2053C11.2674 17.2053 13.003 16.5344 14.357 15.4176L17.177 18.238C17.4699 18.5309 17.9448 18.5309 18.2377 18.238C18.5306 17.9451 18.5306 17.4703 18.2377 17.1774L15.418 14.3573C16.5365 13.0033 17.2084 11.2669 17.2084 9.37363C17.2084 5.04817 13.7011 1.54199 9.37508 1.54199Z"
+                              fill=""
+                            ></path>
+                          </svg>
+                        </span>
+                        <input
+                          id="search-input"
+                          type="text"
+                          placeholder="Search or type command..."
+                          class="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 xl:w-[430px]"
+                          />
 
-                  <svg
-                    [ngClass]="dropdownOpen ? 'rotate-180' : ''"
-                    class="stroke-gray-500"
-                    width="18"
-                    height="20"
-                    viewBox="0 0 18 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M4.3125 8.65625L9 13.3437L13.6875 8.65625"
-                      stroke=""
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    ></path>
-                  </svg>
-                </a>
-
-                <!-- Dropdown Start -->
-                <div
-                  *ngIf="dropdownOpen"
-                  class="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg"
-                >
-                  <div>
-                    <span class="block text-theme-sm font-medium text-gray-700">
-                      {{ currentUser.email }}
-                    </span>
-                    <span class="mt-0.5 block text-theme-xs text-gray-500">
-                      {{ currentUser.role }}
-                    </span>
+                          <button
+                            id="search-button"
+                            class="absolute right-2.5 top-1/2 inline-flex -translate-y-1/2 items-center gap-0.5 rounded-lg border border-gray-200 bg-gray-50 px-[7px] py-[4.5px] text-xs -tracking-[0.2px] text-gray-500"
+                            >
+                            <span>⌘</span>
+                          </button>
+                        </div>
+                      </form>
+                    </div> -->
                   </div>
 
-                  <ul
-                    class="flex flex-col gap-1 border-b border-gray-200 pb-3 pt-4"
-                  >
-                    <li>
-                      <a
-                        routerLink="profile"
-                        class="group flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        <svg
-                          class="fill-gray-500 group-hover:fill-gray-700"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
-                            fill=""
-                          ></path>
-                        </svg>
-                        Profile
-                      </a>
-                    </li>
-                  </ul>
-                  <button
-                    (click)="logOut()"
-                    class="group mt-3 flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    <i class="pi pi-sign-out"></i>
-                    Sign out
-                  </button>
-                </div>
-                <!-- Dropdown End -->
-              </div>
-              <!-- User Area -->
-            </div>
-            <!-- Application nav menu button -->
-
-            <!-- Search -->
-            <!-- <div class="hidden lg:block">
-              <form>
-                <div class="relative">
-                  <span
-                    class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2"
-                  >
-                    <svg
-                      class="fill-gray-500"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                  <div
+                    class="hidden w-full items-center justify-between gap-4 px-5 py-4 shadow-theme-md lg:flex lg:justify-end lg:px-0 lg:shadow-none"
                     >
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M3.04175 9.37363C3.04175 5.87693 5.87711 3.04199 9.37508 3.04199C12.8731 3.04199 15.7084 15.7053 9.37508 15.7053C5.87711 15.7053 3.04175 12.8703 3.04175 9.37363ZM9.37508 1.54199C5.04902 1.54199 1.54175 5.04817 1.54175 9.37363C1.54175 13.6991 5.04902 17.2053 9.37508 17.2053C11.2674 17.2053 13.003 16.5344 14.357 15.4176L17.177 18.238C17.4699 18.5309 17.9448 18.5309 18.2377 18.238C18.5306 17.9451 18.5306 17.4703 18.2377 17.1774L15.418 14.3573C16.5365 13.0033 17.2084 11.2669 17.2084 9.37363C17.2084 5.04817 13.7011 1.54199 9.37508 1.54199Z"
-                        fill=""
-                      ></path>
-                    </svg>
-                  </span>
-                  <input
-                    id="search-input"
-                    type="text"
-                    placeholder="Search or type command..."
-                    class="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 xl:w-[430px]"
-                  />
-
-                  <button
-                    id="search-button"
-                    class="absolute right-2.5 top-1/2 inline-flex -translate-y-1/2 items-center gap-0.5 rounded-lg border border-gray-200 bg-gray-50 px-[7px] py-[4.5px] text-xs -tracking-[0.2px] text-gray-500"
-                  >
-                    <span>⌘</span>
-                  </button>
-                </div>
-              </form>
-            </div> -->
-          </div>
-
-          <div
-            class="hidden w-full items-center justify-between gap-4 px-5 py-4 shadow-theme-md lg:flex lg:justify-end lg:px-0 lg:shadow-none"
-          >
-            <!-- User Area -->
-            <div class="relative">
-              <a
-                (click)="toggleDropdown()"
-                class="flex items-center text-gray-700 cursor-pointer"
-              >
-                <span class="mr-3 h-11 w-11 overflow-hidden rounded-full">
-                  <img
+                    <!-- User Area -->
+                    <div class="relative">
+                      <a
+                        (click)="toggleDropdown()"
+                        class="flex items-center text-gray-700 cursor-pointer"
+                        >
+                        <span class="mr-3 h-11 w-11 overflow-hidden rounded-full">
+                          <img
                     [src]="
                       currentUser.avatar ||
                       'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
                     "
-                    [alt]="currentUser.email"
-                  />
-                </span>
+                            [alt]="currentUser.email"
+                            />
+                          </span>
 
-                <span class="mr-1 block text-theme-sm font-medium">
-                  {{ currentUser.username }}
-                </span>
+                          <span class="mr-1 block text-theme-sm font-medium">
+                            {{ currentUser.username }}
+                          </span>
 
-                <svg
-                  [ngClass]="dropdownOpen ? 'rotate-180' : ''"
-                  class="stroke-gray-500"
-                  width="18"
-                  height="20"
-                  viewBox="0 0 18 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4.3125 8.65625L9 13.3437L13.6875 8.65625"
-                    stroke=""
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </a>
+                          <svg
+                            [ngClass]="dropdownOpen ? 'rotate-180' : ''"
+                            class="stroke-gray-500"
+                            width="18"
+                            height="20"
+                            viewBox="0 0 18 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            >
+                            <path
+                              d="M4.3125 8.65625L9 13.3437L13.6875 8.65625"
+                              stroke=""
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </svg>
+                        </a>
 
-              <!-- Dropdown Start -->
-              <div
-                *ngIf="dropdownOpen"
-                class="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg"
-              >
-                <div>
-                  <span class="block text-theme-sm font-medium text-gray-700">
-                    {{ currentUser.email }}
-                  </span>
-                  <span class="mt-0.5 block text-theme-xs text-gray-500">
-                    {{ currentUser.role }}
-                  </span>
+                        <!-- Dropdown Start -->
+                        @if (dropdownOpen) {
+                          <div
+                            class="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg"
+                            >
+                            <div>
+                              <span class="block text-theme-sm font-medium text-gray-700">
+                                {{ currentUser.email }}
+                              </span>
+                              <span class="mt-0.5 block text-theme-xs text-gray-500">
+                                {{ currentUser.role }}
+                              </span>
+                            </div>
+                            <ul
+                              class="flex flex-col gap-1 border-b border-gray-200 pb-3 pt-4"
+                              >
+                              <li>
+                                <a
+                                  routerLink="profile"
+                                  (click)="dropdownOpen = false"
+                                  class="group flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
+                                  >
+                                  <svg
+                                    class="fill-gray-500 group-hover:fill-gray-700"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                    <path
+                                      fill-rule="evenodd"
+                                      clip-rule="evenodd"
+                                      d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
+                                      fill=""
+                                    ></path>
+                                  </svg>
+                                  Profile
+                                </a>
+                              </li>
+                            </ul>
+                            <button
+                              class="group mt-3 flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
+                              (click)="logOut()"
+                              >
+                              <i class="pi pi-sign-out"></i>
+                              Sign out
+                            </button>
+                          </div>
+                        }
+                        <!-- Dropdown End -->
+                      </div>
+                      <!-- User Area -->
+                    </div>
+                  </div>
+                </header>
+                <!-- ===== Header End ===== -->
+                <div class="p-4 mx-auto max-w-[1536px] md:p-6">
+                  <router-outlet></router-outlet>
                 </div>
-
-                <ul
-                  class="flex flex-col gap-1 border-b border-gray-200 pb-3 pt-4"
-                >
-                  <li>
-                    <a
-                      routerLink="profile"
-                      (click)="dropdownOpen = false"
-                      class="group flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      <svg
-                        class="fill-gray-500 group-hover:fill-gray-700"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 14.1526 4.3002 16.1184 5.61936 17.616C6.17279 15.3096 8.24852 13.5955 10.7246 13.5955H13.2746C15.7509 13.5955 17.8268 15.31 18.38 17.6167C19.6996 16.119 20.5 14.153 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5ZM17.0246 18.8566V18.8455C17.0246 16.7744 15.3457 15.0955 13.2746 15.0955H10.7246C8.65354 15.0955 6.97461 16.7744 6.97461 18.8455V18.856C8.38223 19.8895 10.1198 20.5 12 20.5C13.8798 20.5 15.6171 19.8898 17.0246 18.8566ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM11.9991 7.25C10.8847 7.25 9.98126 8.15342 9.98126 9.26784C9.98126 10.3823 10.8847 11.2857 11.9991 11.2857C13.1135 11.2857 14.0169 10.3823 14.0169 9.26784C14.0169 8.15342 13.1135 7.25 11.9991 7.25ZM8.48126 9.26784C8.48126 7.32499 10.0563 5.75 11.9991 5.75C13.9419 5.75 15.5169 7.32499 15.5169 9.26784C15.5169 11.2107 13.9419 12.7857 11.9991 12.7857C10.0563 12.7857 8.48126 11.2107 8.48126 9.26784Z"
-                          fill=""
-                        ></path>
-                      </svg>
-                      Profile
-                    </a>
-                  </li>
-                </ul>
-                <button
-                  class="group mt-3 flex items-center gap-3 rounded-lg px-3 py-2 text-theme-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"
-                  (click)="logOut()"
-                >
-                  <i class="pi pi-sign-out"></i>
-
-                  Sign out
-                </button>
-              </div>
-              <!-- Dropdown End -->
+              </main>
             </div>
-            <!-- User Area -->
+            <!-- ===== Content Area End ===== -->
           </div>
-        </div>
-      </header>
-      <!-- ===== Header End ===== -->
-      <div class="p-4 mx-auto max-w-[1536px] md:p-6">
-        <router-outlet></router-outlet>
-      </div>
-    </main>
-  </div>
-  <!-- ===== Content Area End ===== -->
-</div>

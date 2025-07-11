@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -36,7 +36,6 @@ interface OptionSelect {
   selector: 'app-profile-info',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     ButtonModule,
     InputTextModule,
@@ -56,7 +55,7 @@ interface OptionSelect {
     RadioButtonModule,
     CheckboxModule,
     LoadingComponent
-  ],
+],
   providers: [MessageService, DatePipe, AuthService],
   templateUrl: './profile-info.component.html',
   styleUrls: ['./profile-info.component.css']

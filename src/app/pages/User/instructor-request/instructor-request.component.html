@@ -3,78 +3,78 @@
   <p-toast></p-toast>
   <div class="bg-white rounded-lg shadow-lg p-6">
     <h2 class="text-xl font-bold mb-4">Request to become a instructor</h2>
-    <div *ngIf="isLoading" class="flex justify-center">
-      <p-progressSpinner></p-progressSpinner>
-    </div>
-    <form
-      *ngIf="!isLoading"
-      [formGroup]="instructorForm"
-      (ngSubmit)="onSubmitFormRequest()"
-    >
-      <div class="flex flex-col gap-4">
-        <!-- Bio -->
-        <app-form-element
-          [label]="'Bio'"
-          [required]="true"
-          [control]="instructorForm.get('bio')!"
-        >
-          <textarea
-            rows="5"
-            cols="30"
-            class="w-full rounded-md"
-            pInputTextarea
-            formControlName="bio"
-            placeholder="Introduce yourself (up to 255 characters)"
-          ></textarea>
-        </app-form-element>
-
-        <!-- Organization -->
-        <app-form-element
-          [label]="'Organization'"
-          [control]="instructorForm.get('organization')!"
-        >
-          <input
-            type="text"
-            pInputText
-            class="w-full rounded-full"
-            formControlName="organization"
-            placeholder="Organization name (if any)"
-          />
-        </app-form-element>
-
-        <!-- Email PayPal -->
-        <app-form-element
-          [label]="'Email PayPal'"
-          [required]="true"
-          [control]="instructorForm.get('email_paypal')!"
-        >
-          <input
-            type="email"
-            pInputText
-            class="w-full rounded-full"
-            formControlName="email_paypal"
-            placeholder="Email PayPal"
-          />
-        </app-form-element>
-
-        <!-- Buttons -->
-        <div class="flex justify-end gap-2">
-          <p-button
-            label="Cancel"
-            icon="pi pi-times"
-            styleClass="p-button-text"
-            (click)="resetForm()"
-          ></p-button>
-          <p-button
-            label="Send request"
-            icon="pi pi-check"
-            styleClass="p-button-raised"
-            type="submit"
-            [disabled]="instructorForm.invalid || isSubmitting"
-            [loading]="isLoading"
-          ></p-button>
-        </div>
+    @if (isLoading) {
+      <div class="flex justify-center">
+        <p-progressSpinner></p-progressSpinner>
       </div>
-    </form>
-  </div>
-</div>
+    }
+    @if (!isLoading) {
+      <form
+        [formGroup]="instructorForm"
+        (ngSubmit)="onSubmitFormRequest()"
+        >
+        <div class="flex flex-col gap-4">
+          <!-- Bio -->
+          <app-form-element
+            [label]="'Bio'"
+            [required]="true"
+            [control]="instructorForm.get('bio')!"
+            >
+            <textarea
+              rows="5"
+              cols="30"
+              class="w-full rounded-md"
+              pInputTextarea
+              formControlName="bio"
+              placeholder="Introduce yourself (up to 255 characters)"
+            ></textarea>
+          </app-form-element>
+          <!-- Organization -->
+          <app-form-element
+            [label]="'Organization'"
+            [control]="instructorForm.get('organization')!"
+            >
+            <input
+              type="text"
+              pInputText
+              class="w-full rounded-full"
+              formControlName="organization"
+              placeholder="Organization name (if any)"
+              />
+            </app-form-element>
+            <!-- Email PayPal -->
+            <app-form-element
+              [label]="'Email PayPal'"
+              [required]="true"
+              [control]="instructorForm.get('email_paypal')!"
+              >
+              <input
+                type="email"
+                pInputText
+                class="w-full rounded-full"
+                formControlName="email_paypal"
+                placeholder="Email PayPal"
+                />
+              </app-form-element>
+              <!-- Buttons -->
+              <div class="flex justify-end gap-2">
+                <p-button
+                  label="Cancel"
+                  icon="pi pi-times"
+                  styleClass="p-button-text"
+                  (click)="resetForm()"
+                ></p-button>
+                <p-button
+                  label="Send request"
+                  icon="pi pi-check"
+                  styleClass="p-button-raised"
+                  type="submit"
+                  [disabled]="instructorForm.invalid || isSubmitting"
+                  [loading]="isLoading"
+                ></p-button>
+              </div>
+            </div>
+          </form>
+        }
+      </div>
+    </div>

@@ -2,230 +2,231 @@
 <div class="max-w-7xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
   <h2 class="text-2xl font-bold text-gray-800 mb-6">Your courses</h2>
 
-  <div *ngIf="isLoading" class="py-6">
-    <app-card-skeleton></app-card-skeleton>
-  </div>
+  @if (isLoading) {
+    <div class="py-6">
+      <app-card-skeleton></app-card-skeleton>
+    </div>
+  }
   <!-- Grid layout cho các card khóa học -->
-  <div
-    *ngIf="enrollments.length > 0"
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 py-5"
-  >
-    <a
-      *ngFor="let enrollment of enrollments"
-      class="bg-white overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col border border-gray-200"
-    >
-      <div class="relative flex-shrink-0 w-full">
-        <!-- Hình ảnh khóa học -->
-        <img
-          [src]="enrollment.course.image"
-          alt="{{ enrollment.course.course_name }}"
-          class="w-full h-48 md:h-full object-center"
-        />
-        <!-- Trạng thái đăng ký -->
-        <div class="absolute top-5 right-5">
-          <p-tag
-            [severity]="!enrollment.completed_at ? 'info' : 'success'"
-            [value]="!enrollment.completed_at ? 'In Progress' : 'Finished'"
-            [rounded]="true"
-            class="!text-xs"
-          />
-        </div>
-      </div>
-
-      <!-- Nội dung card -->
-      <div class="p-4 flex-1 flex flex-col">
-        <div class="flex justify-between items-center overflow-hidden">
-          <!-- Tên khóa học -->
-          <h3
-            class="text-lg font-semibold text-gray-800 mb-2 truncate"
-            [pTooltip]="enrollment.course.course_name"
-            tooltipPosition="top"
+  @if (enrollments.length > 0) {
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 py-5"
+      >
+      @for (enrollment of enrollments; track enrollment) {
+        <a
+          class="bg-white overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col border border-gray-200"
           >
-            {{ enrollment.course.course_name }}
-          </h3>
-          <p-button
-            icon="pi pi-exclamation-triangle"
-            [rounded]="true"
-            severity="danger"
-            [outlined]="true"
-            size="small"
-            *ngIf="!enrollment.has_pending_report"
-            (click)="openReportModal(enrollment)"
-          />
-          <p-button
-            [rounded]="false"
-            severity="info"
-            [outlined]="true"
-            label="Undo"
-            size="small"
-            *ngIf="enrollment.has_pending_report"
-            (click)="undoReport(enrollment.pending_report_id)"
-          />
-        </div>
-
-        <!-- Mô tả ngắn -->
-        <p class="text-sm text-gray-600 mb-2 line-clamp-2 truncate">
-          {{ enrollment.course.course_description }}
-        </p>
-        <!-- Mức độ khó -->
-        <p class="text-sm text-gray-600 mb-1">
-          Level:
-          {{ enrollment.course.difficulty_level }}
-        </p>
-
-        <!-- Đánh giá -->
-        <div class="flex items-center mb-1">
-          <span class="text-sm text-gray-600 mr-1">
-            <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
-            {{ enrollment.course.course_rating | number : "1.1-1" }}
-          </span>
-          <!-- <span class="text-xs text-gray-500">
-            ({{
-              enrollment.course.course_rating >= 4
-                ? "Xuất sắc"
-                : enrollment.course.course_rating >= 3
-                ? "Tốt"
-                : "Average"
-            }})
-          </span> -->
-        </div>
-
-        <!-- Giá -->
-        <p class="text-sm font-medium text-gray-800 mb-1">
-          <i class="pi pi-money-bill mr-1"></i>
-          {{ enrollment.course.price | number }} $
-        </p>
-
-        <!-- Kỹ năng -->
-        <p class="text-sm text-gray-600 mb-1">
-          <i class="pi pi-book mr-1"></i> Skills:
-          {{ enrollment.course.skills }}
-        </p>
-
-        <!-- Ngày đăng ký -->
-        <p class="text-sm text-gray-600 mb-1">
-          <i class="pi pi-calendar mr-1"></i> Purchased:
-          {{ enrollment.enrolled_at | date : "dd/MM/yyyy HH:mm" }}
-        </p>
-
-        <!-- Ngày hết hạn -->
-        <!-- <p class="text-sm text-gray-600 mb-2">
-          <i class="pi pi-calendar-times mr-1"></i> Expired:
-          {{ enrollment.expires_at || "none" | date : "dd/MM/yyyy HH:mm" }}
-        </p> -->
-
-        <!-- Tiến độ học tập -->
-        <div *ngIf="progressData[enrollment.id]" class="mb-2">
-          <p class="text-sm text-gray-600 mb-1">
-            <i class="pi pi-bookmark mr-1"></i> Total of lessons:
-            {{ progressData[enrollment.id].total_lessons }}
-          </p>
-          <p class="text-sm text-gray-600 mb-1">
-            <i
-              class="pi pi-check-circle mr-1"
+          <div class="relative flex-shrink-0 w-full">
+            <!-- Hình ảnh khóa học -->
+            <img
+              [src]="enrollment.course.image"
+              alt="{{ enrollment.course.course_name }}"
+              class="w-full h-48 md:h-full object-center"
+              />
+              <!-- Trạng thái đăng ký -->
+              <div class="absolute top-5 right-5">
+                <p-tag
+                  [severity]="!enrollment.completed_at ? 'info' : 'success'"
+                  [value]="!enrollment.completed_at ? 'In Progress' : 'Finished'"
+                  [rounded]="true"
+                  class="!text-xs"
+                  />
+                </div>
+              </div>
+              <!-- Nội dung card -->
+              <div class="p-4 flex-1 flex flex-col">
+                <div class="flex justify-between items-center overflow-hidden">
+                  <!-- Tên khóa học -->
+                  <h3
+                    class="text-lg font-semibold text-gray-800 mb-2 truncate"
+                    [pTooltip]="enrollment.course.course_name"
+                    tooltipPosition="top"
+                    >
+                    {{ enrollment.course.course_name }}
+                  </h3>
+                  @if (!enrollment.has_pending_report) {
+                    <p-button
+                      icon="pi pi-exclamation-triangle"
+                      [rounded]="true"
+                      severity="danger"
+                      [outlined]="true"
+                      size="small"
+                      (click)="openReportModal(enrollment)"
+                      />
+                  }
+                  @if (enrollment.has_pending_report) {
+                    <p-button
+                      [rounded]="false"
+                      severity="info"
+                      [outlined]="true"
+                      label="Undo"
+                      size="small"
+                      (click)="undoReport(enrollment.pending_report_id)"
+                      />
+                  }
+                </div>
+                <!-- Mô tả ngắn -->
+                <p class="text-sm text-gray-600 mb-2 line-clamp-2 truncate">
+                  {{ enrollment.course.course_description }}
+                </p>
+                <!-- Mức độ khó -->
+                <p class="text-sm text-gray-600 mb-1">
+                  Level:
+                  {{ enrollment.course.difficulty_level }}
+                </p>
+                <!-- Đánh giá -->
+                <div class="flex items-center mb-1">
+                  <span class="text-sm text-gray-600 mr-1">
+                    <i class="pi pi-star-fill text-yellow-500 mr-1"></i>
+                    {{ enrollment.course.course_rating | number : "1.1-1" }}
+                  </span>
+                  <!-- <span class="text-xs text-gray-500">
+                  ({{
+                  enrollment.course.course_rating >= 4
+                  ? "Xuất sắc"
+                  : enrollment.course.course_rating >= 3
+                  ? "Tốt"
+                  : "Average"
+                  }})
+                </span> -->
+              </div>
+              <!-- Giá -->
+              <p class="text-sm font-medium text-gray-800 mb-1">
+                <i class="pi pi-money-bill mr-1"></i>
+                {{ enrollment.course.price | number }} $
+              </p>
+              <!-- Kỹ năng -->
+              <p class="text-sm text-gray-600 mb-1">
+                <i class="pi pi-book mr-1"></i> Skills:
+                {{ enrollment.course.skills }}
+              </p>
+              <!-- Ngày đăng ký -->
+              <p class="text-sm text-gray-600 mb-1">
+                <i class="pi pi-calendar mr-1"></i> Purchased:
+                {{ enrollment.enrolled_at | date : "dd/MM/yyyy HH:mm" }}
+              </p>
+              <!-- Ngày hết hạn -->
+              <!-- <p class="text-sm text-gray-600 mb-2">
+              <i class="pi pi-calendar-times mr-1"></i> Expired:
+              {{ enrollment.expires_at || "none" | date : "dd/MM/yyyy HH:mm" }}
+            </p> -->
+            <!-- Tiến độ học tập -->
+            @if (progressData[enrollment.id]) {
+              <div class="mb-2">
+                <p class="text-sm text-gray-600 mb-1">
+                  <i class="pi pi-bookmark mr-1"></i> Total of lessons:
+                  {{ progressData[enrollment.id].total_lessons }}
+                </p>
+                <p class="text-sm text-gray-600 mb-1">
+                  <i
+                    class="pi pi-check-circle mr-1"
               [ngClass]="
                 progressData[enrollment.id].completed_lessons
                   ? 'text-secondary'
                   : 'text-primary'
               "
-            ></i>
-            Finished:
-            {{ progressData[enrollment.id].completed_lessons }}
-          </p>
-          <div class="w-full bg-gray-200 rounded-full">
-            <p-progressbar
-              class="!rounded-full !h-2.5"
-              [value]="progressData[enrollment.id].progress_percentage"
+                  ></i>
+                  Finished:
+                  {{ progressData[enrollment.id].completed_lessons }}
+                </p>
+                <div class="w-full bg-gray-200 rounded-full">
+                  <p-progressbar
+                    class="!rounded-full !h-2.5"
+                    [value]="progressData[enrollment.id].progress_percentage"
+                    />
+                  </div>
+                  <p class="text-sm text-gray-600 mt-1">
+                    Progress:
+                    {{
+                    progressData[enrollment.id].progress_percentage
+                    | number : "1.1-1"
+                    }}%
+                  </p>
+                </div>
+              }
+              <!-- Nút tiếp tục học -->
+              <div class="mt-auto">
+                <button
+                  [routerLink]="['/my-course/', enrollment.id]"
+                  class="w-full bg-secondary-content text-white py-1.5 px-4 hover:bg-secondary transition duration-200 text-sm font-medium"
+                  >
+                  Continue
+                </button>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    }
+
+    @if (!isLoading && enrollments.length === 0) {
+      <div
+        class="text-center text-gray-500 py-4 md:pb-20"
+        >
+        You have not purchased any courses..
+      </div>
+    }
+
+    <!-- Phân trang -->
+    @if (enrollments.length > 0) {
+      <p-paginator
+        [rows]="perPage"
+        [totalRecords]="totalRecords"
+        (onPageChange)="onPageChange($event)"
+        [first]="(currentPage - 1) * perPage"
+        class="mt-6"
+      ></p-paginator>
+    }
+  </div>
+
+  <p-dialog
+    header="Report Course"
+    [(visible)]="showReportModal"
+    [modal]="true"
+    [style]="{ width: '30rem' }"
+    (onHide)="resetReportForm()"
+    >
+    <div class="space-y-4">
+      <div class="flex flex-col gap-2">
+        <label for="reportType" class="text-sm font-medium text-gray-700"
+          >Report Type</label
+          >
+          <p-dropdown
+            id="reportType"
+            [options]="reportTypes"
+            [(ngModel)]="reportData.report_type"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Choice report type"
+            class="w-full"
             />
           </div>
-          <p class="text-sm text-gray-600 mt-1">
-            Progress:
-            {{
-              progressData[enrollment.id].progress_percentage
-                | number : "1.1-1"
-            }}%
-          </p>
-        </div>
-
-        <!-- Nút tiếp tục học -->
-        <div class="mt-auto">
-          <button
-            [routerLink]="['/my-course/', enrollment.id]"
-            class="w-full bg-secondary-content text-white py-1.5 px-4 hover:bg-secondary transition duration-200 text-sm font-medium"
-          >
-            Continue
-          </button>
-        </div>
-      </div>
-    </a>
-  </div>
-
-  <div
-    class="text-center text-gray-500 py-4 md:pb-20"
-    *ngIf="!isLoading && enrollments.length === 0"
-  >
-    You have not purchased any courses..
-  </div>
-
-  <!-- Phân trang -->
-  <p-paginator
-    [rows]="perPage"
-    [totalRecords]="totalRecords"
-    (onPageChange)="onPageChange($event)"
-    [first]="(currentPage - 1) * perPage"
-    class="mt-6"
-    *ngIf="enrollments.length > 0"
-  ></p-paginator>
-</div>
-
-<p-dialog
-  header="Report Course"
-  [(visible)]="showReportModal"
-  [modal]="true"
-  [style]="{ width: '30rem' }"
-  (onHide)="resetReportForm()"
->
-  <div class="space-y-4">
-    <div class="flex flex-col gap-2">
-      <label for="reportType" class="text-sm font-medium text-gray-700"
-        >Report Type</label
-      >
-      <p-dropdown
-        id="reportType"
-        [options]="reportTypes"
-        [(ngModel)]="reportData.report_type"
-        optionLabel="label"
-        optionValue="value"
-        placeholder="Choice report type"
-        class="w-full"
-      />
-    </div>
-    <div class="flex flex-col gap-2">
-      <label for="reportReason" class="text-sm font-medium text-gray-700"
-        >Reason:</label
-      >
-      <input
-        id="reportReason"
-        pInputText
-        [(ngModel)]="reportData.reason"
-        placeholder="bad..."
-        class="w-full"
-      />
-    </div>
-    <div class="flex justify-end gap-2">
-      <p-button
-        label="Cancel"
-        icon="pi pi-times"
-        (click)="showReportModal = false"
-        styleClass="p-button-secondary"
-      />
-      <p-button
-        label="Send"
-        icon="pi pi-check"
-        (click)="submitReport()"
-        styleClass="p-button-success"
-        [disabled]="!reportData.reason || !reportData.report_type"
-      />
-    </div>
-  </div>
-</p-dialog>
+          <div class="flex flex-col gap-2">
+            <label for="reportReason" class="text-sm font-medium text-gray-700"
+              >Reason:</label
+              >
+              <input
+                id="reportReason"
+                pInputText
+                [(ngModel)]="reportData.reason"
+                placeholder="bad..."
+                class="w-full"
+                />
+              </div>
+              <div class="flex justify-end gap-2">
+                <p-button
+                  label="Cancel"
+                  icon="pi pi-times"
+                  (click)="showReportModal = false"
+                  styleClass="p-button-secondary"
+                  />
+                  <p-button
+                    label="Send"
+                    icon="pi pi-check"
+                    (click)="submitReport()"
+                    styleClass="p-button-success"
+                    [disabled]="!reportData.reason || !reportData.report_type"
+                    />
+                  </div>
+                </div>
+              </p-dialog>

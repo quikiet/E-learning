@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -8,7 +8,7 @@ import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-social-callback',
-  imports: [ToastModule, CommonModule, ProgressSpinnerModule],
+  imports: [ToastModule, ProgressSpinnerModule],
   templateUrl: './social-callback.component.html',
   styleUrl: './social-callback.component.css'
 })

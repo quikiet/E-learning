@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -23,7 +23,6 @@ import { Tooltip, TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     TableModule,
     FormsModule,
-    CommonModule,
     TagModule,
     DialogModule,
     CheckboxModule,
@@ -31,7 +30,7 @@ import { Tooltip, TooltipModule } from 'primeng/tooltip';
     InputTextModule,
     DropdownModule,
     TooltipModule
-  ],
+],
   providers: [MessageService, QuizService],
   templateUrl: './instructor-quiz-management.component.html',
   styleUrls: ['./instructor-quiz-management.component.css'],

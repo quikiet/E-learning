@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 @Component({
   selector: 'app-select-role',
-  imports: [FormsModule, CommonModule, ButtonModule, ToastModule, DropdownModule, ReactiveFormsModule],
+  imports: [FormsModule, ButtonModule, ToastModule, DropdownModule, ReactiveFormsModule],
   templateUrl: './select-role.component.html',
   styleUrl: './select-role.component.css'
 })

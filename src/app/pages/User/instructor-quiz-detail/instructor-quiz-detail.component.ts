@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -25,14 +25,13 @@ interface QuestionType {
     ButtonModule,
     TableModule,
     FormsModule,
-    CommonModule,
     TagModule,
     DialogModule,
     CheckboxModule,
     ToastModule,
     InputTextModule,
-    SelectModule,
-  ],
+    SelectModule
+],
   providers: [MessageService],
   templateUrl: './instructor-quiz-detail.component.html',
   styleUrls: ['./instructor-quiz-detail.component.css'],
