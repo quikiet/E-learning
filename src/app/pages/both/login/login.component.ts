@@ -242,4 +242,15 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  loginWithFacebook() {
+    this.authService.loginWithFacebook().subscribe({
+      next: (res) => {
+        window.location.href = res.url;
+        console.log(res);
+      }, error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
 }

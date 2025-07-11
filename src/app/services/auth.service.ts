@@ -42,6 +42,10 @@ export class AuthService {
     return this.http.get<any>(`${this.apiUrl}/auth/google`);
   }
 
+  loginWithFacebook() {
+    return this.http.get<any>(`${this.apiUrl}/auth/facebook`);
+  }
+
   storeToken(token: string) {
     localStorage.setItem('jwt_token', token);
     localStorage.setItem('token_expiry', (new Date().getTime() + 60 * 60 * 1000).toString()); // 60 phút
