@@ -12,6 +12,8 @@ import { LoadingComponent } from '../../../components/both/loading/loading.compo
 import { Router, RouterLink } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
+import { SelectModule } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
 
 interface User {
   id: number;
@@ -57,7 +59,9 @@ interface Report {
     LoadingComponent,
     RouterLink,
     AvatarModule,
-    TooltipModule
+    TooltipModule,
+    SelectModule,
+    FormsModule
   ],
   providers: [CoursesService, MessageService],
   templateUrl: './instructor-reports.component.html',
@@ -67,6 +71,8 @@ export class InstructorReportsComponent implements OnInit {
   reports: Report[] = [];
   isLoading: boolean = true;
   @ViewChild('dt') dt: Table | undefined;
+  report_types: any[] = [];
+
 
   constructor(
     private coursesService: CoursesService,
@@ -76,7 +82,21 @@ export class InstructorReportsComponent implements OnInit {
 
   ngOnInit() {
     this.loadReports();
+    this.initializeReportTypes();
+
   }
+
+  initializeReportTypes() {
+    this.report_types = [
+      { label: 'All', value: null },
+      { label: 'Spam', value: 'spam' },
+      { label: 'Technical issue', value: 'technical_issue' },
+      { label: 'Inappropriate Content', value: 'inappropriate_content' },
+      { label: 'Copyright violation', value: 'copyright_violation' },
+      { label: 'Other', value: 'other' },
+    ];
+  }
+
 
   loadReports() {
     this.isLoading = true;
