@@ -47,7 +47,7 @@
     </div>
   </ng-template>
   <ng-template #header>
-    <tr class="text-sm">
+    <tr class="!text-xs">
       <th style="width: 5rem"></th>
       <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
         <div class="flex items-center">
@@ -70,7 +70,7 @@
     </tr>
   </ng-template>
   <ng-template #body let-category let-expanded="expanded">
-    <tr class="text-sm">
+    <tr class="!text-xs">
       <td>
         <p-button
           type="button"
@@ -107,6 +107,7 @@
           (onClick)="editCategory(category)"
           label="Update"
           [rounded]="true"
+          size="small"
           [outlined]="true"
         />
         <!-- <p-button
@@ -124,6 +125,7 @@
           (onClick)="confirmDelete($event, category.id)"
           icon="pi pi-trash"
           label="Delete"
+          size="small"
           [rounded]="true"
           severity="danger"
           [outlined]="true"
@@ -132,10 +134,10 @@
     </tr>
   </ng-template>
   <ng-template #expandedrow let-category let-expanded="expanded">
-    <tr class="text-sm">
+    <tr class="">
       <td colspan="7">
         <div class="p-4 pt-2">
-          <h5 class="text-lg font-semibold mb-2">Sub of {{ category.name }}</h5>
+          <h5 class="text-sm font-semibold mb-2">Sub of {{ category.name }}</h5>
           <p-table [value]="category.children" dataKey="id">
             <ng-template #header>
               <tr class="text-sm">

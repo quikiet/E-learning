@@ -54,7 +54,7 @@
         <label
           for="certificateEnabled"
           class="text-sm font-medium text-gray-700"
-          >CCertificate</label
+          >Certificate</label
         >
         <p-select
           id="certificateEnabled"
@@ -121,29 +121,96 @@
     [lazy]="true"
     (onLazyLoad)="onLazyLoad($event)"
     [showCurrentPageReport]="true"
-    currentPageReportTemplate="Hiển thị {first} đến {last} của {totalRecords} khóa học"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} courses"
     paginatorDropdownAppendTo="body"
     [loading]="loading"
+    class="!text-sx"
   >
     <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 5%">ID</th>
-        <th style="width: 20%">Course name</th>
-        <th style="width: 15%">Difficulty Level</th>
-        <th style="width: 15%">Rating</th>
-        <th style="width: 10%">Price ($)</th>
-        <th style="width: 10%">Status</th>
-        <th style="width: 10%">Certificate</th>
-        <th style="width: 15%">Categories</th>
-        <th style="width: 15%">Instructor name</th>
-        <th style="width: 7.5%">Created at</th>
-        <th style="width: 7.5%">Action</th>
+      <tr class="text-xs">
+        <th>Action</th>
+        <th>ID</th>
+        <th>Course name</th>
+        <th>Difficulty Level</th>
+        <th>Rating</th>
+        <th>Price ($)</th>
+        <th>Status</th>
+        <th>Certificate</th>
+        <th>Categories</th>
+        <th>Instructor name</th>
+        <th>Created at</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-course>
-      <tr class="text-sm">
+      <tr class="text-xs">
+        <td class="flex gap-1">
+          <p-button
+            icon="pi pi-ban"
+            *ngIf="course.status !== 'banned' && course.status !== 'pending'"
+            [rounded]="true"
+            [raised]="true"
+            severity="danger"
+            (click)="banCourse(course.id)"
+            size="small"
+            pTooltip="Ban"
+            tooltipPosition="top"
+          />
+          <p-button
+            icon="pi pi-undo"
+            [rounded]="true"
+            *ngIf="course.status === 'banned'"
+            [raised]="true"
+            severity="info"
+            (click)="unBanCourse(course.id)"
+            size="small"
+            pTooltip="Ban"
+            tooltipPosition="top"
+          />
+          <p-button
+            icon="pi pi-eye"
+            [rounded]="true"
+            [raised]="true"
+            severity="help"
+            size="small"
+            text="true"
+            [routerLink]="[course.id]"
+            pTooltip="Detail"
+            tooltipPosition="top"
+          />
+          @if (course.status === 'pending') {
+          <p-button
+            icon="pi pi-check"
+            [rounded]="true"
+            [raised]="true"
+            text="true"
+            (click)="openReviewDialog(course.id, 'approved')"
+            size="small"
+            severity="success"
+            pTooltip="Approve"
+            tooltipPosition="top"
+          />
+          } @if (course.status === 'pending') {
+          <p-button
+            icon="pi pi-times"
+            (click)="openReviewDialog(course.id, 'rejected')"
+            text="true"
+            [rounded]="true"
+            [raised]="true"
+            size="small"
+            severity="danger"
+            pTooltip="Reject"
+            tooltipPosition="top"
+          />
+          }
+        </td>
         <td>{{ course.id }}</td>
-        <td>{{ course.course_name }}</td>
+        <td
+          class="truncate"
+          [pTooltip]="course.course_name"
+          tooltipPosition="right"
+        >
+          {{ cutText(course.course_name, 5) }}
+        </td>
         <td>{{ course.difficulty_level }}</td>
         <td>
           <div class="flex items-center justify-center h-full">
@@ -237,56 +304,30 @@
         </td>
         <td>{{ course.instructors.user.username }}</td>
         <td>{{ course.created_at | date : "dd/MM/yyyy" }}</td>
-        <td class="flex gap-1">
-          <p-button
-            icon="pi pi-eye"
-            [rounded]="true"
-            [raised]="true"
-            severity="help"
-            [routerLink]="[course.id]"
-          />
-          @if (course.status === 'pending') {
-          <p-button
-            icon="pi pi-check"
-            [rounded]="true"
-            [raised]="true"
-            (click)="openReviewDialog(course.id, 'approved')"
-            severity="success"
-          />
-          } @if (course.status === 'pending') {
-          <p-button
-            icon="pi pi-times"
-            (click)="openReviewDialog(course.id, 'rejected')"
-            [rounded]="true"
-            [raised]="true"
-            severity="danger"
-          />
-          }
-        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="9" class="text-center">Không tìm thấy khóa học nào.</td>
+        <td colspan="9" class="text-center">No courses found.</td>
       </tr>
     </ng-template>
   </p-table>
 </div>
 
 <p-dialog
-  [header]="reviewAction === 'approved' ? 'Duyệt yêu cầu' : 'Từ chối yêu cầu'"
+  [header]="reviewAction === 'approved' ? 'Approve request' : 'Deny request'"
   [(visible)]="displayReviewDialog"
   [modal]="true"
   [style]="{ width: '30vw' }"
-  [draggable]="false"
+  [draggable]="true"
   [resizable]="false"
 >
-  <div class="p-4">
-    <p>Vui lòng nhập ghi chú (nếu có):</p>
+  <div class="">
+    <p>Please enter notes (if any):</p>
     <textarea
       rows="5"
       cols="30"
-      placeholder="Nhập ghi chú (tối đa 2000 ký tự)"
+      placeholder="Enter notes (up to 2000 characters)"
       maxlength="2000"
       pTextarea
       [(ngModel)]="notes"
@@ -296,14 +337,14 @@
   <ng-template pTemplate="footer">
     <button
       pButton
-      label="Hủy"
+      label="Cancel"
       class="p-button-secondary"
       (click)="displayReviewDialog = false; notes = ''"
     ></button>
     <button
       pButton
       [label]="
-        reviewAction === 'approved' ? 'Xác nhận duyệt' : 'Xác nhận từ chối'
+        reviewAction === 'approved' ? 'Confirm approval' : 'Confirm rejection'
       "
       [ngClass]="
         reviewAction === 'approved' ? 'p-button-success' : 'p-button-danger'

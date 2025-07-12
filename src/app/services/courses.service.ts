@@ -33,6 +33,14 @@ export class CoursesService {
     return this.http.post<any>(`${this.apiUrl}/instructor/course/${courseId}/clone`, {}, { withCredentials: true });
   }
 
+  banCourses(courseId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/admin/courses/${courseId}/ban`, {}, { withCredentials: true });
+  }
+
+  unBanCourses(courseId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/admin/courses/${courseId}/unban`, {}, { withCredentials: true });
+  }
+
   // Thêm bài học mới (dùng chunk file upload)
   addLesson(courseId: number, data: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons`, data, {

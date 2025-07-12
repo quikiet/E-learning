@@ -10,7 +10,7 @@
 >
   <ng-template pTemplate="caption">
     <div class="flex items-center justify-between py-2">
-      <div class="flex gap-5 items-center">
+      <div class="flex gap-5 items-center flex-wrap">
         <p class="m-0 lg:text-lg font-semibold text-gray-800">
           List of lessons for course ID: {{ courseId }}
         </p>
@@ -28,7 +28,7 @@
         </p-iconfield>
       </div>
       <button>
-        <a [routerLink]="['/admin/course-management']">
+        <a [routerLink]="['/admin/course-manage']">
           <i class="pi pi-times mr-10"></i>
         </a>
       </button>

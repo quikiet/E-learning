@@ -1,7 +1,7 @@
 <div class="max-w-7xl mx-auto my-6">
   <p-toast></p-toast>
   <div class="bg-white rounded-xl shadow-md p-6 mb-6">
-    <div class="flex justify-between items-center mb-4">
+    <div class="flex justify-between items-center mb-4 flex-wrap">
       <h2 class="text-xl font-bold">Revenue Sessions</h2>
       <p-button
         label="Create New Session"
@@ -14,11 +14,11 @@
       [value]="sessions"
       [tableStyle]="{ 'min-width': '50rem' }"
       [paginator]="true"
-      [rows]="10"
+      [rows]="5"
       [sortField]="'created_at'"
       [sortOrder]="-1"
       class="!text-xs"
-      >
+    >
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="session_id">
@@ -40,10 +40,6 @@
             Instructor Share <p-sortIcon field="instructor_share"></p-sortIcon>
           </th>
           <th>Status</th>
-          <th pSortableColumn="need_distribution">
-            Need Distribution
-            <p-sortIcon field="need_distribution"></p-sortIcon>
-          </th>
           <th pSortableColumn="created_at">
             Created At <p-sortIcon field="created_at"></p-sortIcon>
           </th>
@@ -62,19 +58,17 @@
           <td>{{ session.admin_share | currency : "USD" }}</td>
           <td>{{ session.instructor_share | currency : "USD" }}</td>
           <td>{{ session.status | titlecase }}</td>
-          <td>{{ session.need_distribution ? "Yes" : "No" }}</td>
           <td>{{ session.created_at | date }}</td>
           <td>{{ session.updated_at | date }}</td>
           <td>
-            @if (session.need_distribution) {
-              <p-button
-                label="Distribute"
-                icon="pi pi-money-bill"
-                severity="success"
-                (onClick)="distributeSession(session.session_id)"
-                [loading]="distributingSessions.includes(session.session_id)"
-              ></p-button>
-            }
+            <p-button
+              label="Distribute"
+              icon="pi pi-money-bill"
+              severity="success"
+              [disabled]="session.need_distribution"
+              (onClick)="distributeSession(session.session_id)"
+              [loading]="distributingSessions.includes(session.session_id)"
+            ></p-button>
           </td>
         </tr>
       </ng-template>
@@ -83,7 +77,7 @@
   <div class="bg-white rounded-xl shadow-md p-6">
     <h2 class="text-xl font-bold mb-4">Revenue Chart</h2>
     <p-chart
-      class="!text-sm"
+      class="!text-sm !w-full md:!w-96"
       type="bar"
       [data]="barChartData"
       [options]="barChartOptions"

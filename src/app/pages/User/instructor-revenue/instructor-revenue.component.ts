@@ -19,6 +19,7 @@ export class InstructorRevenueComponent implements OnInit {
   selectedMonth: number | null = null;
   selectedYear: number | null = null;
   months = [
+    { name: 'All', value: null },
     { name: 'January', value: 1 },
     { name: 'February', value: 2 },
     { name: 'March', value: 3 },
@@ -54,10 +55,10 @@ export class InstructorRevenueComponent implements OnInit {
           name: response.name
         };
         this.courses = response.courses;
-        console.log('Instructor details loaded:', response);
+        // console.log('Instructor details loaded:', response);
       },
       error: (err) => {
-        console.error('Error loading instructor details:', err);
+        // console.error('Error loading instructor details:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',

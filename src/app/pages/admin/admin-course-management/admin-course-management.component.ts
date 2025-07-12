@@ -47,16 +47,17 @@ export class AdminCourseManagementComponent implements OnInit {
     q: '',
     status: null as string | null,
     difficulty_level: null as string | null,
-    price_min: null as number | null,
+    price_min: 0 as number | null,
     price_max: null as number | null,
     is_certificate_enabled: null as boolean | null,
     page: 1,
   };
   statusOptions = [
     { label: 'Pending', value: 'pending' },
-    { label: 'Available', value: 'available' },
-    { label: 'Unavailable', value: 'unavailable' },
+    { label: 'Approved', value: 'approved' },
     { label: 'Rejected', value: 'rejected' },
+    { label: 'Unavailable', value: 'unavailable' },
+    { label: 'Banned', value: 'banned' },
   ];
   difficultyOptions = [
     { label: 'All Level', value: 'Unknown' },
@@ -65,7 +66,7 @@ export class AdminCourseManagementComponent implements OnInit {
     { label: 'Advanced', value: 'Advanced' },
   ];
   certificateOptions = [
-    { label: 'All', value: '' },
+    { label: 'All', value: null },
     { label: 'Certificate', value: 1 },
     { label: 'Non-certificate', value: 0 },
   ];
@@ -132,6 +133,59 @@ export class AdminCourseManagementComponent implements OnInit {
       },
     });
   }
+
+  banCourse(courseId: number) {
+    this.coursesService.banCourses(courseId).subscribe({
+      next: (res) => {
+        const userInput = prompt('Are you sure you want to ban this course? Please type "OK" to confirm.');
+        if (userInput !== 'OK') {
+          return;
+        }
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message,
+          life: 3000,
+        });
+        this.loadCourses();
+      }, error: (err) => {
+        console.log(err.error.message);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error.message,
+          life: 3000,
+        });
+      }
+    })
+  }
+
+  unBanCourse(courseId: number) {
+    this.coursesService.unBanCourses(courseId).subscribe({
+      next: (res) => {
+        const userInput = prompt('Are you sure you want to ban this course? Please type "OK" to confirm.');
+        if (userInput !== 'OK') {
+          return;
+        }
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: res.message,
+          life: 3000,
+        });
+        this.loadCourses();
+      }, error: (err) => {
+        console.log(err.error.message);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error.message,
+          life: 3000,
+        });
+      }
+    })
+  }
+
 
   openReviewDialog(courseId: number, action: string) {
     this.reviewCourseId = courseId;
