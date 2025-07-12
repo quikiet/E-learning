@@ -4,150 +4,138 @@
       class="ml-5 lg:hidden"
       (click)="visibleFilter = true"
       icon="pi pi-filter"
-      />
-      <p-drawer
-        header="Filters"
-        [(visible)]="visibleFilter"
-        styleClass="!w-full md:!w-[30rem] z-50 lg:!hidden"
-        >
-        <p>
-          <app-course-search-sidebar
-            [selectedCategories]="currentSearchParams.categories"
-            (search)="onSearch($event)"
-            (reset)="onReset()"
-          ></app-course-search-sidebar>
-        </p>
-      </p-drawer>
-      <span class="mr-5">Total: {{ totalRecords }}</span>
-    </div>
-    <div class="flex">
-      <!-- Sidebar -->
-      <div class="hidden lg:block lg:w-1/4">
+    />
+    <p-drawer
+      header="Filters"
+      [(visible)]="visibleFilter"
+      styleClass="!w-full md:!w-[30rem] z-50 lg:!hidden"
+    >
+      <p>
         <app-course-search-sidebar
           [selectedCategories]="currentSearchParams.categories"
           (search)="onSearch($event)"
           (reset)="onReset()"
         ></app-course-search-sidebar>
-      </div>
+      </p>
+    </p-drawer>
+    <span class="mr-5">Total: {{ totalRecords }}</span>
+  </div>
+  <div class="flex">
+    <!-- Sidebar -->
+    <div class="hidden lg:block lg:w-1/4">
+      <app-course-search-sidebar
+        [selectedCategories]="currentSearchParams.categories"
+        (search)="onSearch($event)"
+        (reset)="onReset()"
+      ></app-course-search-sidebar>
+    </div>
 
-      <!-- Main content -->
-      <div class="w-full lg:w-3/4 px-4">
-        <!-- Rest of the template remains unchanged -->
-        @if (isLoading) {
-          <p-progressSpinner
-            class="flex justify-center"
-          ></p-progressSpinner>
-        }
-        <p-toast></p-toast>
+    <!-- Main content -->
+    <div class="w-full lg:w-3/4 px-4">
+      <!-- Rest of the template remains unchanged -->
+      @if (isLoading) {
+      <p-progressSpinner class="flex justify-center"></p-progressSpinner>
+      }
+      <p-toast></p-toast>
 
-        <!-- Course list as cards -->
-        <div class="">
-          @for (course of courses; track course) {
-            <div class="flex flex-col gap-5 my-2">
-              <div class="w-full">
-                <a
-                  class="flex gap-2 items-start"
-                  [routerLink]="['/course-detail', course.course_url]"
-                  >
-                  <div class="w-1/4">
-                    <img
-                      [alt]="course.course_name"
-                      class="w-full"
+      <!-- Course list as cards -->
+      <div class="">
+        @for (course of courses; track course) {
+        <div class="flex flex-col gap-5 my-2">
+          <div class="w-full">
+            <a
+              class="flex gap-2 items-start"
+              [routerLink]="['/course-detail', course.course_url]"
+            >
+              <div class="w-1/4">
+                <img
+                  [alt]="course.course_name"
+                  class="w-full"
                   [src]="
                     course.image
                       ? course.image
                       : 'https://primefaces.org/cdn/primeng/images/card-ng.jpg'
                   "
-                      />
-                    </div>
-                    <div class="p-0 w-3/4">
-                      <div class="flex flex-col justify-between">
-                        <div class="flex items-start justify-between w-full">
-                          <h3 class="font-semibold text-lg">
-                            {{ course.course_name }}
-                          </h3>
-                          @if (course.price > 0) {
-                            <b class="text-sm text-primary"
-                              >{{ course.price | number }} USD</b
-                              >
-                          }
-                          @if (course.price === 0) {
-                            <b class="text-secondary"
-                              >Free</b
-                              >
-                            }
-                          </div>
-                          <p class="text-sm">
-                            {{ cutText(course.course_description) }}
-                          </p>
-                          <span class="text-gray-400 text-xs">{{
-                            course.instructors.name
-                          }}</span>
-                          <p class="text-sm text-gray-600 mb-1">
-                            Categories:
-                            @for (
-                              category of course.categories; track
-                              category; let isLast = $last) {
-                              <span
-                                class="text-xs text-secondary"
-                                >
-                                {{ category.name }}{{ isLast ? "" : ", " }}
-                              </span>
-                            }
-                          </p>
-                          <div class="flex items-center gap-1 text-xs">
-                            <span class="font-bold text-red-500">
-                              {{ course.course_rating | number : "1.1-1" }}
-                            </span>
-                            <span class="text-red-500">
-                              @for (star of getStarArray(course.course_rating); track star) {
-                                <span
-                                  >{{ star }}</span
-                                  >
-                                }
-                              </span>
-                              ({{ course.number_of_ratings }})
-                            </div>
-                            <span class="text-gray-400">
-                              <ul
-                                class="flex list-disc w-full items-center gap-4 text-xs"
-                                >
-                                <li class="list-none">
-                                  Hour total: {{ course.total_time }} hour
-                                </li>
-                                <li>{{ course.total_lessons }} lessons</li>
-                                <li>{{ course.difficulty_level }}</li>
-                              </ul>
-                            </span>
-                          </div>
-                        </div>
-                      </a>
-                      <hr class="my-3 text-gray" />
-                    </div>
-                  </div>
-                }
+                />
               </div>
-
-              <!-- No courses found -->
-              @if (!isLoading && courses.length === 0) {
-                <div class="text-center mt-4">
-                  <p>No courses found.</p>
+              <div class="p-0 w-3/4">
+                <div class="flex flex-col justify-between">
+                  <div class="flex items-start justify-between w-full">
+                    <h3 class="font-semibold text-lg">
+                      {{ course.course_name }}
+                    </h3>
+                    @if (course.price > 0) {
+                    <b class="text-sm text-primary"
+                      >{{ course.price | number }} USD</b
+                    >
+                    } @if (course.price === 0) {
+                    <b class="text-secondary">Free</b>
+                    }
+                  </div>
+                  <p class="text-sm">
+                    {{ cutText(course.course_description) }}
+                  </p>
+                  <span class="text-gray-400 text-xs">{{
+                    course.instructors.name
+                  }}</span>
+                  <p class="text-sm text-gray-600 mb-1">
+                    Categories: @for ( category of course.categories; track
+                    category; let isLast = $last) {
+                    <span class="text-xs text-secondary">
+                      {{ category.name }}{{ isLast ? "" : ", " }}
+                    </span>
+                    }
+                  </p>
+                  <div class="flex items-center gap-1 text-xs">
+                    <span class="font-bold text-red-500">
+                      {{ course.course_rating | number : "1.1-1" }}
+                    </span>
+                    <span class="text-red-500">
+                      @for (star of getStarArray(course.course_rating); track
+                      $index) {
+                      <span>{{ star }}</span>
+                      }
+                    </span>
+                    ({{ course.number_of_ratings }})
+                  </div>
+                  <span class="text-gray-400">
+                    <ul
+                      class="flex list-disc w-full items-center gap-4 text-xs"
+                    >
+                      <li class="list-none">
+                        Hour total: {{ course.total_time }} hour
+                      </li>
+                      <li>{{ course.total_lessons }} lessons</li>
+                      <li>{{ course.difficulty_level }}</li>
+                    </ul>
+                  </span>
                 </div>
-              }
-
-              <!-- Pagination -->
-              @if (!isLoading && totalRecords > 0) {
-                <div
-                  class="mt-4 flex justify-center"
-                  >
-                  <p-paginator
-                    [rows]="rows"
-                    [totalRecords]="totalRecords"
-                    [first]="(currentPage - 1) * rows"
-                    (onPageChange)="onPageChange($event)"
-                  ></p-paginator>
-                </div>
-              }
-            </div>
+              </div>
+            </a>
+            <hr class="my-3 text-gray" />
           </div>
         </div>
+        }
+      </div>
+
+      <!-- No courses found -->
+      @if (!isLoading && courses.length === 0) {
+      <div class="text-center mt-4">
+        <p>No courses found.</p>
+      </div>
+      }
+
+      <!-- Pagination -->
+      @if (!isLoading && totalRecords > 0) {
+      <div class="mt-4 flex justify-center">
+        <p-paginator
+          [rows]="rows"
+          [totalRecords]="totalRecords"
+          [first]="(currentPage - 1) * rows"
+          (onPageChange)="onPageChange($event)"
+        ></p-paginator>
+      </div>
+      }
+    </div>
+  </div>
+</div>

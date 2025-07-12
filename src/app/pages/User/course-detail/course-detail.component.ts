@@ -207,7 +207,7 @@ export class CourseDetailComponent implements OnInit {
     this.coursesService.getCoursesByRecommend(course_title).subscribe({
       next: (res) => {
         this.recommendCourse = res.recommendations;
-        // console.log(this.recommendCourse.length + 'hehe');
+        console.log(this.recommendCourse.length + 'hehe');
       }, error: (err) => {
         console.log(err.message);
       }

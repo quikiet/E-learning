@@ -290,31 +290,11 @@
   [(visible)]="filterDialog"
   header="Filter Users"
   [modal]="true"
-  [style]="{ width: '40rem' }"
+  [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [maximizable]="true"
 >
   <form [formGroup]="filterForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div>
-      <label for="username" class="block font-medium mb-1">Username</label>
-      <input
-        pInputText
-        id="username"
-        formControlName="username"
-        class="w-full"
-      />
-    </div>
-    <div>
-      <label for="fullname" class="block font-medium mb-1">Fullname</label>
-      <input
-        pInputText
-        id="fullname"
-        formControlName="fullname"
-        class="w-full"
-      />
-    </div>
-    <div>
-      <label for="email" class="block font-medium mb-1">Email</label>
-      <input pInputText id="email" formControlName="email" class="w-full" />
-    </div>
     <div>
       <label for="role" class="block font-medium mb-1">Role</label>
       <p-select
@@ -338,6 +318,28 @@
         class="w-full"
         placeholder="Select Gender"
       />
+    </div>
+    <div>
+      <label for="username" class="block font-medium mb-1">Username</label>
+      <input
+        pInputText
+        id="username"
+        formControlName="username"
+        class="w-full"
+      />
+    </div>
+    <div>
+      <label for="fullname" class="block font-medium mb-1">Fullname</label>
+      <input
+        pInputText
+        id="fullname"
+        formControlName="fullname"
+        class="w-full"
+      />
+    </div>
+    <div>
+      <label for="email" class="block font-medium mb-1">Email</label>
+      <input pInputText id="email" formControlName="email" class="w-full" />
     </div>
 
     <div>
