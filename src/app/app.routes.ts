@@ -51,6 +51,7 @@ import { InstructorRevenueComponent } from './pages/User/instructor-revenue/inst
 import { adminGuard } from './guard/admin.guard';
 import { PolicyComponent } from './pages/User/policy/policy.component';
 import { instructorGuard } from './guard/instructor.guard';
+import { UnauthorizationComponent } from './pages/User/unauthorization/unauthorization.component';
 
 export const routes: Routes = [
     {
@@ -69,6 +70,9 @@ export const routes: Routes = [
     {
         path: 'auth/google/callback', component: AuthCallbackComponent,
         canActivate: [isLoggedInGuard]
+    },
+    {
+        path: 'unauthorization', component: UnauthorizationComponent,
     },
     {
         path: '', component: MainLayoutComponent,

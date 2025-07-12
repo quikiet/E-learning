@@ -9,6 +9,6 @@ export const instructorGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  alert('Access denied. Instructor only!');
-  return router.parseUrl('/');
+  // alert('Access denied. Instructor only!');
+  return router.parseUrl('/unauthorization');
 };

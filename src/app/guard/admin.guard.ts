@@ -9,6 +9,6 @@ export const adminGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  alert('Access denied. Admins only!');
-  return router.parseUrl('/');
+  // alert('Access denied. Admins only!');
+  return router.parseUrl('/unauthorization');
 }
