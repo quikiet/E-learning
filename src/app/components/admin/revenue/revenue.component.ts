@@ -6,9 +6,10 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { AnalystService } from '../../../services/analyst.service';
 import { ChartModule } from 'primeng/chart';
+import { AnimateOnScroll } from 'primeng/animateonscroll';
 @Component({
   selector: 'app-revenue',
-  imports: [CommonModule, TableModule, ButtonModule, ToastModule, ChartModule],
+  imports: [CommonModule, TableModule, ButtonModule, ToastModule, ChartModule, AnimateOnScroll],
   providers: [MessageService, DatePipe, AnalystService],
   templateUrl: './revenue.component.html',
   styleUrl: './revenue.component.css'

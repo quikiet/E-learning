@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { MessageService } from 'primeng/api';
@@ -7,10 +6,10 @@ import { ToastModule } from 'primeng/toast';
 import { AnalystService } from '../../../services/analyst.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RevenueComponentimplements } from "../../../components/admin/revenue/revenue.component";
-
+import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 @Component({
   selector: 'app-dashboard',
-  imports: [CardModule, ChartModule, ToastModule, ProgressSpinnerModule, RevenueComponentimplements],
+  imports: [CardModule, ChartModule, ToastModule, ProgressSpinnerModule, RevenueComponentimplements, AnimateOnScrollModule],
   providers: [MessageService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -25,8 +24,12 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private analystService: AnalystService,
-    private messageService: MessageService
-  ) { }
+    private messageService: MessageService,
+  ) {
+  }
+
+
+
 
   ngOnInit() {
     this.loadAnalystData();

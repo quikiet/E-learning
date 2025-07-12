@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { BadgeModule } from 'primeng/badge';
+import { AnimateOnScroll } from 'primeng/animateonscroll';
 
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule, RouterOutlet, RouterLinkActive, RouterLink, BadgeModule],
+  imports: [CommonModule, RouterOutlet, RouterLinkActive, RouterLink, BadgeModule, AnimateOnScroll],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })

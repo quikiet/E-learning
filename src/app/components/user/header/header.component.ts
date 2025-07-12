@@ -1,23 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
-import { Divider } from 'primeng/divider';
-import { InputIcon } from 'primeng/inputicon';
-import { IconField } from 'primeng/iconfield';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { CategoryService } from '../../../services/courses-manage/category.service';
-import { AutoComplete, AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CoursesService } from '../../../services/courses.service';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { CustomAutocompleteComponent } from "../../both/custom-autocomplete/custom-autocomplete.component";
 import { SkeletonModule } from 'primeng/skeleton';
+import { AnimateOnScroll } from 'primeng/animateonscroll';
 
 @Component({
   selector: 'app-header',
-  imports: [SkeletonModule, BadgeModule, RouterLink, Divider, InputIcon, IconField, InputTextModule, CommonModule, AutoCompleteModule, ButtonModule, FormsModule, CustomAutocompleteComponent],
+  imports: [AnimateOnScroll, SkeletonModule, BadgeModule, RouterLink, InputTextModule, CommonModule, AutoCompleteModule, ButtonModule, FormsModule, CustomAutocompleteComponent],
   providers: [CoursesService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'

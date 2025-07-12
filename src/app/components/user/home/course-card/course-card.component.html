@@ -5,6 +5,7 @@
   <div>
     <h3
       class="md:text-2xl text-lg lg:text-left text-center font-bold my-2"
+      [once]="true"
       pAnimateOnScroll
       enterClass="animate-enter fade-in-10 slide-in-from-b-20 animate-duration-1000"
     >
@@ -13,7 +14,8 @@
     <h5
       class="md:text-xl font-bold mb-2 lg:text-left text-center"
       pAnimateOnScroll
-      enterClass="animate-enter fade-in-10 zoom-in-50 animate-duration-1000"
+      enterClass="animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000"
+      leaveClass="animate-leave fade-out-0"
     >
       {{ subtitle }}
     </h5>

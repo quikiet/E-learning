@@ -6,9 +6,10 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { InstructorsService } from '../../../services/instructors.service';
 import { RouterLink } from '@angular/router';
+import { AnimateOnScroll } from 'primeng/animateonscroll';
 @Component({
   selector: 'app-instructor',
-  imports: [ButtonModule, CarouselModule, RouterLink],
+  imports: [ButtonModule, CarouselModule, RouterLink, AnimateOnScroll],
   templateUrl: './instructor.component.html',
   styleUrl: './instructor.component.css'
 })
