@@ -39,11 +39,14 @@ export class HeaderComponent implements OnInit {
     this.loadCategories();
   }
   loadCategories() {
+    this.isLoading = true;
     this.categoryService.getCategory().subscribe({
       next: (res) => {
+        this.isLoading = false;
         this.parentCategories = res.filter((category: any) => category.parent_id === null);
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error fetching categories:', err.message);
       }
     });

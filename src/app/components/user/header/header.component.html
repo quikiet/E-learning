@@ -45,7 +45,7 @@
             enterClass="animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000"
             leaveClass="animate-leave fade-out-0"
             once="true"
-            style="animation-delay: 0ms"
+            style="animation-delay: 0.2s"
           >
             <a class="flex items-center gap-1" href="#">
               <img
@@ -157,7 +157,7 @@
             enterClass="animate-enter fade-in-10 slide-in-from-t-8 animate-duration-1000"
             leaveClass="animate-leave fade-out-0"
             once="true"
-            style="animation-delay: 0.45ms"
+            style="animation-delay: 0.45s"
           >
             <a
               class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
@@ -178,6 +178,11 @@
             <a
               class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
               [routerLink]="['/create-course']"
+              pAnimateOnScroll
+              enterClass="animate-enter fade-in-10 slide-in-from-t-8 animate-duration-1000"
+              leaveClass="animate-leave fade-out-0"
+              once="true"
+              style="animation-delay: 0.6s"
             >
               Create course
             </a>
@@ -188,6 +193,11 @@
             <a
               class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
               [routerLink]="['/my-course']"
+              pAnimateOnScroll
+              enterClass="animate-enter fade-in-10 slide-in-from-t-8 animate-duration-1000"
+              leaveClass="animate-leave fade-out-0"
+              once="true"
+              style="animation-delay: 0.75s"
             >
               My Course
             </a>
@@ -196,6 +206,11 @@
           <li class="my-5 lg:my-0">
             <div
               class="justify-center lg:justify-between flex items-center gap-5"
+              pAnimateOnScroll
+              enterClass="animate-enter fade-in-10 slide-in-from-t-8 animate-duration-1000"
+              leaveClass="animate-leave fade-out-0"
+              once="true"
+              style="animation-delay: 0.75s"
             >
               <!-- <div class="group inline-block relative">
                   <i class="pi pi-bell" style="font-size: 1.2rem"></i>

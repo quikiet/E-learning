@@ -70,6 +70,10 @@
         <div>
           <h3 class="mb-4 text-xs leading-[20px] text-gray-400 uppercase">
             <span
+              pAnimateOnScroll
+              enterClass="animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000"
+              leaveClass="animate-leave fade-out-0"
+              [once]="true"
               [ngClass]="sidebarToggle && !isSidebarHovered ? 'lg:hidden' : ''"
               class="menu-group-title"
             >
@@ -108,7 +112,7 @@
               enterClass="animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000"
               leaveClass="animate-leave fade-out-0"
               [once]="true"
-              style="animation-delay: 0s"
+              style="animation-delay: 0.15s"
               routerLink="dashboard"
               routerLinkActive="bg-secondary-light/50 text-secondary hover:bg-secondary-light/50"
               class="hover:bg-gray/30 transition duration-200 rounded text-sm font-medium"
@@ -137,7 +141,7 @@
               enterClass="animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000"
               leaveClass="animate-leave fade-out-0"
               [once]="true"
-              style="animation-delay: 0.15s"
+              style="animation-delay: 0.3s"
             >
               <div
                 (click)="isUserManageOpen = !isUserManageOpen"
@@ -214,7 +218,7 @@
               enterClass="animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000"
               leaveClass="animate-leave fade-out-0"
               [once]="true"
-              style="animation-delay: 0.3s"
+              style="animation-delay: 0.45s"
             >
               <div
                 (click)="isCourseManageOpen = !isCourseManageOpen"
@@ -291,7 +295,7 @@
               enterClass="animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000"
               leaveClass="animate-leave fade-out-0"
               [once]="true"
-              style="animation-delay: 0.45s"
+              style="animation-delay: 0.6s"
             >
               <div
                 (click)="isReviewManageOpen = !isReviewManageOpen"
@@ -354,7 +358,7 @@
               enterClass="animate-enter fade-in-10 slide-in-from-l-8 animate-duration-1000"
               leaveClass="animate-leave fade-out-0"
               [once]="true"
-              style="animation-delay: 0.6s"
+              style="animation-delay: 0.75s"
             >
               <div
                 (click)="isPaymentManageOpen = !isPaymentManageOpen"

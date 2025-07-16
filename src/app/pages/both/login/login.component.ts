@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
       LoE_DI: ['', Validators.maxLength(50)],
       birthdate: [null],
       fullname: ['',],
-      gender: [''],
+      gender: ['other'],
       bio: [''],
       organization: [''],
       role: ['student', Validators.required], // mặc định là student

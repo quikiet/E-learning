@@ -105,6 +105,15 @@
                 placeholder="Repeat password"
               />
             </app-form-element>
+            <app-form-element [label]="'Full Name'">
+              <input
+                pInputText
+                class="!rounded-full w-full"
+                placeholder="Nguyen A"
+                name="fullname"
+                formControlName="fullname"
+              />
+            </app-form-element>
             <div class="grid grid-cols-2 gap-5">
               <app-form-element
                 [label]="'Birthdate'"
@@ -142,15 +151,7 @@
                 class="!rounded-full w-full"
               />
             </app-form-element>
-            <app-form-element [label]="'Full Name'">
-              <input
-                pInputText
-                class="!rounded-full w-full"
-                placeholder="Nguyen A"
-                name="fullname"
-                formControlName="fullname"
-              />
-            </app-form-element>
+
             <p-fieldset legend="More information" [toggleable]="true">
               <!-- Student-specific fields -->
               @if (registerForm.get('role')?.value === 'student') {
@@ -169,7 +170,7 @@
                     class="!rounded-full w-full"
                   />
                 </app-form-element>
-                <app-form-element [label]="'Learning goals'" [required]="true">
+                <app-form-element [label]="'Learning goals'">
                   <div class="flex flex-wrap gap-4">
                     @for (goal of learningGoals; track goal; let i = $index) {
                     <div class="flex items-center">

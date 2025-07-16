@@ -380,7 +380,6 @@
       <app-form-element
         label="Learning Goal"
         [control]="studentForm.get('learning_goals')!"
-        [required]="true"
       >
         <div class="flex flex-wrap gap-4">
           @for (goal of learningGoals; track goal; let i = $index) {
