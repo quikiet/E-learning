@@ -191,15 +191,15 @@ export class CreateCourseComponent implements OnInit {
         if (this.createCertificate) {
           this.createCertificateRule();
         } else {
-          this.router.navigate(['/instructor-course']);
+          this.router.navigate(['/add-lesson', res.course.id]);
         }
       },
       error: (err) => {
         console.error('Error creating course:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể gửi khóa học. Vui lòng thử lại.',
+          summary: err.error.message,
+          detail: err.error?.error,
           life: 3000,
         });
       }
@@ -210,8 +210,8 @@ export class CreateCourseComponent implements OnInit {
     if (!this.certificateRule.course_id) {
       this.messageService.add({
         severity: 'error',
-        summary: 'Lỗi',
-        detail: 'Thiếu course_id.',
+        summary: 'Error',
+        detail: 'Course id not found.',
         life: 3000,
       });
       return;
@@ -229,13 +229,14 @@ export class CreateCourseComponent implements OnInit {
           life: 3000,
         });
         this.showCertificateModal = false;
-        this.router.navigate(['/instructor-course']);
+        this.router.navigate(['/add-lesson', this.certificateRule.course_id]);
+        // this.router.navigate(['/instructor-course']);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể tạo quy tắc chứng chỉ.',
+          summary: err.error.message,
+          detail: err.error?.error,
           life: 3000,
         });
       },

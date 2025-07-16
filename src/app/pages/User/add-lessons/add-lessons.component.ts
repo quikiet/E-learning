@@ -13,7 +13,7 @@ import { HttpEventType } from '@angular/common/http';
     FormsModule,
     ToastModule,
     ProgressBarModule
-],
+  ],
   providers: [MessageService],
   templateUrl: './add-lessons.component.html',
   styleUrl: './add-lessons.component.css'
@@ -74,6 +74,7 @@ export class AddLessonsComponent implements OnInit {
       next: (event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
           this.uploadProgress = Math.round((100 * event.loaded) / event.total);
+          console.log('Progress:', this.uploadProgress);
         } else if (event.type === HttpEventType.Response) {
           this.isUploading = false;
           this.uploadProgress = 0;

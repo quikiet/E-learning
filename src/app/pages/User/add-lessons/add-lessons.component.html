@@ -1,12 +1,12 @@
 <p-toast></p-toast>
 <div
   class="max-w-7xl mx-auto my-6 p-6 bg-white shadow-lg rounded-lg border border-gray-100"
-  >
+>
   <!-- Policy Section -->
   <div class="mb-8">
     <div
       class="bg-gray-50 p-4 rounded-lg text-sm text-gray-700 leading-relaxed"
-      >
+    >
       <h2 class="text-2xl font-bold text-primary mb-4">
         Lesson Upload Policies
       </h2>
@@ -43,7 +43,11 @@
     Create new lesson for Course ID:
     <span class="text-primary">{{ lesson.course_id }}</span>
   </h2>
-  <form (ngSubmit)="addLesson()" #lessonForm="ngForm">
+  <form
+    (ngSubmit)="addLesson()"
+    #lessonForm="ngForm"
+    enctype="multipart/form-data"
+  >
     <!-- Tiêu đề bài học -->
     <div class="mb-6">
       <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
@@ -57,53 +61,50 @@
         required
         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
         placeholder="Enter title"
-        />
-        @if (lessonForm.submitted && lessonForm.controls['title']?.invalid) {
-          <div
-            class="text-red-500 text-sm mt-1"
-            >
-            Please enter the lesson title.
-          </div>
-        }
+      />
+      @if (lessonForm.submitted && lessonForm.controls['title']?.invalid) {
+      <div class="text-red-500 text-sm mt-1">
+        Please enter the lesson title.
       </div>
+      }
+    </div>
 
-      <!-- Video bài học -->
-      <div class="mb-6">
-        <label for="video" class="block text-sm font-medium text-gray-700 mb-2">
-          Video <span class="text-red-500">*</span>
-        </label>
-        <div class="relative">
-          <input
-            type="file"
-            id="video"
-            name="video"
-            (change)="onFileSelected($event)"
-            accept="video/*"
-            class="w-full p-3 border border-gray-300 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition duration-200"
-            />
-          </div>
-          <!-- Progress bar khi đang upload -->
-          @if (isUploading) {
-            <div class="mt-3">
-              <p-progressBar
-                [value]="uploadProgress"
-                [showValue]="true"
-                class="h-6 rounded-lg"
-                [style]="{ 'background-color': '#e5e7eb', color: '#3b82f6' }"
-              ></p-progressBar>
-            </div>
-          }
-          @if (lessonForm.submitted && !lesson.video) {
-            <div
-              class="text-red-500 text-sm mt-1"
-              >
-              Please select the lesson video.
-            </div>
-          }
-        </div>
+    <!-- Video bài học -->
+    <div class="mb-6">
+      <label for="video" class="block text-sm font-medium text-gray-700 mb-2">
+        Video <span class="text-red-500">*</span>
+      </label>
+      <div class="relative">
+        <input
+          type="file"
+          id="video"
+          name="video"
+          (change)="onFileSelected($event)"
+          accept="video/*"
+          class="w-full p-3 border border-gray-300 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition duration-200"
+        />
+      </div>
+      <!-- Progress bar khi đang upload -->
+      <p>Progress: {{ uploadProgress }}%</p>
 
-        <!-- Thời lượng -->
-        <!-- <div class="mb-6">
+      @if (isUploading) {
+      <div class="mt-3">
+        <p-progressBar
+          [value]="uploadProgress"
+          [showValue]="true"
+          class="h-6 rounded-lg"
+          [style]="{ 'background-color': '#e5e7eb', color: '#3b82f6' }"
+        ></p-progressBar>
+      </div>
+      } @if (lessonForm.submitted && !lesson.video) {
+      <div class="text-red-500 text-sm mt-1">
+        Please select the lesson video.
+      </div>
+      }
+    </div>
+
+    <!-- Thời lượng -->
+    <!-- <div class="mb-6">
         <label for="duration" class="block text-sm font-medium text-gray-700 mb-2"
           >Thời lượng (phút)</label
           >
@@ -118,22 +119,22 @@
             />
           </div> -->
 
-          <!-- Cho phép xem trước -->
-          <div class="mb-6 flex items-center">
-            <input
-              type="checkbox"
-              id="is_preview"
-              name="is_preview"
-              [(ngModel)]="lesson.is_preview"
-              class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              />
-              <label for="is_preview" class="ml-2 text-sm font-medium text-gray-700">
-                Allow preview
-              </label>
-            </div>
+    <!-- Cho phép xem trước -->
+    <div class="mb-6 flex items-center">
+      <input
+        type="checkbox"
+        id="is_preview"
+        name="is_preview"
+        [(ngModel)]="lesson.is_preview"
+        class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+      />
+      <label for="is_preview" class="ml-2 text-sm font-medium text-gray-700">
+        Allow preview
+      </label>
+    </div>
 
-            <!-- Thứ tự sắp xếp -->
-            <!-- <div class="mb-6">
+    <!-- Thứ tự sắp xếp -->
+    <!-- <div class="mb-6">
             <label
               for="sort_order"
               class="block text-sm font-medium text-gray-700 mb-2"
@@ -150,13 +151,13 @@
                 />
               </div> -->
 
-              <!-- Nút gửi -->
-              <button
-                type="submit"
-                [disabled]="!lessonForm.valid || isUploading"
-                class="w-full bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                >
-                {{ isUploading ? "Updating..." : "Add lesson" }}
-              </button>
-            </form>
-          </div>
+    <!-- Nút gửi -->
+    <button
+      type="submit"
+      [disabled]="!lessonForm.valid || isUploading"
+      class="w-full bg-blue-500 text-white px-4 py-3 rounded-lg hover:bg-blue-600 transition duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
+    >
+      {{ isUploading ? "Updating..." : "Add lesson" }}
+    </button>
+  </form>
+</div>

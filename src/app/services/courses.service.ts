@@ -44,8 +44,9 @@ export class CoursesService {
   // Thêm bài học mới (dùng chunk file upload)
   addLesson(courseId: number, data: FormData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons`, data, {
-      reportProgress: true,
-      observe: 'events',
+      reportProgress: true, // Bật theo dõi tiến trình upload
+      observe: 'events',    // Theo dõi tất cả sự kiện
+      responseType: 'json',
       withCredentials: true
     });
   }

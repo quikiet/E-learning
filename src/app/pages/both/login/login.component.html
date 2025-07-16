@@ -229,6 +229,16 @@
                     <label for="on_label">Bio</label>
                   </p-floatlabel>
                 </app-form-element>
+                <app-form-element [label]="'Paypal email'" [required]="true">
+                  <input
+                    pInputText
+                    required
+                    class="!rounded-full w-full"
+                    placeholder="Your email paypal"
+                    name="email_paypal"
+                    formControlName="email_paypal"
+                  />
+                </app-form-element>
                 <app-form-element [label]="'Organization'">
                   <input
                     pInputText

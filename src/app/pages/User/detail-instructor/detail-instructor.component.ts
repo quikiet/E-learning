@@ -28,7 +28,7 @@ export class DetailInstructorComponent implements OnInit {
         this.instructor = res.data.instructor;
         this.courses = res.data.courses;
         this.total_summary = res.data.total_summary;
-        // console.log('Instructor profile loaded:', res.data);
+        console.log('Instructor profile loaded:', res.data);
       },
       error: (err) => {
         console.error('Error loading instructor profile:', err);

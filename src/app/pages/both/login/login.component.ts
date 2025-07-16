@@ -81,8 +81,9 @@ export class LoginComponent implements OnInit {
       birthdate: [null],
       fullname: ['',],
       gender: ['other'],
-      bio: [''],
+      bio: ['', Validators.required],
       organization: [''],
+      email_paypal: ['', Validators.required],
       role: ['student', Validators.required], // mặc định là student
       learning_goals: [''],
       category_ids: [[]],
@@ -115,6 +116,21 @@ export class LoginComponent implements OnInit {
         alert('Không thể tải danh mục' + error.message);
       }
     });
+
+    // Thêm validator động dựa trên role
+    this.registerForm.get('role')?.valueChanges.subscribe(role => {
+      if (role === 'student') {
+        this.registerForm.get('LoE_DI')?.setValidators([Validators.required]);
+        this.registerForm.get('category_ids')?.setValidators([Validators.required]);
+      } else if (role === 'instructor') {
+        this.registerForm.get('bio')?.setValidators([Validators.required]);
+        this.registerForm.get('email_paypal')?.setValidators([Validators.required]);
+      }
+      this.registerForm.get('LoE_DI')?.updateValueAndValidity();
+      this.registerForm.get('category_ids')?.updateValueAndValidity();
+      this.registerForm.get('bio')?.updateValueAndValidity();
+      this.registerForm.get('email_paypal')?.updateValueAndValidity();
+    });
   }
 
   dateValidator() {
@@ -145,14 +161,15 @@ export class LoginComponent implements OnInit {
     if (this.registerForm.valid) {
       const data = {
         ...this.registerForm.value,
-        LoE_DI: this.registerForm.value.LoE_DI?.value || '',
-        learning_goals: this.registerForm.value.learning_goals?.value || '',
-        gender: this.registerForm.value.gender?.value || '',
+        LoE_DI: this.registerForm.value.LoE_DI || '',
+        learning_goals: this.registerForm.value.learning_goals || '',
+        gender: this.registerForm.value.gender || '',
         birthdate: this.registerForm.value.birthdate || null,
         category_ids: this.registerForm.value.category_ids || [],
         password_confirmation: this.registerForm.value.password_confirmation,
         bio: this.registerForm.value.role === 'instructor' ? this.registerForm.value.bio : null,
-        organization: this.registerForm.value.role === 'instructor' ? this.registerForm.value.organization : null
+        organization: this.registerForm.value.role === 'instructor' ? this.registerForm.value.organization : null,
+        email_paypal: this.registerForm.value.role === 'instructor' ? this.registerForm.value.email_paypal : null
       };
       console.log(data);
 

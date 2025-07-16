@@ -2,17 +2,17 @@
   <header class="bg-indigo-50 px-6 sm:px-10 lg:px-20 py-8 lg:py-12">
     <div
       class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center lg:items-start justify-between gap-6 lg:gap-0 relative"
-      >
+    >
       <!-- Left content -->
       <div class="flex-1 max-w-xl lg:max-w-2xl px-6 sm:px-10 lg:px-20">
         <p
           class="text-xs sm:text-sm font-semibold text-indigo-900 uppercase tracking-widest mb-1 select-none"
-          >
+        >
           INSTRUCTOR
         </p>
         <h1
           class="text-3xl sm:text-4xl font-extrabold leading-tight mb-1 select-text"
-          >
+        >
           {{ instructor?.fullname || "Instructor Name" }}
         </h1>
         <p class="font-semibold text-gray-700 select-text">
@@ -23,7 +23,7 @@
       <!-- Right card with logo and YouTube icon button -->
       <div
         class="lg:absolute lg:right-0 lg:-translate-x-1/2 bg-white rounded-xl shadow-lg p-6 w-52 lg:w-72 flex flex-col items-center select-none"
-        >
+      >
         <div class="rounded-full overflow-hidden w-36 h-36 mb-6 shadow-md">
           <img
             [src]="
@@ -33,161 +33,161 @@
             alt="Instructor avatar"
             loading="lazy"
             class="w-full h-full object-cover object-center"
+          />
+        </div>
+        <button
+          aria-label="YouTube Channel Link"
+          class="border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-colors rounded-md p-3 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-indigo-300"
+          (click)="openYouTube()"
+          type="button"
+        >
+          <svg
+            class="w-5 h-5 fill-current"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M23.498 6.186a2.92 2.92 0 0 0-2.05-2.05C19.667 3.5 12 3.5 12 3.5s-7.667 0-9.448.636a2.92 2.92 0 0 0-2.05 2.05A30.138 30.138 0 0 0 0 12a30.138 30.138 0 0 0 .502 5.813 2.92 2.92 0 0 0 2.05 2.05c1.78.636 9.448.636 9.448.636s7.667 0 9.448-.636a2.92 2.92 0 0 0 2.05-2.05A30.138 30.138 0 0 0 24 12a30.138 30.138 0 0 0-.502-5.814zM9.75 15.75v-7.5l6 3.75-6 3.75z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main
+    class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-20 py-10 grid grid-cols-1 md:grid-cols-3 gap-12"
+  >
+    <!-- Left content area with stats and intro -->
+    <section class="md:col-span-2 space-y-10">
+      <div class="flex gap-12 mb-8 justify-start max-w-xs sm:max-w-none">
+        <div>
+          <p class="text-lg font-extrabold text-gray-900 select-text">
+            {{ total_summary.total_students | number }}
+          </p>
+          <p class="text-sm font-semibold text-gray-700 select-text">
+            Total Students
+          </p>
+        </div>
+        <div>
+          <p class="text-lg font-extrabold text-gray-900 select-text">
+            {{ total_summary.total_reviews | number }}
+          </p>
+          <p class="text-sm font-semibold text-gray-700 select-text">Reviews</p>
+        </div>
+        <div>
+          <p class="text-lg font-extrabold text-gray-900 select-text">
+            {{ total_summary.total_reports | number }}
+          </p>
+          <p class="text-sm font-semibold text-gray-700 select-text">Report</p>
+        </div>
+      </div>
+
+      <article>
+        <h2 class="text-2xl font-extrabold mb-4 select-text">About Me</h2>
+        <div [ngClass]="{ 'max-h-24 overflow-hidden': !showFullBio }">
+          <p
+            class="text-base leading-relaxed text-gray-800 max-w-none select-text"
+          >
+            {{ instructor?.bio }}
+          </p>
+        </div>
+        <button
+          id="toggleBtn"
+          class="mt-4 text-indigo-600 font-semibold text-sm hover:underline focus:outline-none select-none"
+          (click)="toggleBio()"
+        >
+          {{ showFullBio ? "Show Less ▲" : "Show More ▼" }}
+        </button>
+      </article>
+
+      <h2 class="text-xl font-semibold text-gray-800 mb-6">
+        My Courses
+        <span class="text-gray-500"
+          >({{ total_summary.total_courses || 0 }})</span
+        >
+      </h2>
+
+      <!-- Grid container -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (course of courses; track course) {
+        <article
+          class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
+          [routerLink]="['/course-detail', course.course_url]"
+        >
+          <div class="relative rounded-t-lg overflow-hidden">
+            <img
+              [src]="course.image"
+              alt="Course image for {{ course.course_name }}"
+              class="w-full h-48 object-cover"
+              loading="lazy"
             />
           </div>
-          <button
-            aria-label="YouTube Channel Link"
-            class="border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-colors rounded-md p-3 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-indigo-300"
-            (click)="openYouTube()"
-            type="button"
+          <div class="p-4 flex flex-col gap-2">
+            <h3
+              class="text-gray-900 text-base font-semibold leading-snug line-clamp-3"
             >
-            <svg
-              class="w-5 h-5 fill-current"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-              focusable="false"
+              {{ course.course_name }}
+            </h3>
+            <p class="text-gray-600 text-sm line-clamp-2">
+              {{ course.course_description }}
+            </p>
+            <span class="text-gray-500 text-xs font-medium select-none">
+              {{ instructor?.fullname || "AI Coding" }}
+            </span>
+            <div class="flex flex-wrap gap-2 mt-2 text-xs">
+              <span
+                class="border border-gray-300 rounded-md py-0.5 px-2 text-gray-700 select-none"
               >
-              <path
-                d="M23.498 6.186a2.92 2.92 0 0 0-2.05-2.05C19.667 3.5 12 3.5 12 3.5s-7.667 0-9.448.636a2.92 2.92 0 0 0-2.05 2.05A30.138 30.138 0 0 0 0 12a30.138 30.138 0 0 0 .502 5.813 2.92 2.92 0 0 0 2.05 2.05c1.78.636 9.448.636 9.448.636s7.667 0 9.448-.636a2.92 2.92 0 0 0 2.05-2.05A30.138 30.138 0 0 0 24 12a30.138 30.138 0 0 0-.502-5.814zM9.75 15.75v-7.5l6 3.75-6 3.75z"
-                />
-              </svg>
-            </button>
+                Course
+              </span>
+              <span
+                class="border border-yellow-400 text-yellow-600 rounded-md py-0.5 px-2 flex items-center gap-1 select-none"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 fill-current"
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.09 3.36a1 1 0 00.95.69h3.527c.969 0 1.371 1.24.588 1.81l-2.85 2.07a1 1 0 00-.364 1.118l1.09 3.36c.3.92-.755 1.688-1.539 1.118l-2.85-2.07a1 1 0 00-1.175 0l-2.85 2.07c-.784.57-1.838-.197-1.54-1.118l1.09-3.36a1 1 0 00-.364-1.118L2.44 8.787c-.783-.57-.38-1.81.588-1.81h3.527a1 1 0 00.95-.69l1.09-3.36z"
+                  />
+                </svg>
+                {{ course.course_rating | number : "1.1-1" }}
+              </span>
+              <span
+                class="border border-gray-300 rounded-md py-0.5 px-2 text-gray-700 select-none"
+              >
+                {{ course.total_reviews }} Ratings
+              </span>
+              <span
+                class="border border-gray-300 rounded-md py-0.5 px-2 text-gray-700 select-none"
+              >
+                {{ course.difficulty_level }}
+              </span>
+            </div>
+            <div
+              class="mt-3 flex items-center gap-3 font-semibold text-lg text-gray-900 select-none"
+            >
+              <span class="text-red-600">$ {{ course.price | number }}</span>
+            </div>
           </div>
-        </div>
-      </header>
-
-      <main
-        class="max-w-7xl mx-auto px-6 sm:px-10 lg:px-20 py-10 grid grid-cols-1 md:grid-cols-3 gap-12"
+        </article>
+        }
+      </div>
+      @if (courses && total_summary.total_courses > 0) {
+      <div class="mt-8 flex justify-center">
+        <button
+          [routerLink]="['/course']"
+          [queryParams]="{ instructor_id: instructor.instructor_id }"
+          class="border border-primary text-primary cursor-pointer font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
         >
-        <!-- Left content area with stats and intro -->
-        <section class="md:col-span-2 space-y-10">
-          <div class="flex gap-12 mb-8 justify-start max-w-xs sm:max-w-none">
-            <div>
-              <p class="text-lg font-extrabold text-gray-900 select-text">
-                {{ total_summary.total_students | number }}
-              </p>
-              <p class="text-sm font-semibold text-gray-700 select-text">
-                Total Students
-              </p>
-            </div>
-            <div>
-              <p class="text-lg font-extrabold text-gray-900 select-text">
-                {{ total_summary.total_reviews | number }}
-              </p>
-              <p class="text-sm font-semibold text-gray-700 select-text">Reviews</p>
-            </div>
-            <div>
-              <p class="text-lg font-extrabold text-gray-900 select-text">
-                {{ total_summary.total_reports | number }}
-              </p>
-              <p class="text-sm font-semibold text-gray-700 select-text">Report</p>
-            </div>
-          </div>
-
-          <article>
-            <h2 class="text-2xl font-extrabold mb-4 select-text">About Me</h2>
-            <div [ngClass]="{ 'max-h-24 overflow-hidden': !showFullBio }">
-              <p
-                class="text-base leading-relaxed text-gray-800 max-w-none select-text"
-                >
-                {{ instructor?.bio }}
-              </p>
-            </div>
-            <button
-              id="toggleBtn"
-              class="mt-4 text-indigo-600 font-semibold text-sm hover:underline focus:outline-none select-none"
-              (click)="toggleBio()"
-              >
-              {{ showFullBio ? "Show Less ▲" : "Show More ▼" }}
-            </button>
-          </article>
-
-          <h2 class="text-xl font-semibold text-gray-800 mb-6">
-            My Courses
-            <span class="text-gray-500">({{ total_summary.total_courses }})</span>
-          </h2>
-
-          <!-- Grid container -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @for (course of courses; track course) {
-              <article
-                class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
-                [routerLink]="['/course-detail', course.course_url]"
-                >
-                <div class="relative rounded-t-lg overflow-hidden">
-                  <img
-                    [src]="course.image"
-                    alt="Course image for {{ course.course_name }}"
-                    class="w-full h-48 object-cover"
-                    loading="lazy"
-                    />
-                  </div>
-                  <div class="p-4 flex flex-col gap-2">
-                    <h3
-                      class="text-gray-900 text-base font-semibold leading-snug line-clamp-3"
-                      >
-                      {{ course.course_name }}
-                    </h3>
-                    <p class="text-gray-600 text-sm line-clamp-2">
-                      {{ course.course_description }}
-                    </p>
-                    <span class="text-gray-500 text-xs font-medium select-none">
-                      {{ instructor?.fullname || "AI Coding" }}
-                    </span>
-                    <div class="flex flex-wrap gap-2 mt-2 text-xs">
-                      <span
-                        class="border border-gray-300 rounded-md py-0.5 px-2 text-gray-700 select-none"
-                        >
-                        Course
-                      </span>
-                      <span
-                        class="border border-yellow-400 text-yellow-600 rounded-md py-0.5 px-2 flex items-center gap-1 select-none"
-                        >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="h-4 w-4 fill-current"
-                          viewBox="0 0 20 20"
-                          aria-hidden="true"
-                          >
-                          <path
-                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.09 3.36a1 1 0 00.95.69h3.527c.969 0 1.371 1.24.588 1.81l-2.85 2.07a1 1 0 00-.364 1.118l1.09 3.36c.3.92-.755 1.688-1.539 1.118l-2.85-2.07a1 1 0 00-1.175 0l-2.85 2.07c-.784.57-1.838-.197-1.54-1.118l1.09-3.36a1 1 0 00-.364-1.118L2.44 8.787c-.783-.57-.38-1.81.588-1.81h3.527a1 1 0 00.95-.69l1.09-3.36z"
-                            />
-                          </svg>
-                          {{ course.course_rating | number : "1.1-1" }}
-                        </span>
-                        <span
-                          class="border border-gray-300 rounded-md py-0.5 px-2 text-gray-700 select-none"
-                          >
-                          {{ course.total_reviews }} Ratings
-                        </span>
-                        <span
-                          class="border border-gray-300 rounded-md py-0.5 px-2 text-gray-700 select-none"
-                          >
-                          {{ course.difficulty_level }}
-                        </span>
-                      </div>
-                      <div
-                        class="mt-3 flex items-center gap-3 font-semibold text-lg text-gray-900 select-none"
-                        >
-                        <span class="text-red-600">$ {{ course.price | number }}</span>
-                      </div>
-                    </div>
-                  </article>
-                }
-              </div>
-              @if (courses && total_summary.total_courses > 0) {
-                <div
-                  class="mt-8 flex justify-center"
-                  >
-                  <button
-                    [routerLink]="['/course']"
-                    [queryParams]="{ instructor_id: instructor.instructor_id }"
-                    class="border border-primary text-primary cursor-pointer font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
-                    >
-                    View more
-                  </button>
-                </div>
-              }
-            </section>
-          </main>
-        </div>
+          View more
+        </button>
+      </div>
+      }
+    </section>
+  </main>
+</div>
