@@ -87,7 +87,6 @@
       <!-- Progress bar khi đang upload -->
       <p>Progress: {{ uploadProgress }}%</p>
 
-      @if (isUploading) {
       <div class="mt-3">
         <p-progressBar
           [value]="uploadProgress"
@@ -96,7 +95,8 @@
           [style]="{ 'background-color': '#e5e7eb', color: '#3b82f6' }"
         ></p-progressBar>
       </div>
-      } @if (lessonForm.submitted && !lesson.video) {
+
+      @if (lessonForm.submitted && !lesson.video) {
       <div class="text-red-500 text-sm mt-1">
         Please select the lesson video.
       </div>

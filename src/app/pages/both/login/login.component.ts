@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
   forgetForm!: FormGroup;
   isLoading = false;
   forgetPassword = false;
-
+  maxDate: Date | undefined;
   constructor(
     private authService: AuthService,
     private categoryService: CategoryService,
@@ -72,6 +72,9 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.maxDate = new Date();
+
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],

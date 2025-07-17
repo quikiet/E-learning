@@ -81,12 +81,7 @@ export const routes: Routes = [
             { path: 'course', component: CourseSearchComponent },
             { path: 'policy', component: PolicyComponent },
             { path: 'user/:id', component: DetailInstructorComponent },
-
-
-            {
-                path: 'quiz/:quizId/attempt',
-                component: StudentQuizAttemptComponent,
-            },
+            { path: 'quiz/:quizId/attempt', component: StudentQuizAttemptComponent, },
             {
                 path: 'my-course', component: StudentPurchasedCoursesComponentComponent,
             },
@@ -119,7 +114,6 @@ export const routes: Routes = [
             { path: 'quan-ly-quiz', component: QuizManageComponent },
             { path: 'report-manage', component: ReportManageComponent },
             { path: 'payment-manage', component: PaymentManageComponent },
-            { path: 'coupon-manage', component: CouponManageComponent },
             { path: 'quan-ly-tien-do', component: ProgressManageComponent },
             { path: 'quan-ly-chung-chi', component: CertificateManageComponent },
             { path: '**', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -134,6 +128,7 @@ export const routes: Routes = [
             { path: 'create-course', component: CreateCourseComponent },
             { path: 'instructor-request', component: InstructorRequestComponent },
             { path: 'instructor-course', component: InstructorCoursesComponent, canActivate: [instructorGuard] },
+            { path: 'coupon-manage/:courseID', component: CouponManageComponent, canActivate: [instructorGuard] },
             { path: 'instructor-course/:id', component: CourseCommentStatsComponent, canActivate: [instructorGuard] },
             { path: 'my-revenue-instructor', component: InstructorRevenueComponent, canActivate: [instructorGuard] },
             { path: 'quiz-management/:lessonID', component: InstructorQuizManagementComponent, canActivate: [instructorGuard] },

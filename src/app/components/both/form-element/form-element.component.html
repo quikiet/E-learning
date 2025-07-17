@@ -2,33 +2,30 @@
   <p class="pb-2 text-[15px]">
     {{ label }} @if (required) {
     <span class="text-primary">*</span>
-  }
-</p>
-<ng-content></ng-content>
-@if (control && (control.touched || control.dirty) && control.invalid) {
-  <small
-    class="ml-2 text-xs text-red-500"
-    >
-    @if (control.errors?.['required']) {
-      <span>Must be entered.</span>
     }
-    @if (control.errors?.['email']) {
-      <span
-        >It must be the correct form of email..</span
-        >
-      }
-      @if (control.errors?.['minlength']) {
-        <span
-          >Must have at least
-          {{ control.errors?.['minlength'].requiredLength }} words.</span
-          >
-        }
-        @if (control.errors?.['maxlength']) {
-          <span
-            >Only a maximum
-            {{ control.errors?.['maxlength'].requiredLength }} words.</span
-            >
-          }
-        </small>
-      }
-    </div>
+  </p>
+  <ng-content></ng-content>
+  @if (control && (control.touched || control.dirty) && control.invalid) {
+  <small class="ml-2 text-xs text-red-500">
+    @if (control.errors?.['required']) {
+    <span>Must be entered.</span>
+    } @if (control.errors?.['email']) {
+    <span>It must be the correct form of email..</span>
+    } @if (control.errors?.['minlength']) {
+    <span
+      >Must have at least
+      {{ control.errors?.['minlength'].requiredLength }} words.</span
+    >
+    } @if (control.errors?.['maxlength']) {
+    <span
+      >Only a maximum
+      {{ control.errors?.['maxlength'].requiredLength }} words.</span
+    >
+    } @if (control.errors?.['min']) {
+    <span>Min is {{ control.errors?.['min'].min }}.</span>
+    }@if (control.errors?.['max']) {
+    <span>Max is {{ control.errors?.['max'].max }}.</span>
+    }
+  </small>
+  }
+</div>

@@ -10,112 +10,120 @@
               height="32"
               src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
               width="32"
-              />
-              <span
-                class="font-semibold lg:text-lg text-[#1a2a3a] select-none hidden lg:block"
-                >
-                SmartLearn
-              </span>
-            </a>
-          </div>
-          <div class="overflow-y-auto text-black">
-            <ul class="list-none py-4 m-0 text-sm">
-              <li>
-                <ul class="list-none p-0 m-0 overflow-hidden">
+            />
+            <span
+              class="font-semibold lg:text-lg text-[#1a2a3a] select-none hidden lg:block"
+            >
+              SmartLearn
+            </span>
+          </a>
+        </div>
+        <div class="overflow-y-auto text-black">
+          <ul class="list-none py-4 m-0 text-sm">
+            <li>
+              <ul class="list-none p-0 m-0 overflow-hidden">
+                <li class="mb-2">
+                  <a
+                    [routerLink]="['/profile']"
+                    routerLinkActive="bg-secondary-content text-white"
+                    pRipple
+                    class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-user mr-2"></i>
+                    <span class="font-medium hidden lg:block">Profile</span>
+                  </a>
+                </li>
+                @if (user && user.role !== 'admin') {
+                <li class="mb-2">
+                  <a
+                    [routerLink]="['/payment-history']"
+                    routerLinkActive="bg-secondary-content text-white"
+                    pRipple
+                    class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                  >
+                    <i class="pi pi-credit-card mr-2"></i>
+                    <span class="font-medium hidden lg:block"
+                      >Payment history</span
+                    >
+                  </a>
+                </li>
+                } @if (user && user.role !== 'admin') {
+                <div>
                   <li class="mb-2">
                     <a
-                      [routerLink]="['/profile']"
+                      [routerLink]="['/create-course']"
                       routerLinkActive="bg-secondary-content text-white"
                       pRipple
                       class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    >
+                      <i class="pi pi-calendar-plus mr-2"></i>
+                      <span class="font-medium hidden lg:block"
+                        >Create course</span
                       >
-                      <i class="pi pi-user mr-2"></i>
-                      <span class="font-medium hidden lg:block">Profile</span>
                     </a>
                   </li>
-                  @if (user && user.role !== 'admin') {
-                    <li class="mb-2">
-                      <a
-                        [routerLink]="['/payment-history']"
-                        routerLinkActive="bg-secondary-content text-white"
-                        pRipple
-                        class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
-                        >
-                        <i class="pi pi-credit-card mr-2"></i>
-                        <span class="font-medium hidden lg:block"
-                          >Payment history</span
-                          >
-                        </a>
-                      </li>
-                    }
-                    @if (user && user.role !== 'admin') {
-                      <div>
-                        <li class="mb-2">
-                          <a
-                            [routerLink]="['/create-course']"
-                            routerLinkActive="bg-secondary-content text-white"
-                            pRipple
-                            class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
-                            >
-                            <i class="pi pi-calendar-plus mr-2"></i>
-                            <span class="font-medium hidden lg:block"
-                              >Create course</span
-                              >
-                            </a>
-                          </li>
-                          <li class="mb-2">
-                            @if (user && user.role === 'instructor') {
-                              <a
-                                [routerLink]="['/instructor-course']"
-                                routerLinkActive="bg-secondary-content text-white"
-                                pRipple
-                                class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
-                                >
-                                <i class="pi pi-book mr-2"></i>
-                                <span class="font-medium hidden lg:block"
-                                  >Instructor courses</span
-                                  >
-                                </a>
-                              }
-                            </li>
-                            <li class="mb-2">
-                              @if (user && user.role === 'instructor') {
-                                <a
-                                  [routerLink]="['/my-revenue-instructor']"
-                                  routerLinkActive="bg-secondary-content text-white"
-                                  pRipple
-                                  class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
-                                  >
-                                  <i class="pi pi-chart-bar mr-2"></i>
-                                  <span class="font-medium hidden lg:block"
-                                    >My revenue Instructor</span
-                                    >
-                                  </a>
-                                }
-                              </li>
-                              @if (user && user.role === 'instructor') {
-                                <li class="mb-2">
-                                  <a
-                                    [routerLink]="['/reports']"
-                                    routerLinkActive="bg-secondary-content text-white"
-                                    pRipple
-                                    class="flex items-center cursor-pointer text-primary p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
-                                    >
-                                    <i class="pi pi-exclamation-triangle mr-2"></i>
-                                    <span class="font-medium hidden lg:block">Reports</span>
-                                  </a>
-                                </li>
-                              }
-                            </div>
-                          }
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
+                  @if (user && user.role === 'instructor') {
+                  <li class="mb-2">
+                    <a
+                      [routerLink]="['/instructor-course']"
+                      routerLinkActive="bg-secondary-content text-white"
+                      pRipple
+                      class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    >
+                      <i class="pi pi-book mr-2"></i>
+                      <span class="font-medium hidden lg:block"
+                        >Instructor courses</span
+                      >
+                    </a>
+                  </li>
+                  <li class="mb-2">
+                    <a
+                      [routerLink]="['/coupon-manage']"
+                      routerLinkActive="bg-secondary-content text-white"
+                      pRipple
+                      class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    >
+                      <i class="pi pi-ticket mr-2"></i>
+                      <span class="font-medium hidden lg:block"
+                        >Manage coupons</span
+                      >
+                    </a>
+                  </li>
+                  <li class="mb-2">
+                    <a
+                      [routerLink]="['/my-revenue-instructor']"
+                      routerLinkActive="bg-secondary-content text-white"
+                      pRipple
+                      class="flex items-center cursor-pointer p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    >
+                      <i class="pi pi-chart-bar mr-2"></i>
+                      <span class="font-medium hidden lg:block"
+                        >My revenue Instructor</span
+                      >
+                    </a>
+                  </li>
+                  <li class="mb-2">
+                    <a
+                      [routerLink]="['/reports']"
+                      routerLinkActive="bg-secondary-content text-white"
+                      pRipple
+                      class="flex items-center cursor-pointer text-primary p-2 lg:my-1 rounded-border hover:bg-secondary-content hover:text-white duration-150 transition-colors p-ripple"
+                    >
+                      <i class="pi pi-exclamation-triangle mr-2"></i>
+                      <span class="font-medium hidden lg:block">Reports</span>
+                    </a>
+                  </li>
+                  }
                 </div>
-              </div>
-            </div>
-            <div class="col-span-10 min-h-screen lg:p-6 p-2 pt-6">
-              <router-outlet></router-outlet>
-            </div>
-          </div>
+                }
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-span-10 min-h-screen lg:p-6 p-2 pt-6">
+    <router-outlet></router-outlet>
+  </div>
+</div>

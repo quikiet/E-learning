@@ -6,7 +6,7 @@ import { ToastModule } from 'primeng/toast';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { CoursesService } from '../../../services/courses.service';
 import { ActivatedRoute } from '@angular/router';
-import { HttpEventType } from '@angular/common/http';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 @Component({
   selector: 'app-add-lessons',
   imports: [
@@ -70,31 +70,46 @@ export class AddLessonsComponent implements OnInit {
     this.isUploading = true;
     this.uploadProgress = 0;
 
-    this.coursesService.addLesson(this.lesson.course_id, formData).subscribe({
-      next: (event: any) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          this.uploadProgress = Math.round((100 * event.loaded) / event.total);
-          console.log('Progress:', this.uploadProgress);
-        } else if (event.type === HttpEventType.Response) {
-          this.isUploading = false;
-          this.uploadProgress = 0;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Add successful',
-            life: 3000,
-          });
+    // Giả lập tiến trình nếu server không hỗ trợ
+    const totalSize = this.lesson.video.size;
+    const interval = setInterval(() => {
+      if (this.uploadProgress < 95) {
+        this.uploadProgress += 5; // Tăng dần 5% mỗi lần
+      }
+    }, 500);
 
-          this.lesson = {
-            course_id: this.lesson.course_id,
-            title: '',
-            video: null,
-            is_preview: false,
-            sort_order: 0
-          };
+    this.coursesService.addLesson(this.lesson.course_id, formData).subscribe({
+      next: (event: HttpEvent<any>) => {
+        console.log('Event received:', event.type, event);
+        switch (event.type) {
+          case HttpEventType.UploadProgress:
+            if (event.total && event.total > 0) {
+              this.uploadProgress = Math.round((100 * event.loaded) / event.total);
+              clearInterval(interval); // Dừng giả lập khi có tiến trình thực
+            }
+            break;
+          case HttpEventType.Response:
+            clearInterval(interval); // Dừng giả lập khi hoàn tất
+            this.isUploading = false;
+            this.uploadProgress = 100;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Add successful',
+              life: 3000,
+            });
+            this.lesson = {
+              course_id: this.lesson.course_id,
+              title: '',
+              video: null,
+              is_preview: false,
+              sort_order: 0
+            };
+            break;
         }
       },
       error: (err) => {
+        clearInterval(interval);
         console.error('Error adding lesson:', err);
         this.isUploading = false;
         this.uploadProgress = 0;

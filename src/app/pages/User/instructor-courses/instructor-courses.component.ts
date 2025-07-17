@@ -629,6 +629,7 @@ export class InstructorCoursesComponent implements OnInit {
         });
         this.isLoading = false;
         this.loadLessons();
+        this.loadCourses();
       },
       error: (err) => {
         this.messageService.add({

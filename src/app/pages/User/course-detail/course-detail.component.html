@@ -250,7 +250,7 @@
       </button>
       } @if (isUserEnrolled) {
       <button
-        (click)="enrollFreeCourse()"
+        [routerLink]="['/my-course', course.id]"
         class="px-6 py-3 mb-3 bg-secondary/90 hover:bg-secondary transition duration-300 text-white font-semibold w-full cursor-pointer"
         [disabled]="isLoading"
       >

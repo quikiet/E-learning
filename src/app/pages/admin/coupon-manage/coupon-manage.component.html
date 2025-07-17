@@ -1,8 +1,8 @@
 <div class="">
-  <!-- Thông báo -->
+  <!-- Notification -->
   <p-toast></p-toast>
 
-  <!-- Bảng danh sách mã giảm giá -->
+  <!-- Coupon List Table -->
   <p-table
     class="w-full"
     #tableCoupon
@@ -14,24 +14,24 @@
     [(selection)]="selectedCoupons"
     [rowHover]="true"
     dataKey="id"
-    currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} mã giảm giá"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} coupons"
     [showCurrentPageReport]="true"
     [loading]="isLoading"
   >
     <ng-template pTemplate="caption">
       <div class="flex items-center justify-between">
-        <p class="m-0 lg:text-lg font-semibold">Quản lý Mã Giảm giá</p>
+        <p class="m-0 lg:text-lg font-semibold">Coupon Management</p>
         <div class="flex gap-2">
           <button
             pButton
-            label="Thêm mã giảm giá"
+            label="Add Coupon"
             icon="pi pi-plus"
             class="p-button-primary"
             (click)="openNew()"
           ></button>
           <button
             pButton
-            label="Xuất CSV"
+            label="Export CSV"
             icon="pi pi-file-export"
             class="p-button-secondary"
             (click)="exportCSV()"
@@ -40,80 +40,74 @@
       </div>
     </ng-template>
     <ng-template pTemplate="header">
-      <tr class="text-sm">
-        <th>
-          <p-tableHeaderCheckbox />
-        </th>
-        <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
+      <tr class="text-xs">
+        <th pSortableColumn="id" class="hidden lg:table-cell">
           <div class="flex items-center">
             <p-sortIcon field="id" />
-            <span>Mã</span>
+            <span>ID</span>
           </div>
         </th>
         <th pSortableColumn="code">
           <div class="flex items-center">
-            Mã giảm giá
+            Coupon Code
             <p-sortIcon field="code" />
           </div>
         </th>
         <th pSortableColumn="discount_type">
           <div class="flex items-center">
-            Loại giảm giá
+            Discount Type
             <p-sortIcon field="discount_type" />
           </div>
         </th>
         <th pSortableColumn="discount_value">
           <div class="flex items-center">
-            Giá trị giảm
+            Discount Value
             <p-sortIcon field="discount_value" />
           </div>
         </th>
         <th pSortableColumn="min_order">
           <div class="flex items-center">
-            Đơn tối thiểu
+            Minimum Order
             <p-sortIcon field="min_order" />
           </div>
         </th>
         <th pSortableColumn="start_date">
           <div class="flex items-center">
-            Ngày bắt đầu
+            Start Date
             <p-sortIcon field="start_date" />
           </div>
         </th>
         <th pSortableColumn="end_date">
           <div class="flex items-center">
-            Ngày kết thúc
+            End Date
             <p-sortIcon field="end_date" />
           </div>
         </th>
         <th pSortableColumn="usage_limit">
           <div class="flex items-center">
-            Giới hạn sử dụng
+            Usage Limit
             <p-sortIcon field="usage_limit" />
           </div>
         </th>
         <th pSortableColumn="used_count">
           <div class="flex items-center">
-            Số lần đã dùng
+            Times Used
             <p-sortIcon field="used_count" />
           </div>
         </th>
         <th pSortableColumn="is_active">
           <div class="flex items-center">
-            Trạng thái
+            Status
             <p-sortIcon field="is_active" />
           </div>
         </th>
         <th>
-          <div class="flex items-center">Hành động</div>
+          <div class="flex items-center">Actions</div>
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-coupon>
-      <tr>
-        <td>
-          <p-tableCheckbox [value]="coupon" />
-        </td>
+      <tr class="text-sm">
         <td class="hidden lg:table-cell !p-0 text-center align-middle">
           <div class="flex items-center justify-center h-full">
             {{ coupon.id }}
@@ -123,31 +117,29 @@
           {{ coupon.code }}
         </td>
         <td>
-          {{ coupon.discount_type === "percent" ? "Phần trăm" : "Cố định" }}
+          {{ coupon.discount_type === "percent" ? "Percentage" : "Fixed" }}
         </td>
         <td>
           {{ coupon.discount_value }}
-          {{ coupon.discount_type === "percent" ? "%" : "đ" }}
+          {{ coupon.discount_type === "percent" ? "%" : "$" }}
         </td>
         <td>
-          {{ coupon.min_order ? coupon.min_order + " đ" : "Không giới hạn" }}
+          {{ coupon.min_order ? coupon.min_order + "$" : "Unlimited" }}
         </td>
         <td>
           {{
             coupon.start_date
               ? (coupon.start_date | date : "dd/MM/yyyy")
-              : "Không có"
+              : "None"
           }}
         </td>
         <td>
           {{
-            coupon.end_date
-              ? (coupon.end_date | date : "dd/MM/yyyy")
-              : "Không có"
+            coupon.end_date ? (coupon.end_date | date : "dd/MM/yyyy") : "None"
           }}
         </td>
         <td>
-          {{ coupon.usage_limit ? coupon.usage_limit : "Không giới hạn" }}
+          {{ coupon.usage_limit ? coupon.usage_limit : "Unlimited" }}
         </td>
         <td>
           {{ coupon.used_count }}
@@ -155,7 +147,7 @@
         <td>
           <p-tag
             [severity]="coupon.is_active ? 'success' : 'danger'"
-            [value]="coupon.is_active ? 'Hoạt động' : 'Không hoạt động'"
+            [value]="coupon.is_active ? 'Active' : 'Inactive'"
             [rounded]="true"
             class="!text-xs"
           />
@@ -163,13 +155,13 @@
         <td>
           <button
             pButton
-            label="Sửa"
+            label="Edit"
             class="p-button-primary p-button-sm"
             (click)="editCoupon(coupon)"
           ></button>
           <button
             pButton
-            label="Xóa"
+            label="Delete"
             class="p-button-danger p-button-sm"
             (click)="deleteCoupon(coupon.id)"
           ></button>
@@ -178,34 +170,34 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="12" class="text-center">Không tìm thấy mã giảm giá.</td>
+        <td colspan="12" class="text-center">No coupons found.</td>
       </tr>
     </ng-template>
   </p-table>
 
-  <!-- Dialog thêm/sửa mã giảm giá -->
+  <!-- Add/Edit Coupon Dialog -->
   <p-dialog
     [(visible)]="couponDialog"
     [modal]="true"
     [style]="{ width: '450px' }"
-    header="{{ isEditting ? 'Sửa Mã Giảm giá' : 'Thêm Mã Giảm giá' }}"
+    header="{{ isEditing ? 'Edit Coupon' : 'Add Coupon' }}"
     (onHide)="hideDialog()"
   >
     <form
       [formGroup]="couponForm"
-      (ngSubmit)="isEditting ? updateCoupon() : addCoupon()"
+      (ngSubmit)="isEditing ? updateCoupon() : addCoupon()"
     >
       <div class="space-y-4">
         <div>
           <app-form-element
-            [label]="'Mã giảm giá'"
+            [label]="'Coupon Code'"
             [required]="true"
             [control]="couponForm.get('code')!"
           >
             <input
               pInputText
               class="w-full"
-              placeholder="Nhập mã giảm giá"
+              placeholder="Enter coupon code"
               formControlName="code"
             />
           </app-form-element>
@@ -213,25 +205,25 @@
 
         <div>
           <app-form-element
-            [label]="'Loại giảm giá'"
+            [label]="'Discount Type'"
             [required]="true"
             [control]="couponForm.get('discount_type')!"
           >
             <p-select
               class="w-full"
               [options]="[
-                { label: 'Phần trăm', value: 'percent' },
-                { label: 'Cố định', value: 'fixed' }
+                { label: 'Percentage', value: 'percent' },
+                { label: 'Fixed', value: 'fixed' }
               ]"
               formControlName="discount_type"
-              placeholder="Chọn loại giảm giá"
+              placeholder="Select discount type"
             ></p-select>
           </app-form-element>
         </div>
 
         <div>
           <app-form-element
-            [label]="'Giá trị giảm'"
+            [label]="'Discount Value'"
             [required]="true"
             [control]="couponForm.get('discount_value')!"
           >
@@ -239,7 +231,7 @@
               pInputText
               type="number"
               class="w-full"
-              placeholder="Nhập giá trị giảm"
+              placeholder="Enter discount value"
               formControlName="discount_value"
             />
           </app-form-element>
@@ -248,15 +240,16 @@
         <div>
           <app-form-element
             [control]="couponForm.get('min_order')!"
-            [label]="'Đơn tối thiểu'"
-            [required]="false"
+            [label]="'Minimum Order'"
+            [required]="true"
           >
             <input
               pInputText
               type="number"
               class="w-full"
-              placeholder="Nhập đơn tối thiểu"
+              placeholder="Enter minimum order"
               formControlName="min_order"
+              min="0"
             />
           </app-form-element>
         </div>
@@ -264,13 +257,13 @@
         <div>
           <app-form-element
             [control]="couponForm.get('start_date')!"
-            [label]="'Ngày bắt đầu'"
-            [required]="false"
+            [label]="'Start Date'"
+            [required]="true"
           >
             <p-datepicker
               formControlName="start_date"
               dateFormat="dd/mm/yy"
-              placeholder="Chọn ngày bắt đầu"
+              placeholder="Select start date"
               class="!w-full"
               [minDate]="minDate"
               [readonlyInput]="true"
@@ -282,13 +275,13 @@
         <div>
           <app-form-element
             [control]="couponForm.get('end_date')!"
-            [label]="'Ngày kết thúc'"
-            [required]="false"
+            [label]="'End Date'"
+            [required]="true"
           >
             <p-datepicker
               formControlName="end_date"
               dateFormat="dd/mm/yy"
-              placeholder="Chọn ngày kết thúc"
+              placeholder="Select end date"
               class="!w-full"
               [minDate]="minDate"
               [readonlyInput]="true"
@@ -300,62 +293,48 @@
         <div>
           <app-form-element
             [control]="couponForm.get('usage_limit')!"
-            [label]="'Giới hạn sử dụng'"
-            [required]="false"
+            [label]="'Usage Limit'"
+            [required]="true"
           >
             <input
               pInputText
+              min="1"
               type="number"
               class="w-full"
-              placeholder="Nhập giới hạn sử dụng"
+              placeholder="Enter usage limit"
               formControlName="usage_limit"
             />
           </app-form-element>
         </div>
-
+        @if (isEditing) {
         <div>
           <app-form-element
-            [control]="couponForm.get('used_count')!"
-            [label]="'Số lượng đã sử dụng'"
-            [required]="false"
-          >
-            <input
-              pInputText
-              type="number"
-              class="w-full"
-              placeholder="Số lượng đã sử dụng"
-              formControlName="used_count"
-            />
-          </app-form-element>
-        </div>
-
-        <div>
-          <app-form-element
-            [label]="'Trạng thái'"
+            [label]="'Active'"
             [control]="couponForm.get('is_active')!"
             [required]="false"
           >
             <p-checkbox
               formControlName="is_active"
               [binary]="true"
-              label="Hoạt động"
+              label="Active"
             ></p-checkbox>
           </app-form-element>
         </div>
+        }
       </div>
 
       <div class="flex justify-end mt-4 gap-2">
         <button
           pButton
           type="button"
-          label="Hủy"
+          label="Cancel"
           class="p-button-secondary"
           (click)="hideDialog()"
         ></button>
         <button
           pButton
           type="submit"
-          [label]="isEditting ? 'Cập nhật' : 'Thêm'"
+          [label]="isEditing ? 'Update' : 'Add'"
           class="p-button-primary"
         ></button>
       </div>

@@ -1,7 +1,7 @@
 <app-loading [isLoading]="isLoading"></app-loading>
 <p-toast></p-toast>
-<div class="max-w-7xl mx-auto min-h-screen">
-  <div class="flex gap-5 items-center mb-6">
+<div class="min-h-screen">
+  <div class="flex gap-5 items-center mb-6 flex-wrap">
     <h2 class="lg:text-xl text-lg font-semibold lg:font-bold text-black">
       Your Courses
     </h2>
@@ -68,8 +68,8 @@
   </div>
 
   <!-- Search and Filter -->
-  <div class="flex items-center justify-between mb-6">
-    <div class="flex gap-2">
+  <div class="flex items-center justify-between mb-6 flex-wrap">
+    <div class="flex gap-2 flex-wrap">
       <p-iconfield>
         <p-inputicon styleClass="pi pi-search" />
         <input
@@ -78,7 +78,7 @@
           [(ngModel)]="searchKeyword"
           (input)="filterCourses()"
           placeholder="Search courses..."
-          class="p-2 border border-gray-300 rounded-md lg:w-96"
+          class="p-2 border border-gray-300 rounded-md w-32 sm:w-96"
         />
       </p-iconfield>
 
@@ -148,9 +148,7 @@
 
   <!-- Grid layout for course cards -->
   @if (courses.length > 0) {
-  <div
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10 my-6"
-  >
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-6">
     @for (course of courses; track course) {
     <div
       class="bg-white shadow-lg hover:shadow-2xl rounded-lg overflow-hidden transition-shadow duration-200"
@@ -217,12 +215,12 @@
       </div>
       <div class="md:p-4 p-2">
         <div class="flex justify-between items-center">
-          <h3
+          <a
             class="md:text-lg font-semibold text-gray-800 mb-2 truncate"
             [title]="course.course_name"
           >
             {{ course.course_name }}
-          </h3>
+          </a>
           <div class="flex items-center gap-2">
             @if ( course?.status === 'approved' || course?.status ===
             'unavailable' ) {
@@ -310,26 +308,33 @@
           <i class="pi pi-book mr-1"></i> Total Lessons:
           {{ course.lessons_count }}
         </p>
-        <div class="flex gap-2 md:justify-start justify-center">
-          <button
-            (click)="navigateToUserProgress(course.id)"
-            class="md:w-full bg-secondary text-white px-4 rounded-md hover:bg-secondary-content transition duration-200 md:text-sm text-xs md:font-medium"
-          >
-            User Progress
-          </button>
-          <button
-            (click)="navigateToAddLesson(course.id)"
-            class="md:w-full bg-blue-500 text-white px-4 rounded-md hover:bg-blue-600 transition duration-200 md:text-sm text-xs md:font-medium"
-          >
-            Add Lesson
-          </button>
-          <button
-            (click)="showLessons(course.id)"
-            class="md:w-full bg-primary/90 text-white px-4 rounded-md hover:bg-primary transition duration-200 md:text-sm text-xs md:font-medium"
-          >
-            Lessons
-          </button>
-        </div>
+      </div>
+      <div class="flex gap-2 justify-center flex-wrap p-2 border-t">
+        <p-button
+          icon="pi pi-ticket"
+          severity="help"
+          pTooltip="Coupons manage"
+          tooltipPosition="top"
+          [routerLink]="['/coupon-manage', course.id]"
+        />
+        <button
+          (click)="navigateToUserProgress(course.id)"
+          class="bg-secondary text-white px-2 py-2 rounded-md hover:bg-secondary-content transition duration-200 text-xs md:font-medium"
+        >
+          User Progress
+        </button>
+        <button
+          (click)="navigateToAddLesson(course.id)"
+          class="bg-blue-500 text-white px-2 py-2 rounded-md hover:bg-blue-600 transition duration-200 text-xs md:font-medium"
+        >
+          Add Lesson
+        </button>
+        <button
+          (click)="showLessons(course.id)"
+          class="bg-primary/90 text-white px-2 py-2 rounded-md hover:bg-primary transition duration-200 text-xs md:font-medium"
+        >
+          Lessons
+        </button>
       </div>
     </div>
     }

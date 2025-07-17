@@ -122,6 +122,7 @@
                 <p-datepicker
                   formControlName="birthdate"
                   dateFormat="yy-mm-dd"
+                  [maxDate]="maxDate"
                   name="birthdate"
                   (onSelect)="onDateSelect($event)"
                   [inputStyleClass]="'!rounded-full w-full'"

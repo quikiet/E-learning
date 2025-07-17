@@ -1,0 +1,12 @@
+/* Add custom styles if needed */
+.card {
+    padding: 1rem;
+}
+
+.p-confirm-dialog {
+    width: 400px !important;
+}
+
+.p-button {
+    margin-top: 1rem;
+}
