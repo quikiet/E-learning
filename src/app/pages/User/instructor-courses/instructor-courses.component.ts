@@ -117,7 +117,7 @@ export class InstructorCoursesComponent implements OnInit {
   selectedVideo: File | null = null;
   uploadProgress: number = 0;
   isLoading = true;
-
+  selectedImagePreview: string | ArrayBuffer | null = null; // New property for image preview
   constructor(
     private coursesService: CoursesService,
     private categoryService: CategoryService,
@@ -440,6 +440,12 @@ export class InstructorCoursesComponent implements OnInit {
     const file = event.target.files[0];
     if (file) {
       this.course.image = file;
+      // Create image preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.selectedImagePreview = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
@@ -453,15 +459,15 @@ export class InstructorCoursesComponent implements OnInit {
       });
       return;
     }
-    if (!this.course.difficulty_level || !['Beginner', 'Intermediate', 'Advanced'].includes(this.course.difficulty_level)) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Please select a valid difficulty level.',
-        life: 3000,
-      });
-      return;
-    }
+    // if (!this.course.difficulty_level || !['Beginner', 'Intermediate', 'Advanced'].includes(this.course.difficulty_level)) {
+    //   this.messageService.add({
+    //     severity: 'error',
+    //     summary: 'Error',
+    //     detail: 'Please select a valid difficulty level.',
+    //     life: 3000,
+    //   });
+    //   return;
+    // }
     if (!this.selectedCategories || this.selectedCategories.length === 0) {
       this.messageService.add({
         severity: 'error',
@@ -498,6 +504,7 @@ export class InstructorCoursesComponent implements OnInit {
           life: 3000,
         });
         this.loadCourses();
+        this.selectedImagePreview = null; // Reset preview after successful update  
       },
       error: (err) => {
         console.error('Error updating course:', err);
