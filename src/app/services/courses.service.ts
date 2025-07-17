@@ -142,7 +142,7 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/admin/courses/search`, { params: httpParams, withCredentials: true });
   }
 
-  enrollCourse(courseId: number, data: { amount: number; method: string; coupon_id: number | null }): Observable<any> {
+  enrollCourse(courseId: number, data: { amount: number; method: string; code: string | null }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/courses/${courseId}/enroll-paid`, data, { withCredentials: true });
   }
 

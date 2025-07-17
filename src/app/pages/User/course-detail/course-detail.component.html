@@ -80,7 +80,7 @@
           [routerLink]="['/course-detail', recommend.url]"
         >
           <img
-            [src]="recommend.url"
+            [src]="recommend.image"
             [alt]="recommend.course_title"
             class="w-12 h-12 mr-4"
           />
@@ -225,6 +225,18 @@
         </label>
       </div>
       } @if (!isUserEnrolled && course?.price > 0 && !isAuthor) {
+      <div class="pb-2">
+        <p-floatlabel variant="on">
+          <input
+            pInputText
+            id="on_label"
+            [(ngModel)]="couponCode"
+            autocomplete="off"
+            class="w-full text-sm"
+          />
+          <label for="on_label">Coupon</label>
+        </p-floatlabel>
+      </div>
       <button
         (click)="enrollCourse()"
         class="px-6 py-3 mb-3 bg-primary/90 hover:bg-primary transition duration-300 text-white font-semibold w-full cursor-pointer"

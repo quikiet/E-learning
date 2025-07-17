@@ -23,6 +23,7 @@ import { FormElementComponent } from "../../../components/both/form-element/form
 import { SelectModule } from 'primeng/select';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CategoryService } from '../../../services/courses-manage/category.service';
+import { FloatLabelModule } from 'primeng/floatlabel';
 // Định nghĩa interface cho bài học
 interface Lesson {
   title: string;
@@ -69,7 +70,8 @@ interface optionSelect {
     SelectModule,
     ReactiveFormsModule,
     CheckboxModule,
-    RouterLink
+    RouterLink,
+    FloatLabelModule,
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',
@@ -312,7 +314,7 @@ export class CourseDetailComponent implements OnInit {
     const paymentData = {
       amount: this.course.price,
       method: this.selectedPaymentMethod,
-      coupon_id: null
+      code: this.couponCode || null
     };
     this.coursesService.enrollCourse(this.course.id, paymentData).subscribe({
       next: (res) => {
@@ -359,10 +361,11 @@ export class CourseDetailComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error enrolling course:', err);
+        this.couponCode = '';
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error?.message,
+          summary: err.error.message || 'Error',
+          detail: err.error.error,
           life: 3000
         });
       }
@@ -398,7 +401,6 @@ export class CourseDetailComponent implements OnInit {
       }
     });
   }
-
 
   cutText(text: string, wordLimit: number = 50): string {
     if (!text) return '';
