@@ -34,7 +34,9 @@
     <div class="w-full lg:w-3/4 px-4">
       <!-- Rest of the template remains unchanged -->
       @if (isLoading) {
-      <p-progressSpinner class="flex justify-center"></p-progressSpinner>
+      <div class="w-full h-full flex justify-center items-center">
+        <p-progressSpinner class="flex justify-center"></p-progressSpinner>
+      </div>
       }
       <p-toast></p-toast>
 

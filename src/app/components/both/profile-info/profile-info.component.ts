@@ -1,6 +1,6 @@
 // src/app/components/profile-info/profile-info.component.ts
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,7 +14,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { PasswordModule } from 'primeng/password';
 import { FormElementComponent } from '../form-element/form-element.component';
 import { AuthService } from '../../../services/auth.service';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { AvatarModule } from 'primeng/avatar';
@@ -46,7 +46,7 @@ interface OptionSelect {
     DividerModule,
     AvatarModule,
     DatePickerModule,
-    SelectModule,
+    SelectModule, CommonModule,
     FormElementComponent,
     RadioButtonModule,
     CheckboxModule,
@@ -120,25 +120,14 @@ export class ProfileInfoComponent implements OnInit {
       old_password: ['', [Validators.required, Validators.minLength(6)]],
       new_password: ['', [Validators.required, Validators.minLength(6)]],
       repeat_password: ['', Validators.required]
-    }, { validators: this.confirmedValidator('new_password', 'repeat_password') });
+    }, { validators: this.confirmedValidator });
 
   }
 
-  confirmedValidator(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
-      if (matchingControl.errors && !matchingControl.errors['confirmed']) {
-        return null;
-      }
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ confirmed: true });
-        return { confirmed: true };
-      } else {
-        matchingControl.setErrors(null);
-        return null;
-      }
-    };
+  confirmedValidator(group: AbstractControl) {
+    const password = group.get('new_password')?.value;
+    const confirm = group.get('repeat_password')?.value;
+    return password === confirm ? null : { passwordMismatch: true };
   }
 
   ngOnInit(): void {
@@ -304,8 +293,8 @@ export class ProfileInfoComponent implements OnInit {
         this.isLoading = false;
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error.message,
+          summary: err.error.message || 'Error',
+          detail: err.error.error,
           life: 3000
         });
         this.isSubmitting = false;

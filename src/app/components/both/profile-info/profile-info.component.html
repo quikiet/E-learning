@@ -290,11 +290,7 @@
               class="w-full"
             />
           </app-form-element>
-          <app-form-element
-            label="Repeat Password"
-            [control]="passwordForm.get('repeat_password')!"
-            [required]="true"
-          >
+          <app-form-element label="Repeat Password" [required]="true">
             <p-password
               formControlName="repeat_password"
               [toggleMask]="true"
@@ -305,6 +301,19 @@
               strongLabel="Strong"
               class="w-full"
             />
+            <small
+              *ngIf="passwordForm.get('repeat_password')?.touched && passwordForm.get('repeat_password')?.errors?.['required']"
+              class="text-primary !text-xs"
+            >
+              Confirm Password is required
+            </small>
+            <small
+              *ngIf="
+                  passwordForm.errors?.['passwordMismatch'] && passwordForm.get('repeat_password')?.touched && !passwordForm.get('repeat_password')?.errors?.['required']"
+              class="text-primary !text-xs"
+            >
+              Passwords do not match
+            </small>
           </app-form-element>
           <div class="flex justify-end gap-2 mt-4">
             <p-button
