@@ -243,7 +243,7 @@ export class ProfileInfoComponent implements OnInit {
     this.isSubmitting = true;
     const formData = new FormData();
     const formValue = this.profileForm.getRawValue();
-    const fields = ['gender', 'bio', 'organization', 'email_paypal', 'LoE_DI', 'learning_goals'];
+    const fields = ['username', 'fullname', 'gender', 'bio', 'organization', 'email_paypal', 'LoE_DI', 'learning_goals'];
     fields.forEach(key => {
       if (formValue[key]) {
         formData.append(key, formValue[key]);

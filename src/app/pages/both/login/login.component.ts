@@ -19,6 +19,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { FloatLabel } from 'primeng/floatlabel';
 import { MessageService } from 'primeng/api';
 import { Toast } from "primeng/toast";
+import { LoadingComponent } from "../../../components/both/loading/loading.component";
 
 
 
@@ -34,7 +35,7 @@ interface optionSelect {
 
 @Component({
   selector: 'app-login',
-  imports: [FloatLabel, TextareaModule, CheckboxModule, Divider, RadioButton, FieldsetModule, DatePicker, Select, ReactiveFormsModule, CommonModule, InputIcon, IconField, InputTextModule, FormsModule, PasswordModule, FormElementComponent, Toast],
+  imports: [FloatLabel, TextareaModule, CheckboxModule, Divider, RadioButton, FieldsetModule, DatePicker, Select, ReactiveFormsModule, CommonModule, InputIcon, IconField, InputTextModule, FormsModule, PasswordModule, FormElementComponent, Toast, LoadingComponent],
   providers: [MessageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -81,11 +82,11 @@ export class LoginComponent implements OnInit {
       password_confirmation: ['', Validators.required],
       LoE_DI: ['', Validators.maxLength(50)],
       birthdate: [null],
-      fullname: ['',],
+      fullname: [''],
       gender: ['other'],
-      bio: ['', Validators.required],
+      bio: [''],
       organization: [''],
-      email_paypal: ['', Validators.required],
+      email_paypal: [''],
       role: ['student', Validators.required], // mặc định là student
       learning_goals: [''],
       category_ids: [[]],
@@ -95,7 +96,7 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
     });
     this.LoE = [
-      { name: 'All Level', value: 'All Level' },
+      { name: 'Unknown', value: 'Unknown' },
       { name: 'Beginner', value: 'Beginner' },
       { name: 'Intermediate', value: 'Intermediate' },
       { name: 'Advanced', value: 'Advanced' },
@@ -126,7 +127,7 @@ export class LoginComponent implements OnInit {
         this.registerForm.get('category_ids')?.setValidators([Validators.required]);
       } else if (role === 'instructor') {
         this.registerForm.get('bio')?.setValidators([Validators.required]);
-        this.registerForm.get('email_paypal')?.setValidators([Validators.required]);
+        this.registerForm.get('email_paypal')?.setValidators([Validators.required, Validators.email]);
       }
       this.registerForm.get('LoE_DI')?.updateValueAndValidity();
       this.registerForm.get('category_ids')?.updateValueAndValidity();
@@ -176,13 +177,15 @@ export class LoginComponent implements OnInit {
       console.log(data);
 
       this.authService.register(data).subscribe({
-        next: () => {
+        next: (res) => {
           this.tab = 'login';
-          alert('Đăng ký thành công');
+          // alert('Register Successful');
+          this.messageService.add({ severity: 'success', summary: 'Suceess', detail: 'Register Successful', life: 3000 });
           this.isLoading = false;
         }, error: (err) => {
           console.error('Registration Error:', err);
-          alert(err.error.message);
+          // alert(err.error.message);
+          this.messageService.add({ severity: 'error', summary: err.error.message, detail: err.error.error, life: 3000 });
           this.isLoading = false;
         }, complete: () => {
           this.registerForm.reset();
@@ -190,7 +193,7 @@ export class LoginComponent implements OnInit {
         }
       });
     } else {
-      console.log('Form không hợp lệ, lỗi:', this.registerForm.errors);
+      console.log('Form không hợp lệ, lỗi:', this.registerForm);
       this.isLoading = false;
       this.registerForm.markAllAsTouched();
     }
@@ -233,16 +236,12 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('user', JSON.stringify(res.user));
           this.messageService.add({ severity: 'success', summary: 'Success', detail: res?.message, life: 3000 });
           // console.log('Đăng nhập thành công!');
-          if (res.user) {
-            if (res.user.role === 'admin') {
-              this.route.navigate(['/admin']);
-            } else {
-              this.route.navigate(['/']);
-            }
-          }
+          setTimeout(() => {
+            this.route.navigate([res.user.role === 'admin' ? '/admin' : '/']);
+          }, 500);
         }, error: (err) => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: err?.message, life: 3000 });
-          console.log('Login error: ' + err.message);
+          this.messageService.add({ severity: 'error', summary: err?.error.message || 'Error', detail: err?.error.error, life: 3000 });
+          // console.log('Login error: ' + err.message);
         }
       });
     } else {

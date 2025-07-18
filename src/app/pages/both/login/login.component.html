@@ -93,17 +93,27 @@
                 formControlName="password"
               />
             </app-form-element>
-            <app-form-element
-              [required]="true"
-              [label]="'Confirm password'"
-              [control]="registerForm.get('password_confirmation')!"
-            >
+            <app-form-element [required]="true" [label]="'Confirm password'">
               <p-password
-                [toggleMask]="true"
-                [feedback]="false"
+                id="password_confirmation"
                 formControlName="password_confirmation"
-                placeholder="Repeat password"
+                [toggleMask]="true"
+                class="w-full"
+                [feedback]="false"
               />
+              <small
+                *ngIf="registerForm.get('password_confirmation')?.touched && registerForm.get('password_confirmation')?.errors?.['required']"
+                class="text-primary !text-xs"
+              >
+                Confirm Password is required
+              </small>
+              <small
+                *ngIf="
+                  registerForm.errors?.['passwordMismatch'] && registerForm.get('password_confirmation')?.touched && !registerForm.get('password_confirmation')?.errors?.['required']"
+                class="text-primary !text-xs"
+              >
+                Passwords do not match
+              </small>
             </app-form-element>
             <app-form-element [label]="'Full Name'">
               <input
@@ -142,7 +152,10 @@
                 />
               </app-form-element>
             </div>
-            <app-form-element [label]="'Role'">
+            <app-form-element
+              [label]="'Role'"
+              [control]="registerForm.get('role')!"
+            >
               <p-select
                 [options]="role"
                 formControlName="role"
@@ -160,6 +173,7 @@
                 <app-form-element
                   [label]="'Educational background'"
                   [required]="true"
+                  [control]="registerForm.get('LoE_DI')!"
                 >
                   <p-select
                     [options]="LoE"
@@ -191,6 +205,7 @@
                 <p-divider />
                 <app-form-element
                   [label]="'Favorite category'"
+                  [control]="registerForm.get('category_ids')!"
                   [required]="true"
                 >
                   <div class="flex flex-wrap gap-3 text-xs">
@@ -208,13 +223,19 @@
                     </div>
                     }
                   </div>
+                  <small
+                    *ngIf="registerForm.get('category_ids')?.touched && registerForm.get('category_ids')?.errors?.['required']"
+                    class="p-error"
+                  >
+                    At least one category is required for students
+                  </small>
                 </app-form-element>
               </div>
               }
               <!-- Instructor-specific fields -->
               @if (registerForm.get('role')?.value === 'instructor') {
               <div>
-                <app-form-element>
+                <app-form-element [control]="registerForm.get('bio')!">
                   <p-floatlabel variant="on">
                     <textarea
                       pInputTextarea
@@ -230,7 +251,11 @@
                     <label for="on_label">Bio</label>
                   </p-floatlabel>
                 </app-form-element>
-                <app-form-element [label]="'Paypal email'" [required]="true">
+                <app-form-element
+                  [label]="'Paypal email'"
+                  [control]="registerForm.get('email_paypal')!"
+                  [required]="true"
+                >
                   <input
                     pInputText
                     required
@@ -406,10 +431,9 @@
         }
       </div>
     </div>
-    } @if (isLoading) {
-    <p>Loading...</p>
     }
   </div>
 </div>
 
+<app-loading [isLoading]="isLoading"></app-loading>
 <p-toast></p-toast>
