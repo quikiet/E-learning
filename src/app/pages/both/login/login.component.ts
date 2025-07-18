@@ -51,7 +51,6 @@ export class LoginComponent implements OnInit {
     { label: 'Certification', value: 'Certification' }
   ];
   categories: any[] = [];
-
   selectedLoE: optionSelect | undefined;
   tab: string = 'login';
   loginForm = new FormGroup({

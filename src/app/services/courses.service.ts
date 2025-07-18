@@ -46,7 +46,6 @@ export class CoursesService {
     return this.http.post<any>(`${this.apiUrl}/instructor/courses/${courseId}/lessons`, data, {
       reportProgress: true, // Bật theo dõi tiến trình upload
       observe: 'events',    // Theo dõi tất cả sự kiện
-      responseType: 'json',
       withCredentials: true
     });
   }

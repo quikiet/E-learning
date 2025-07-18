@@ -290,6 +290,6 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['/my-course', this.quizStart?.course_id || '']);
+    this.router.navigate(['/my-course', this.quizStart.enrollment_id || '']);
   }
 }

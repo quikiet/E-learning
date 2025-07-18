@@ -12,6 +12,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
 
 interface Quiz {
   quiz_id: number;
@@ -33,7 +34,8 @@ interface Quiz {
     TooltipModule,
     LoadingComponent,
     ProgressBarModule,
-    FormsModule
+    FormsModule,
+    ToastModule
   ],
   providers: [CoursesService, MessageService],
   templateUrl: './course-progress.component.html',
@@ -84,8 +86,8 @@ export class CourseProgressComponent implements OnInit {
           this.isLoading = false;
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: err.error?.message || 'Unable to load course progress.',
+            summary: err.error?.message,
+            detail: err.error?.error,
             life: 3000
           });
         }
@@ -118,8 +120,8 @@ export class CourseProgressComponent implements OnInit {
         this.isLoading = false;
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error?.message,
+          summary: err.error?.message,
+          detail: err.error?.error,
           life: 3000
         });
       }

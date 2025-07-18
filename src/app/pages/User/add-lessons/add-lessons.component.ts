@@ -42,14 +42,119 @@ export class AddLessonsComponent implements OnInit {
     }
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.lesson.video = file;
+  // onFileSelected(event: any) {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.lesson.video = file;
+  //   }
+  // }
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      if (file.size > 2 * 1024 * 1024 * 1024) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Lỗi',
+          detail: 'Video vượt quá dung lượng tối đa 2GB.',
+          life: 3000,
+        });
+        return;
+      }
+
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = () => {
+        if (video.duration > 3600) { // 60 minutes in seconds
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Lỗi',
+            detail: 'Video vượt quá thời lượng tối đa 60 phút.',
+            life: 3000,
+          });
+          return;
+        }
+        this.lesson.video = file;
+      };
+      video.src = URL.createObjectURL(file);
     }
   }
 
-  addLesson() {
+  // addLesson() {
+  //   if (!this.lesson.video) {
+  //     this.messageService.add({
+  //       severity: 'error',
+  //       summary: 'Lỗi',
+  //       detail: 'Vui lòng chọn video bài học.',
+  //       life: 3000,
+  //     });
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append('course_id', this.lesson.course_id.toString());
+  //   formData.append('title', this.lesson.title);
+  //   formData.append('video', this.lesson.video);
+  //   formData.append('is_preview', this.lesson.is_preview ? '1' : '0');
+  //   formData.append('sort_order', this.lesson.sort_order.toString());
+
+  //   this.isUploading = true;
+  //   this.uploadProgress = 0;
+
+  //   // Giả lập tiến trình nếu server không hỗ trợ
+  //   const totalSize = this.lesson.video.size;
+  //   const interval = setInterval(() => {
+  //     if (this.uploadProgress < 95) {
+  //       this.uploadProgress += 5; // Tăng dần 5% mỗi lần
+  //     }
+  //   }, 500);
+
+  //   this.coursesService.addLesson(this.lesson.course_id, formData).subscribe({
+  //     next: (event: HttpEvent<any>) => {
+  //       console.log('Event received:', event.type, event);
+  //       switch (event.type) {
+  //         case HttpEventType.UploadProgress:
+  //           if (event.total && event.total > 0) {
+  //             this.uploadProgress = Math.round((100 * event.loaded) / event.total);
+  //             clearInterval(interval); // Dừng giả lập khi có tiến trình thực
+  //           }
+  //           break;
+  //         case HttpEventType.Response:
+  //           clearInterval(interval); // Dừng giả lập khi hoàn tất
+  //           this.isUploading = false;
+  //           this.uploadProgress = 100;
+  //           this.messageService.add({
+  //             severity: 'success',
+  //             summary: 'Success',
+  //             detail: 'Add successful',
+  //             life: 3000,
+  //           });
+  //           this.lesson = {
+  //             course_id: this.lesson.course_id,
+  //             title: '',
+  //             video: null,
+  //             is_preview: false,
+  //             sort_order: 0
+  //           };
+  //           break;
+  //       }
+  //     },
+  //     error: (err) => {
+  //       clearInterval(interval);
+  //       console.error('Error adding lesson:', err);
+  //       this.isUploading = false;
+  //       this.uploadProgress = 0;
+  //       this.messageService.add({
+  //         severity: 'error',
+  //         summary: 'Lỗi',
+  //         detail: err.error?.message || 'Không thể thêm bài học. Vui lòng thử lại.',
+  //         life: 3000,
+  //       });
+  //     }
+  //   });
+  // }
+
+  addLesson(): void {
     if (!this.lesson.video) {
       this.messageService.add({
         severity: 'error',
@@ -70,46 +175,31 @@ export class AddLessonsComponent implements OnInit {
     this.isUploading = true;
     this.uploadProgress = 0;
 
-    // Giả lập tiến trình nếu server không hỗ trợ
-    const totalSize = this.lesson.video.size;
-    const interval = setInterval(() => {
-      if (this.uploadProgress < 95) {
-        this.uploadProgress += 5; // Tăng dần 5% mỗi lần
-      }
-    }, 500);
-
     this.coursesService.addLesson(this.lesson.course_id, formData).subscribe({
-      next: (event: HttpEvent<any>) => {
-        console.log('Event received:', event.type, event);
-        switch (event.type) {
-          case HttpEventType.UploadProgress:
-            if (event.total && event.total > 0) {
-              this.uploadProgress = Math.round((100 * event.loaded) / event.total);
-              clearInterval(interval); // Dừng giả lập khi có tiến trình thực
-            }
-            break;
-          case HttpEventType.Response:
-            clearInterval(interval); // Dừng giả lập khi hoàn tất
-            this.isUploading = false;
-            this.uploadProgress = 100;
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Success',
-              detail: 'Add successful',
-              life: 3000,
-            });
-            this.lesson = {
-              course_id: this.lesson.course_id,
-              title: '',
-              video: null,
-              is_preview: false,
-              sort_order: 0
-            };
-            break;
+      next: (event) => {
+        if (event.type === HttpEventType.UploadProgress && event.total) {
+          // Update progress bar during chunked upload
+          this.uploadProgress = Math.round((100 * event.loaded) / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          // Upload completed
+          this.isUploading = false;
+          this.uploadProgress = 100;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Add successful',
+            life: 3000,
+          });
+          this.lesson = {
+            course_id: this.lesson.course_id,
+            title: '',
+            video: null,
+            is_preview: false,
+            sort_order: 0,
+          };
         }
       },
       error: (err) => {
-        clearInterval(interval);
         console.error('Error adding lesson:', err);
         this.isUploading = false;
         this.uploadProgress = 0;
@@ -119,7 +209,7 @@ export class AddLessonsComponent implements OnInit {
           detail: err.error?.message || 'Không thể thêm bài học. Vui lòng thử lại.',
           life: 3000,
         });
-      }
+      },
     });
   }
 }

@@ -54,6 +54,8 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
   reportTypes = [
     { label: 'Inappropriate Content', value: 'inappropriate_content' },
     { label: 'Copyright Violation', value: 'copyright_violation' },
+    { label: 'Technical issue', value: 'technical_issue' },
+    { label: 'Spam', value: 'spam' },
     { label: 'Other', value: 'other' },
   ];
 
@@ -143,11 +145,11 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
     console.log(this.reportData);
 
     this.coursesService.reportCourse(this.reportData).subscribe({
-      next: () => {
+      next: (res) => {
         this.messageService.add({
           severity: 'success',
-          summary: 'Thành công',
-          detail: 'Báo cáo đã được gửi!',
+          summary: 'Success',
+          detail: res.message,
           life: 3000,
         });
         this.showReportModal = false;
@@ -157,8 +159,8 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
       error: (err) => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Lỗi',
-          detail: err.message || 'Không thể gửi báo cáo.',
+          summary: err.error.message || 'Error',
+          detail: err.error.error,
           life: 3000,
         });
       },
@@ -179,8 +181,8 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
       error: (err) => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.message,
+          summary: err.error.message || 'Error',
+          detail: err.error.error,
           life: 3000,
         });
       },

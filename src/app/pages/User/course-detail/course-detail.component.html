@@ -1,24 +1,28 @@
 <app-header></app-header>
 <p-toast />
 <div
-  class="max-w-7xl mx-auto mt-2 mb-10 grid grid-cols-1 lg:grid-cols-12 gap-5 h-full lg:p-10 p-6"
+  class="max-w-7xl mx-auto mt-2 mb-10 flex flex-col-reverse lg:grid grid-cols-1 lg:grid-cols-12 gap-5 h-full lg:p-10 p-6"
 >
   <div class="lg:col-span-8 mb-6">
     <!-- Video Preview -->
     @if (previewVideoUrl) {
-    <video
-      class="w-full h-auto aspect-video object-cover"
-      controls
-      [poster]="course?.image"
-    >
-      <source [src]="previewVideoUrl" type="video/mp4" />
-    </video>
+    <div class="">
+      <video
+        class="w-full h-auto aspect-video object-cover"
+        controls
+        [poster]="course?.image"
+      >
+        <source [src]="previewVideoUrl" type="video/mp4" />
+      </video>
+    </div>
     } @if (!previewVideoUrl) {
-    <img
-      [src]="course?.image"
-      [alt]="course?.course_name || 'Course Thumbnail'"
-      class="w-full h-auto rounded-3xl aspect-video object-cover"
-    />
+    <div class="shadow-xl">
+      <img
+        [src]="course?.image"
+        [alt]="course?.course_name || 'Course Thumbnail'"
+        class="w-full h-auto aspect-video object-cover"
+      />
+    </div>
     }
     <!-- <img [src]="course.image" [alt]="course.course_name" /> -->
     <!-- <video class="w-full" controls [src]="currentVideoUrl" type="video/mp4">
@@ -161,7 +165,7 @@
   <div class="lg:col-span-4 h-full">
     @if (!isLoading) {
     <div
-      class="sticky top-4 px-0 py-0 flex-col shadow border-l border-gray-100 bg-white !p-4 h-fit"
+      class="sticky top-4 px-0 py-0 flex-col shadow border-l border-gray-100 bg-secondary-light !p-4 h-fit"
     >
       <div class="flex items-center gap-1 px-4 py-2 select-none flex-wrap">
         <span class="font-bold text-red-500 text-sm">
@@ -378,6 +382,7 @@
       <app-form-element
         [label]="'Educational background'"
         [control]="studentForm.get('LoE')!"
+        [required]="true"
       >
         <p-select
           [options]="LoE"
@@ -416,6 +421,7 @@
       <p-divider />
       <app-form-element
         [label]="'Favorite category'"
+        [required]="true"
         [control]="studentForm.get('category_ids')!"
       >
         <div class="flex flex-wrap gap-3 text-xs">
