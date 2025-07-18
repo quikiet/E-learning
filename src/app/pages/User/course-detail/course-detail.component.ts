@@ -138,7 +138,7 @@ export class CourseDetailComponent implements OnInit {
       category_ids: [[]],
     });
     this.LoE = [
-      { name: 'All Level', value: 'All Level' },
+      { name: 'Unknown', value: 'Unknown' },
       { name: 'Beginner', value: 'Beginner' },
       { name: 'Intermediate', value: 'Intermediate' },
       { name: 'Advanced', value: 'Advanced' },

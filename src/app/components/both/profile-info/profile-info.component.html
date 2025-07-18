@@ -155,12 +155,14 @@
           profileForm.get('learning_goals')?.value || (user?.role ===
           'instructor' && profileForm.get('bio')?.value &&
           profileForm.get('organization')?.value &&
-          profileForm.get('email_paypal')?.value) ) {
+          profileForm.get('email_paypal')?.value) &&
+          profileForm.get('LoE_DI')?.value) {
           <p-fieldset legend="Student Information" [toggleable]="true">
             <div class="flex flex-col gap-4">
               <app-form-element
                 label="Educational Background"
                 [control]="profileForm.get('LoE_DI')!"
+                [required]="true"
               >
                 <p-select
                   formControlName="LoE_DI"
@@ -203,6 +205,7 @@
               </app-form-element>
               <app-form-element
                 label="Favorite Category"
+                [required]="true"
                 [control]="profileForm.get('category_ids')!"
               >
                 <div class="flex flex-wrap gap-3 text-xs">
