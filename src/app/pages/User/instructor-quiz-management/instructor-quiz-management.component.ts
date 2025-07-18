@@ -80,12 +80,12 @@ export class InstructorQuizManagementComponent implements OnInit {
       if (this.lessonID) {
         this.loadQuizzes();
       } else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Lỗi',
-          detail: 'Không tìm thấy khóa học.',
-          life: 3000,
-        });
+        // this.messageService.add({
+        //   severity: 'error',
+        //   summary: 'Lỗi',
+        //   detail: 'Không tìm thấy khóa học.',
+        //   life: 3000,
+        // });
         this.router.navigate(['/profile/manage-courses']);
       }
     });
@@ -101,8 +101,8 @@ export class InstructorQuizManagementComponent implements OnInit {
         error: (err) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: err.message || 'Failed to fetch Quizzes',
+            summary: err.error.message || 'Error',
+            detail: err.error.error || 'Failed to fetch Quizzes',
             life: 3000,
           });
         }
@@ -125,8 +125,8 @@ export class InstructorQuizManagementComponent implements OnInit {
       }, error: (err) => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.message,
+          summary: err.error.message || 'Error',
+          detail: err.error.error,
           life: 3000,
         });
       }
@@ -172,8 +172,8 @@ export class InstructorQuizManagementComponent implements OnInit {
     } else {
       this.messageService.add({
         severity: 'warn',
-        summary: 'Cảnh báo',
-        detail: 'Câu hỏi phải có ít nhất 2 lựa chọn.',
+        summary: 'Warn',
+        detail: 'The question must have at least 2 options.',
         life: 3000,
       });
     }
@@ -186,8 +186,8 @@ export class InstructorQuizManagementComponent implements OnInit {
       this.newQuestion.choices.some(choice => !choice.content)) {
       this.messageService.add({
         severity: 'warn',
-        summary: 'Cảnh báo',
-        detail: 'Vui lòng điền đầy đủ thông tin hợp lệ.',
+        summary: 'Warn',
+        detail: 'Please fill in all valid information.',
         life: 3000,
       });
       return;
@@ -197,8 +197,8 @@ export class InstructorQuizManagementComponent implements OnInit {
       !this.newQuestion.choices.some(choice => choice.is_correct)) {
       this.messageService.add({
         severity: 'warn',
-        summary: 'Cảnh báo',
-        detail: 'Câu hỏi trắc nghiệm phải có ít nhất một đáp án đúng.',
+        summary: 'Warn',
+        detail: 'Multiple choice questions must have at least one correct answer.',
         life: 3000,
       });
       return;
@@ -233,8 +233,8 @@ export class InstructorQuizManagementComponent implements OnInit {
           Promise.all(choiceObservables.map(obs => obs.toPromise())).then(() => {
             this.messageService.add({
               severity: 'success',
-              summary: 'Thành công',
-              detail: 'Câu hỏi và các lựa chọn đã được tạo thành công!',
+              summary: 'Success',
+              detail: 'The question and options have been created successfully!',
               life: 3000,
             });
             this.showAddQuestionModal = false;
@@ -242,8 +242,8 @@ export class InstructorQuizManagementComponent implements OnInit {
           }).catch(() => {
             this.messageService.add({
               severity: 'error',
-              summary: 'Lỗi',
-              detail: 'Không thể tạo các lựa chọn.',
+              summary: 'Error',
+              detail: 'Cannot create options.',
               life: 3000,
             });
           });
@@ -251,8 +251,8 @@ export class InstructorQuizManagementComponent implements OnInit {
         error: (err) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Lỗi',
-            detail: err.message,
+            summary: err.error.message || 'Error',
+            detail: err.error.error,
             life: 3000,
           });
         }
@@ -264,8 +264,8 @@ export class InstructorQuizManagementComponent implements OnInit {
     if (!this.newQuiz.title || this.newQuiz.max_attempts <= 0 || this.newQuiz.time_limit <= 0) {
       this.messageService.add({
         severity: 'warn',
-        summary: 'Cảnh báo',
-        detail: 'Vui lòng điền đầy đủ thông tin hợp lệ.',
+        summary: 'Warn',
+        detail: 'Please fill in all valid information.',
         life: 3000,
       });
       return;
@@ -296,8 +296,8 @@ export class InstructorQuizManagementComponent implements OnInit {
 
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.message,
+          summary: err.error.message || 'Error',
+          detail: err.error.error,
           life: 3000,
         });
       }
@@ -351,8 +351,8 @@ export class InstructorQuizManagementComponent implements OnInit {
 
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: err.message || `Update error`,
+            summary: err.error.message || 'Error',
+            detail: err.error.error || `Update error`,
             life: 3000,
           });
         }
@@ -385,8 +385,8 @@ export class InstructorQuizManagementComponent implements OnInit {
         error: (err) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Lỗi',
-            detail: err.message,
+            summary: err.error.message || 'Error',
+            detail: err.error.error,
             life: 3000,
           });
           this.loadQuizzes();
@@ -403,12 +403,12 @@ export class InstructorQuizManagementComponent implements OnInit {
   }
 
   viewQuizDetail(quiz: any) {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Thông báo',
-      detail: `Điều hướng đến trang chi tiết Quiz ${quiz.title} (ID: ${quiz.id}).`,
-      life: 3000,
-    });
+    // this.messageService.add({
+    //   severity: 'info',
+    //   summary: 'Thông báo',
+    //   detail: `Điều hướng đến trang chi tiết Quiz ${quiz.title} (ID: ${quiz.id}).`,
+    //   life: 3000,
+    // });
     this.router.navigate([`quiz/${quiz.quiz_id}/attempt`]);
   }
 }

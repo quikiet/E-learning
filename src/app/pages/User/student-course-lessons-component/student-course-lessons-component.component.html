@@ -323,6 +323,7 @@
             [label]="isEditing ? 'Update' : 'Submit'"
             icon="pi pi-send"
             (onClick)="submitReview()"
+            [loading]="isComment"
             [disabled]="newRating === 0"
             styleClass="bg-blue-600 hover:bg-blue-700"
           ></p-button>

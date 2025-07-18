@@ -131,18 +131,19 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
     this.reportData.course_id = enrollment.course.id;
     this.showReportModal = true;
   }
-
+  isReporting = false;
   submitReport() {
+    this.isReporting = true;
     if (!this.reportData.reason || !this.reportData.report_type) {
       this.messageService.add({
         severity: 'warn',
-        summary: 'Cảnh báo',
-        detail: 'Vui lòng điền đầy đủ lý do và loại báo cáo.',
+        summary: 'Warn',
+        detail: 'Please fill in the complete reason and type of report.',
         life: 3000,
       });
       return;
     }
-    console.log(this.reportData);
+    // console.log(this.reportData);
 
     this.coursesService.reportCourse(this.reportData).subscribe({
       next: (res) => {
@@ -152,11 +153,13 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
           detail: res.message,
           life: 3000,
         });
+        this.isReporting = false;
         this.showReportModal = false;
         this.loadEnrollments();
         this.resetReportForm();
       },
       error: (err) => {
+        this.isReporting = false;
         this.messageService.add({
           severity: 'error',
           summary: err.error.message || 'Error',
@@ -168,8 +171,10 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
   }
 
   undoReport(reportId: number) {
+    this.isLoading = true;
     this.coursesService.deleteReportCourse(reportId).subscribe({
       next: (res) => {
+        this.isLoading = false;
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -179,6 +184,7 @@ export class StudentPurchasedCoursesComponentComponent implements OnInit {
         this.loadEnrollments();
       },
       error: (err) => {
+        this.isLoading = false;
         this.messageService.add({
           severity: 'error',
           summary: err.error.message || 'Error',

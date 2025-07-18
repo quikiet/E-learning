@@ -96,6 +96,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   }
 
   cancelEdit() {
+    this.isComment = false;
     this.isEditing = false;
     this.editingReviewId = null;
     this.newRating = 0;
@@ -262,8 +263,9 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
       }
     });
   }
-
+  isComment = false;
   submitReview() {
+    this.isComment = true;
     if (this.newRating === 0) {
       this.messageService.add({
         severity: 'warn',
@@ -290,15 +292,17 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
             detail: res.message || 'Review updated successfully.',
             life: 3000
           });
+          this.isComment = false;
           this.cancelEdit();
           this.loadCourseLessons();
         },
         error: (err) => {
-          console.error('Error updating review:', err);
+          // console.error('Error updating review:', err);
+          this.isComment = false;
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: err.error?.message || 'Unable to update review.',
+            summary: err.error?.message || 'Error',
+            detail: err.error?.error || 'Unable to update review.',
             life: 3000
           });
         }
@@ -307,6 +311,7 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
       // Create new review
       this.enrollmentService.reviewCourse(this.course.id, reviewData).subscribe({
         next: (res) => {
+          this.isComment = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -319,11 +324,12 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
           this.loadCourseLessons();
         },
         error: (err) => {
+          this.isComment = false;
           console.error('Error submitting review:', err);
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: err.error?.message || 'Unable to submit review.',
+            summary: err.error?.message || 'Error',
+            detail: err.error?.error || 'Unable to submit review.',
             life: 3000
           });
         }

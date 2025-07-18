@@ -2,9 +2,9 @@
   <!-- Input tìm kiếm -->
   <div
     class="flex items-center border border-gray-300 focus-within:ring-secondary focus-within:border-secondary rounded-full"
-    >
+  >
     <a
-      class="text-gray-500 cursor-pointer hover:bg-gray p-2 pl-3"
+      class="text-gray-500 cursor-pointer hover:bg-gray-200 w-fit rounded-full p-2 pl-3"
       [href]="'http://localhost:4200/course?keyword=' + query"
     >
       <svg
@@ -24,6 +24,7 @@
     <input
       type="text"
       [(ngModel)]="query"
+      (keyup.enter)="onSearch()"
       (input)="filterCourses()"
       (blur)="onBlur()"
       placeholder="Search..."
@@ -32,31 +33,29 @@
   </div>
 
   <!-- Dropdown gợi ý -->
-  @if (query && filteredCourses.length) {
-<div
-   
+  @if (query && filteredCourses.length && !pauseDropdown) {
+  <div
     class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-md max-h-[400px] overflow-hidden py-2"
   >
     @for (course of filteredCourses; track course) {
-<a
-     
+    <a
       [href]="'http://localhost:4200/course-detail/' + course.course_url"
-              class="flex items-start gap-3 p-2 cursor-pointer hover:bg-gray-100"
-              >
-              <img
-                [src]="course.image"
-                [alt]="course.course_name"
-                class="w-8 h-8 object-cover rounded"
-                />
-                <div class="flex flex-col justify-between">
-                  <span class="text-xs font-bold">{{ course.course_name }}</span>
-                  <span class="text-[10px]"
-                    ><span class="font-semibold">{{ course.category }}</span>
-                    <span> {{ course.instructor_name }}</span></span
-                    >
-                  </div>
-                </a>
-              }
-            </div>
-          }
-        </div>
+      class="flex items-start gap-3 p-2 cursor-pointer hover:bg-gray-100"
+    >
+      <img
+        [src]="course.image"
+        [alt]="course.course_name"
+        class="w-8 h-8 object-cover rounded"
+      />
+      <div class="flex flex-col justify-between">
+        <span class="text-xs font-bold">{{ course.course_name }}</span>
+        <span class="text-[10px]"
+          ><span class="font-semibold">{{ course.category }}</span>
+          <span> {{ course.instructor_name }}</span></span
+        >
+      </div>
+    </a>
+    }
+  </div>
+  }
+</div>

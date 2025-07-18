@@ -8,11 +8,12 @@ import { PaginatorModule } from 'primeng/paginator';
 import { MessageService } from 'primeng/api';
 import { CoursesService } from '../../../services/courses.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { Tag } from "primeng/tag";
 
 @Component({
   selector: 'app-report-manage',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, DialogModule, ToastModule, PaginatorModule, ProgressSpinnerModule],
+  imports: [CommonModule, TableModule, ButtonModule, DialogModule, ToastModule, PaginatorModule, ProgressSpinnerModule, Tag],
   providers: [MessageService, CoursesService],
   templateUrl: './report-manage.component.html',
   styleUrls: ['./report-manage.component.css']
@@ -25,7 +26,7 @@ export class ReportManageComponent implements OnInit {
   currentPage: number = 1;
   totalRecords: number = 0;
   rowsPerPage: number = 10;
-
+  first: number = 0;
   constructor(
     private coursesService: CoursesService,
     private messageService: MessageService
@@ -58,7 +59,9 @@ export class ReportManageComponent implements OnInit {
   }
 
   onPageChange(event: any) {
-    this.currentPage = event.page + 1;
+    this.currentPage = event.page + 1; // API uses 1-based page numbers
+    this.first = event.first; // Update first for paginator UI
+    this.rowsPerPage = event.rows; // Update rows per page if changed
     this.loadReports(this.currentPage);
   }
 

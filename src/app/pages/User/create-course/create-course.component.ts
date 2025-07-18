@@ -142,15 +142,16 @@ export class CreateCourseComponent implements OnInit {
   }
 
   createCourse() {
-    if (!this.selectedCategories || this.selectedCategories.length === 0) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Lỗi',
-        detail: 'Vui lòng chọn ít nhất một danh mục.',
-        life: 3000,
-      });
-      return;
-    }
+    this.isLoading = true;
+    // if (!this.selectedCategories || this.selectedCategories.length === 0) {
+    //   this.messageService.add({
+    //     severity: 'error',
+    //     summary: 'Lỗi',
+    //     detail: 'Vui lòng chọn ít nhất một danh mục.',
+    //     life: 3000,
+    //   });
+    //   return;
+    // }
 
     console.log('Sending category_ids:', this.selectedCategories);
 
@@ -180,6 +181,7 @@ export class CreateCourseComponent implements OnInit {
 
     this.coursesService.createCourse(formData).subscribe({
       next: (res) => {
+        this.isLoading = false;
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -195,6 +197,7 @@ export class CreateCourseComponent implements OnInit {
         }
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Error creating course:', err);
         this.messageService.add({
           severity: 'error',

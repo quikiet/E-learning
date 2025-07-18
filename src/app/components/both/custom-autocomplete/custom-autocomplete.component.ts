@@ -26,10 +26,13 @@ export class CustomAutocompleteComponent implements OnInit {
   selectedCourse: Course | null = null;
   query: string = '';
   showDropdown: boolean = false;
-
-  constructor(private courseService: CoursesService,) { }
+  pauseDropdown: boolean = false;
+  constructor(private courseService: CoursesService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.pauseDropdown = false;
     this.courseService.getAllCourses().subscribe({
       next: (res: Course[]) => {
         this.courses = res;
@@ -42,6 +45,7 @@ export class CustomAutocompleteComponent implements OnInit {
   }
 
   filterCourses() {
+    this.pauseDropdown = false;
     const queryLower = this.query.toLowerCase();
     this.filteredCourses = this.courses.filter((course) =>
       course.course_name.toLowerCase().startsWith(queryLower)
@@ -53,6 +57,15 @@ export class CustomAutocompleteComponent implements OnInit {
     this.selectedCourse = course;
     this.query = course.course_name;
     this.showDropdown = false;
+  }
+
+  onSearch() {
+    const query = this.query.trim();
+    if (query) {
+      this.pauseDropdown = true;
+      this.router.navigate(['/course'], { queryParams: { keyword: query } });
+      this.showDropdown = false;
+    }
   }
 
   onBlur() {
