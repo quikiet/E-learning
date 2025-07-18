@@ -335,7 +335,7 @@ export class ProfileInfoComponent implements OnInit {
         console.error('Password reset error:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
+          summary: err.error.message || 'Error',
           detail: err.error?.error || 'Unable to reset password.',
           life: 3000
         });

@@ -30,10 +30,10 @@ export class IntructorComponent implements OnInit, AfterViewInit {
     gsap.registerPlugin(ScrollTrigger);
 
     gsap.from(".teacher_carousel", {
-      opacity: 0,
+      opacity: 0.2,
       y: 100,
       stagger: 0.3,
-      duration: 1,
+      duration: 3.3,
       scrollTrigger: {
         trigger: ".shape_intructor",
         start: "top bottom",
@@ -42,15 +42,14 @@ export class IntructorComponent implements OnInit, AfterViewInit {
     });
     gsap.from(".shape_intructor", {
       duration: 1.5,
-      delay: 1,
       opacity: 0,
       x: 100,
       scrollTrigger: {
         trigger: ".teacher_carousel",
         start: "top center",
         scrub: 1,
-        end: "top center",
-        // end: "+=250",
+        // end: "top center",
+        end: "+=750",
       }
     });
 

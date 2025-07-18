@@ -10,7 +10,7 @@
   [(selection)]="selectedCategories"
   [rowHover]="false"
   dataKey="id"
-  currentPageReportTemplate="Hiển thị từ {first} đến {last} của {totalRecords} danh mục"
+  currentPageReportTemplate="Displaying items from {first} to {last} of {totalRecords} categories"
   [showCurrentPageReport]="true"
   [loading]="isLoading"
   [expandedRowKeys]="expandedRows"
@@ -47,7 +47,7 @@
     </div>
   </ng-template>
   <ng-template #header>
-    <tr class="!text-xs">
+    <tr class="!text-sm">
       <th style="width: 5rem"></th>
       <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
         <div class="flex items-center">
@@ -70,7 +70,7 @@
     </tr>
   </ng-template>
   <ng-template #body let-category let-expanded="expanded">
-    <tr class="!text-xs">
+    <tr class="!text-sm">
       <td>
         <p-button
           type="button"
@@ -81,8 +81,8 @@
           [plain]="true"
           [icon]="
             expanded
-              ? '!text-xs pi pi-chevron-down'
-              : '!text-xs pi pi-chevron-right'
+              ? '!text-sm pi pi-chevron-down'
+              : '!text-sm pi pi-chevron-right'
           "
           *ngIf="category.children.length"
         />
@@ -134,13 +134,13 @@
     </tr>
   </ng-template>
   <ng-template #expandedrow let-category let-expanded="expanded">
-    <tr class="">
+    <tr class="!text-xs">
       <td colspan="7">
         <div class="p-4 pt-2">
           <h5 class="text-sm font-semibold mb-2">Sub of {{ category.name }}</h5>
           <p-table [value]="category.children" dataKey="id">
             <ng-template #header>
-              <tr class="text-sm">
+              <tr class="!text-xs">
                 <th pSortableColumn="id" class="hidden lg:table-cell !p-0">
                   <div class="flex items-center">
                     <p-sortIcon field="id" />
@@ -156,7 +156,7 @@
               </tr>
             </ng-template>
             <ng-template #body let-children>
-              <tr class="text-sm">
+              <tr class="!text-xs">
                 <td class="hidden lg:table-cell">
                   {{ children.id }}
                 </td>
@@ -169,8 +169,9 @@
                   <p-button
                     icon="pi pi-pencil"
                     class="mr-2"
+                    size="small"
                     (onClick)="editCategory(children)"
-                    label="Sửa"
+                    label="Update"
                     [rounded]="true"
                     [outlined]="true"
                   />
@@ -187,6 +188,7 @@
 
                   <p-button
                     (onClick)="confirmDelete($event, children.id)"
+                    size="small"
                     icon="pi pi-trash"
                     label="Delete"
                     [rounded]="true"

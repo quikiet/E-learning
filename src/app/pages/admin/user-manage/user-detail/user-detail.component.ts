@@ -6,7 +6,7 @@ import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
-import { Tag } from 'primeng/tag';
+import { TagModule } from 'primeng/tag';
 import { AvatarModule } from 'primeng/avatar';
 
 
@@ -36,7 +36,7 @@ interface UserData {
 }
 @Component({
   selector: 'app-user-detail',
-  imports: [Tag, ProgressSpinnerModule, MessageModule, TableModule, CardModule, CommonModule, RouterLink,
+  imports: [TagModule, ProgressSpinnerModule, MessageModule, TableModule, CardModule, CommonModule, RouterLink,
     AvatarModule
   ],
   templateUrl: './user-detail.component.html',
@@ -69,7 +69,8 @@ export class UserDetailComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = err.error?.message;
+        console.log(err.error?.message);
+
         this.isLoading = false;
       }
     });

@@ -178,7 +178,7 @@
   header="Report Course"
   [(visible)]="showReportModal"
   [modal]="true"
-  [style]="{ width: '30rem' }"
+  [style]="{ width: '30rem', overflow: 'visible' }"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
   (onHide)="resetReportForm()"
 >
@@ -193,7 +193,8 @@
         [(ngModel)]="reportData.report_type"
         optionLabel="label"
         optionValue="value"
-        placeholder="Choice report type"
+        placeholder="Choose report type"
+        appendTo="body"
         class="w-full"
       />
     </div>
@@ -205,7 +206,7 @@
         id="reportReason"
         pInputText
         [(ngModel)]="reportData.reason"
-        placeholder="bad..."
+        placeholder="Enter reason (e.g., inappropriate content)"
         class="w-full"
       />
     </div>

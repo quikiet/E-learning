@@ -1,44 +1,43 @@
 @if (isLoading) {
-  <p-progressSpinner
-    class="flex justify-center"
-  ></p-progressSpinner>
-}
-@if (userData && !isLoading) {
-  <div>
-    <div class="flex justify-between gap-2">
-      <div class="flex gap-2 items-center mb-4">
-        <h6 class="text-xl font-bold">User Details</h6>
-        @if (userData) {
-          <p-avatar
+<div class="flex justify-center items-center w-full h-full">
+  <p-progressSpinner class="flex justify-center"></p-progressSpinner>
+</div>
+} @if (userData && !isLoading) {
+<div>
+  <div class="flex justify-between gap-2">
+    <div class="flex gap-2 items-center mb-4">
+      <h6 class="text-xl font-bold">User Details</h6>
+      @if (userData) {
+      <p-avatar
         [image]="
           userData.user.avatar ||
           'https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png'
         "
-            shape="circle"
-            />
-        }
-      </div>
-      <a [routerLink]="['/admin/user-manage']">
-        <i class="pi pi-window-minimize"></i>
-      </a>
+        shape="circle"
+      />
+      }
     </div>
-    <!-- User Data -->
-    <div>
-      <!-- User Information -->
-      <p-card header="User Information" styleClass="!rounded-none mb-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-          <div><strong>ID:</strong> {{ userData.user.id }}</div>
-          <div><strong>Username:</strong> {{ userData.user.username }}</div>
-          <div><strong>Fullname:</strong> {{ userData.user.fullname }}</div>
-          <div><strong>Email:</strong> {{ userData.user.email }}</div>
-          <div>
-            <strong>Birthdate:</strong> {{ userData.user.birthdate | date }}
-          </div>
-          <div><strong>Gender:</strong> {{ userData.user.gender }}</div>
-          <div class="flex items-center gap-2">
-            <strong>Role:</strong>
-            @if (userData.user.role) {
-              <p-tag
+    <a [routerLink]="['/admin/user-manage']">
+      <i class="pi pi-window-minimize"></i>
+    </a>
+  </div>
+  <!-- User Data -->
+  <div>
+    <!-- User Information -->
+    <p-card header="User Information" styleClass="!rounded-none mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div><strong>ID:</strong> {{ userData.user.id }}</div>
+        <div><strong>Username:</strong> {{ userData.user.username }}</div>
+        <div><strong>Fullname:</strong> {{ userData.user.fullname }}</div>
+        <div><strong>Email:</strong> {{ userData.user.email }}</div>
+        <div>
+          <strong>Birthdate:</strong> {{ userData.user.birthdate | date }}
+        </div>
+        <div><strong>Gender:</strong> {{ userData.user.gender }}</div>
+        <div class="flex items-center gap-2">
+          <strong>Role:</strong>
+          @if (userData.user.role) {
+          <p-tag
             [severity]="
               userData.user.role === 'admin'
                 ? 'danger'
@@ -46,388 +45,330 @@
                 ? 'success'
                 : 'info'
             "
-                [value]="userData.user.role"
-                [rounded]="true"
-                class="!text-xs"
-                />
+            [value]="userData.user.role"
+            [rounded]="true"
+            class="!text-xs"
+          />
+          }
+        </div>
+        <div>
+          <strong>Created At:</strong>
+          <span>{{
+            userData.user.created_at | date : "dd/MM/yyyy HH:mm"
+          }}</span>
+        </div>
+        <div>
+          <strong>Updated At:</strong>
+          <span>{{
+            userData.user.updated_at | date : "dd/MM/yyyy HH:mm"
+          }}</span>
+        </div>
+      </div>
+    </p-card>
+    <!-- Student Information -->
+    @if (userData.user.student) {
+    <p-card header="Student Information" styleClass="!rounded-none mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div><strong>Student ID:</strong> {{ userData.user.student.id }}</div>
+        <div>
+          <strong>Learning Goals:</strong>
+          {{ userData.user.student.learning_goals }}
+        </div>
+        <div>
+          <strong>Total courses completed:</strong>
+          {{ userData.analytics.courses_completed }}
+        </div>
+        <div>
+          <strong>Average raing given:</strong>
+          {{ userData.analytics.average_rating_given || 0 | number }}
+        </div>
+        <div>
+          <strong>Lesson completed rate:</strong>
+          {{ userData.analytics.lesson_completion_rate || 0 | number }}
+        </div>
+        <div>
+          <strong>Total payments made:</strong>
+          {{ userData.analytics.total_payments_made || 0 | number }}$
+        </div>
+        <div>
+          <strong>Created At:</strong>
+          {{ userData.user.student.created_at | date : "dd/MM/yyyy HH:mm" }}
+        </div>
+        <div>
+          <strong>Updated At:</strong>
+          {{ userData.user.student.updated_at | date : "dd/MM/yyyy HH:mm" }}
+        </div>
+      </div>
+      <div class="mt-4">
+        <div class="flex gap-2 items-center">
+          <strong>Categories of Interest:</strong>
+          @if (userData.user.student.categories.length === 0) {
+          <div class="text-gray-500">No categories.</div>
+          } @if (userData.user.student.categories.length > 0) {
+          <div class="flex flex-wrap gap-2">
+            @for (category of userData.user.student.categories; track category)
+            {
+            <p-tag
+              severity="info"
+              [value]="category.name"
+              [rounded]="true"
+              class="!text-xs"
+            ></p-tag>
             }
           </div>
-          <div>
-            <strong>Created At:</strong>
-            <span>{{
-              userData.user.created_at | date : "dd/MM/yyyy HH:mm"
-            }}</span>
-          </div>
-          <div>
-            <strong>Updated At:</strong>
-            <span>{{
-              userData.user.updated_at | date : "dd/MM/yyyy HH:mm"
-            }}</span>
-          </div>
+          }
         </div>
-      </p-card>
-      <!-- Student Information -->
-      @if (userData.user.student) {
-        <p-card
-          header="Student Information"
-          styleClass="!rounded-none mb-4"
-          >
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div><strong>Student ID:</strong> {{ userData.user.student.id }}</div>
-            <div>
-              <strong>Learning Goals:</strong>
-              {{ userData.user.student.learning_goals }}
-            </div>
-            <div>
-              <strong>Total courses completed:</strong>
-              {{ userData.analytics.courses_completed }}
-            </div>
-            <div>
-              <strong>Average raing given:</strong>
-              {{ userData.analytics.average_rating_given || 0 | number }}
-            </div>
-            <div>
-              <strong>Lesson completed rate:</strong>
-              {{ userData.analytics.lesson_completion_rate || 0 | number }}
-            </div>
-            <div>
-              <strong>Total payments made:</strong>
-              {{ userData.analytics.total_payments_made || 0 | number }}$
-            </div>
-            <div>
-              <strong>Created At:</strong>
-              {{ userData.user.student.created_at | date : "dd/MM/yyyy HH:mm" }}
-            </div>
-            <div>
-              <strong>Updated At:</strong>
-              {{ userData.user.student.updated_at | date : "dd/MM/yyyy HH:mm" }}
-            </div>
-          </div>
-          <div class="mt-4">
-            <div class="flex gap-2 items-center">
-              <strong>Categories of Interest:</strong>
-              @if (userData.user.student.categories.length === 0) {
-                <div
-                  class="text-gray-500"
-                  >
-                  No categories.
-                </div>
-              }
-              @if (userData.user.student.categories.length > 0) {
-                <div
-                  class="flex flex-wrap gap-2"
-                  >
-                  @for (category of userData.user.student.categories; track category) {
-                    <p-tag
-                      severity="info"
-                      [value]="category.name"
-                      [rounded]="true"
-                      class="!text-xs"
-                    ></p-tag>
-                  }
-                </div>
-              }
-            </div>
-          </div>
-        </p-card>
-      }
-      <!-- Course Enrollments -->
-      @if (userData.user.role !== 'admin') {
-        <p-card
-          header="Course Enrollments"
-          styleClass="!rounded-none mb-4"
-          >
-          <p-table
-            [value]="userData.user.enrollments"
-            class="!text-xs"
-            [rowHover]="true"
-            >
-            <ng-template pTemplate="header">
-              <tr>
-                <th>ID</th>
-                <th>Course ID</th>
-                <th>Status</th>
-                <th>Enrolled At</th>
-                <th>Completed At</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-enrollment>
-              <tr>
-                <td>{{ enrollment.id }}</td>
-                <td>{{ enrollment.course_id }}</td>
-                <td>{{ enrollment.status }}</td>
-                <td>{{ enrollment.enrolled_at | date : "dd/MM/yyyy HH:mm" }}</td>
-                <td>
-                  {{
-                  enrollment.completed_at
+      </div>
+    </p-card>
+    }
+    <!-- Course Enrollments -->
+    @if (userData.user.role !== 'admin') {
+    <p-card header="Course Enrollments" styleClass="!rounded-none mb-4">
+      <p-table
+        [value]="userData.user.enrollments"
+        class="!text-xs"
+        [rowHover]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Course ID</th>
+            <th>Status</th>
+            <th>Enrolled At</th>
+            <th>Completed At</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-enrollment>
+          <tr>
+            <td>{{ enrollment.id }}</td>
+            <td>{{ enrollment.course_id }}</td>
+            <td>{{ enrollment.status }}</td>
+            <td>{{ enrollment.enrolled_at | date : "dd/MM/yyyy HH:mm" }}</td>
+            <td>
+              {{
+                enrollment.completed_at
                   ? (enrollment.completed_at | date : "dd/MM/yyyy HH:mm")
                   : "Not Completed"
-                  }}
-                </td>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="5" class="text-center">No enrolled courses found.</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </p-card>
-      }
-      <!-- Payments -->
-      @if (userData.user.role !== 'admin') {
-        <p-card
-          header="Payments"
-          styleClass="!rounded-none mb-4"
-          >
-          @if (userData.user.payments.length === 0) {
-            <div class="text-center">
-              No payments found.
-            </div>
-          }
-          @if (userData.user.payments.length > 0) {
-            <p-table
-              [value]="userData.user.payments"
-              class="!text-xs"
-              [rowHover]="true"
+              }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5" class="text-center">No enrolled courses found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+    }
+    <!-- Payments -->
+    @if (userData.user.role !== 'admin') {
+    <p-card header="Payments" styleClass="!rounded-none mb-4">
+      @if (userData.user.payments.length === 0) {
+      <div class="text-center">No payments found.</div>
+      } @if (userData.user.payments.length > 0) {
+      <p-table
+        [value]="userData.user.payments"
+        class="!text-xs"
+        [rowHover]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Course ID</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Payment_date</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-payment>
+          <tr>
+            <td>{{ payment.id }}</td>
+            <td>
+              <a
+                [routerLink]="['/admin/course-manage', payment.course_id]"
+                class="underline text-secondary text-xs"
               >
-              <ng-template pTemplate="header">
-                <tr>
-                  <th>ID</th>
-                  <th>Course ID</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Payment_date</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-payment>
-                <tr>
-                  <td>{{ payment.id }}</td>
-                  <td>
-                    <a
-                      [routerLink]="['/admin/course-manage', payment.course_id]"
-                      class="underline text-secondary text-xs"
-                      >
-                      {{ payment.course_id }}
-                    </a>
-                  </td>
-                  <td>{{ payment.amount }}</td>
-                  <td>{{ payment.status }}</td>
-                  <td>{{ payment.payment_date | date }}</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          }
-        </p-card>
+                {{ payment.course_id }}
+              </a>
+            </td>
+            <td>{{ payment.amount }}</td>
+            <td>{{ payment.status }}</td>
+            <td>{{ payment.payment_date | date }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
       }
-      <!-- Lesson Progress -->
-      @if (userData.user.role !== 'admin') {
-        <p-card
-          header="Lesson Progress"
-          styleClass="!rounded-none mb-4"
-          >
-          <p-table
-            [value]="userData.user.lesson_progress"
-            class="!text-xs"
-            [rowHover]="true"
-            >
-            <ng-template pTemplate="header">
-              <tr>
-                <th>ID</th>
-                <th>Lesson ID</th>
-                <th>Status</th>
-                <th>Completed At</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-progress>
-              <tr>
-                <td>{{ progress.id }}</td>
-                <td>{{ progress.lesson_id }}</td>
-                <td>
-                  <div>
-                    @if (progress.status === 'not_started') {
-                      <p-tag
-                        severity="warn"
-                        value="Not Started"
-                        [rounded]="true"
-                        class="!text-xs"
-                        />
-                    }
-                    @if (progress.status === 'in_progress') {
-                      <p-tag
-                        severity="info"
-                        class="!text-xs"
-                        value="In Progress"
-                        [rounded]="true"
-                        />
-                    }
-                    @if (progress.status === 'completed') {
-                      <p-tag
-                        severity="success"
-                        class="!text-xs"
-                        value="Completed"
-                        [rounded]="true"
-                        />
-                    }
-                  </div>
-                </td>
-                <td>
-                  {{
-                  progress.completed_at
+    </p-card>
+    }
+    <!-- Lesson Progress -->
+    @if (userData.user.role !== 'admin') {
+    <p-card header="Lesson Progress" styleClass="!rounded-none mb-4">
+      <p-table
+        [value]="userData.user.lesson_progress"
+        class="!text-xs"
+        [rowHover]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Lesson ID</th>
+            <th>Status</th>
+            <th>Completed At</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-progress>
+          <tr>
+            <td>{{ progress.id }}</td>
+            <td>{{ progress.lesson_id }}</td>
+            <td>
+              <div>
+                @if (progress.status === 'not_started') {
+                <p-tag
+                  severity="warn"
+                  value="Not Started"
+                  [rounded]="true"
+                  class="!text-xs"
+                />
+                } @if (progress.status === 'in_progress') {
+                <p-tag
+                  severity="info"
+                  class="!text-xs"
+                  value="In Progress"
+                  [rounded]="true"
+                />
+                } @if (progress.status === 'completed') {
+                <p-tag
+                  severity="success"
+                  class="!text-xs"
+                  value="Completed"
+                  [rounded]="true"
+                />
+                }
+              </div>
+            </td>
+            <td>
+              {{
+                progress.completed_at
                   ? (progress.completed_at | date : "dd/MM/yyyy HH:mm")
                   : "Not Completed"
-                  }}
-                </td>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="4" class="text-center">No lesson progress found.</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </p-card>
-      }
-      <!-- Reviews -->
-      @if (userData.user.role !== 'admin') {
-        <p-card
-          header="Reviews"
-          styleClass="!rounded-none mb-4"
-          >
-          <p-table
-            [value]="userData.user.reviews"
-            class="!text-xs"
-            [rowHover]="true"
-            >
-            <ng-template pTemplate="header">
-              <tr>
-                <th>ID</th>
-                <th>Course ID</th>
-                <th>Rating</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-review>
-              <tr>
-                <td>{{ review.id }}</td>
-                <td>{{ review.course_id }}</td>
-                <td>{{ review.rating }}</td>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="3" class="text-center">No reviews found.</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </p-card>
-      }
-      <!-- Quiz Results -->
-      @if (userData.user.role !== 'admin') {
-        <p-card
-          header="Quiz Results"
-          styleClass="!rounded-none mb-4"
-          >
-          <p-table
-            class="!text-xs"
-            [value]="userData.user.quiz_results"
-            [rowHover]="true"
-            >
-            <ng-template pTemplate="header">
-              <tr>
-                <th>ID</th>
-                <th>Quiz ID</th>
-                <th>Score</th>
-                <th>Attempt Number</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-quiz>
-              <tr>
-                <td>{{ quiz.id }}</td>
-                <td>{{ quiz.quiz_id }}</td>
-                <td>
-                  <div>
-                    @if (quiz.score >= 0 && quiz.score <= 50) {
-                      <p-tag
-                        severity="error"
-                        [value]="quiz.score"
-                        [rounded]="true"
-                        class="!text-xs"
-                        />
-                    }
-                    @if (quiz.score > 50 && quiz.score <= 65) {
-                      <p-tag
-                        severity="warn"
-                        [value]="quiz.score"
-                        [rounded]="true"
-                        class="!text-xs"
-                        />
-                    }
-                    @if (quiz.score > 65 && quiz.score < 80) {
-                      <p-tag
-                        severity="info"
-                        class="!text-xs"
-                        [value]="quiz.score"
-                        [rounded]="true"
-                        />
-                    }
-                    @if (quiz.score > 80) {
-                      <p-tag
-                        severity="success"
-                        class="!text-xs"
-                        [value]="quiz.score"
-                        [rounded]="true"
-                        />
-                    }
-                  </div>
-                </td>
-                <td>{{ quiz.attempt_number }}</td>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="4" class="text-center">No quiz results found.</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </p-card>
-      }
-      <!-- Analytics -->
-      @if (userData.user.role !== 'admin') {
-        <p-card
-          header="Analytics"
-          styleClass="!rounded-none mb-4"
-          >
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div>
-              <strong>Total Courses Enrolled:</strong>
-              {{ userData.analytics.total_courses_enrolled | number }}
-            </div>
-            <div>
-              <strong>Courses Completed:</strong>
-              {{ userData.analytics.courses_completed | number }}
-            </div>
-            <!-- <div>
+              }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center">No lesson progress found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+    }
+    <!-- Reviews -->
+    @if (userData.user.role !== 'admin') {
+    <p-card header="Reviews" styleClass="!rounded-none mb-4">
+      <p-table
+        [value]="userData.user.reviews"
+        class="!text-xs"
+        [rowHover]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Course ID</th>
+            <th>Rating</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-review>
+          <tr>
+            <td>{{ review.id }}</td>
+            <td>{{ review.course_id }}</td>
+            <td>{{ review.rating }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="3" class="text-center">No reviews found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+    }
+    <!-- Quiz Results -->
+    @if (userData.user.role !== 'admin') {
+    <p-card header="Quiz Results" styleClass="!rounded-none mb-4">
+      <p-table
+        class="!text-xs"
+        [value]="userData.user.quiz_results"
+        [rowHover]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID</th>
+            <th>Quiz ID</th>
+            <th>Score</th>
+            <th>Attempt Number</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-quiz>
+          <tr>
+            <td>{{ quiz.id }}</td>
+            <td>{{ quiz.quiz_id }}</td>
+            <td>
+              <div>
+                <p-tag
+                  severity="info"
+                  class="!text-xs"
+                  [value]="quiz.score"
+                  [rounded]="true"
+                />
+              </div>
+            </td>
+            <td>{{ quiz.attempt_number }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center">No quiz results found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+    }
+    <!-- Analytics -->
+    @if (userData.user.role !== 'admin') {
+    <p-card header="Analytics" styleClass="!rounded-none mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div>
+          <strong>Total Courses Enrolled:</strong>
+          {{ userData.analytics.total_courses_enrolled | number }}
+        </div>
+        <div>
+          <strong>Courses Completed:</strong>
+          {{ userData.analytics.courses_completed | number }}
+        </div>
+        <!-- <div>
             <strong>Certificates Earned:</strong>
             {{ userData.analytics.certificates_earned }}
           </div> -->
-          <div>
-            <strong>Total Payments Made:</strong>
-            {{ userData.analytics.total_payments_made || 0 | number }} $
-          </div>
-          <div>
-            <strong>Average Rating Given:</strong>
-            {{ userData.analytics.average_rating_given || 0 | number }}
-          </div>
-          <div>
-            <strong>Lesson Completion Rate:</strong>
-            {{ userData.analytics.lesson_completion_rate || 0 | number }}%
-          </div>
-          <div>
-            <strong>Average Quiz Score:</strong>
-            {{ userData.analytics.average_quiz_score || 0 | number }}
-          </div>
+        <div>
+          <strong>Total Payments Made:</strong>
+          {{ userData.analytics.total_payments_made || 0 | number }} $
         </div>
-      </p-card>
+        <div>
+          <strong>Average Rating Given:</strong>
+          {{ userData.analytics.average_rating_given || 0 | number }}
+        </div>
+        <div>
+          <strong>Lesson Completion Rate:</strong>
+          {{ userData.analytics.lesson_completion_rate || 0 | number }}%
+        </div>
+        <div>
+          <strong>Average Quiz Score:</strong>
+          {{ userData.analytics.average_quiz_score || 0 | number }}
+        </div>
+      </div>
+    </p-card>
     }
   </div>
 </div>
