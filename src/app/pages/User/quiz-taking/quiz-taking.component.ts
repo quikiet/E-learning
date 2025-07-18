@@ -8,7 +8,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { QuizService } from '../../../services/lesson/quiz.service';
-import { LoadingComponent } from '../../../components/both/loading/loading.component';
+import { TagModule } from 'primeng/tag';
 
 interface Choice {
   id: number;
@@ -80,7 +80,7 @@ interface QuizResult {
     RadioButtonModule,
     CheckboxModule,
     ToastModule,
-    LoadingComponent
+    TagModule
   ],
   providers: [MessageService, QuizService],
   templateUrl: './quiz-taking.component.html',

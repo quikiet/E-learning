@@ -216,13 +216,7 @@
                             ? 'warning'
                             : 'danger'
                         "
-                        [value]="
-                          result.score >= 70
-                            ? 'Excellent'
-                            : result.score >= 50
-                            ? 'Pass'
-                            : 'Fail'
-                        "
+                        [value]="result.score"
                         [rounded]="true"
                         class="!text-xs"
                       />

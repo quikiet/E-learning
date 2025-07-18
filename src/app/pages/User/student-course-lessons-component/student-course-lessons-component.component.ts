@@ -228,8 +228,8 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
         console.error('Error marking lesson complete:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error?.message,
+          summary: err.error?.message || 'Error',
+          detail: err.error?.error,
           life: 3000,
         });
       }

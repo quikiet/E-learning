@@ -3,287 +3,266 @@
   <div class="max-w-5xl mx-auto my-10 px-4 sm:px-6 lg:px-8 pb-16">
     <!-- Quiz Title -->
     @if (!showResults && !quizResult) {
-      <div>
-        <h2 class="text-2xl font-bold text-gray-800">Quiz</h2>
-        <p class="mb-6 text-gray-500">
-          Please select all answers before submitting the exam.
-        </p>
-      </div>
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800">Quiz</h2>
+      <p class="mb-6 text-gray-500">
+        Please select all answers before submitting the exam.
+      </p>
+    </div>
     }
     <!-- Bài kiểm tra -->
 
     <!-- Loading state -->
     @if (isLoading && !showResults) {
-      <div
-        class="text-center text-gray-500 py-4"
-        >
-        Loading questions...
-        <!-- Đang tải câu hỏi... -->
-      </div>
+    <div class="text-center text-gray-500 py-4">
+      Loading questions...
+      <!-- Đang tải câu hỏi... -->
+    </div>
     }
 
     <!-- Error state -->
     @if (errorMessage && !showResults) {
-      <div
-        class="text-center text-primary py-4"
-        >
-        {{ errorMessage }}
-      </div>
+    <div class="text-center text-primary py-4">
+      {{ errorMessage }}
+    </div>
     }
 
     <!-- Quiz Questions -->
-    @if (
-      !isLoading && !errorMessage && questions.length > 0 && !showResults
-      ) {
-      <div
-        class="space-y-6"
-        >
-        @for (question of questions; track question; let i = $index) {
-          <div
-            class="bg-white rounded-lg shadow-sm p-6"
-            >
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">
-              Question {{ i + 1 }}: {{ question.title }}
-              <!-- Câu hỏi -->
-            </h3>
-            <div class="space-y-3">
-              <!-- True/False -->
-              @if (question.question_type === 'true_false') {
-                <div
-                  class="flex flex-col gap-2"
-                  >
-                  @for (choice of question.choices; track choice) {
-                    <div
-                      class="flex items-center gap-2"
-                      >
-                      <p-radioButton
-                        [value]="choice.id"
-                        [(ngModel)]="selectedAnswers[question.id]"
-                        [name]="'question_' + question.id"
-                        (ngModelChange)="logSelection(question.id, $event)"
-                        />
-                        <label class="text-gray-700">{{ choice.content }}</label>
-                      </div>
-                    }
-                  </div>
-                }
-                <!-- Multiple Choice (>1 choice)-->
-                @if (
-                  question.question_type === 'multiple_choice' &&
-                  question.is_multiple_correct
-                  ) {
-                  <div
-                    class="flex flex-col gap-2"
-                    >
-                    @for (choice of question.choices; track choice) {
-                      <div
-                        class="flex items-center gap-2"
-                        >
-                        <p-checkbox
-                          [value]="choice.id"
-                          [(ngModel)]="selectedAnswers[question.id]"
-                          [binary]="false"
-                          (ngModelChange)="logSelection(question.id, $event)"
-                          />
-                          <label class="text-gray-700">{{ choice.content }}</label>
-                        </div>
-                      }
-                    </div>
-                  }
-                  <!-- Multiple Choice (1 choice) -->
-                  @if (
-                    question.question_type === 'multiple_choice' &&
-                    !question.is_multiple_correct
-                    ) {
-                    <div
-                      class="flex flex-col gap-2"
-                      >
-                      @for (choice of question.choices; track choice) {
-                        <div
-                          class="flex items-center gap-2"
-                          >
-                          <p-radioButton
-                            [value]="choice.id"
-                            [(ngModel)]="selectedAnswers[question.id]"
-                            [name]="'question_' + question.id"
-                            [binary]="false"
-                            (ngModelChange)="logSelection(question.id, $event)"
-                            />
-                            <label class="text-gray-700">{{ choice.content }}</label>
-                          </div>
-                        }
-                      </div>
-                    }
-                  </div>
-                </div>
-              }
+    @if ( !isLoading && !errorMessage && questions.length > 0 && !showResults )
+    {
+    <div class="space-y-6">
+      @for (question of questions; track question; let i = $index) {
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+          Question {{ i + 1 }}: {{ question.title }}
+          <!-- Câu hỏi -->
+        </h3>
+        <div class="space-y-3">
+          <!-- True/False -->
+          @if (question.question_type === 'true_false') {
+          <div class="flex flex-col gap-2">
+            @for (choice of question.choices; track choice) {
+            <div class="flex items-center gap-2">
+              <p-radioButton
+                [value]="choice.id"
+                [(ngModel)]="selectedAnswers[question.id]"
+                [name]="'question_' + question.id"
+                (ngModelChange)="logSelection(question.id, $event)"
+              />
+              <label class="text-gray-700">{{ choice.content }}</label>
             </div>
+            }
+          </div>
           }
-
-          <!-- Quiz Results -->
-          @if (showResults && quizResult) {
-            <div class="space-y-6">
-              <!-- Summary -->
-              <div class="bg-white rounded-lg shadow-sm p-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-4">Quiz Results</h3>
-                <!-- Kết quả bài kiểm tra -->
-                <div class="space-y-2 text-sm text-gray-600">
-                  <p><strong>Title:</strong> {{ quizResult.quiz_info.title }}</p>
-                  <p>
-                    <strong>Total Questions:</strong>
-                    {{ quizResult.summary.total_questions }}
-                    <!-- Tổng số câu hỏi -->
-                  </p>
-                  <p>
-                    <strong>Correct Answers:</strong>
-                    {{ quizResult.summary.correct_answers }}
-                    <!-- Câu trả lời đúng -->
-                  </p>
-                  <p>
-                    <strong>Incorrect Answers:</strong>
-                    {{ quizResult.summary.incorrect_answers }}
-                    <!-- Câu trả lời sai -->
-                  </p>
-                  <p>
-                    <strong>Percentage:</strong> {{ quizResult.summary.percentage }}%
-                  </p>
-                  <p><strong>Status:</strong> {{ quizResult.summary.status }}</p>
-                  <p><strong>Message:</strong> {{ quizResult.summary.message }}</p>
-                  <p>
-                    <strong>Attempt Number:</strong>
-                    {{ quizResult.quiz_info.attempt_number }}
-                    <!-- Lần thử -->
-                  </p>
-                  <p>
-                    <strong>Time Taken:</strong>
-                    {{ quizResult.quiz_info.time_taken | number : "1.4-4" }} minutes
-                    <!-- Thời gian thực hiện -->
-                  </p>
-                  <p>
-                    <strong>Completed At:</strong>
-                    {{ quizResult.quiz_info.completed_at | date : "dd/MM/yyyy HH:mm" }}
-                    <!-- Hoàn thành lúc -->
-                  </p>
-                </div>
-                <div class="mt-4">
-                  <p-button
-                    label="Back to Lessons"
-                    icon="pi pi-arrow-left"
-                    styleClass="p-button-outlined"
-                    (click)="goBack()"
-                    />
-                    <!-- Quay lại bài học -->
-                    @if (quizStart?.current_attempt < quizStart?.max_attempts) {
-                      <p-button
-                        label="Try Again"
-                        icon="pi pi-refresh"
-                        styleClass="p-button-outlined ml-2"
-                        (click)="retryQuiz()"
-                        />
-                    }
-                    <!-- Thử lại -->
-                  </div>
-                </div>
-                <!-- Per Question Results -->
-                @for (result of quizResult.results; track result) {
-                  <div
-                    class="bg-white rounded-lg shadow-sm p-6"
-                    [ngClass]="result.is_correct ? 'shadow-secondary' : 'shadow-primary'"
-                    >
-                    <h4 class="text-md font-semibold text-gray-800 mb-2">
-                      Question: {{ result.question_title }}
-                      <!-- Câu hỏi -->
-                    </h4>
-                    <div class="space-y-2 text-sm">
-                      <p>
-                        <strong>Your Answer:</strong>
-                        <!-- Câu trả lời của bạn -->
-                        @if (result.selected_choices.length === 0) {
-                          <span
-                            class="text-gray-500"
-                            >
-                            No answer selected
-                            <!-- Không chọn câu trả lời -->
-                          </span>
-                        }
-                        @for (choice of result.selected_choices; track choice; let isLast = $last) {
-                          <span
-                            [ngClass]="result.is_correct ? 'text-secondary' : 'text-primary'"
-                            >
-                            {{ choice.content }}{{ isLast ? "" : ", " }}
-                          </span>
-                        }
-                      </p>
-                      <p>
-                        <strong>Correct Answer:</strong>
-                        <!-- Câu trả lời đúng -->
-                        @for (choice of result.correct_choices; track choice; let isLast = $last) {
-                          <span
-                            class="text-secondary"
-                            >
-                            {{ choice.content }}{{ isLast ? "" : ", " }}
-                          </span>
-                        }
-                      </p>
-                      <p>
-                        <strong>Status:</strong>
-                        <span
-                          [ngClass]="result.is_correct ? 'text-secondary' : 'text-primary'"
-                          >
-                          {{ result.is_correct ? "Correct" : "Incorrect" }}
-                          <!-- Đúng/Sai -->
-                        </span>
-                      </p>
-                      @if (result.explanation) {
-                        <p>
-                          <strong>Explanation:</strong> {{ result.explanation }}
-                          <!-- Giải thích -->
-                        </p>
-                      }
-                    </div>
-                  </div>
-                }
-              </div>
-            }
-
-            <!-- No Questions -->
-            @if (
-              !isLoading && !errorMessage && questions.length === 0 && !showResults
-              ) {
-              <div
-                class="text-center text-gray-500 py-4"
-                >
-                No questions in this quiz.
-                <!-- Không có câu hỏi trong bài kiểm tra -->
-              </div>
+          <!-- Multiple Choice (>1 choice)-->
+          @if ( question.question_type === 'multiple_choice' &&
+          question.is_multiple_correct ) {
+          <div class="flex flex-col gap-2">
+            @for (choice of question.choices; track choice) {
+            <div class="flex items-center gap-2">
+              <p-checkbox
+                [value]="choice.id"
+                [(ngModel)]="selectedAnswers[question.id]"
+                [binary]="false"
+                (ngModelChange)="logSelection(question.id, $event)"
+              />
+              <label class="text-gray-700">{{ choice.content }}</label>
+            </div>
             }
           </div>
-
-          <!-- Sticky Quiz Info and Submit -->
-          @if (!isLoading && !errorMessage && questions.length > 0 && !showResults) {
-            <div
-              class="fixed bottom-0 z-10 bg-secondary-light shadow-lg w-full flex justify-center"
-              >
-              <div
-                class="max-w-5xl flex justify-between items-center gap-4 w-full px-4 sm:px-6 lg:px-8 py-2"
-                >
-                <p class="text-sm text-gray-600">
-                  Total Questions: {{ pagination?.total || questions.length }}
-                  <!-- Tổng số câu hỏi -->
-                </p>
-                <p class="text-sm text-gray-600">
-                  <i class="pi pi-clock mr-1"></i>
-                  Time Remaining: {{ minutes }}:{{ seconds | number : "2.0-0" }}
-                  <!-- Thời gian còn lại -->
-                </p>
-                <p-button
-                  label="Submit"
-                  icon="pi pi-check"
-                  styleClass="p-button-success"
-                  (click)="submitQuiz()"
-                  [disabled]="!hasAnswered()"
-                  />
-                </div>
-              </div>
+          }
+          <!-- Multiple Choice (1 choice) -->
+          @if ( question.question_type === 'multiple_choice' &&
+          !question.is_multiple_correct ) {
+          <div class="flex flex-col gap-2">
+            @for (choice of question.choices; track choice) {
+            <div class="flex items-center gap-2">
+              <p-radioButton
+                [value]="choice.id"
+                [(ngModel)]="selectedAnswers[question.id]"
+                [name]="'question_' + question.id"
+                [binary]="false"
+                (ngModelChange)="logSelection(question.id, $event)"
+              />
+              <label class="text-gray-700">{{ choice.content }}</label>
+            </div>
             }
           </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+    }
+
+    <!-- Quiz Results -->
+    @if (showResults && quizResult) {
+    <div class="space-y-6">
+      <!-- Summary -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-4">Quiz Results</h3>
+        <!-- Kết quả bài kiểm tra -->
+        <div class="space-y-2 text-sm text-gray-600">
+          <p><strong>Title:</strong> {{ quizResult.quiz_info.title }}</p>
+          <p>
+            <strong>Total Questions:</strong>
+            {{ quizResult.summary.total_questions }}
+            <!-- Tổng số câu hỏi -->
+          </p>
+          <p>
+            <strong>Correct Answers:</strong>
+            {{ quizResult.summary.correct_answers }}
+            <!-- Câu trả lời đúng -->
+          </p>
+          <p>
+            <strong>Incorrect Answers:</strong>
+            {{ quizResult.summary.incorrect_answers }}
+            <!-- Câu trả lời sai -->
+          </p>
+          <p>
+            <strong>Percentage:</strong> {{ quizResult.summary.percentage }}%
+          </p>
+          <p>
+            <strong>Status:</strong>
+            <p-tag
+              [severity]="
+                quizResult.summary.status === 'FAILED' ? 'danger' : 'success'
+              "
+              [value]="
+                quizResult.summary.status === 'FAILED' ? 'Failed' : 'Success'
+              "
+            />
+          </p>
+          <p><strong>Message:</strong> {{ quizResult.summary.message }}</p>
+          <p>
+            <strong>Attempt Number:</strong>
+            {{ quizResult.quiz_info.attempt_number }}
+            <!-- Lần thử -->
+          </p>
+          <p>
+            <strong>Time Taken:</strong>
+            {{ quizResult.quiz_info.time_taken | number }} minutes
+            <!-- Thời gian thực hiện -->
+          </p>
+          <p>
+            <strong>Completed At:</strong>
+            {{ quizResult.quiz_info.completed_at | date : "dd/MM/yyyy HH:mm" }}
+            <!-- Hoàn thành lúc -->
+          </p>
+        </div>
+        <div class="mt-4">
+          <p-button
+            label="Back to Lessons"
+            icon="pi pi-arrow-left"
+            styleClass="p-button-outlined"
+            (click)="goBack()"
+          />
+          <!-- Quay lại bài học -->
+          @if (quizStart?.current_attempt < quizStart?.max_attempts) {
+          <p-button
+            label="Try Again"
+            icon="pi pi-refresh"
+            styleClass="p-button-outlined ml-2"
+            (click)="retryQuiz()"
+          />
+          }
+          <!-- Thử lại -->
+        </div>
+      </div>
+      <!-- Per Question Results -->
+      @for (result of quizResult.results; track result) {
+      <div
+        class="bg-white rounded-lg shadow-sm p-6"
+        [ngClass]="result.is_correct ? 'shadow-secondary' : 'shadow-primary'"
+      >
+        <h4 class="text-md font-semibold text-gray-800 mb-2">
+          Question: {{ result.question_title }}
+          <!-- Câu hỏi -->
+        </h4>
+        <div class="space-y-2 text-sm">
+          <p>
+            <strong>Your Answer:</strong>
+            <!-- Câu trả lời của bạn -->
+            @if (result.selected_choices.length === 0) {
+            <span class="text-gray-500">
+              No answer selected
+              <!-- Không chọn câu trả lời -->
+            </span>
+            } @for (choice of result.selected_choices; track choice; let isLast
+            = $last) {
+            <span
+              [ngClass]="result.is_correct ? 'text-secondary' : 'text-primary'"
+            >
+              {{ choice.content }}{{ isLast ? "" : ", " }}
+            </span>
+            }
+          </p>
+          <p>
+            <strong>Correct Answer:</strong>
+            <!-- Câu trả lời đúng -->
+            @for (choice of result.correct_choices; track choice; let isLast =
+            $last) {
+            <span class="text-secondary">
+              {{ choice.content }}{{ isLast ? "" : ", " }}
+            </span>
+            }
+          </p>
+          <p>
+            <strong>Status:</strong>
+            <span
+              [ngClass]="result.is_correct ? 'text-secondary' : 'text-primary'"
+            >
+              {{ result.is_correct ? "Correct" : "Incorrect" }}
+              <!-- Đúng/Sai -->
+            </span>
+          </p>
+          @if (result.explanation) {
+          <p>
+            <strong>Explanation:</strong> {{ result.explanation }}
+            <!-- Giải thích -->
+          </p>
+          }
+        </div>
+      </div>
+      }
+    </div>
+    }
+
+    <!-- No Questions -->
+    @if ( !isLoading && !errorMessage && questions.length === 0 && !showResults
+    ) {
+    <div class="text-center text-gray-500 py-4">
+      No questions in this quiz.
+      <!-- Không có câu hỏi trong bài kiểm tra -->
+    </div>
+    }
+  </div>
+
+  <!-- Sticky Quiz Info and Submit -->
+  @if (!isLoading && !errorMessage && questions.length > 0 && !showResults) {
+  <div
+    class="fixed bottom-0 z-10 bg-secondary-light shadow-lg w-full flex justify-center"
+  >
+    <div
+      class="max-w-5xl flex justify-between items-center gap-4 w-full px-4 sm:px-6 lg:px-8 py-2"
+    >
+      <p class="text-sm text-gray-600">
+        Total Questions: {{ pagination?.total || questions.length }}
+        <!-- Tổng số câu hỏi -->
+      </p>
+      <p class="text-sm text-gray-600">
+        <i class="pi pi-clock mr-1"></i>
+        Time Remaining: {{ minutes }}:{{ seconds | number : "2.0-0" }}
+        <!-- Thời gian còn lại -->
+      </p>
+      <p-button
+        label="Submit"
+        icon="pi pi-check"
+        styleClass="p-button-success"
+        (click)="submitQuiz()"
+        [disabled]="!hasAnswered()"
+      />
+    </div>
+  </div>
+  }
+</div>

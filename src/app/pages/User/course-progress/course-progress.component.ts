@@ -105,7 +105,7 @@ export class CourseProgressComponent implements OnInit {
   toggleCertificateEligibility(userId: number) {
     if (!this.courseProgress) return;
     this.isLoading = true;
-    this.coursesService.instructorIssueCertificate(userId, this.courseId).subscribe({
+    this.coursesService.instructorIssueCertificate(this.courseId, userId).subscribe({
       next: (res) => {
         this.isLoading = false;
         this.loadCourseProgress();

@@ -89,6 +89,7 @@ export class CourseDetailComponent implements OnInit {
   currentVideoUrl: string | null = null;
   currentUserId: number | null = null;
   isLoading: boolean = false;
+  isBuying: boolean = false;
   couponCode: string = '';
   discountedPrice: number | null = null;
   couponError: string | null = null;
@@ -310,6 +311,7 @@ export class CourseDetailComponent implements OnInit {
   }
 
   enrollCourse() {
+    this.isBuying = true;
     if (!this.course || !this.selectedPaymentMethod) return;
     const paymentData = {
       amount: this.course.price,
@@ -347,7 +349,7 @@ export class CourseDetailComponent implements OnInit {
 
             },
             error: (error) => {
-              alert('Không thể tải danh mục' + error.message);
+              alert(error.error.error);
             }
           });
         } else {
@@ -358,10 +360,12 @@ export class CourseDetailComponent implements OnInit {
             life: 3000
           });
         }
+        this.isBuying = false;
       },
       error: (err) => {
         console.error('Error enrolling course:', err);
         this.couponCode = '';
+        this.isBuying = false;
         this.messageService.add({
           severity: 'error',
           summary: err.error.message || 'Error',
