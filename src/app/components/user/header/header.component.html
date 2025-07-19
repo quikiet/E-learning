@@ -3,12 +3,12 @@
     class="lg:max-w-7xl max-w-5xl h-full mx-auto px-4 sm:px-6 lg:px-8 flex justify-center md:justify-between items-center"
   >
     <div class="hidden md:flex items-center gap-5">
-      <div class="flex items-center gap-2">
+      <!-- <div class="flex items-center gap-2">
         <i class="pi pi-clock text-primary !text-xs"></i>
         <span class="text-xs">
           Thời gian hỗ trợ: Thứ 2 - Thứ 6 (9:00 - 17:00)
         </span>
-      </div>
+      </div> -->
       <div class="flex items-center gap-2">
         <i class="pi pi-lightbulb text-primary !text-xs"></i>
         <span class="text-xs"> Learn anytime, anywhere – Access 24/7</span>
@@ -51,12 +51,12 @@
               <img
                 alt="Edunity logo, green hexagonal shape with stacked layers"
                 class="w-8 h-8"
-                height="32"
+                height="30"
                 src="https://storage.googleapis.com/a1aa/image/d8aee3cb-2ca8-437a-2a6a-d81f5bf5eae2.jpg"
-                width="32"
+                width="30"
               />
               <span
-                class="font-semibold hidden md:flex md:text-lg lg:text-2xl text-secondary select-none"
+                class="font-semibold hidden md:flex md:text-lg lg:text-xl text-secondary select-none"
                 >SmartLearn</span
               >
             </a>
@@ -83,7 +83,7 @@
           <li class="my-5 lg:my-0">
             <div class="relative inline-block w-full group">
               <a
-                class="block px-4 py-2 rounded-lg hover:bg-blue-100 hover:text-blue-600 transition-all duration-300"
+                class="block px-4 py-2 rounded-lg hover:bg-blue-100 hover:text-blue-600 transition-all duration-300 text-xs"
                 [routerLink]="['/course']"
               >
                 Explore
@@ -100,7 +100,7 @@
                     <!-- Parent Categories -->
                     @for (parent of parentCategories; track parent) {
                     <div
-                      class="relative group/parent px-3 py-2 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-600 transition-all duration-200"
+                      class="text-xs relative group/parent px-3 py-2 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-600 transition-all duration-200"
                     >
                       <a
                         [routerLink]="['/course']"
@@ -141,7 +141,7 @@
           </li>
           <li class="my-5 lg:my-0">
             <a
-              class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
+              class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300 text-xs"
               [routerLink]="['/policy']"
             >
               Policy
@@ -157,7 +157,7 @@
                 </a> -->
             @if (userRole && userRole !== 'admin') {
             <a
-              class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
+              class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300 text-xs"
               [routerLink]="['/create-course']"
             >
               Create course
@@ -167,7 +167,7 @@
           <li class="my-5 lg:my-0">
             @if (userRole !== 'admin' && userRole) {
             <a
-              class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300"
+              class="block lg:flex hover:bg-secondary-light hover:text-secondary p-2 rounded transition-all duration-300 text-xs"
               [routerLink]="['/my-course']"
             >
               My Course
@@ -266,9 +266,13 @@
                   (click)="toggleDropdown()"
                   class="flex items-center text-gray-700 cursor-pointer"
                 >
-                  <span class="mr-3 h-8 w-8 overflow-hidden rounded-full">
+                  <span class="mr-3 h-10 w-10 overflow-hidden rounded-full">
                     @if (!isLoading && userRole) {
-                    <img [src]="currentUser.avatar" [alt]="currentUser.email" />
+                    <img
+                      [src]="currentUser.avatar"
+                      class="h-10 w-10"
+                      [alt]="currentUser.email"
+                    />
                     }
                   </span>
                 </a>

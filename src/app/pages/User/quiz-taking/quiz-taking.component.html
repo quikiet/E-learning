@@ -35,6 +35,11 @@
       <div class="bg-white rounded-lg shadow-sm p-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">
           Question {{ i + 1 }}: {{ question.title }}
+          <span
+            class="text-primary text-xs underline"
+            *ngIf="question.is_multiple_correct"
+            >There is more than one correct answer.</span
+          >
           <!-- Câu hỏi -->
         </h3>
         <div class="space-y-3">

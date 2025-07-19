@@ -239,6 +239,7 @@ export class InstructorQuizManagementComponent implements OnInit {
             });
             this.showAddQuestionModal = false;
             this.resetQuestionForm();
+            this.loadQuizzes();
           }).catch(() => {
             this.messageService.add({
               severity: 'error',

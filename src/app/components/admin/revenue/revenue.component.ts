@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -10,7 +10,7 @@ import { AnimateOnScroll } from 'primeng/animateonscroll';
 @Component({
   selector: 'app-revenue',
   imports: [CommonModule, TableModule, ButtonModule, ToastModule, ChartModule, AnimateOnScroll],
-  providers: [MessageService, DatePipe, AnalystService],
+  providers: [MessageService, DatePipe, AnalystService, CurrencyPipe],
   templateUrl: './revenue.component.html',
   styleUrl: './revenue.component.css'
 })
@@ -24,7 +24,8 @@ export class RevenueComponentimplements implements OnInit {
   constructor(
     private analystService: AnalystService,
     private messageService: MessageService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private currencyPipe: CurrencyPipe
   ) { }
 
   ngOnInit(): void {

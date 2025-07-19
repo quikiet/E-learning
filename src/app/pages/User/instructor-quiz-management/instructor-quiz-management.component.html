@@ -211,13 +211,13 @@
         class="w-full"
       />
     </div>
-    <div class="flex items-center gap-2">
+    <!-- <div class="flex items-center gap-2">
       <p-checkbox
         [(ngModel)]="newQuestion.is_visible"
         [binary]="true"
         label="Show Question"
       />
-    </div>
+    </div> -->
     <div class="flex flex-col gap-2">
       <label class="text-sm font-medium text-gray-700">Answer Choices:</label>
       @for (choice of newQuestion.choices; track choice; let i = $index) {

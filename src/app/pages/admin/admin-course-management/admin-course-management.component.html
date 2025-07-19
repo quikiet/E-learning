@@ -209,7 +209,9 @@
           [pTooltip]="course.course_name"
           tooltipPosition="right"
         >
-          {{ cutText(course.course_name, 5) }}
+          <span class="text-primary font-semibold">
+            {{ cutText(course.course_name, 5) }}
+          </span>
         </td>
         <td>{{ course.difficulty_level }}</td>
         <td>
@@ -247,7 +249,11 @@
             }
           </div>
         </td>
-        <td>{{ course.price | number }}</td>
+        <td>
+          <span class="text-secondary font-mono">{{
+            course.price | number
+          }}</span>
+        </td>
         <td>
           <div>
             @if (course.status === 'banned') {

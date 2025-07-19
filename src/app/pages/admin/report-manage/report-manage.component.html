@@ -66,7 +66,7 @@
           </td>
           <td class="px-4 py-3 text-sm text-gray-600">{{ report.reason }}</td>
           <td class="px-4 py-3 text-sm text-gray-600">
-            {{ formatDate(report.created_at) }}
+            {{ report.created_at | date }}
           </td>
           <td class="px-4 py-3 text-sm">
             <p-button
@@ -75,13 +75,13 @@
               styleClass="p-button-text p-button-sm mr-2"
               (click)="viewReport(report)"
             ></p-button>
-            <p-button
+            <!-- <p-button
               label="Resolve"
               [disabled]="true"
               icon="pi pi-check"
               styleClass="p-button-success p-button-sm"
               (click)="resolveReport(report.id)"
-            ></p-button>
+            ></p-button> -->
           </td>
         </tr>
       </ng-template>
@@ -126,7 +126,7 @@
         <!-- Lý do -->
         <p>
           <strong>Created At:</strong>
-          {{ formatDate(selectedReport.created_at) }}
+          {{ selectedReport.created_at | date }}
         </p>
         <!-- Thời gian tạo -->
       </div>
@@ -166,13 +166,13 @@
         styleClass="p-button-text"
         (click)="displayDialog = false"
       ></p-button>
-      <p-button
+      <!-- <p-button
         label="Resolve"
         disabled="true"
         icon="pi pi-check"
         styleClass="p-button-success"
         (click)="resolveReport(selectedReport.id); displayDialog = false"
-      ></p-button>
+      ></p-button> -->
     </ng-template>
   </p-dialog>
 </div>

@@ -30,22 +30,29 @@
     </p-carousel>
   </div>
   <div *ngIf="userId && userId > 0 && recommendations" class="py-6">
-    <h3 class="text-lg md:text-2xl font-bold pt-5">Top Recommended Courses</h3>
-    <div class="grid grid-cols-5 gap-5 my-5">
+    <h3 class="text-lg md:text-2xl font-bold pt-5 md:text-left text-center">
+      Top Recommended Courses
+    </h3>
+    <div
+      class="sm:grid flex flex-col justify-center p-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 lg:gap-1 my-5"
+    >
       <div
         *ngFor="let course of recommendations"
-        class="flex gap-2 items-start"
+        class="flex gap-2 items-start hover:bg-gray-200 transition duration-300 hover:underline sm:p-2"
+        [routerLink]="['/course-detail', course.url]"
       >
-        <div class="col-span-3">
-          <img [alt]="course.course_title" class="w-32" [src]="course.image" />
+        <div>
+          <img
+            [alt]="course.course_title"
+            class="w-12 h-6"
+            [src]="course.image"
+          />
         </div>
         <div class="p-0">
           <div class="flex flex-col justify-between text-xs">
-            <a
-              class="font-semibold text-xs hover:underline"
-              [routerLink]="['/course-detail', course.url]"
-              >{{ course.course_title }}</a
-            >
+            <a class="font-semibold text-xs truncate">{{
+              cutText(course.course_title, 30)
+            }}</a>
             <span class="text-gray-400 text-xs">Instructor Name</span>
             <div class="flex items-center gap-1 text-xs">
               <span class="font-bold text-red-500"
@@ -57,11 +64,6 @@
               <span>({{ course.num_reviews }})</span>
             </div>
             <b class="py-1 text-xs"><u></u>{{ course.price | number }} $</b>
-            <p-tag
-              severity="success"
-              value="Recently Updated"
-              class="w-fit opacity-60 !text-xs"
-            />
           </div>
         </div>
       </div>

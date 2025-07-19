@@ -92,8 +92,4 @@ export class ReportManageComponent implements OnInit {
       }
     });
   }
-
-  formatDate(date: string | null): string {
-    return date ? new Date(date).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }) : 'N/A';
-  }
 }
