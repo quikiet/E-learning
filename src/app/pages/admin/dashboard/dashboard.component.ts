@@ -7,9 +7,10 @@ import { AnalystService } from '../../../services/analyst.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { RevenueComponentimplements } from "../../../components/admin/revenue/revenue.component";
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-dashboard',
-  imports: [CardModule, ChartModule, ToastModule, ProgressSpinnerModule, RevenueComponentimplements, AnimateOnScrollModule],
+  imports: [CardModule, ChartModule, ToastModule, ProgressSpinnerModule, RevenueComponentimplements, AnimateOnScrollModule, ButtonModule],
   providers: [MessageService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -152,4 +153,7 @@ export class DashboardComponent implements OnInit {
   formatCurrency(amount: string): string {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(amount));
   }
+
+
+
 }

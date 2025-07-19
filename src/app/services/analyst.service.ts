@@ -23,7 +23,7 @@ export class AnalystService {
   }
 
   distributeSession(sessionId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/admin/revenue-sessions/${sessionId}/distribute`, {}, { withCredentials: true });
+    return this.http.post(`${this.apiUrl}/admin/revenue-sessions/paypal/${sessionId}/distribute`, {}, { withCredentials: true });
   }
 
   getCommentStatistics(courseId: number, types: string[]): Observable<any> {

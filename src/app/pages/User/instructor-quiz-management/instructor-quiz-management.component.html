@@ -1,8 +1,8 @@
 <div class="space-y-5 p-4">
   <!-- Course Information -->
-  <p-card header="Quiz management" styleClass="mb-6">
+  <p-card header="Quiz Management" styleClass="mb-6">
     <div class="flex justify-between w-full items-center">
-      <div class="text-primary text-lg">Lesson: ID: {{ lessonID }}<br /></div>
+      <div class="text-primary text-lg">Lesson ID: {{ lessonID }}</div>
       <div>
         <p-button
           label="Add Quiz"
@@ -14,17 +14,16 @@
   </p-card>
 
   <!-- Quiz List -->
-
   <p-table [value]="quizzes" styleClass="p-datatable-gridlines">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 5%">ID</th>
         <th style="width: 25%">Title</th>
-        <th style="width: 15%">Max attempts</th>
-        <th style="width: 15%">Number of Question</th>
-        <th style="width: 15%">Time limit (minutes)</th>
-        <th style="width: 10%">Visible</th>
-        <th style="width: 20%">Action</th>
+        <th style="width: 15%">Max Attempts</th>
+        <th style="width: 15%">Number of Questions</th>
+        <th style="width: 15%">Time Limit (Minutes)</th>
+        <th style="width: 10%">Visibility</th>
+        <th style="width: 20%">Actions</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-quiz>
@@ -36,20 +35,11 @@
         <td>{{ quiz.time_limit }}</td>
         <td>
           <p-tag
-            [value]="quiz.is_visible ? 'Visible' : 'Unvisible'"
+            [value]="quiz.is_visible ? 'Visible' : 'Hidden'"
             [severity]="quiz.is_visible ? 'success' : 'danger'"
             [rounded]="true"
             class="!text-xs"
           />
-
-          <!-- <i
-              class="pi !text-lg"
-            [ngClass]="
-              quiz.is_visible
-                ? 'pi-eye text-secondary'
-                : 'pi-eye-slash text-primary'
-            "
-            ></i> -->
         </td>
         <td>
           <div class="flex gap-1 flex-wrap">
@@ -68,14 +58,14 @@
               styleClass="p-button-sm p-button-danger mr-2"
             />
             <p-button
-              pTooltip="Create new"
+              pTooltip="Add Question"
               tooltipPosition="top"
               icon="pi pi-plus"
               (click)="openAddQuestionModal(quiz)"
               styleClass="p-button-sm p-button-success mr-2"
             />
             <p-button
-              pTooltip="View detail"
+              pTooltip="View Details"
               tooltipPosition="top"
               icon="pi pi-eye"
               (click)="viewQuizDetail(quiz)"
@@ -95,14 +85,14 @@
     <ng-template pTemplate="emptymessage">
       <tr>
         <td colspan="7" class="text-center">
-          Chưa có quiz nào cho khóa học này.
+          No quizzes available for this lesson.
         </td>
       </tr>
     </ng-template>
   </p-table>
 </div>
 
-<!-- Add Quiz Modal -->
+<!-- Add/Edit Quiz Modal -->
 <p-dialog
   [header]="isEditting ? 'Edit Quiz' : 'Create Quiz'"
   [(visible)]="showAddQuizModal"
@@ -113,45 +103,46 @@
   <div class="space-y-4">
     <div class="flex flex-col gap-2">
       <label for="quizTitle" class="text-sm font-medium text-gray-700"
-        >Tiêu đề Quiz:</label
+        >Quiz Title:</label
       >
       <input
         id="quizTitle"
         pInputText
         [(ngModel)]="newQuiz.title"
-        placeholder="Nhập tiêu đề quiz"
+        placeholder="Enter quiz title"
         class="w-full"
       />
     </div>
     <div class="flex flex-col gap-2">
       <label for="maxAttempts" class="text-sm font-medium text-gray-700"
-        >Số lần thử tối đa:</label
+        >Max Attempts:</label
       >
       <input
         id="maxAttempts"
         type="number"
         pInputText
         [(ngModel)]="newQuiz.max_attempts"
-        placeholder="Số lần thử (e.g., 3)"
+        placeholder="Enter max attempts (e.g., 3)"
+        min="1"
         class="w-full"
       />
     </div>
     <div class="flex flex-col gap-2">
       <label for="timeLimit" class="text-sm font-medium text-gray-700"
-        >Limit time (minutes):</label
+        >Time Limit (Minutes):</label
       >
       <input
         id="timeLimit"
         type="number"
         pInputText
         [(ngModel)]="newQuiz.time_limit"
-        placeholder="Thời gian (e.g., 30)"
+        placeholder="Enter time limit (e.g., 30)"
         class="w-full"
       />
     </div>
     <div class="flex items-center gap-2">
-      <label for="timeLimit" class="text-sm font-medium text-gray-700"
-        >Visible</label
+      <label for="isVisible" class="text-sm font-medium text-gray-700"
+        >Visible:</label
       >
       <p-checkbox [(ngModel)]="newQuiz.is_visible" [binary]="true" />
     </div>
@@ -168,19 +159,15 @@
         icon="pi pi-check"
         (click)="createQuiz()"
         styleClass="p-button-success"
-        [disabled]="
-          !newQuiz.title || newQuiz.max_attempts <= 0 || newQuiz.time_limit <= 0
-        "
+        [disabled]="!newQuiz.title || newQuiz.max_attempts <= 0"
       />
       } @if (isEditting) {
       <p-button
-        label="Change"
+        label="Update"
         icon="pi pi-wrench"
         (click)="updateQuiz()"
         styleClass="p-button-info"
-        [disabled]="
-          !newQuiz.title || newQuiz.max_attempts <= 0 || newQuiz.time_limit <= 0
-        "
+        [disabled]="!newQuiz.title || newQuiz.max_attempts <= 0"
       />
       }
     </div>
@@ -199,19 +186,19 @@
   <div class="space-y-4">
     <div class="flex flex-col gap-2">
       <label for="questionTitle" class="text-sm font-medium text-gray-700"
-        >Tiêu đề câu hỏi:</label
+        >Question Title:</label
       >
       <input
         id="questionTitle"
         pInputText
         [(ngModel)]="newQuestion.title"
-        placeholder="Nhập tiêu đề câu hỏi"
+        placeholder="Enter question title"
         class="w-full"
       />
     </div>
     <div class="flex flex-col gap-2">
       <label for="questionType" class="text-sm font-medium text-gray-700"
-        >Loại câu hỏi:</label
+        >Question Type:</label
       >
       <p-select
         id="questionType"
@@ -219,61 +206,32 @@
         [options]="questionTypes"
         optionLabel="label"
         optionValue="value"
-        placeholder="Chọn loại câu hỏi"
+        placeholder="Select question type"
+        appendTo="body"
         class="w-full"
       />
     </div>
-    <!-- <div class="flex flex-col gap-2">
-                                        <label for="points" class="text-sm font-medium text-gray-700"
-                                          >Điểm số:</label
-                                          >
-                                          <input
-                                            id="points"
-                                            type="number"
-                                            pInputText
-                                            [(ngModel)]="newQuestion.points"
-                                            placeholder="Số điểm (e.g., 1)"
-                                            class="w-full"
-                                            />
-                                          </div> -->
-    <!-- <div class="flex flex-col gap-2">
-                                          <label for="sortOrder" class="text-sm font-medium text-gray-700"
-                                            >Thứ tự:</label
-                                            >
-                                            <input
-                                              id="sortOrder"
-                                              type="number"
-                                              pInputText
-                                              [(ngModel)]="newQuestion.sort_order"
-                                              placeholder="Thứ tự (e.g., 0)"
-                                              class="w-full"
-                                              />
-                                            </div> -->
     <div class="flex items-center gap-2">
       <p-checkbox
         [(ngModel)]="newQuestion.is_visible"
         [binary]="true"
-        label="Hiển thị câu hỏi"
+        label="Show Question"
       />
     </div>
-
-    <!-- Choices -->
     <div class="flex flex-col gap-2">
-      <label class="text-sm font-medium text-gray-700"
-        >Lựa chọn câu trả lời:</label
-      >
+      <label class="text-sm font-medium text-gray-700">Answer Choices:</label>
       @for (choice of newQuestion.choices; track choice; let i = $index) {
       <div class="flex items-center gap-2 mb-2">
         <input
           pInputText
           [(ngModel)]="choice.content"
-          placeholder="Nhập nội dung lựa chọn {{ i + 1 }}"
+          placeholder="Enter choice {{ i + 1 }}"
           class="w-full"
         />
         <p-checkbox
           [(ngModel)]="choice.is_correct"
           [binary]="true"
-          label="Đúng"
+          label="Correct"
         />
         <p-button
           icon="pi pi-trash"
@@ -284,14 +242,13 @@
       </div>
       }
       <p-button
-        label="Add choice"
+        label="Add Choice"
         icon="pi pi-plus"
         (click)="addChoice()"
         [disabled]="newQuestion.question_type === 'true_false'"
         styleClass="p-button-sm p-button-secondary"
       />
     </div>
-
     <div class="flex justify-end gap-2">
       <p-button
         label="Cancel"
@@ -308,5 +265,3 @@
     </div>
   </div>
 </p-dialog>
-
-<p-toast />

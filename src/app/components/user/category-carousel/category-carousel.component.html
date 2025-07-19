@@ -29,231 +29,42 @@
       </ng-template>
     </p-carousel>
   </div>
-  <!-- <h3 class="text-lg md:text-2xl font-bold pt-5">
-    Các khóa học hàng đầu về Tiếng Việt
-  </h3>
-  <div class="grid grid-cols-5 gap-5 my-5 py-6">
-    <div class="">
-      <div class="flex gap-2 items-start">
+  <div *ngIf="userId && userId > 0 && recommendations" class="py-6">
+    <h3 class="text-lg md:text-2xl font-bold pt-5">Top Recommended Courses</h3>
+    <div class="grid grid-cols-5 gap-5 my-5">
+      <div
+        *ngFor="let course of recommendations"
+        class="flex gap-2 items-start"
+      >
         <div class="col-span-3">
-          <img
-            alt="Card"
-            class="w-32"
-            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-          />
+          <img [alt]="course.course_title" class="w-32" [src]="course.image" />
         </div>
         <div class="p-0">
           <div class="flex flex-col justify-between text-xs">
-            <p class="font-semibold text-xs">
-              LLM Engineering: Master AI, Large Language Models &
-            </p>
-            <span class="text-gray-400 text-xs">Qui Kiet</span>
-            <div class="flex items-centergap-1 text-xs">
-              <span class="font-bold text-red-500">5.0</span>
-              <span class="text-red-500">★★★★★</span> (12)
+            <a
+              class="font-semibold text-xs hover:underline"
+              [routerLink]="['/course-detail', course.url]"
+              >{{ course.course_title }}</a
+            >
+            <span class="text-gray-400 text-xs">Instructor Name</span>
+            <div class="flex items-center gap-1 text-xs">
+              <span class="font-bold text-red-500"
+                >{{ course.course_rating }}.0</span
+              >
+              <span class="text-red-500">{{
+                getStars(course.course_rating)
+              }}</span>
+              <span>({{ course.num_reviews }})</span>
             </div>
-            <b class="py-1 text-xs"><u>đ</u>399,000</b>
+            <b class="py-1 text-xs"><u></u>{{ course.price | number }} $</b>
             <p-tag
               severity="success"
-              value="Đã cập nhật gần
-            đây"
+              value="Recently Updated"
               class="w-fit opacity-60 !text-xs"
             />
           </div>
         </div>
       </div>
     </div>
-    <div class="">
-      <div class="flex gap-2 items-start">
-        <div class="col-span-3">
-          <img
-            alt="Card"
-            class="w-32"
-            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-          />
-        </div>
-        <div class="p-0">
-          <div class="flex flex-col justify-between text-xs">
-            <p class="font-semibold text-xs">
-              LLM Engineering: Master AI, Large Language Models &
-            </p>
-            <span class="text-gray-400 text-xs">Qui Kiet</span>
-            <div class="flex items-centergap-1 text-xs">
-              <span class="font-bold text-red-500">5.0</span>
-              <span class="text-red-500">★★★★★</span> (12)
-            </div>
-            <b class="py-1 text-xs"><u>đ</u>399,000</b>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="">
-      <div class="flex gap-2 items-start">
-        <div class="col-span-3">
-          <img
-            alt="Card"
-            class="w-32"
-            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-          />
-        </div>
-        <div class="p-0">
-          <div class="flex flex-col justify-between text-xs">
-            <p class="font-semibold text-xs">
-              LLM Engineering: Master AI, Large Language Models &
-            </p>
-            <span class="text-gray-400 text-xs">Qui Kiet</span>
-            <div class="flex items-centergap-1 text-xs">
-              <span class="font-bold text-red-500">5.0</span>
-              <span class="text-red-500">★★★★★</span> (12)
-            </div>
-            <b class="py-1 text-xs"><u>đ</u>399,000</b>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="">
-      <div class="flex gap-2 items-start">
-        <div class="col-span-3">
-          <img
-            alt="Card"
-            class="w-32"
-            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-          />
-        </div>
-        <div class="p-0">
-          <div class="flex flex-col justify-between text-xs">
-            <p class="font-semibold text-xs">
-              LLM Engineering: Master AI, Large Language Models &
-            </p>
-            <span class="text-gray-400 text-xs">Qui Kiet</span>
-            <div class="flex items-centergap-1 text-xs">
-              <span class="font-bold text-red-500">5.0</span>
-              <span class="text-red-500">★★★★★</span> (12)
-            </div>
-            <b class="py-1 text-xs"><u>đ</u>399,000</b>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="">
-      <div class="flex gap-2 items-start">
-        <div class="col-span-3">
-          <img
-            alt="Card"
-            class="w-32"
-            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-          />
-        </div>
-        <div class="p-0">
-          <div class="flex flex-col justify-between text-xs">
-            <p class="font-semibold text-xs">
-              LLM Engineering: Master AI, Large Language Models &
-            </p>
-            <span class="text-gray-400 text-xs">Qui Kiet</span>
-            <div class="flex items-centergap-1 text-xs">
-              <span class="font-bold text-red-500">5.0</span>
-              <span class="text-red-500">★★★★★</span> (12)
-            </div>
-            <b class="py-1 text-xs"><u>đ</u>399,000</b>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="">
-      <div class="flex gap-2 items-start">
-        <div class="col-span-3">
-          <img
-            alt="Card"
-            class="w-32"
-            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-          />
-        </div>
-        <div class="p-0">
-          <div class="flex flex-col justify-between text-xs">
-            <p class="font-semibold text-xs">
-              LLM Engineering: Master AI, Large Language Models &
-            </p>
-            <span class="text-gray-400 text-xs">Qui Kiet</span>
-            <div class="flex items-centergap-1 text-xs">
-              <span class="font-bold text-red-500">5.0</span>
-              <span class="text-red-500">★★★★★</span> (12)
-            </div>
-            <b class="py-1 text-xs"><u>đ</u>399,000</b>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="">
-      <div class="flex gap-2 items-start">
-        <div class="col-span-3">
-          <img
-            alt="Card"
-            class="w-32"
-            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-          />
-        </div>
-        <div class="p-0">
-          <div class="flex flex-col justify-between text-xs">
-            <p class="font-semibold text-xs">
-              LLM Engineering: Master AI, Large Language Models &
-            </p>
-            <span class="text-gray-400 text-xs">Qui Kiet</span>
-            <div class="flex items-centergap-1 text-xs">
-              <span class="font-bold text-red-500">5.0</span>
-              <span class="text-red-500">★★★★★</span> (12)
-            </div>
-            <b class="py-1 text-xs"><u>đ</u>399,000</b>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="">
-      <div class="flex gap-2 items-start">
-        <div class="col-span-3">
-          <img
-            alt="Card"
-            class="w-32"
-            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-          />
-        </div>
-        <div class="p-0">
-          <div class="flex flex-col justify-between text-xs">
-            <p class="font-semibold text-xs">
-              LLM Engineering: Master AI, Large Language Models &
-            </p>
-            <span class="text-gray-400 text-xs">Qui Kiet</span>
-            <div class="flex items-centergap-1 text-xs">
-              <span class="font-bold text-red-500">5.0</span>
-              <span class="text-red-500">★★★★★</span> (12)
-            </div>
-            <b class="py-1 text-xs"><u>đ</u>399,000</b>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="">
-      <div class="flex gap-2 items-start">
-        <div class="col-span-3">
-          <img
-            alt="Card"
-            class="w-32"
-            src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
-          />
-        </div>
-        <div class="p-0">
-          <div class="flex flex-col justify-between text-xs">
-            <p class="font-semibold text-xs">
-              LLM Engineering: Master AI, Large Language Models &
-            </p>
-            <span class="text-gray-400 text-xs">Qui Kiet</span>
-            <div class="flex items-centergap-1 text-xs">
-              <span class="font-bold text-red-500">5.0</span>
-              <span class="text-red-500">★★★★★</span> (12)
-            </div>
-            <b class="py-1 text-xs"><u>đ</u>399,000</b>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
+  </div>
 </div>

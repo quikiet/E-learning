@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { FormElementComponent } from '../../../components/both/form-element/form-element.component';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-reset-password',
   imports: [
@@ -15,8 +16,9 @@ import { FormElementComponent } from '../../../components/both/form-element/form
     InputTextModule,
     ButtonModule,
     ToastModule,
+    CommonModule,
     FormElementComponent
-],
+  ],
   providers: [MessageService],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.css'
@@ -64,11 +66,10 @@ export class ResetPasswordComponent implements OnInit {
     });
   }
 
-  // Custom validator to check if passwords match
-  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
-    const password = control.get('password')?.value;
-    const passwordConfirmation = control.get('password_confirmation')?.value;
-    return password === passwordConfirmation ? null : { mismatch: true };
+  passwordMatchValidator(group: AbstractControl) {
+    const password = group.get('password')?.value;
+    const confirm = group.get('password_confirmation')?.value;
+    return password === confirm ? null : { passwordMismatch: true };
   }
 
   cancel() {
@@ -107,14 +108,17 @@ export class ResetPasswordComponent implements OnInit {
           life: 3000
         });
         this.isSubmitting = false;
-        this.router.navigate(['/login']);
+        setInterval(() => {
+          this.router.navigate(['/login']);
+
+        }, 500);
       },
       error: (err) => {
         console.error('Error resetting password:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error?.message || 'Unable to reset password.',
+          summary: err.error?.message || 'Error',
+          detail: err.error?.error || 'Unable to reset password.',
           life: 3000
         });
         this.isSubmitting = false;

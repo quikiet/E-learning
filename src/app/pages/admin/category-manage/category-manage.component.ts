@@ -133,8 +133,8 @@ export class CategoryManageComponent implements OnInit {
           }, error: (err) => {
             this.messageService.add({
               severity: 'error',
-              summary: 'error',
-              detail: err.message,
+              summary: err.error.message || 'error',
+              detail: err.error.error,
               life: 3000
             });
           }

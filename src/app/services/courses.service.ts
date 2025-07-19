@@ -17,7 +17,11 @@ export class CoursesService {
   }
 
   getCoursesByRecommend(course_title: string): Observable<any> {
-    return this.http.get(`https://recommendapi.onrender.com/recommend-similar?course_title=${course_title}&num_recommendations=10`);
+    return this.http.get(`http://127.0.0.1:9000/recommend-similar?course_title=${course_title}&num_recommendations=10`);
+  }
+
+  getCoursesRecommendByUser(userID: number): Observable<any> {
+    return this.http.get(`http://127.0.0.1:9000/recommend-usercf?user_id=${userID}&num_recommendations=10`);
   }
 
   getCoursesByEndpoint(endpoint: string, page: number, perPage: number): Observable<any> {

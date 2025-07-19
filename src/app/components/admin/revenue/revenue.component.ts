@@ -43,8 +43,8 @@ export class RevenueComponentimplements implements OnInit {
         console.error('Error loading revenue sessions:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error.message,
+          summary: err.error.message || 'Error',
+          detail: err.error.error,
           life: 3000
         });
       }
@@ -69,8 +69,8 @@ export class RevenueComponentimplements implements OnInit {
         console.error('Error creating session:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error?.message,
+          summary: err.error?.message || 'Error',
+          detail: err.error?.error,
           life: 3000
         });
       }
@@ -95,8 +95,8 @@ export class RevenueComponentimplements implements OnInit {
         console.error('Error distributing session:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error?.message,
+          summary: err.error?.message || 'Error',
+          detail: err.error?.error,
           life: 3000
         });
       }

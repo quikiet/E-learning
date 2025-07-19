@@ -42,8 +42,8 @@ export class InstructorQuizManagementComponent implements OnInit {
   selectedQuizId: number | null = null;
   newQuiz = {
     title: '',
-    max_attempts: 3,
-    time_limit: 30,
+    max_attempts: 1,
+    time_limit: 1,
     is_visible: true,
   };
   newQuestion = {
@@ -261,7 +261,7 @@ export class InstructorQuizManagementComponent implements OnInit {
   }
 
   createQuiz() {
-    if (!this.newQuiz.title || this.newQuiz.max_attempts <= 0 || this.newQuiz.time_limit <= 0) {
+    if (!this.newQuiz.title || !this.newQuiz.max_attempts) {
       this.messageService.add({
         severity: 'warn',
         summary: 'Warn',

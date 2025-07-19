@@ -70,7 +70,7 @@
               label="Distribute"
               icon="pi pi-money-bill"
               severity="success"
-              [disabled]="session.need_distribution"
+              [disabled]="session.status !== 'open'"
               (onClick)="distributeSession(session.session_id)"
               [loading]="distributingSessions.includes(session.session_id)"
             ></p-button>

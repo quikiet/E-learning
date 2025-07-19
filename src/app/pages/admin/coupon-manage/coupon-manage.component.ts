@@ -265,7 +265,7 @@ export class CouponManageComponent implements OnInit {
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
-            detail: 'Coupon updated successfully',
+            detail: res.message || 'Coupon updated successfully',
             life: 3000
           });
           this.loadCouponData();
@@ -275,8 +275,8 @@ export class CouponManageComponent implements OnInit {
         error: (err) => {
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: err.message || 'Unable to update coupon',
+            summary: err.error.message || 'Error',
+            detail: err.error.error || 'Unable to update coupon',
             life: 3000
           });
           this.isLoading = false;
@@ -289,17 +289,16 @@ export class CouponManageComponent implements OnInit {
 
   editCoupon(coupon: any) {
     this.coupon = { ...coupon };
-
     // Convert start_date and end_date to Date objects
     const updatedCoupon = {
       ...coupon,
       start_date: coupon.start_date ? new Date(coupon.start_date) : null,
       end_date: coupon.end_date ? new Date(coupon.end_date) : null
     };
-
     this.couponForm.patchValue(updatedCoupon);
     this.couponDialog = true;
     this.isEditing = true;
+    this.cd.detectChanges();
   }
 
   deleteCoupon(couponId: number) {
@@ -309,7 +308,7 @@ export class CouponManageComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Coupon deleted successfully',
+          detail: res.message || 'Coupon deleted successfully',
           life: 3000
         });
         this.loadCouponData();
@@ -317,8 +316,8 @@ export class CouponManageComponent implements OnInit {
       error: (err) => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.message || 'Unable to delete coupon',
+          summary: err.error.message || 'Error',
+          detail: err.error.error || 'Unable to delete coupon',
           life: 3000
         });
         this.isLoading = false;
