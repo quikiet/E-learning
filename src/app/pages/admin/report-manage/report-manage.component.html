@@ -1,52 +1,68 @@
 <div class="max-w-7xl mx-auto">
   <h1 class="text-2xl font-bold text-gray-800 mb-6">Report Management</h1>
-  <!-- Quản lý báo cáo -->
-
-  <!-- Loading State -->
-  @if (isLoading) {
-  <div class="flex justify-center">
-    <p-progressSpinner></p-progressSpinner>
-  </div>
-  }
 
   <!-- Reports Table -->
   @if (!isLoading && reports.length > 0) {
   <div class="bg-white shadow-sm rounded-lg overflow-hidden">
-    <p-table [value]="reports" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table
+      [value]="reports"
+      [globalFilterFields]="[
+        'id',
+        'user.username',
+        'user.email',
+        'course.course_name',
+        'report_type',
+        'reason',
+        'created_at'
+      ]"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [(first)]="first"
+      [(rows)]="rowsPerPage"
+      [paginator]="true"
+      [totalRecords]="totalRecords"
+      (onPage)="onPageChange($event)"
+    >
       <ng-template pTemplate="header">
         <tr>
           <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-            ID
+            <div class="flex items-center justify-between">ID</div>
           </th>
-          <!-- ID -->
           <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-            Username
+            <div class="flex items-center justify-between">Username</div>
           </th>
-          <!-- Tên người dùng -->
           <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-            Email
+            <div class="flex items-center justify-between">Email</div>
           </th>
-          <!-- Email -->
           <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-            Course Name
+            <div class="flex items-center justify-between">Course Name</div>
           </th>
-          <!-- Tên khóa học -->
           <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-            Report Type
+            <div class="flex items-center justify-between">Report Type</div>
           </th>
-          <!-- Loại báo cáo -->
           <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-            Reason
+            <div class="flex items-center justify-between">Reason</div>
           </th>
-          <!-- Lý do -->
           <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">
-            Created At
+            <div class="flex items-center justify-between">Created At</div>
           </th>
-          <!-- Thời gian tạo -->
           <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">
             Actions
           </th>
-          <!-- Hành động -->
+        </tr>
+        <!-- Global Search Input -->
+        <tr>
+          <th colspan="8" class="px-4 py-3">
+            <div class="p-inputgroup">
+              <input
+                pInputText
+                type="text"
+                [(ngModel)]="searchQuery"
+                (ngModelChange)="onSearch()"
+                placeholder="Search reports..."
+                class="p-inputtext p-component w-full"
+              />
+            </div>
+          </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-report>
@@ -87,21 +103,18 @@
       </ng-template>
     </p-table>
   </div>
-  <p-paginator
-    [rows]="rowsPerPage"
-    [totalRecords]="totalRecords"
-    [first]="first"
-    (onPageChange)="onPageChange($event)"
-    styleClass="mt-4 bg-white p-4 rounded-lg shadow-sm"
-  ></p-paginator>
+  }
+
+  <!-- Loading State -->
+  @if (isLoading) {
+  <div class="flex justify-center">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
   }
 
   <!-- No Reports -->
   @if (!isLoading && reports.length === 0) {
-  <div class="text-center text-gray-500 py-4">
-    No reports available.
-    <!-- Không có báo cáo nào -->
-  </div>
+  <div class="text-center text-gray-500 py-4">No reports found.</div>
   }
 
   <!-- Report Details Modal -->
@@ -116,23 +129,18 @@
     <div class="space-y-4">
       <div>
         <h3 class="text-lg font-semibold text-gray-800">Report Information</h3>
-        <!-- Thông tin báo cáo -->
         <p><strong>ID:</strong> {{ selectedReport.id }}</p>
         <p>
           <strong>Type:</strong> {{ selectedReport.report_type | titlecase }}
         </p>
-        <!-- Loại báo cáo -->
         <p><strong>Reason:</strong> {{ selectedReport.reason }}</p>
-        <!-- Lý do -->
         <p>
           <strong>Created At:</strong>
           {{ selectedReport.created_at | date }}
         </p>
-        <!-- Thời gian tạo -->
       </div>
       <div>
         <h3 class="text-lg font-semibold text-gray-800">User Information</h3>
-        <!-- Thông tin người dùng -->
         <p><strong>Username:</strong> {{ selectedReport.user.username }}</p>
         <p><strong>Full Name:</strong> {{ selectedReport.user.fullname }}</p>
         <p><strong>Email:</strong> {{ selectedReport.user.email }}</p>
@@ -144,7 +152,6 @@
       </div>
       <div>
         <h3 class="text-lg font-semibold text-gray-800">Course Information</h3>
-        <!-- Thông tin khóa học -->
         <p><strong>Name:</strong> {{ selectedReport.course.course_name }}</p>
         <p><strong>ID:</strong> {{ selectedReport.course.id }}</p>
         <p>
@@ -168,7 +175,7 @@
       ></p-button>
       <!-- <p-button
         label="Resolve"
-        disabled="true"
+        [disabled]="true"
         icon="pi pi-check"
         styleClass="p-button-success"
         (click)="resolveReport(selectedReport.id); displayDialog = false"

@@ -18,6 +18,7 @@ export class CategoryCarouselComponent implements OnInit {
   userId: number | null = null;
   responsiveOptions: any[] | undefined;
   recommendations: any = [];
+  isError = true;
   constructor(private categoryService: CategoryService
     , private courseService: CoursesService,
     private authService: AuthService
@@ -73,9 +74,14 @@ export class CategoryCarouselComponent implements OnInit {
       next: (res) => {
         this.recommendations = res.recommendations;
         console.log('hehe' + this.recommendations);
+        if (this.recommendations.length < 2) {
+          this.isError = true;
+        } else {
+          this.isError = false;
+        }
       }, error: (err) => {
-        console.log('hehe' + err.error);
-
+        console.log('haha' + err.error);
+        this.isError = true;
         console.error('Error fetching recommendations:', err.error);
       }
     })

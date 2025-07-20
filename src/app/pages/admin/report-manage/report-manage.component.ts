@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -8,13 +8,27 @@ import { PaginatorModule } from 'primeng/paginator';
 import { MessageService } from 'primeng/api';
 import { CoursesService } from '../../../services/courses.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { Tag } from "primeng/tag";
+import { TagModule } from 'primeng/tag';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-report-manage',
   standalone: true,
-  imports: [CommonModule, TableModule, ButtonModule, DialogModule, ToastModule, PaginatorModule, ProgressSpinnerModule, Tag],
-  providers: [MessageService, CoursesService],
+  imports: [
+    CommonModule,
+    TableModule,
+    ButtonModule,
+    DialogModule,
+    ToastModule,
+    PaginatorModule,
+    ProgressSpinnerModule,
+    TagModule,
+    InputTextModule,
+    FormsModule,
+  ],
+  providers: [MessageService, CoursesService, DatePipe],
   templateUrl: './report-manage.component.html',
   styleUrls: ['./report-manage.component.css']
 })
@@ -27,13 +41,21 @@ export class ReportManageComponent implements OnInit {
   totalRecords: number = 0;
   rowsPerPage: number = 10;
   first: number = 0;
+  searchQuery: string = '';
+  private searchSubject = new Subject<string>();
+
   constructor(
     private coursesService: CoursesService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit() {
     this.loadReports(this.currentPage);
+    // Debounce search input to avoid excessive filtering
+    this.searchSubject.pipe(debounceTime(300)).subscribe(query => {
+      this.searchQuery = query;
+    });
   }
 
   loadReports(page: number) {
@@ -50,7 +72,7 @@ export class ReportManageComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Unable to load reports. Please try again.', // Không thể tải báo cáo
+          detail: 'Unable to load reports. Please try again.',
           life: 3000
         });
         this.isLoading = false;
@@ -76,7 +98,7 @@ export class ReportManageComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: 'Report resolved successfully.', // Báo cáo được giải quyết
+          detail: 'Report resolved successfully.',
           life: 3000
         });
         this.loadReports(this.currentPage);
@@ -86,10 +108,14 @@ export class ReportManageComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Unable to resolve report. Please try again.', // Không thể giải quyết báo cáo
+          detail: 'Unable to resolve report. Please try again.',
           life: 3000
         });
       }
     });
+  }
+
+  onSearch() {
+    this.searchSubject.next(this.searchQuery);
   }
 }

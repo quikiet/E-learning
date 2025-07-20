@@ -31,17 +31,36 @@
     <!-- Top: Studio Info & Stats -->
     <div class="my-6">
       <h5
-        class="text-black md:font-bold font-semibold text-lg md:text-2xl leading-tight mb-4"
+        class="text-black md:font-bold font-semibold text-lg md:text-2xl leading-tight mb-2"
       >
         {{ course?.course_name || "..." }}
       </h5>
+      <div class="flex flex-wrap gap-2">
+        <div
+          class="flex flex-wrap gap-2 mb-2"
+          *ngFor="let category of course?.categories"
+        >
+          <p-tag
+            severity="info"
+            [value]="category.name"
+            [rounded]="true"
+            class="!text-xs"
+          ></p-tag>
+        </div>
+        <p class="text-secondary">
+          Level:
+          <span class="text-sm text-dark">
+            {{ course?.difficulty_level }}
+          </span>
+        </p>
+      </div>
       <div class="flex items-center gap-4">
         <div
           class="flex items-center gap-2 cursor-pointer hover:underline text-secondary"
           [routerLink]="['/user', course?.instructors?.id]"
         >
           <img
-            [src]="course?.instructors?.avatar"
+            [src]="course?.instructors?.user?.avatar"
             alt="avatar"
             loading="lazy"
             class="w-8 h-8 rounded-full bg-white border border-[#32d296] p-1"
@@ -102,6 +121,14 @@
                   {{ recommend.content_duration }} hours</span
                 >
               </div>
+              <span>
+                <p-tag
+                  severity="info"
+                  [value]="recommend.category"
+                  [rounded]="true"
+                  class="!text-xs"
+                ></p-tag>
+              </span>
             </div>
             <span class="text-yellow-600">{{ recommend.course_rating }} ★</span>
             <span class="text-xs"
@@ -121,7 +148,7 @@
     <!-- Review List -->
     <div class="space-y-5 mt-5">
       <p class="text-black font-bold md:text-lg mb-2">Reviews</p>
-      @for (review of reviews; track review) {
+      @for (review of displayedReviews; track review) {
       <div class="flex items-start gap-3">
         <p-avatar
           [image]="review.user?.avatar"
@@ -151,14 +178,23 @@
       </div>
       } @if (!reviews?.length) {
       <div class="text-gray-500 text-sm">No reviews for this course yet.</div>
-      }
+      }@if (reviews.length > 1) {
       <div class="mt-8 flex justify-center">
+        <button
+          class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
+          (click)="toggleShowMore()"
+        >
+          {{ showAll ? "Show Less" : "Show More" }}
+        </button>
+      </div>
+      }
+      <!-- <div class="mt-8 flex justify-center">
         <button
           class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
         >
           View more
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -310,9 +346,7 @@
             <!-- Lặp qua toàn bộ lessons -->
             @for (lesson of lessons; track lesson; let i = $index) {
             <div class="m-0">
-              <div
-                class="flex items-center justify-between !bg-secondary-light"
-              >
+              <div class="flex items-center justify-between">
                 @if (lesson.status !== 'rejected') {
                 <div
                   class="flex items-center gap-2 py-4 border-b-2 border-gray/20 !w-full justify-between"

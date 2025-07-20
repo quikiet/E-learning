@@ -56,6 +56,7 @@
           id="course_name"
           name="course_name"
           [(ngModel)]="course.course_name"
+          pattern="[a-zA-Z0-9]+[a-zA-Z0-9\s.]*"
           placeholder="Design with Figma"
           required
           class="!text-sm mt-1 block w-full p-2 border border-gray-300 rounded-md"

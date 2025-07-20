@@ -57,6 +57,7 @@
               <span class="text-gray-400 text-xs">{{
                 course.user.fullname
               }}</span>
+
               <div class="flex items-center gap-1 text-xs">
                 <span class="font-bold text-red-500">
                   {{ course.course_rating | number : "1.1-1" }}
@@ -72,11 +73,11 @@
                 </span>
               </div>
               <p class="py-1 text-xs font-bold">{{ course.price | number }}$</p>
-              <p-tag
+              <!-- <p-tag
                 severity="success"
                 value="Best seller"
                 class="w-fit opacity-60"
-              />
+              /> -->
             </div>
           </div>
         </ng-template>

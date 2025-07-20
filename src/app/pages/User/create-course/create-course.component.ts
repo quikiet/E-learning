@@ -152,6 +152,15 @@ export class CreateCourseComponent implements OnInit {
     //   });
     //   return;
     // }
+    // if (this.course.course_name. .includes('.')) {
+    //   this.messageService.add({
+    //     severity: 'error',
+    //     summary: 'Lỗi',
+    //     detail: 'Sai tên',
+    //     life: 3000,
+    //   });
+    //   return;
+    // }
 
     console.log('Sending category_ids:', this.selectedCategories);
 

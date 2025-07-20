@@ -111,6 +111,10 @@ export class CourseDetailComponent implements OnInit {
   categories: any[] = [];
   selectedLoE: optionSelect | undefined;
   recommendCourse: any = [];
+  displayedReviews: any[] = [];
+  showAll = false;
+
+
   constructor(
     private coursesService: CoursesService,
     private route: ActivatedRoute,
@@ -160,6 +164,7 @@ export class CourseDetailComponent implements OnInit {
           }
           this.lessons = res.lessons || [];
           this.reviews = res.reviews || [];
+          this.updateDisplayedReviews();
           this.isUserEnrolled = this.checkUserEnrollment(res.enrollments);
           this.isAuthor = this.checkAuthor(res.instructors);
           // Find the first lesson with is_preview: true
@@ -215,6 +220,11 @@ export class CourseDetailComponent implements OnInit {
         console.log(err.message);
       }
     })
+  }
+
+  toggleShowMore() {
+    this.showAll = !this.showAll;
+    this.updateDisplayedReviews();
   }
 
   onSubmitForm() {
@@ -310,7 +320,16 @@ export class CourseDetailComponent implements OnInit {
     return stars;
   }
 
+  updateDisplayedReviews() {
+    this.displayedReviews = this.showAll
+      ? this.reviews
+      : this.reviews.slice(0, 5);
+  }
+
   enrollCourse() {
+    if (!this.currentUserId) {
+      this.router.navigate(['/login']);
+    }
     this.isBuying = true;
     if (!this.course || !this.selectedPaymentMethod) return;
     const paymentData = {
