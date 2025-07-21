@@ -120,6 +120,12 @@ export class QuizTakingComponent implements OnInit, OnDestroy {
     }
   }
 
+  getChoiceLabel(index: number) {
+    const labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+      'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ''];
+    return labels[index] || '';
+  }
+
   startQuiz() {
     this.isLoading = true;
     this.quizService.studentStartQuiz(this.quizId).subscribe({

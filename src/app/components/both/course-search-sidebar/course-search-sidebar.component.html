@@ -92,7 +92,7 @@
             formControlName="min_rating"
             [min]="0"
             [max]="5"
-            [step]="0.5"
+            [step]="0.1"
           ></p-slider>
           <div class="text-center mt-2">
             {{ searchForm.get("min_rating")?.value }}
@@ -116,6 +116,7 @@
               type="number"
               class="w-full"
               placeholder="To"
+              min="0"
               formControlName="max_price"
             /></div
         ></p-accordion-content>

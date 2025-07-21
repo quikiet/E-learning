@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { CoursesService } from '../../../services/courses.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 interface Course {
   id: number;
@@ -16,7 +16,7 @@ interface Course {
 @Component({
   selector: 'app-custom-autocomplete',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule],
   templateUrl: './custom-autocomplete.component.html',
   styleUrls: ['./custom-autocomplete.component.css'],
 })
@@ -27,6 +27,7 @@ export class CustomAutocompleteComponent implements OnInit {
   query: string = '';
   showDropdown: boolean = false;
   pauseDropdown: boolean = false;
+
   constructor(private courseService: CoursesService,
     private router: Router
   ) { }
@@ -45,11 +46,12 @@ export class CustomAutocompleteComponent implements OnInit {
   }
 
   filterCourses() {
-    this.pauseDropdown = false;
     const queryLower = this.query.toLowerCase();
     this.filteredCourses = this.courses.filter((course) =>
       course.course_name.toLowerCase().startsWith(queryLower)
+      // course.category.toLowerCase().startsWith(queryLower)
     );
+    this.pauseDropdown = false;
     this.showDropdown = true;
   }
 
@@ -68,9 +70,13 @@ export class CustomAutocompleteComponent implements OnInit {
     }
   }
 
+  onFocus() {
+    this.showDropdown = true; // Đặt isDropdownVisible thành true khi focus
+  }
+
   onBlur() {
     setTimeout(() => {
       this.showDropdown = false;
-    }, 200); // Delay để cho phép click item
+    }, 200);
   }
 }

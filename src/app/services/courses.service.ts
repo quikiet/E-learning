@@ -126,9 +126,9 @@ export class CoursesService {
     return this.http.get<any>(`${this.apiUrl}/courses/search`, { params: httpParams }).pipe(
       catchError((error) => {
         console.error('Search Courses Error:', error);
-        let errorMessage = 'Đã xảy ra lỗi khi tìm kiếm khóa học.';
+        let errorMessage = error.message;
         if (error.status === 404) {
-          errorMessage = 'Không tìm thấy endpoint tìm kiếm khóa học.';
+          errorMessage = error.message;
         }
         return throwError(() => new Error(errorMessage));
       })

@@ -83,14 +83,14 @@ export class CourseSearchComponent implements OnInit {
   }
 
   onSearch(params: any) {
-    this.currentSearchParams = { ...params }; // Spread để tránh reference issues
+    this.currentSearchParams = { ...params };
     this.currentPage = 1;
     this.updateUrlParams();
     this.loadCourses();
   }
 
   onReset() {
-    console.log('onReset called'); // Debug log
+    // console.log('onReset called'); // Debug log
     this.currentSearchParams = {
       keyword: null,
       categories: null,
@@ -118,7 +118,7 @@ export class CourseSearchComponent implements OnInit {
 
   loadCourses() {
     this.isLoading = true;
-    console.log('Loading courses with params:', this.currentSearchParams); // Debug log
+    // console.log('Loading courses with params:', this.currentSearchParams); // Debug log
 
     const params = {
       ...this.currentSearchParams,
@@ -127,15 +127,15 @@ export class CourseSearchComponent implements OnInit {
     };
 
     // Loại bỏ các params null/undefined trước khi gửi
-    const cleanParams = Object.fromEntries(
-      Object.entries(params).filter(([_, value]) => value != null && value !== '')
-    );
+    // const cleanParams = Object.fromEntries(
+    //   Object.entries(params).filter(([_, value]) => value != null && value !== '')
+    // );
 
-    console.log('Clean params sent to API:', cleanParams); // Debug log
+    // console.log('Clean params sent to API:', cleanParams); // Debug log
 
-    this.coursesService.searchCourses(cleanParams).subscribe({
+    this.coursesService.searchCourses(params).subscribe({
       next: (res) => {
-        console.log('API Response:', res); // Debug log
+        // console.log('API Response:', res); // Debug log
         this.courses = res.data.data || [];
         this.totalRecords = res.data.total || 0;
         this.rows = res.data.per_page || this.rows;
@@ -145,8 +145,8 @@ export class CourseSearchComponent implements OnInit {
         console.error('API Error:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Lỗi',
-          detail: err.message || 'Không thể tải danh sách khóa học',
+          summary: err.error.message,
+          detail: err.error.error,
           life: 3000
         });
         this.isLoading = false;
@@ -169,13 +169,13 @@ export class CourseSearchComponent implements OnInit {
       page: this.currentPage
     };
 
-    const cleanedParams = Object.fromEntries(
-      Object.entries(queryParams).filter(([_, value]) => value != null && value !== '')
-    );
+    // const cleanedParams = Object.fromEntries(
+    //   Object.entries(queryParams).filter(([_, value]) => value != null && value !== '')
+    // );
 
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: cleanedParams,
+      queryParams: queryParams,
       queryParamsHandling: 'merge',
       replaceUrl: true
     });

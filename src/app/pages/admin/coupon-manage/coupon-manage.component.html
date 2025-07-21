@@ -53,12 +53,7 @@
             <p-sortIcon field="code" />
           </div>
         </th>
-        <th pSortableColumn="discount_type">
-          <div class="flex items-center">
-            Discount Type
-            <p-sortIcon field="discount_type" />
-          </div>
-        </th>
+        <th pSortableColumn="discount_type">Discount Type</th>
         <th pSortableColumn="discount_value">
           <div class="flex items-center">
             Discount Value
@@ -95,12 +90,7 @@
             <p-sortIcon field="used_count" />
           </div>
         </th>
-        <th pSortableColumn="is_active">
-          <div class="flex items-center">
-            Status
-            <p-sortIcon field="is_active" />
-          </div>
-        </th>
+        <th>Status</th>
         <th>
           <div class="flex items-center">Actions</div>
         </th>
@@ -230,6 +220,7 @@
             <input
               pInputText
               type="number"
+              min="0"
               class="w-full"
               placeholder="Enter discount value"
               formControlName="discount_value"
@@ -256,6 +247,25 @@
 
         <div>
           <app-form-element
+            [control]="couponForm.get('end_date')!"
+            [label]="'End Date'"
+            [required]="true"
+          >
+            <p-datepicker
+              formControlName="end_date"
+              dateFormat="dd/mm/yy"
+              placeholder="Select end date"
+              appendTo="body"
+              class="!w-full"
+              [minDate]="minDate"
+              [readonlyInput]="true"
+              [showIcon]="true"
+            />
+          </app-form-element>
+        </div>
+
+        <div>
+          <app-form-element
             [control]="couponForm.get('start_date')!"
             [label]="'Start Date'"
             [required]="true"
@@ -266,27 +276,10 @@
               placeholder="Select start date"
               class="w-full"
               [minDate]="minDate"
+              [maxDate]="couponForm.get('end_date')?.value"
               [readonlyInput]="true"
               [showIcon]="true"
               appendTo="body"
-            />
-          </app-form-element>
-        </div>
-
-        <div>
-          <app-form-element
-            [control]="couponForm.get('end_date')!"
-            [label]="'End Date'"
-            [required]="true"
-          >
-            <p-datepicker
-              formControlName="end_date"
-              dateFormat="dd/mm/yy"
-              placeholder="Select end date"
-              class="!w-full"
-              [minDate]="minDate"
-              [readonlyInput]="true"
-              [showIcon]="true"
             />
           </app-form-element>
         </div>

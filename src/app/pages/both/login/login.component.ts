@@ -76,7 +76,11 @@ export class LoginComponent implements OnInit {
     this.maxDate = new Date();
 
     this.registerForm = this.fb.group({
-      username: ['', [Validators.required, Validators.maxLength(50)]],
+      username: ['', [
+        Validators.required,
+        Validators.maxLength(50),
+        // Validators.pattern('^[a-zA-ZÀ-ỹ0-9_- ]+$')
+      ]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password_confirmation: ['', Validators.required],

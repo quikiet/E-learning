@@ -27,15 +27,16 @@
       (keyup.enter)="onSearch()"
       (input)="filterCourses()"
       (blur)="onBlur()"
+      (focus)="onFocus()"
       placeholder="Search..."
       class="w-full pr-3 py-2 text-gray-700 outline-none text-sm"
     />
   </div>
 
   <!-- Dropdown gợi ý -->
-  @if (query && filteredCourses.length && !pauseDropdown) {
+  @if (query && filteredCourses.length && !pauseDropdown && showDropdown) {
   <div
-    class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-md max-h-[400px] overflow-hidden py-2"
+    class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-md max-h-[400px] overflow-y-scroll py-2"
   >
     @for (course of filteredCourses; track course) {
     <a
@@ -49,9 +50,9 @@
       />
       <div class="flex flex-col justify-between">
         <span class="text-xs font-bold">{{ course.course_name }}</span>
-        <span class="text-[10px]"
-          ><span class="font-semibold">{{ course.category }}</span>
-          <span> {{ course.instructor_name }}</span></span
+        <span class="text-[10px] font-semibold">{{ course.category }} </span>
+        <span class="text-[9px] font-semibold text-secondary-content">
+          {{ course.instructor_name }}</span
         >
       </div>
     </a>

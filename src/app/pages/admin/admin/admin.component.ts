@@ -8,10 +8,10 @@ import { RecommendService } from '../../../services/recommend.service';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Toast } from "primeng/toast";
-
+import { TieredMenu } from 'primeng/tieredmenu';
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule, RouterOutlet, RouterLinkActive, RouterLink, BadgeModule, AnimateOnScroll, ButtonModule, Toast],
+  imports: [CommonModule, RouterOutlet, RouterLinkActive, RouterLink, BadgeModule, AnimateOnScroll, ButtonModule, Toast, TieredMenu],
   providers: [MessageService],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'

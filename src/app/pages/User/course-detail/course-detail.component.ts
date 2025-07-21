@@ -114,7 +114,6 @@ export class CourseDetailComponent implements OnInit {
   displayedReviews: any[] = [];
   showAll = false;
 
-
   constructor(
     private coursesService: CoursesService,
     private route: ActivatedRoute,

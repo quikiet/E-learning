@@ -32,6 +32,14 @@ export class InstructorsService {
     return this.http.get(`${this.apiUrl}/instructor/eachinstructors/details`, { params, withCredentials: true });
   }
 
+  getUnreceivedRevenue(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/instructor/unreceived-revenue/check`, { withCredentials: true });
+  }
+
+  receivedRevenue(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/instructor/unreceived-revenue/retry`, {}, { withCredentials: true });
+  }
+
   // Xóa mềm giảng viên
   deleteInstructor(instructorId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/admin/instructors/${instructorId}`, { withCredentials: true });

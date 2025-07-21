@@ -73,6 +73,16 @@
                 </span>
               </div>
               <p class="py-1 text-xs font-bold">{{ course.price | number }}$</p>
+              <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-2 mb-2">
+                  <p-tag
+                    severity="info"
+                    [value]="course?.category[0].name"
+                    [rounded]="true"
+                    class="!text-xs"
+                  ></p-tag>
+                </div>
+              </div>
               <!-- <p-tag
                 severity="success"
                 value="Best seller"

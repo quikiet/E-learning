@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CoursesService } from '../../../services/courses.service';
@@ -64,6 +64,9 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
   hasMarkedComplete: boolean = false;
   isEditing = false;
   editingReviewId: number | null = null;
+  @ViewChild('review') reviewElement!: ElementRef;
+
+
   constructor(
     private route: ActivatedRoute,
     private quizService: QuizService,
@@ -93,6 +96,11 @@ export class StudentCourseLessonsComponentComponent implements OnInit {
     this.newComment = review.comment || '';
     this.selectedFeedback = review.feedback_type;
     this.hasReviewed = false; // Ensure form is visible
+
+    if (this.reviewElement) {
+      this.reviewElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }
+
   }
 
   cancelEdit() {

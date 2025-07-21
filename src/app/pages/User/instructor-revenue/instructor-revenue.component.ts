@@ -6,9 +6,10 @@ import { TableModule } from 'primeng/table';
 import { MessageService } from 'primeng/api';
 import { InstructorsService } from '../../../services/instructors.service';
 import { SelectModule } from 'primeng/select';
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-instructor-revenue',
-  imports: [CommonModule, FormsModule, ToastModule, TableModule, SelectModule],
+  imports: [CommonModule, FormsModule, ToastModule, TableModule, SelectModule, ButtonModule],
   providers: [MessageService, InstructorsService],
   templateUrl: './instructor-revenue.component.html',
   styleUrl: './instructor-revenue.component.css'
@@ -16,8 +17,10 @@ import { SelectModule } from 'primeng/select';
 export class InstructorRevenueComponent implements OnInit {
   instructor: any = null;
   courses: any[] = [];
+  revenue: any = {};
   selectedMonth: number | null = null;
   selectedYear: number | null = null;
+  isReceive = false;
   months = [
     { name: 'All', value: null },
     { name: 'January', value: 1 },
@@ -45,6 +48,7 @@ export class InstructorRevenueComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDetails();
+    this.loadRevenue();
   }
 
   loadDetails(): void {
@@ -68,4 +72,43 @@ export class InstructorRevenueComponent implements OnInit {
       }
     });
   }
+
+  loadRevenue() {
+    this.instructorService.getUnreceivedRevenue().subscribe({
+      next: (res) => {
+        this.revenue = res;
+        console.log(this.revenue);
+
+      }, error: (err) => {
+        console.log(err.error);
+      }
+    });
+  }
+
+  receiveRevenue() {
+    this.isReceive = true;
+    this.instructorService.receivedRevenue().subscribe({
+      next: (res) => {
+        this.isReceive = false;
+        this.loadRevenue();
+        this.messageService.add({
+          severity: 'succes',
+          summary: res.message,
+          life: 3000
+        });
+      }, error: (err) => {
+        this.loadRevenue();
+        this.isReceive = false;
+        // console.log(err.error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: err.error?.message,
+          life: 3000
+        });
+      }
+    });
+  }
+
+
 }

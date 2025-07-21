@@ -51,8 +51,8 @@ export class CourseSearchSidebarComponent implements OnInit {
   sortOptions = [
     { label: 'Top Rated', value: 'course_rating-desc' },
     { label: 'Price low to high', value: 'price-asc' },
-    { label: 'Price higt to low', value: 'price-desc' },
-    { label: 'Most popular', value: 'enrollments-desc' }
+    { label: 'Price high to low', value: 'price-desc' },
+    // { label: 'Most popular', value: 'enrollments-desc' }
   ];
 
   private isInitializing = false; // Flag để tránh gọi API khi đang khởi tạo
@@ -68,7 +68,7 @@ export class CourseSearchSidebarComponent implements OnInit {
       difficulty: [null],
       min_rating: [0],
       min_price: [0],
-      max_price: [null],
+      max_price: [0],
       sort: ['course_rating-desc']
     });
   }
@@ -111,7 +111,7 @@ export class CourseSearchSidebarComponent implements OnInit {
         min_price: params['min_price'] || 0,
         max_price: params['max_price'] || null,
         sort: sortValue
-      }, { emitEvent: false }); // Không emit event khi patch value
+      }, { emitEvent: false }); // Không emit eve nt khi patch value
 
       // Cho phép emit event sau khi khởi tạo xong
       setTimeout(() => {
@@ -126,7 +126,7 @@ export class CourseSearchSidebarComponent implements OnInit {
         this.categories = res;
       },
       error: (error) => {
-        alert('Không thể tải danh mục' + error.message);
+        console.log(error);
       }
     });
   }
@@ -139,8 +139,8 @@ export class CourseSearchSidebarComponent implements OnInit {
       keyword: formValue.keyword || null,
       categories: formValue.categories.length > 0 ? formValue.categories : null,
       difficulty: formValue.difficulty || null,
-      min_rating: formValue.min_rating || null,
-      min_price: formValue.min_price || null,
+      min_rating: formValue.min_rating || 0,
+      min_price: formValue.min_price || 0,
       max_price: formValue.max_price || null,
       sort_by: sort_by,
       sort_order: sort_order,
@@ -160,8 +160,9 @@ export class CourseSearchSidebarComponent implements OnInit {
       min_rating: 0,
       min_price: 0,
       max_price: null,
-      sort: 'course_rating-desc'
+      sort: ''
     }, { emitEvent: false });
+
 
     // Emit event reset để parent component xử lý URL
     this.reset.emit();
