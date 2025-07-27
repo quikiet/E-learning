@@ -48,7 +48,7 @@ export class CustomAutocompleteComponent implements OnInit {
   filterCourses() {
     const queryLower = this.query.toLowerCase();
     this.filteredCourses = this.courses.filter((course) =>
-      course.course_name.toLowerCase().startsWith(queryLower)
+      course.course_name.toLowerCase().includes(queryLower)
       // course.category.toLowerCase().startsWith(queryLower)
     );
     this.pauseDropdown = false;
