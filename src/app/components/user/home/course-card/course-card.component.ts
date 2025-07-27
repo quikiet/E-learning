@@ -28,18 +28,20 @@ export class CourseCardComponent implements OnInit {
   courses: any[] = [];
   currentPage: number = 0; // Trang hiện tại của carousel
   numVisible: number = 5; // Số item hiển thị (mặc định là 5)
-  numScroll: number = 5; // Số item cuộn mỗi lần
+  numScroll: number = 1; // Số item cuộn mỗi lần
   activeCard: any = null; // Quản lý card đang hover
   cardDetail: any = null;
   currentIndex = 0;
   isLoading = false;
   cardHoverPosition: any = {};
   responsiveOptions: any[] = [
-    { breakpoint: '1980px', numVisible: 5, numScroll: 5 },
+    { breakpoint: '1980px', numVisible: 5, numScroll: 1 },
     // { breakpoint: '1199px', numVisible: 3, numScroll: 1 },
     { breakpoint: '767px', numVisible: 2, numScroll: 1 },
     { breakpoint: '575px', numVisible: 1, numScroll: 1 }
   ];
+  category: string = '';
+
 
   prevSlide(event: MouseEvent) {
     this.carousel.navBackward(event);
@@ -61,6 +63,9 @@ export class CourseCardComponent implements OnInit {
     this.courseService.getCoursesByEndpoint(this.apiEndpoint, 1, 10).subscribe({
       next: (res) => {
         this.courses = res.data;
+        if (res.category) {
+          this.category = res.category.name;
+        }
         this.isLoading = false;
         console.log(`Courses loaded from ${this.apiEndpoint}:`, this.courses.length);
       },
@@ -71,10 +76,23 @@ export class CourseCardComponent implements OnInit {
     });
   }
 
+  // getStarArray(rating: number): string[] {
+  //   const stars = Array(5).fill('☆');
+  //   for (let i = 0; i < rating; i++) {
+  //     stars[i] = '★';
+  //   }
+  //   return stars;
+  // }
+
   getStarArray(rating: number): string[] {
+    const floor = Math.floor(rating); // Phần nguyên (ví dụ: 3 cho 3.7)
+    const decimal = rating - floor; // Phần thập phân (0.7)
     const stars = Array(5).fill('☆');
-    for (let i = 0; i < rating; i++) {
+    for (let i = 0; i < floor; i++) {
       stars[i] = '★';
+    }
+    if (decimal >= 0.5 && floor < 5) {
+      stars[floor] = '★';
     }
     return stars;
   }
@@ -82,7 +100,7 @@ export class CourseCardComponent implements OnInit {
   onCarouselPageChange(event: any): void {
     this.currentPage = event.page;
     this.numVisible = event.numVisible || 5;
-    this.numScroll = event.numScroll || 5;
+    this.numScroll = event.numScroll || 1;
   }
 
   getCurrentPosition(list: any): number {
@@ -103,15 +121,6 @@ export class CourseCardComponent implements OnInit {
     return Math.min(this.numVisible, totalItems - startIndex);
   }
 
-  getDifficultySeverity(level: string): string {
-    switch (level?.toLowerCase()) {
-      case 'beginner': return 'success';
-      case 'intermediate': return 'info';
-      case 'advanced': return 'warning';
-      default: return 'secondary';
-    }
-  }
-
   showCardHover(event: MouseEvent, list: any): void {
     this.activeCard = list;
     this.cardDetail = list;
@@ -126,9 +135,10 @@ export class CourseCardComponent implements OnInit {
     this.cardHoverPosition = {
       top: `${rect.top + window.scrollY + rect.height}px`,
       left: isLastTwo
-        ? `${rect.left + window.scrollX - 384}px` // 384px là chiều rộng w-96 của card-hover
-        : `${rect.right + window.scrollX - 16}px`,
-      transform: 'translateY(-80%)',
+        ? `${rect.left - 384}px` // 384px là chiều rộng w-96 của card-hover
+        // ? `${rect.left + window.scrollX - 384}px` // 384px là chiều rộng w-96 của card-hover
+        : `${rect.right - 16}px`,
+      transform: 'translateY(-100%)',
     };
   }
   hideCardHover(): void {

@@ -12,17 +12,17 @@ import { FormsModule } from '@angular/forms';
 import { CustomAutocompleteComponent } from "../../both/custom-autocomplete/custom-autocomplete.component";
 import { SkeletonModule } from 'primeng/skeleton';
 import { AnimateOnScroll } from 'primeng/animateonscroll';
+import { PopoverModule } from 'primeng/popover';
 
 @Component({
   selector: 'app-header',
-  imports: [AnimateOnScroll, SkeletonModule, BadgeModule, RouterLink, InputTextModule, CommonModule, AutoCompleteModule, ButtonModule, FormsModule, CustomAutocompleteComponent],
+  imports: [PopoverModule, AnimateOnScroll, SkeletonModule, BadgeModule, RouterLink, InputTextModule, CommonModule, AutoCompleteModule, ButtonModule, FormsModule, CustomAutocompleteComponent],
   providers: [CoursesService],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
   navBarToggle: boolean = false;
-  dropdownOpen: boolean = false;
   currentUser: any = [];
   userRole: string = '';
   categories: any = {};
@@ -82,7 +82,4 @@ export class HeaderComponent implements OnInit {
     this.navBarToggle = !this.navBarToggle;
   }
 
-  toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
-  }
 }

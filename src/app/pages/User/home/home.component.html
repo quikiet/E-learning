@@ -1,11 +1,9 @@
 <p-toast></p-toast>
 
 <!-- Main content -->
-<div
-  class="bg-gradient-to-r from-primary-light to-secondary-light h-full py-10"
->
+<div class="bg-gradient-to-r from-primary-light to-secondary-light h-full">
   <main
-    class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20 md:p-10 p-4 pt-6"
+    class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20 md:p-6 p-4 pt-6"
   >
     <!-- Left text block -->
     <section class="max-w-xl flex flex-col space-y-3 md:space-y-5">
@@ -15,12 +13,20 @@
         Learn &amp; Receive Certificate
       </span>
       <h1
-        class="left-section text-[#1a2a3a] font-extrabold text-3xl sm:text-4xl md:text-5xl leading-tight"
+        class="left-section text-[#1a2a3a] font-extrabold text-3xl sm:text-4xl md:text-5xl leading-tight mb-1"
       >
-        Learn smarter &amp; Progress further every day
+        Learn smarter <br />
+        Progress further <br />
+        every day <br />
       </h1>
-      <p class="left-section text-xs md:text-sm text-[#4a4a4a] font-normal">
+      <p class="left-section text-secondary font-semibold">
+        Học thông minh hơn &amp; Tiến xa hơn mỗi ngày
+      </p>
+      <p class="left-section text-xs md:text-sm text-[#4a4a4a] font-normal m-0">
         100+ Students - Learn quickly, remember long
+      </p>
+      <p class="left-section text-xs text-[#4a4a4a] font-normal">
+        (Hơn 100 Học sinh - Học nhanh, nhớ lâu)
       </p>
 
       <div class="left-section">
@@ -101,13 +107,13 @@
 </div>
 
 <app-course-card
-  title="Top Rated Courses"
+  title="Top rated courses"
   subtitle="Explore our highest-rated courses"
   apiEndpoint="/title_high_rated/courses/high-rated"
 ></app-course-card>
 
 <app-course-card
-  title="Top Lastest Courses"
+  title="Top lastest courses"
   subtitle="Explore our lastest courses"
   apiEndpoint="/title_latest/courses"
 ></app-course-card>
@@ -119,9 +125,14 @@
 ></app-course-card>
 
 <app-course-card
-  title="Top Popular Courses"
+  title="Top popular courses"
   subtitle="Explore our popular courses"
   apiEndpoint="/title_popular/courses/popular"
+></app-course-card>
+
+<app-course-card
+  subtitle="Explore our favorite category courses"
+  apiEndpoint="/title_random_category/courses/popular-random-category"
 ></app-course-card>
 
 <app-category-carousel></app-category-carousel>

@@ -9,7 +9,10 @@
       pAnimateOnScroll
       enterClass="animate-enter fade-in-10 slide-in-from-t-20 animate-duration-1000"
     >
+      @if (category !== '') { Top courses of
+      <span class="underline">{{ category }} </span>category }@else {
       {{ title }}
+      }
     </h3>
     <h5
       class="md:text-xl font-bold mb-2 lg:text-left text-center"
@@ -96,7 +99,7 @@
       <div
         (mouseenter)="keepCardHover()"
         (mouseleave)="hideCardHover()"
-        class="hover-popup absolute p-6 rounded-lg shadow-2xl bg-white w-96 opacity-0 transition-opacity duration-200 lg:visible invisible"
+        class="hover-popup hover:bg-dark-light absolute p-6 rounded-lg shadow-2xl bg-white w-96 opacity-0 transition-opacity duration-200 lg:visible invisible"
         [ngClass]="{
           'opacity-100 pointer-events-auto': activeCard,
           'right-full mr-4 left-auto ml-0':
@@ -111,11 +114,6 @@
         <div class="py-2 font-semibold">
           <h4 class="text-lg font-bold pb-2">{{ activeCard.course_name }}</h4>
           <div class="flex gap-5 text-xs items-center justify-between">
-            <p-tag
-              severity="success"
-              value="Bán chạy"
-              class="w-fit opacity-60"
-            />
             <span class="text-green-400"
               >Updated at
               <span class="font-semibold text-green-600">{{
@@ -137,16 +135,16 @@
           <div class="flex justify-between items-center gap-5 pt-5">
             <button
               [routerLink]="['/course-detail', activeCard.course_url]"
-              class="px-6 py-3 bg-violet-600 text-white rounded-md font-semibold w-full"
+              class="px-6 py-3 bg-secondary text-white rounded-md font-semibold w-full cursor-pointer"
             >
               View detail
             </button>
-            <div class="">
+            <!-- <div class="">
               <i
                 class="pi pi-heart text-violet-500 font-bold border-violet-500 p-2 border-2 rounded-full"
                 style="font-size: 1.5rem"
               ></i>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
+import { AvatarModule } from 'primeng/avatar';
 
 @Component({
   selector: 'app-admin-course-management',
@@ -29,7 +30,8 @@ import { SelectModule } from 'primeng/select';
     RouterLink,
     DialogModule,
     TextareaModule,
-    SelectModule
+    SelectModule,
+    AvatarModule
   ],
   providers: [MessageService, CoursesService],
   templateUrl: './admin-course-management.component.html',

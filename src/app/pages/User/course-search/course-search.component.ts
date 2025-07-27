@@ -157,7 +157,7 @@ export class CourseSearchComponent implements OnInit {
   onPageChange(event: any) {
     this.currentPage = event.page + 1;
     this.rows = event.rows;
-
+    this.courses = [];
     this.updateUrlParams();
     this.loadCourses();
   }

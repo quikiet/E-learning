@@ -209,9 +209,12 @@
           [pTooltip]="course.course_name"
           tooltipPosition="right"
         >
-          <span class="text-primary font-semibold">
-            {{ cutText(course.course_name, 5) }}
-          </span>
+          <div class="flex items-center gap-1">
+            <p-avatar [image]="course.image" shape="square" />
+            <span class="text-primary font-semibold">
+              {{ cutText(course.course_name, 5) }}
+            </span>
+          </div>
         </td>
         <td>{{ course.difficulty_level }}</td>
         <td>

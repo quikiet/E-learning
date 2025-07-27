@@ -71,7 +71,7 @@ export class CustomAutocompleteComponent implements OnInit {
   }
 
   onFocus() {
-    this.showDropdown = true; // Đặt isDropdownVisible thành true khi focus
+    this.showDropdown = true;
   }
 
   onBlur() {

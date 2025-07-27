@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Avatar, AvatarModule } from 'primeng/avatar';
+import { AvatarModule } from 'primeng/avatar';
 import { DividerModule } from 'primeng/divider';
 import { AccordionModule } from 'primeng/accordion';
 import { CommonModule } from '@angular/common';
-import { Tag, TagModule } from 'primeng/tag';
+import { TagModule } from 'primeng/tag';
 import { CoursesService } from '../../../services/courses.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -12,8 +12,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { HeaderComponent } from "../../../components/user/header/header.component";
 import { LoadingComponent } from '../../../components/both/loading/loading.component';
-import { CardSkeletonComponent } from "../../../components/both/card-skeleton/card-skeleton.component";
-import { FormBuilder, FormControl, FormControlName, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ToastModule } from 'primeng/toast';
 import { DialogModule } from 'primeng/dialog';
@@ -183,8 +182,8 @@ export class CourseDetailComponent implements OnInit {
           this.isLoading = false;
           this.messageService.add({
             severity: 'error',
-            summary: 'Error',
-            detail: err.error?.message || 'Unable to load course details.',
+            summary: err.error?.message || 'Error',
+            detail: err.error?.error || 'Unable to load course details.',
             life: 3000
           });
           this.router.navigate(['/']);
@@ -243,7 +242,7 @@ export class CourseDetailComponent implements OnInit {
     const formValue = this.studentForm.value;
     const data = {
       LoE_DI: formValue.LoE_DI,
-      learning_goals: formValue.learning_goals, // Already a string
+      learning_goals: formValue.learning_goals,
       category_ids: formValue.category_ids
     };
     console.log('Submitting student profile:', data);
@@ -329,8 +328,8 @@ export class CourseDetailComponent implements OnInit {
     if (!this.currentUserId) {
       this.router.navigate(['/login']);
     }
-    this.isBuying = true;
     if (!this.course || !this.selectedPaymentMethod) return;
+    this.isBuying = true;
     const paymentData = {
       amount: this.course.price,
       method: this.selectedPaymentMethod,
@@ -338,6 +337,7 @@ export class CourseDetailComponent implements OnInit {
     };
     this.coursesService.enrollCourse(this.course.id, paymentData).subscribe({
       next: (res) => {
+        this.isBuying = false;
         // console.log('Enroll course response:', res);
         // this.messageService.add({
         //   severity: 'error',
@@ -390,6 +390,8 @@ export class CourseDetailComponent implements OnInit {
           detail: err.error.error,
           life: 3000
         });
+      }, complete: () => {
+        this.isBuying = false;
       }
     });
   }
@@ -399,25 +401,21 @@ export class CourseDetailComponent implements OnInit {
 
     this.coursesService.enrollFreeCourse(this.course.id).subscribe({
       next: (res) => {
-        if (res.order?.data) {
-          // Điều hướng người dùng đến URL thanh toán
-          window.location.href = res.order.data;
-        } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Lỗi',
-            detail: 'Không thể khởi tạo thanh toán',
-            life: 3000,
-          });
-        }
+        this.messageService.add({
+          severity: 'success',
+          summary: res.message,
+          life: 3000,
+        });
+        setTimeout(() => {
+          this.router.navigate(['/my-course',]);
+        }, 1000);
       },
       error: (err) => {
         console.error('Error enrolling course:', err);
-        const errorMessage = err.error?.message || 'Không thể mua khóa học. Vui lòng thử lại.';
         this.messageService.add({
           severity: 'error',
-          summary: 'Lỗi',
-          detail: errorMessage,
+          summary: err.error?.message || 'Error',
+          detail: err.error.error,
           life: 3000,
         });
       }

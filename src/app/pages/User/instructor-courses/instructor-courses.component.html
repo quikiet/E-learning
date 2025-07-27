@@ -491,25 +491,14 @@
               [(ngModel)]="course.course_name"
               required
               class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-              [ngClass]="{
-                'border-red-500':
-                  courseForm.submitted &&
-                  courseForm.controls['course_name']?.invalid
-              }"
             />
-            @if ( courseForm.submitted &&
-            courseForm.controls['course_name']?.invalid ) {
-            <div class="text-red-500 text-sm mt-1">
-              Please enter the course name.
-            </div>
-            }
           </div>
           <div class="mb-4">
             <label
               for="difficulty_level"
               class="block text-sm font-medium text-gray-700"
             >
-              Difficulty Level
+              Difficulty Level <span class="text-red-500">*</span>
             </label>
             <p-select
               id="difficulty_level"
@@ -518,6 +507,7 @@
               [options]="difficultyLevels"
               optionLabel="label"
               optionValue="value"
+              required="true"
               class="w-full"
             ></p-select>
           </div>
@@ -526,22 +516,24 @@
               for="course_description"
               class="block text-sm font-medium text-gray-700"
             >
-              Description
+              Description<span class="text-red-500">*</span>
             </label>
             <textarea
               id="course_description"
               name="course_description"
               [(ngModel)]="course.course_description"
+              required
               class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
               rows="4"
             ></textarea>
           </div>
           <div class="mb-4">
             <label for="skills" class="block text-sm font-medium text-gray-700">
-              Skills
+              Skills <span class="text-red-500">*</span>
             </label>
             <input
               id="skills"
+              required
               name="skills"
               [(ngModel)]="course.skills"
               class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
@@ -590,16 +582,11 @@
               required
               #categoryIds="ngModel"
             ></p-multiSelect>
-            @if (courseForm.submitted && categoryIds.invalid) {
-            <div class="text-red-500 text-sm mt-1">
-              Please select at least one category.
-            </div>
-            }
           </div>
           <!-- New Image Upload Section -->
           <div class="mb-4">
             <label for="image" class="block text-sm font-medium text-gray-700">
-              Course Image
+              Course Image <span class="text-red-500">*</span>
             </label>
             <input
               type="file"

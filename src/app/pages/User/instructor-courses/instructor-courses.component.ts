@@ -511,8 +511,8 @@ export class InstructorCoursesComponent implements OnInit {
         this.isSubmitting = false;
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error?.message || 'Unable to update course.',
+          summary: err.error?.message || 'Error',
+          detail: err.error?.error || 'Unable to update course.',
           life: 3000,
         });
       }
@@ -689,8 +689,8 @@ export class InstructorCoursesComponent implements OnInit {
       error: (err) => {
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error?.message || 'Unable to delete course.',
+          summary: err.error?.message || 'Error',
+          detail: err.error?.error || 'Unable to delete course.',
           life: 3000,
         });
         this.isLoading = false;

@@ -15,6 +15,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { FormElementComponent } from "../../../components/both/form-element/form-element.component";
 import { DividerModule } from 'primeng/divider';
 import { SelectModule } from 'primeng/select';
+import { LoadingComponent } from "../../../components/both/loading/loading.component";
 
 interface Category {
   name: string;
@@ -33,7 +34,8 @@ interface Category {
     DialogModule,
     TextareaModule,
     DividerModule,
-    SelectModule
+    SelectModule,
+    LoadingComponent
   ],
   providers: [MessageService],
   templateUrl: './create-course.component.html',
@@ -70,7 +72,6 @@ export class CreateCourseComponent implements OnInit {
     { label: 'Latest', value: 'latest' },
     { label: 'Any', value: 'any' },
   ];
-
   currentUser: any = {};
 
   constructor(
