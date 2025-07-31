@@ -13,7 +13,7 @@
         ></i>
         <div>
           <p class="text-secondary text-sm md:text-lg">Address:</p>
-          <h6 class="font-semibold lg:text-sm text-sm">180 Cao nỗ</h6>
+          <h6 class="font-semibold lg:text-sm text-sm">180 Cao lo</h6>
         </div>
       </div>
       <div
@@ -38,7 +38,9 @@
         <div>
           <p class="text-secondary text-sm md:text-lg">Email address:</p>
           <h6 class="font-semibold lg:text-sm text-sm">
-            info&#64;student.stu.edu.vn
+            <a href="mailto:dh52101039@student.stu.edu.vn" target="_blank"
+              >dh52101039&#64;student.stu.edu.vn</a
+            >
           </h6>
         </div>
       </div>
@@ -108,12 +110,17 @@
       <!-- Services -->
       <div class="footer-item">
         <h2 class="lg:text-sm text-sm font-semibold mb-4">Featured topics:</h2>
-        <ul class="space-y-2 text-gray-400 lg:text-sm text-sm">
-          <li>» Web Development</li>
-          <li>» UI/UX Design</li>
-          <li>» Management</li>
-          <li>» Digital Marketing</li>
-          <li>» Blog News</li>
+        <ul
+          class="space-y-2 text-gray-400 lg:text-sm text-sm"
+          *ngFor="let category of categories"
+        >
+          <li
+            class="hover:text-white hover:underline cursor-pointer duration-300"
+            [routerLink]="['/course']"
+            [queryParams]="{ categories: category.id }"
+          >
+            » {{ category.name }}
+          </li>
         </ul>
       </div>
 

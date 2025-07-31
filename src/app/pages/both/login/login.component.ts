@@ -120,7 +120,8 @@ export class LoginComponent implements OnInit {
         this.categories = res;
       },
       error: (error) => {
-        alert('Không thể tải danh mục' + error.message);
+        console.log(error);
+
       }
     });
 
@@ -241,7 +242,13 @@ export class LoginComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Success', detail: res?.message, life: 3000 });
           // console.log('Đăng nhập thành công!');
           setTimeout(() => {
-            this.route.navigate([res.user.role === 'admin' ? '/admin' : '/']);
+            if (res.user.role === 'admin') {
+              this.route.navigate(['/admin']);
+            } else if (res.user.role === 'instructor') {
+              this.route.navigate(['/my-revenue-instructor']);
+            } else {
+              this.route.navigate(['/']);
+            }
           }, 500);
         }, error: (err) => {
           this.messageService.add({ severity: 'error', summary: err?.error.message || 'Error', detail: err?.error.error, life: 3000 });

@@ -269,7 +269,10 @@
                   <span class="mr-3 h-10 w-10 overflow-hidden rounded-full">
                     @if (!isLoading && userRole) {
                     <img
-                      [src]="currentUser.avatar"
+                      [src]="
+                        currentUser.avatar ||
+                        'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
+                      "
                       class="h-10 w-10"
                       [alt]="currentUser.email"
                     />

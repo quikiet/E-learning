@@ -4,7 +4,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { DividerModule } from 'primeng/divider';
 import { RippleModule } from 'primeng/ripple';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class ProfileComponent implements OnInit {
   user: any = null;
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
   ngOnInit() {
 
     this.authService.getCurrentUser().subscribe({
@@ -25,6 +25,17 @@ export class ProfileComponent implements OnInit {
         console.log(err.message);
       }
     })
+  }
 
+  logOut() {
+    this.authService.logout().subscribe({
+      next: (res) => {
+        localStorage.removeItem('user');
+        this.router.navigate(['/login']);
+        console.log(res.message);
+      }, error: (error) => {
+        console.log(error.message);
+      }
+    })
   }
 }

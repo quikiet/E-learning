@@ -23,6 +23,7 @@ import { SelectModule } from 'primeng/select';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CategoryService } from '../../../services/courses-manage/category.service';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { SkeletonModule } from 'primeng/skeleton';
 // Định nghĩa interface cho bài học
 interface Lesson {
   title: string;
@@ -71,6 +72,7 @@ interface optionSelect {
     CheckboxModule,
     RouterLink,
     FloatLabelModule,
+    SkeletonModule
   ],
   providers: [MessageService],
   templateUrl: './course-detail.component.html',
@@ -330,6 +332,10 @@ export class CourseDetailComponent implements OnInit {
     }
     if (!this.course || !this.selectedPaymentMethod) return;
     this.isBuying = true;
+    if (this.selectedPaymentMethod === '') {
+      this.isBuying = false;
+      return;
+    }
     const paymentData = {
       amount: this.course.price,
       method: this.selectedPaymentMethod,

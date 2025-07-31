@@ -5,7 +5,11 @@
 >
   <div class="lg:col-span-8 mb-6">
     <!-- Video Preview -->
-    @if (previewVideoUrl) {
+    @if (isLoading) {
+    <div class="shadow-xl">
+      <p-skeleton class="!w-full !h-auto !aspect-video" />
+    </div>
+    } @else { @if (previewVideoUrl) {
     <div class="">
       <video
         class="w-full h-auto aspect-video object-cover"
@@ -19,11 +23,10 @@
     <div class="shadow-xl">
       <img
         [src]="course?.image"
-        [alt]="course?.course_name || 'Course Thumbnail'"
         class="w-full h-auto aspect-video object-cover"
       />
     </div>
-    }
+    } }
     <!-- <img [src]="course.image" [alt]="course.course_name" /> -->
     <!-- <video class="w-full" controls [src]="currentVideoUrl" type="video/mp4">
     Your browser does not support the video tag.

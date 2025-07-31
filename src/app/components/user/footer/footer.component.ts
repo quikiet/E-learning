@@ -4,15 +4,16 @@ import { GalleriaModule } from 'primeng/galleria';
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Subscription } from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { CategoryService } from '../../../services/courses-manage/category.service';
 @Component({
   selector: 'app-footer',
-  imports: [GalleriaModule, ButtonModule],
+  imports: [GalleriaModule, ButtonModule, RouterLink],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })
-export class FooterComponent implements OnDestroy, AfterViewInit {
+export class FooterComponent implements OnDestroy, AfterViewInit, OnInit {
   displayCustom: boolean | undefined;
 
   activeIndex: number = 0;
@@ -33,10 +34,10 @@ export class FooterComponent implements OnDestroy, AfterViewInit {
       numVisible: 1
     }
   ];
-
+  categories: any[] = [];
   private routerSubscription: Subscription;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private categoryService: CategoryService) {
     // Lắng nghe sự kiện chuyển route
     this.routerSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -51,6 +52,20 @@ export class FooterComponent implements OnDestroy, AfterViewInit {
   imageClick(index: number) {
     this.activeIndex = index;
     this.displayCustom = true;
+  }
+
+  getTop5Category() {
+    this.categoryService.getTop5Category().subscribe({
+      next: (res) => {
+        this.categories = res.data;
+      }, error: (err) => {
+        console.log(err.error);
+      }
+    })
+  }
+
+  ngOnInit(): void {
+    this.getTop5Category();
   }
 
   ngAfterViewInit(): void {

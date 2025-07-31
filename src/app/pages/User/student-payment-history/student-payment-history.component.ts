@@ -64,8 +64,8 @@ export class StudentPaymentHistoryComponent implements OnInit {
         this.isLoading = false;
         this.messageService.add({
           severity: 'error',
-          summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể tải lịch sử thanh toán. Vui lòng thử lại.',
+          summary: err.error?.message,
+          detail: err.error?.error,
           life: 3000,
         });
       }
@@ -89,8 +89,8 @@ export class StudentPaymentHistoryComponent implements OnInit {
         console.error('Error loading payment details:', err);
         this.messageService.add({
           severity: 'error',
-          summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể tải chi tiết giao dịch. Vui lòng thử lại.',
+          summary: err.error?.message,
+          detail: err.error?.error,
           life: 3000,
         });
       }

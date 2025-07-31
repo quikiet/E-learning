@@ -38,7 +38,13 @@
                     ? 'info'
                     : 'danger'
                 "
-                [value]="lesson.progress"
+                [value]="
+                  lesson.progress === 'completed'
+                    ? 'Completed'
+                    : lesson.progress === 'in_progress'
+                    ? 'In Progress'
+                    : 'Not Started'
+                "
                 [rounded]="true"
                 class="!text-xs mt-1"
               />

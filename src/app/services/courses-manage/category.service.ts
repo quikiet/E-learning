@@ -21,6 +21,10 @@ export class CategoryService {
     return this.http.get<any[]>(`${this.apiUrl}/admin/category`);
   }
 
+  getTop5Category(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/top-categories`);
+  }
+
   createCategory(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/admin/category`, data, { withCredentials: true });
   }
