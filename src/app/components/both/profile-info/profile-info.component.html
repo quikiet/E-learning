@@ -18,7 +18,11 @@
         <div class="flex items-center justify-between gap-5">
           <div class="flex items-center gap-5">
             <p-avatar
-              [image]="avatarPreview || user?.avatar"
+              [image]="
+                avatarPreview ||
+                user?.avatar ||
+                'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
+              "
               size="xlarge"
               shape="circle"
             />

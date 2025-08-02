@@ -21,7 +21,7 @@
         <img
           [src]="enrollment.course.image"
           alt="{{ enrollment.course.course_name }}"
-          class="w-full h-48 md:h-full object-center"
+          class="w-full h-48 object-center"
         />
         <!-- Trạng thái đăng ký -->
         <div class="absolute top-5 right-5">
@@ -95,7 +95,7 @@
           {{ enrollment.course.price | number }} $
         </p>
         <!-- Kỹ năng -->
-        <p class="text-sm text-gray-600 mb-1">
+        <p class="text-sm text-gray-600 mb-1 truncate">
           <i class="pi pi-book mr-1"></i> Skills:
           {{ enrollment.course.skills }}
         </p>

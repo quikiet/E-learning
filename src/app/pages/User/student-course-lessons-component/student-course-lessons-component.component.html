@@ -342,7 +342,10 @@
       <div class="flex items-start gap-5 justify-between">
         <div class="flex items-start gap-3">
           <p-avatar
-            [image]="review.user?.avatar"
+            [image]="
+              review.user?.avatar ||
+              'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
+            "
             size="normal"
             class="mt-1"
             shape="circle"
@@ -390,6 +393,7 @@
       <button
         class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
         (click)="toggleShowMore()"
+        *ngIf="reviews.length > 5"
       >
         {{ showAll ? "Show Less" : "Show More" }}
       </button>

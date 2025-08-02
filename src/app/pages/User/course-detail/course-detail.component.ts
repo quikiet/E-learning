@@ -84,11 +84,13 @@ export class CourseDetailComponent implements OnInit {
   tabs: Tab[] = [];
   lessons: any[] = [];
   reviews: any[] = [];
+  certificate_rule: any = {};
   previewVideoUrl: string = '';
   isUserEnrolled: boolean = false;
   isAuthor: boolean = false;
   currentVideoUrl: string | null = null;
   currentUserId: number | null = null;
+  enrollmentId: number | null = null;
   isLoading: boolean = false;
   isBuying: boolean = false;
   couponCode: string = '';
@@ -164,6 +166,7 @@ export class CourseDetailComponent implements OnInit {
           }
           this.lessons = res.lessons || [];
           this.reviews = res.reviews || [];
+          this.certificate_rule = res.certificate_rule || [];
           this.updateDisplayedReviews();
           this.isUserEnrolled = this.checkUserEnrollment(res.enrollments);
           this.isAuthor = this.checkAuthor(res.instructors);
@@ -229,7 +232,7 @@ export class CourseDetailComponent implements OnInit {
 
   onSubmitForm() {
     if (this.studentForm.invalid) {
-      console.log('Form invalid:', this.studentForm.errors);
+      // console.log('Form invalid:', this.studentForm.errors);
       this.studentForm.markAllAsTouched();
       this.messageService.add({
         severity: 'warn',
@@ -247,7 +250,7 @@ export class CourseDetailComponent implements OnInit {
       learning_goals: formValue.learning_goals,
       category_ids: formValue.category_ids
     };
-    console.log('Submitting student profile:', data);
+    // console.log('Submitting student profile:', data);
 
     this.authService.instructorRequestToBuyCourse(data).subscribe({
       next: (res) => {
@@ -267,7 +270,7 @@ export class CourseDetailComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: err.error?.message || 'Unable to update student profile.',
+          detail: err.error?.error,
           life: 3000
         });
         this.isLoading = false;
@@ -279,10 +282,19 @@ export class CourseDetailComponent implements OnInit {
   }
 
   checkUserEnrollment(enrollments: any[]): boolean {
-    if (!this.currentUserId || !enrollments?.length) return false;
+    if (!this.currentUserId || !enrollments?.length) {
+      this.enrollmentId = null;
+      return false;
+    }
+    const found = enrollments.some(enrollment => {
+      if (enrollment.user_id === this.currentUserId) {
+        this.enrollmentId = enrollment.id;
+        return true;
+      }
+      return false;
+    });
 
-    // Kiểm tra xem user_id của người dùng hiện tại có trong danh sách enrollments không
-    return enrollments.some(enrollment => enrollment.user_id === this.currentUserId);
+    return found;
   }
 
   checkAuthor(instructors: any) {
@@ -300,11 +312,23 @@ export class CourseDetailComponent implements OnInit {
   }
 
   getTotalDuration(lessons: any[]): number {
-    return lessons.reduce((total: number, lesson: any) => total + (lesson.duration || 0), 0);
+    return lessons
+      .filter(lesson => lesson.is_visible === 1)
+      .reduce((total: number, lesson: any) => total + (lesson.duration || 0), 0);
+  }
+
+  getVisibleLessonCount(): number {
+    return this.lessons.filter(lesson => lesson?.is_visible === 1).length || 0;
   }
 
   playVideo(videoUrl: string) {
-    this.currentVideoUrl = videoUrl;
+    this.previewVideoUrl = videoUrl;
+    setTimeout(() => {
+      const videoElement = document.querySelector('video') as HTMLVideoElement;
+      if (videoElement) {
+        videoElement.load();
+      }
+    }, 0);
   }
 
   getStarArray(rating: number): string[] {

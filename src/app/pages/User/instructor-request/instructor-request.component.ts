@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
     ToastModule,
     FormElementComponent,
     ProgressSpinnerModule
-],
+  ],
   templateUrl: './instructor-request.component.html',
   styleUrl: './instructor-request.component.css',
   providers: [MessageService],
@@ -92,8 +92,10 @@ export class InstructorRequestComponent implements OnInit {
           this.instructorForm.reset();
           this.isSubmitting = false;
           this.isLoading = false;
-          setInterval(() => {
-            this.router.navigate(['/create-course']);
+          setTimeout(() => {
+            this.router.navigate(['/create-course']).then(() => {
+              window.location.reload();
+            });
           }, 1000);
         },
         error: (err) => {

@@ -128,8 +128,8 @@ export class AdminCourseManagementComponent implements OnInit {
         this.loading = false;
         this.messageService.add({
           severity: 'error',
-          summary: 'Lỗi',
-          detail: err.error?.message || 'Không thể tải danh sách khóa học.',
+          summary: err.error?.message,
+          detail: err.error?.error,
           life: 3000,
         });
       },
@@ -180,8 +180,8 @@ export class AdminCourseManagementComponent implements OnInit {
         console.log(err.error.message);
         this.messageService.add({
           severity: 'error',
-          summary: 'Error',
-          detail: err.error.message,
+          summary: err.error.message || 'Error',
+          detail: err.error.error,
           life: 3000,
         });
       }
@@ -231,8 +231,8 @@ export class AdminCourseManagementComponent implements OnInit {
         next: (res) => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Thành công',
-            detail: 'Từ chối course thành công',
+            summary: 'Success',
+            detail: res.message,
             life: 3000,
           });
           this.loadCourses();
@@ -243,8 +243,8 @@ export class AdminCourseManagementComponent implements OnInit {
           console.error(`Error ${this.reviewAction} request:`, err.message);
           this.messageService.add({
             severity: 'error',
-            summary: 'Lỗi',
-            detail: 'Không thể từ chối yêu cầu',
+            summary: err.error.message,
+            detail: err.error.error,
             life: 3000,
           });
         }

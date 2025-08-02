@@ -155,7 +155,9 @@
 
   <!-- Grid layout for course cards -->
   @if (courses.length > 0) {
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-6">
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-6 my-6"
+  >
     @for (course of courses; track course) {
     <div
       class="bg-white shadow-lg hover:shadow-2xl rounded-lg overflow-hidden transition-shadow duration-200"
@@ -223,7 +225,7 @@
       <div class="md:p-4 p-2">
         <div class="flex justify-between items-center">
           <a
-            class="md:text-lg font-semibold text-gray-800 mb-2 truncate"
+            class="font-semibold text-gray-800 mb-2 truncate"
             [title]="course.course_name"
           >
             {{ course.course_name }}
@@ -307,14 +309,43 @@
             }})
           </span>
         </div>
-        <p class="text-xs md:text-sm font-medium text-gray-800 mb-1">
-          <i class="pi pi-money-bill mr-1"></i>
-          {{ course.price | number }} $
-        </p>
-        <p class="text-xs md:text-sm text-gray-600 mb-2">
-          <i class="pi pi-book mr-1"></i> Total Lessons:
-          {{ course.lessons_count }}
-        </p>
+        <div>
+          <p class="text-xs md:text-sm font-medium text-gray-800 mb-1">
+            <i class="pi pi-money-bill mr-1"></i>
+            {{ course.price | number }} $
+          </p>
+          <p class="text-xs md:text-sm text-gray-600 mb-2">
+            <i class="pi pi-book mr-1"></i> Total Lessons:
+            {{ course.lessons_count }}
+          </p>
+        </div>
+        <div *ngIf="course.certificate_rule">
+          <p class="text-black font-semibold text-sm">Certificate Rule</p>
+          <div class="text-sm">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <p>
+                Lesson Completion Percent
+                <span class="font-semibold"
+                  >({{ course.certificate_rule.lesson_version_rule }})</span
+                >
+              </p>
+              <p class="text-secondary">
+                {{ course.certificate_rule.lesson_completion_percent }}
+              </p>
+            </div>
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <p>
+                Quiz Min Score
+                <span class="font-semibold"
+                  >({{ course.certificate_rule.quiz_version_rule }})</span
+                >
+              </p>
+              <p class="text-secondary">
+                {{ course.certificate_rule.quiz_min_score }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="flex gap-2 justify-center flex-wrap p-2 border-t">
         <p-button
@@ -681,7 +712,7 @@
               class="mt-1 block w-full p-2 border border-gray-300 rounded-md bg-gray/30"
             />
           </div>
-          <div class="mb-4">
+          <div class="mb-4 flex items-center gap-2 justify-between flex-wrap">
             <label class="flex items-center text-sm font-medium text-gray-700">
               <input
                 type="checkbox"
@@ -691,6 +722,16 @@
                 class="mr-2"
               />
               Allow Preview
+            </label>
+            <label class="flex items-center text-sm font-medium text-gray-700">
+              <input
+                type="checkbox"
+                id="is_visible"
+                name="is_visible"
+                [(ngModel)]="lesson.is_visible"
+                class="mr-2"
+              />
+              Visible
             </label>
           </div>
           <div class="mb-4">

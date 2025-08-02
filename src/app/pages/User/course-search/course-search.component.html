@@ -22,7 +22,7 @@
   </div>
   <div class="flex">
     <!-- Sidebar -->
-    <div class="hidden lg:block lg:w-1/4">
+    <div class="hidden lg:block lg:w-1/4 lg:sticky lg:top-5 lg:h-full">
       <app-course-search-sidebar
         [selectedCategories]="currentSearchParams.categories"
         (search)="onSearch($event)"
@@ -52,7 +52,7 @@
               <div class="w-1/4">
                 <img
                   [alt]="course.course_name"
-                  class="w-full"
+                  class="w-full h-32"
                   [src]="
                     course.image
                       ? course.image

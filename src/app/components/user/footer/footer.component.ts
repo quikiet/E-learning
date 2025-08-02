@@ -77,8 +77,8 @@ export class FooterComponent implements OnDestroy, AfterViewInit, OnInit {
       stagger: 0.3,
       scrollTrigger: {
         trigger: ".footer-section",
-        start: "top 90%",
-        toggleActions: "play none none none", // Chỉ chạy khi vào viewport
+        start: "top 99%",
+        toggleActions: "play none none none",
       },
     });
 
@@ -90,8 +90,8 @@ export class FooterComponent implements OnDestroy, AfterViewInit, OnInit {
       delay: 0.1,
       scrollTrigger: {
         trigger: ".footer-section",
-        start: "top 90%",
-        // end: "bottom 20%", // Kéo dài vùng kích hoạt
+        start: "top 99%",
+        // end: "bottom 20%", 
         toggleActions: "play none none none",
       },
     });

@@ -34,7 +34,8 @@
   <!-- Dropdown gợi ý -->
   @if (query && filteredCourses.length && !pauseDropdown && showDropdown) {
   <div
-    class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-md max-h-[400px] overflow-y-scroll py-2"
+    [ngClass]="{ 'overflow-y-scroll': filteredCourses.length >= 7 }"
+    class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-md max-h-[400px] py-2"
   >
     @for (course of filteredCourses; track course) {
     <a

@@ -10,12 +10,8 @@
       <p-skeleton class="!w-full !h-auto !aspect-video" />
     </div>
     } @else { @if (previewVideoUrl) {
-    <div class="">
-      <video
-        class="w-full h-auto aspect-video object-cover"
-        controls
-        [poster]="course?.image"
-      >
+    <div class="shadow-xl">
+      <video class="w-full h-auto aspect-video object-cover" controls>
         <source [src]="previewVideoUrl" type="video/mp4" />
       </video>
     </div>
@@ -46,24 +42,29 @@
           <p-tag
             severity="info"
             [value]="category.name"
+            [routerLink]="['/course']"
+            [queryParams]="{ categories: category.id }"
             [rounded]="true"
-            class="!text-xs"
+            class="!text-xs cursor-pointer"
           ></p-tag>
         </div>
-        <p class="text-secondary">
-          Level:
-          <span class="text-sm text-dark">
-            {{ course?.difficulty_level }}
-          </span>
-        </p>
       </div>
+      <p class="pb-2">
+        Level:
+        <span class="text-sm text-secondary">
+          {{ course?.difficulty_level }}
+        </span>
+      </p>
       <div class="flex items-center gap-4">
         <div
           class="flex items-center gap-2 cursor-pointer hover:underline text-secondary"
           [routerLink]="['/user', course?.instructors?.id]"
         >
           <img
-            [src]="course?.instructors?.user?.avatar"
+            [src]="
+              course?.instructors?.user?.avatar ||
+              'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
+            "
             alt="avatar"
             loading="lazy"
             class="w-8 h-8 rounded-full bg-white border border-[#32d296] p-1"
@@ -92,6 +93,33 @@
       <p class="text-[#3a3f44] text-sm">
         {{ course?.course_description }}
       </p>
+      <p-divider />
+    </div>
+
+    <div class="mb-4" *ngIf="course?.is_certificate_enabled">
+      <p class="text-black font-bold md:text-lg mb-2">Certificate Rule</p>
+      <div class="text-sm">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <p>
+            Lesson Completion Percent
+            <span class="font-semibold"
+              >({{ certificate_rule.lesson_version_rule }})</span
+            >
+          </p>
+          <p class="text-secondary">
+            {{ certificate_rule.lesson_completion_percent }}
+          </p>
+        </div>
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <p>
+            Quiz Min Score
+            <span class="font-semibold"
+              >({{ certificate_rule.quiz_version_rule }})</span
+            >
+          </p>
+          <p class="text-secondary">{{ certificate_rule.quiz_min_score }}</p>
+        </div>
+      </div>
       <p-divider />
     </div>
 
@@ -154,7 +182,10 @@
       @for (review of displayedReviews; track review) {
       <div class="flex items-start gap-3">
         <p-avatar
-          [image]="review.user?.avatar"
+          [image]="
+            review.user?.avatar ||
+            'https://winaero.com/blog/wp-content/uploads/2017/12/User-icon-256-blue.png'
+          "
           size="normal"
           class="mt-1"
           shape="circle"
@@ -169,7 +200,7 @@
           @for (star of getStars(); track $index; let i = $index) {
           <span>
             <i
-              class="pi pi-star-fill !text-[10px]"
+              class="pi pi-star-fill !text-[10px] mr-1"
               [ngClass]="i < review.rating ? 'text-yellow-500' : ''"
             ></i>
           </span>
@@ -182,7 +213,7 @@
       } @if (!reviews?.length) {
       <div class="text-gray-500 text-sm">No reviews for this course yet.</div>
       }@if (reviews.length > 1) {
-      <div class="mt-8 flex justify-center">
+      <div class="mt-8 flex justify-center" *ngIf="reviews.length > 5">
         <button
           class="border border-gray-600 text-black font-semibold px-6 py-2 rounded-md hover:bg-gray-200 transition duration-300"
           (click)="toggleShowMore()"
@@ -323,7 +354,7 @@
       </button>
       } @if (isUserEnrolled) {
       <button
-        [routerLink]="['/my-course']"
+        [routerLink]="['/my-course', enrollmentId]"
         class="px-6 py-3 mb-3 bg-secondary/90 hover:bg-secondary transition duration-300 text-white font-semibold w-full cursor-pointer"
         [disabled]="isLoading"
       >
@@ -341,8 +372,8 @@
             <div class="w-full justify-between flex items-center mr-5">
               Lessons
               <span class="text-xs font-normal ml-2 text-end">
-                {{ lessons.length || 0 }}/{{ lessons.length || 0 }} Videos •
-                {{ getTotalDuration(lessons) }} Minutes
+                {{ getVisibleLessonCount() || 0 }}
+                Videos • {{ getTotalDuration(lessons) }} Minutes
               </span>
             </div>
           </p-accordion-header>
@@ -351,7 +382,7 @@
             @for (lesson of lessons; track lesson; let i = $index) {
             <div class="m-0">
               <div class="flex items-center justify-between">
-                @if (lesson.status !== 'rejected') {
+                @if (lesson.status !== 'rejected' && lesson.is_visible === 1) {
                 <div
                   class="flex items-center gap-2 py-4 border-b-2 border-gray/20 !w-full justify-between"
                 >
@@ -376,9 +407,7 @@
                                         </video> -->
                     @if (lesson.is_preview && lesson.video_url) {
                     <a
-                      (click)="
-                        playVideo(lesson.video_url); $event.preventDefault()
-                      "
+                      (click)="playVideo(lesson.video_url)"
                       class="underline text-xs text-secondary cursor-pointer"
                       >Preview</a
                     >
@@ -448,6 +477,7 @@
           optionValue="value"
           placeholder="Level"
           name="LoE_DI"
+          required
           class="!rounded-full w-full"
         />
       </app-form-element>
