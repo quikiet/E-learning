@@ -156,11 +156,6 @@
             #categoryIds="ngModel"
             (onChange)="onCategoryChange($event)"
           ></p-multiSelect>
-          @if (courseForm.submitted && categoryIds.invalid) {
-          <div class="text-red-500 !text-sm mt-1">
-            Vui lòng chọn ít nhất một danh mục.
-          </div>
-          }
         </div>
         <div class="mb-6 flex items-center my-5 md:my-0">
           <input

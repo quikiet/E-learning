@@ -23,7 +23,7 @@
               <div class="flex items-center justify-between gap-2 pr-2">
                 <div class="flex items-start justify-between gap-3">
                   <img
-                    class="w-20 h-20"
+                    class="w-20 h-12"
                     [src]="
                       deleteCourse.image ||
                       'https://res.cloudinary.com/dj11e209p/image/upload/v1751878057/How-to-Create-an-Online-Course-For-Free--Complete-Guide--6_ulvjwh.jpg'
@@ -611,6 +611,7 @@
               placeholder="Select categories"
               class="w-full"
               required
+              appendTo="body"
               #categoryIds="ngModel"
             ></p-multiSelect>
           </div>

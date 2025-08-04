@@ -119,6 +119,7 @@ export class CourseSearchComponent implements OnInit {
   loadCourses() {
     this.isLoading = true;
     // console.log('Loading courses with params:', this.currentSearchParams); // Debug log
+    this.courses = [];
 
     const params = {
       ...this.currentSearchParams,

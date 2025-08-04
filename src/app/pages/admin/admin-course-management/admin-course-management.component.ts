@@ -165,10 +165,6 @@ export class AdminCourseManagementComponent implements OnInit {
   unBanCourse(courseId: number) {
     this.coursesService.unBanCourses(courseId).subscribe({
       next: (res) => {
-        const userInput = prompt('Are you sure you want to ban this course? Please type "OK" to confirm.');
-        if (userInput !== 'OK') {
-          return;
-        }
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -196,7 +192,9 @@ export class AdminCourseManagementComponent implements OnInit {
     this.displayReviewDialog = true;
   }
 
+  isSubmitReview = false;
   submitReview() {
+    this.isSubmitReview = true;
     if (!this.reviewCourseId) return;
 
     const data = {
@@ -208,20 +206,22 @@ export class AdminCourseManagementComponent implements OnInit {
         next: (res) => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Thành công',
-            detail: 'Duyệt thành công',
+            summary: 'Success',
+            detail: res.message,
             life: 3000,
           });
           this.loadCourses();
           this.displayReviewDialog = false;
           this.notes = '';
+          this.isSubmitReview = false;
         },
         error: (err) => {
+          this.isSubmitReview = false;
           console.error(`Error ${this.reviewAction} request:`, err.message);
           this.messageService.add({
             severity: 'error',
-            summary: 'Lỗi',
-            detail: 'Không thể duyệt yêu cầu',
+            summary: err.error.message,
+            detail: err.error.error,
             life: 3000,
           });
         }
@@ -229,6 +229,7 @@ export class AdminCourseManagementComponent implements OnInit {
     } else if (this.reviewAction === 'rejected') {
       this.coursesService.rejectCourse(this.reviewCourseId, data).subscribe({
         next: (res) => {
+          this.isSubmitReview = false;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -240,6 +241,7 @@ export class AdminCourseManagementComponent implements OnInit {
           this.notes = '';
         },
         error: (err) => {
+          this.isSubmitReview = false;
           console.error(`Error ${this.reviewAction} request:`, err.message);
           this.messageService.add({
             severity: 'error',
@@ -250,6 +252,7 @@ export class AdminCourseManagementComponent implements OnInit {
         }
       });
     }
+    this.isSubmitReview = false;
   }
 
 

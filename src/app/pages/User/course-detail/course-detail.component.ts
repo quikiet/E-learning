@@ -431,14 +431,29 @@ export class CourseDetailComponent implements OnInit {
 
     this.coursesService.enrollFreeCourse(this.course.id).subscribe({
       next: (res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: res.message,
-          life: 3000,
-        });
-        setTimeout(() => {
-          this.router.navigate(['/my-course',]);
-        }, 1000);
+        if (res.message === 'Student profile not found. Please complete your profile.') {
+          this.studentDialog = true;
+          this.categoryService.getAllCategory().subscribe({
+            next: (res) => {
+              this.categories = res;
+              console.log(this.categories);
+
+            },
+            error: (error) => {
+              alert(error.error.error);
+            }
+          });
+        } else {
+          this.messageService.add({
+            severity: 'success',
+            summary: res.message,
+            life: 3000,
+          });
+          setTimeout(() => {
+            this.router.navigate(['/my-course',]);
+          }, 1000);
+        }
+
       },
       error: (err) => {
         console.error('Error enrolling course:', err);

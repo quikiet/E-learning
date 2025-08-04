@@ -163,7 +163,7 @@
             severity="info"
             (click)="unBanCourse(course.id)"
             size="small"
-            pTooltip="Ban"
+            pTooltip="Unban"
             tooltipPosition="top"
           />
           <p-button
@@ -355,6 +355,7 @@
       [label]="
         reviewAction === 'approved' ? 'Confirm approval' : 'Confirm rejection'
       "
+      [loading]="isSubmitReview"
       [ngClass]="
         reviewAction === 'approved' ? 'p-button-success' : 'p-button-danger'
       "

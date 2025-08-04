@@ -151,6 +151,9 @@
                   <div class="flex items-center">Name</div>
                 </th>
                 <th>
+                  <div class="flex items-center">Amount</div>
+                </th>
+                <th>
                   <div class="flex items-center">Action</div>
                 </th>
               </tr>
@@ -163,6 +166,11 @@
                 <td>
                   <span [pTooltip]="children.name" tooltipPosition="right">
                     {{ children.name }}
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    {{ children.courses_count }}
                   </span>
                 </td>
                 <td>

@@ -97,6 +97,7 @@
               <p-password
                 id="password_confirmation"
                 formControlName="password_confirmation"
+                placeholder="Confirm password"
                 [toggleMask]="true"
                 class="w-full"
                 [feedback]="false"
@@ -133,6 +134,7 @@
                   formControlName="birthdate"
                   dateFormat="yy-mm-dd"
                   [maxDate]="maxDate"
+                  placeholder="2003-05-24"
                   name="birthdate"
                   (onSelect)="onDateSelect($event)"
                   [inputStyleClass]="'!rounded-full w-full'"
